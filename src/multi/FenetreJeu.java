@@ -1,4 +1,4 @@
-package base;
+package multi;
 
 import java.awt.AWTException;
 import java.awt.Cursor;
@@ -80,13 +80,8 @@ public class FenetreJeu extends JFrame {
 			@Override
 			public void mousePressed(MouseEvent e){
 				logique.fire();
-				logique.isFiring=true;
 			}
-
-			@Override
-			public void mouseReleased(MouseEvent e){
-				logique.isFiring = false;
-			}
+			
 		});
 
 	}
