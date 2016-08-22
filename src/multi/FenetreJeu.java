@@ -14,7 +14,6 @@ import javax.swing.JFrame;
 public class FenetreJeu extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
-	private int oldX;
 	private Robot robot;
 	
 	public FenetreJeu(String pngFileName) throws AWTException {
@@ -43,38 +42,18 @@ public class FenetreJeu extends JFrame {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				int x = e.getX();
-				int dx = x - oldX;
+				int dx = e.getX() - getWidth()/2;
 				logique.heros.rotate(dx);
-				oldX = x;
+				robot.mouseMove((int) (getLocation().getX()+getWidth()/2), (int) (getLocation().getY()+getHeight()/2));
 			}
 		});
 		
 		addMouseListener(new MouseAdapter() {
 			
 			@Override
-			public void mouseExited(MouseEvent e) {
-				// teste si on sort de la frame en haut ou en bas
-				if(e.getY() <= 30 || e.getY() >= getHeight()){
-					// on réaffiche le curseur de la souris
-					setCursor(Cursor.getDefaultCursor());
-				}else{
-					// si on est sorti à gauche
-					if(e.getX() > getLocation().getX())
-						// on se replace à droite
-						robot.mouseMove((int) getLocation().getX(), (int) (getLocation().getY()+e.getY()));
-					else
-						robot.mouseMove((int) getLocation().getX()+getWidth(), (int) (getLocation().getY()+e.getY()));
-				}
-			}
-			
-			@Override
 			public void mouseEntered(MouseEvent e) {
-				
-				oldX=e.getX();
 				// cache le curseur
-				setCursor(getToolkit().createCustomCursor(
-			            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null"));
+				setCursor(getToolkit().createCustomCursor( new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null"));
 			}
 
 			@Override
