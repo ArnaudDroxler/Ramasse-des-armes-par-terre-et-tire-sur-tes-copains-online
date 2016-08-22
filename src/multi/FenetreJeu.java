@@ -53,7 +53,7 @@ public class FenetreJeu extends JFrame {
 				}
 			}
 		});
-		
+
 		addMouseListener(new MouseAdapter() {
 			
 			@Override
