@@ -82,6 +82,7 @@ public class VueJeu extends Renderer {
 	private void drawMonstres() {
 		g2d.setColor(Color.green);
 		int a = (int) zoom;
+		// a protéger
 		for (Thing monstre : logique.listeMonstres) {
 			double x = (monstre.getPosition().getdX() * zoom);
 			double y = (monstre.getPosition().getdY() * zoom);

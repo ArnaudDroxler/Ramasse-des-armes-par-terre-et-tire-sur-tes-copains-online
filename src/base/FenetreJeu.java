@@ -18,7 +18,6 @@ public class FenetreJeu extends JFrame {
 	private Robot robot;
 	
 	public FenetreJeu(String pngFileName) throws AWTException {
-		System.out.println(pngFileName);
 		Logique logique = new Logique(pngFileName);
 
 		Camera camera = new Camera(logique);
@@ -46,7 +45,6 @@ public class FenetreJeu extends JFrame {
 			public void mouseMoved(MouseEvent e) {
 				int x = e.getX();
 				int dx = x - oldX;
-				//double dalpha = Math.abs(dx)*dx*.1;
 				logique.heros.rotate(dx);
 				oldX = x;
 			}
@@ -75,8 +73,8 @@ public class FenetreJeu extends JFrame {
 				
 				oldX=e.getX();
 				// cache le curseur
-				setCursor(getToolkit().createCustomCursor(
-			            new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null"));
+				//setCursor(getToolkit().createCustomCursor(
+			       //     new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB), new Point(0, 0),"null"));
 			}
 
 			@Override

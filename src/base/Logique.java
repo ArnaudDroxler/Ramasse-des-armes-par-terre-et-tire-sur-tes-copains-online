@@ -234,6 +234,8 @@ public class Logique extends KeyAdapter {
 		}
 
 		if (monstreAEnlever != null) {
+			// bizarre
+			// a corriger
 			listeMonstres.remove(monstreAEnlever);
 			getMap().getListThing().remove(monstreAEnlever);
 		}
