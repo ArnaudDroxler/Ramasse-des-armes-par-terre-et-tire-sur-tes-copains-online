@@ -1,9 +1,9 @@
-package integration.beta.thing;
+package base.thing;
 
 import java.awt.image.BufferedImage;
 
-import integration.beta.tools.ImageLoader;
-import integration.beta.tools.raycasting.Vector2D;
+import base.tools.ImageLoader;
+import base.tools.raycasting.Vector2D;
 
 public class Monstre extends Thing {
 

@@ -1,4 +1,4 @@
-package integration.beta;
+package base;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import integration.beta.tools.MapFileChooser;
+import base.tools.MapFileChooser;
 
 public class FenetreFin extends JFrame {
 

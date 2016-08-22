@@ -1,4 +1,4 @@
-package integration.beta;
+package base;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -7,7 +7,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
 
-import integration.beta.thing.Thing;
+import base.thing.Thing;
 
 public class VueJeu extends Renderer {
 	

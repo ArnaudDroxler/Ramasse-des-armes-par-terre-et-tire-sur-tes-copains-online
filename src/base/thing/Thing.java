@@ -1,10 +1,10 @@
 
-package integration.beta.thing;
+package base.thing;
 
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
-import integration.beta.tools.raycasting.Vector2D;
+import base.tools.raycasting.Vector2D;
 
 public abstract class Thing {
 

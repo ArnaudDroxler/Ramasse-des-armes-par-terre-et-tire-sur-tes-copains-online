@@ -1,12 +1,12 @@
-package integration.beta.tools.map;
+package base.tools.map;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import integration.beta.thing.Key;
-import integration.beta.thing.Monstre;
-import integration.beta.thing.Thing;
-import integration.beta.tools.raycasting.Vector2D;
+import base.thing.Key;
+import base.thing.Monstre;
+import base.thing.Thing;
+import base.tools.raycasting.Vector2D;
 
 public abstract class LvlMap {
 

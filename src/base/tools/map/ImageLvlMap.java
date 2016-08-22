@@ -1,10 +1,10 @@
-package integration.beta.tools.map;
+package base.tools.map;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-import integration.beta.thing.Key;
-import integration.beta.tools.raycasting.Vector2D;
+import base.thing.Key;
+import base.tools.raycasting.Vector2D;
 
 public class ImageLvlMap extends LvlMap {
 

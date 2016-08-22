@@ -1,4 +1,4 @@
-package integration.beta;
+package base;
 
 import java.awt.AWTException;
 import java.awt.Cursor;

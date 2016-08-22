@@ -1,6 +1,6 @@
-package integration.beta;
+package base;
 
-import integration.beta.tools.MapFileChooser;
+import base.tools.MapFileChooser;
 
 public class Main {
 

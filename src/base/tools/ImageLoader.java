@@ -1,5 +1,5 @@
 
-package integration.beta.tools;
+package base.tools;
 
 import java.awt.Image;
 import java.awt.Toolkit;

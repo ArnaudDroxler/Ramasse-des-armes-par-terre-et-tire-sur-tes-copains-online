@@ -1,4 +1,4 @@
-package integration.beta.tools;
+package base.tools;
 
 import java.awt.AWTException;
 
@@ -6,7 +6,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import integration.beta.FenetreJeu;
+import base.FenetreJeu;
 
 public class MapFileChooser extends JFrame {
 

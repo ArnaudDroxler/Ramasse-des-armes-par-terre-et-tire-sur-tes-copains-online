@@ -1,6 +1,6 @@
-package integration.beta.tools.raycasting;
+package base.tools.raycasting;
 
-import integration.beta.tools.map.LvlMap;
+import base.tools.map.LvlMap;
 
 public class algoPiergiovanni {
 	

@@ -1,10 +1,10 @@
-package integration.beta.tools.map;
+package base.tools.map;
 
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-import integration.beta.tools.raycasting.Vector2D;
+import base.tools.raycasting.Vector2D;
 
 public class UseImageLvlMap {
 

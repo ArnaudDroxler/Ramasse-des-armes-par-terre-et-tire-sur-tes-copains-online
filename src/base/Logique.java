@@ -1,4 +1,4 @@
-package integration.beta;
+package base;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -10,15 +10,15 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import integration.beta.thing.Heros;
-import integration.beta.thing.Key;
-import integration.beta.thing.Monstre;
-import integration.beta.thing.Thing;
-import integration.beta.tools.GeometricTools;
-import integration.beta.tools.map.ImageParser;
-import integration.beta.tools.map.LvlMap;
-import integration.beta.tools.raycasting.Vector2D;
-import integration.beta.tools.raycasting.algoPiergiovanni;
+import base.thing.Heros;
+import base.thing.Key;
+import base.thing.Monstre;
+import base.thing.Thing;
+import base.tools.GeometricTools;
+import base.tools.map.ImageParser;
+import base.tools.map.LvlMap;
+import base.tools.raycasting.Vector2D;
+import base.tools.raycasting.algoPiergiovanni;
 
 public class Logique extends KeyAdapter {
 

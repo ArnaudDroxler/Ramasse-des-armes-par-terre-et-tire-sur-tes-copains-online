@@ -1,4 +1,4 @@
-package integration.beta.tools.raycasting;
+package base.tools.raycasting;
 
 /**
  * ======================================================== Vector2D.java:

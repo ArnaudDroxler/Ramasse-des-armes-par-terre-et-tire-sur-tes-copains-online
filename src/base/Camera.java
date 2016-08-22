@@ -1,5 +1,5 @@
 
-package integration.beta;
+package base;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -17,10 +17,10 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 
-import integration.beta.thing.Heros;
-import integration.beta.thing.Thing;
-import integration.beta.tools.MagasinImage;
-import integration.beta.tools.raycasting.Vector2D;
+import base.thing.Heros;
+import base.thing.Thing;
+import base.tools.MagasinImage;
+import base.tools.raycasting.Vector2D;
 
 public class Camera extends Renderer {
 

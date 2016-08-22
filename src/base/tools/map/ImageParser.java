@@ -1,4 +1,4 @@
-package integration.beta.tools.map;
+package base.tools.map;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -7,11 +7,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import integration.beta.thing.Monstre;
-import integration.beta.thing.Goal;
-import integration.beta.thing.Key;
-import integration.beta.thing.Thing;
-import integration.beta.tools.raycasting.Vector2D;
+import base.thing.Goal;
+import base.thing.Key;
+import base.thing.Monstre;
+import base.thing.Thing;
+import base.tools.raycasting.Vector2D;
 
 public class ImageParser {
 

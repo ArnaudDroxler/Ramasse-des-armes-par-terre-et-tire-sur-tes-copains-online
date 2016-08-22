@@ -1,4 +1,4 @@
-package integration.beta.tools.map;
+package base.tools.map;
 
 import java.awt.Color;
 import java.awt.Graphics;
