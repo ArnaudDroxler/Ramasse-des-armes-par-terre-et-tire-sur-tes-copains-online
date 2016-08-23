@@ -3,6 +3,8 @@ package tests.kryonet;
 import java.io.IOException;
 
 import com.esotericsoftware.kryonet.Client;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
 
 public class ClientSide {
 	
@@ -17,6 +19,15 @@ public class ClientSide {
 
 	    String request = "Here is the request";
 	    client.sendTCP(request);
+	    
+	    client.addListener(new Listener() {
+	        public void received (Connection connection, Object object) {
+	           if (object instanceof String) {
+	        	   String response = (String)object;
+	        	   System.out.println(response);
+	           }
+	        }
+	     });
 	}
 
 }
