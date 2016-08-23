@@ -8,18 +8,15 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
-import javafx.geometry.Point2D;
-
 public class ServerSide {
 
 	public static void main(String[] args) {
 		Server server = new Server();
 		
 	    Kryo kryo = server.getKryo();
-	    kryo.register(Infos.class);
 	    kryo.register(Joueur.class);
+	    kryo.register(Infos.class);
 	    kryo.register(ArrayList.class);
-	    kryo.register(javafx.geometry.Point2D.class);
 	    
 		server.start();
 		
@@ -31,10 +28,14 @@ public class ServerSide {
 	    
 	    server.addListener(new Listener() {
 	        public void received (Connection connection, Object object) {
-	           if (object instanceof Infos) {
-	        	  Infos infos = (Infos)object;
-	              System.out.println("le client dit : " + infos);
+	        	System.out.println("message recu sur le serveur");
+        		System.out.println("le client dit : " + object);
+        		/*
+	        	if (object instanceof Yolo) {
+	        		Yolo infos = (Yolo)object;
+	        		System.out.println("le client dit : " + infos);
 	           }
+	           */
 	        }
 	     });
 	    

@@ -1,22 +1,23 @@
 package tests.kryonet.UdpCustomObject;
 
-import javafx.geometry.Point2D;
-
-public class Joueur {
-	
-	private Point2D position;
-	private Point2D direction;
+public class Joueur{
+	private int posx;
+	private int posy;
 	private String pseudo;
 	
-	public Joueur(String pseudo, int x, int y, int a, int b){
-		this.pseudo = pseudo;
-		position= new Point2D(x, y);
-		direction=new Point2D(a, b);
+	public Joueur(String p, int x, int y){
+		this.posx = x;
+		posy=y;
+		pseudo=p;
+	}
+	
+	public Joueur(){
+		
 	}
 
 	@Override
 	public String toString() {
-		return "\nJoueur [position=" + position + ", direction=" + direction + ", pseudo=" + pseudo + "]";
+		return "Joueur [posx=" + posx + ", posy=" + posy + ", pseudo=" + pseudo + "]";
 	}
 	
 }
