@@ -9,7 +9,8 @@ public class Ennemie  extends Personnage{
 
 	public Ennemie(Vector2D startPosition, Vector2D startDirection) {
 		super(startPosition, startDirection);
-	
+		vie = 100;
+		armure = 0;
 	}
 
 	@Override

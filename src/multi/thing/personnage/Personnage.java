@@ -34,4 +34,12 @@ public abstract class Personnage extends Thing {
 			System.out.println("Mort!!!");
 		}
 	}
+	
+	public int getVie() {
+		return vie;
+	}
+
+	public int getArmure() {
+		return armure;
+	}
 }

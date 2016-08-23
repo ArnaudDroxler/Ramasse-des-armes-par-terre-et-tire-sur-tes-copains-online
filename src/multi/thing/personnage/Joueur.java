@@ -33,14 +33,6 @@ public class Joueur extends Personnage {
 			armure = 100;
 	}
 
-	public int getVie() {
-		return vie;
-	}
-
-	public int getArmure() {
-		return armure;
-	}
-
 	public Weapon getArme() {
 		return arme;
 	}
