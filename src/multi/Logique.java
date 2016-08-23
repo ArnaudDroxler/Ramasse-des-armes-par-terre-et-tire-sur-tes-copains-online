@@ -11,8 +11,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 import base.FenetreFin;
+import multi.thing.Armure;
 import multi.thing.Joueur;
 import multi.thing.Key;
+import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.tools.GeometricTools;
@@ -26,6 +28,7 @@ public class Logique extends KeyAdapter {
 	protected LvlMap map;
 	protected Joueur heros;
 	private long delay;
+	private long tempsRepop;
 	private HashSet<Integer> touchesEnfoncees;
 	private Vector2D oldPosition;
 	protected boolean fin;
@@ -38,6 +41,7 @@ public class Logique extends KeyAdapter {
 
 	public Logique(String nomMap) {
 		delay = 10;
+		tempsRepop = 15000;
 
 		map = ImageParser.getMap(nomMap);
 
@@ -106,23 +110,58 @@ public class Logique extends KeyAdapter {
 		}
 
 		// test packs
-		for (Thing thing : listeThings) {
+
+		// Utilisation d'un itérateur car on supprime un objet d'une liste qu'on
+		// parcourt
+		Iterator<Thing> iterator = listeThings.iterator();
+		while (iterator.hasNext()) {
+			Thing thing = iterator.next();
 			if (collapse(thing.getPosition(), .8)) {
 				System.out.println(thing.getClass().getSimpleName());
 				switch (thing.getClass().getSimpleName()) {
 				case "Monstre":
-					heros.perdVie(5);
+					heros.perdVie(1);
 					break;
 				case "Armure":
 					heros.ajoutArmure(10);
+					repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+					iterator.remove();
 					break;
 				case "Medipack":
 					heros.ajoutVie(10);
+					repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+					iterator.remove();
 					break;
 				}
 				System.out.println("vie restante: " + heros.getVie() + " / armure restante: " + heros.getArmure());
 			}
 		}
+	}
+
+	private void repopObjet(Vector2D position, String type) {
+		Thread threadrepop = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(tempsRepop);
+					switch (type) {
+					case "Armure":
+						listeThings.add(new Armure(position));
+						break;
+					case "Medipack":
+						listeThings.add(new Medipack(position));
+						break;
+					}
+
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
+		threadrepop.start();
 
 	}
 
