@@ -144,29 +144,28 @@ public class Camera extends Renderer {
 			renderThings();
 			g2d.drawImage(bufferThings, 0, 0, null);
 
-			drawCursor(g2d);
-			drawfire(g2d);
+			//drawCursor(g2d);
+			drawWeapon(g2d);
 		}
 	}
-
-	private void drawfire(Graphics2D g2d) {
-		if (logique.isFiring) {
-			g2d.drawLine(getWidth() / 2, getHeight() / 2, getWidth() * 3 / 4, getHeight());
-		}
-
-	}
-
+	
 	private void drawCursor(Graphics2D g2d) {
 		g2d.setColor(Color.red);
-		g2d.drawLine(getWidth() / 2, getHeight() / 2 - 20, getWidth() / 2, getHeight() / 2 + 20);
-		g2d.drawLine(getWidth() / 2 - 20, getHeight() / 2, getWidth() / 2 + 20, getHeight() / 2);
-		g2d.drawLine(getWidth() / 2 - 5, getHeight() / 2 - 20, getWidth() / 2 + 5, getHeight() / 2 - 20);
-		g2d.drawLine(getWidth() / 2 - 5, getHeight() / 2 + 20, getWidth() / 2 + 5, getHeight() / 2 + 20);
-		g2d.drawLine(getWidth() / 2 - 20, getHeight() / 2 - 5, getWidth() / 2 - 20, getHeight() / 2 + 5);
-		g2d.drawLine(getWidth() / 2 + 20, getHeight() / 2 - 5, getWidth() / 2 + 20, getHeight() / 2 + 5);
-
+		g2d.drawLine(getWidth()/2,getHeight()/2-20,getWidth()/2,getHeight()/2+20);
+		g2d.drawLine(getWidth()/2-20,getHeight()/2,getWidth()/2+20,getHeight()/2);
+		g2d.drawLine(getWidth()/2-5,getHeight()/2-20,getWidth()/2+5,getHeight()/2-20);
+		g2d.drawLine(getWidth()/2-5,getHeight()/2+20,getWidth()/2+5,getHeight()/2+20);
+		g2d.drawLine(getWidth()/2-20,getHeight()/2-5,getWidth()/2-20,getHeight()/2+5);
+		g2d.drawLine(getWidth()/2+20,getHeight()/2-5,getWidth()/2+20,getHeight()/2+5);
+		
 	}
-
+	
+	private void drawWeapon(Graphics2D g2d) {
+		if(logique.heros.getArme() != null){
+			g2d.drawImage(logique.heros.getArme().getSpriteHUD(), null , getWidth()/2,getHeight()-logique.heros.getArme().getSpriteHUD().getHeight());
+		}
+	}
+	
 	/**
 	 * ======================================================== Algorithme
 	 * adapté à partir du code C++ fournit par Lode Vandevenne

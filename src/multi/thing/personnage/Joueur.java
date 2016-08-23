@@ -2,6 +2,7 @@ package multi.thing.personnage;
 
 import java.awt.image.BufferedImage;
 
+import multi.thing.weapon.HandGun;
 import multi.thing.weapon.Weapon;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
@@ -12,6 +13,7 @@ public class Joueur extends Personnage {
 		super(startPosition, startDirection);
 		vie = 100;
 		armure = 50;
+		
 	}
 
 	@Override

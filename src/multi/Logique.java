@@ -10,11 +10,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import multi.thing.Armure;
 import multi.thing.Key;
+import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemie;
 import multi.thing.personnage.Joueur;
+import multi.thing.weapon.HandGun;
 import multi.tools.GeometricTools;
 import multi.tools.map.ImageParser;
 import multi.tools.map.LvlMap;
@@ -26,6 +29,7 @@ public class Logique extends KeyAdapter {
 	protected LvlMap map;
 	protected Joueur heros;
 	private long delay;
+	private long tempsRepop;
 	private HashSet<Integer> touchesEnfoncees;
 	private Vector2D oldPosition;
 	protected boolean fin;
@@ -38,6 +42,7 @@ public class Logique extends KeyAdapter {
 
 	public Logique(String nomMap) {
 		delay = 10;
+		tempsRepop = 15000;
 
 		map = ImageParser.getMap(nomMap);
 
@@ -106,23 +111,70 @@ public class Logique extends KeyAdapter {
 		}
 
 		// test packs
-		for (Thing thing : listeThings) {
+
+		// Utilisation d'un itérateur car on supprime un objet d'une liste qu'on
+		// parcourt
+		Iterator<Thing> iterator = listeThings.iterator();
+		while (iterator.hasNext()) {
+			Thing thing = iterator.next();
+			if (collapse(thing.getPosition(), 1.2)) {
+				switch (thing.getClass().getSimpleName()) {
+				case "HandGun":
+					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+						heros.setArme(new HandGun(heros.getPosition()));
+						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						iterator.remove();
+					}
+					break;
+				}
+			}
 			if (collapse(thing.getPosition(), .8)) {
 				System.out.println(thing.getClass().getSimpleName());
 				switch (thing.getClass().getSimpleName()) {
-				case "Monstre":
+				case "Ennemie":
 					heros.perdVie(5);
 					break;
 				case "Armure":
 					heros.ajoutArmure(10);
+					repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+					iterator.remove();
 					break;
 				case "Medipack":
 					heros.ajoutVie(10);
+					repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+					iterator.remove();
 					break;
 				}
 				System.out.println("vie restante: " + heros.getVie() + " / armure restante: " + heros.getArmure());
 			}
+
 		}
+	}
+
+	private void repopObjet(Vector2D position, String type) {
+		Thread threadrepop = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(tempsRepop);
+					switch (type) {
+					case "Armure":
+						listeThings.add(new Armure(position));
+						break;
+					case "Medipack":
+						listeThings.add(new Medipack(position));
+						break;
+					}
+
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
+		threadrepop.start();
 
 	}
 
@@ -170,7 +222,6 @@ public class Logique extends KeyAdapter {
 	private boolean collapse(Vector2D point, double r) {
 		double x = heros.getPosition().getdX();
 		double y = heros.getPosition().getdY();
-
 		return (x >= point.getdX() - r && x <= point.getdX() + r && y >= point.getdY() - r && y <= point.getdY() + r);
 	}
 

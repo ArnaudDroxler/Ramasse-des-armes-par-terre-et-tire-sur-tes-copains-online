@@ -16,20 +16,18 @@ public class HandGun extends Weapon {
 
 	@Override
 	public int computeDamage() {
-		
+	
 		return 0;
 	}
 
 
 	@Override
 	public BufferedImage getSpriteHUD() {
-	
 		return MagasinImage.buffHandGunHUD;
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-	
 		return MagasinImage.buffHandGun;
 	}
 

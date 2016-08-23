@@ -9,6 +9,7 @@ public class Medipack extends Thing {
 
 	public Medipack(Vector2D pos) {
 		super(pos);
+
 	}
 
 	@Override
