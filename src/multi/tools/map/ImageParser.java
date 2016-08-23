@@ -7,8 +7,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import multi.thing.Armure;
 import multi.thing.Goal;
 import multi.thing.Key;
+import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.tools.raycasting.Vector2D;
@@ -53,13 +55,21 @@ public class ImageParser {
 						map.setStartPosition(new Vector2D(x, y));
 						// map.getListThing().add(new StartPos(new
 						// Vector2D(x,y)));
+						/*
+						 * } else if (rgb == Color.yellow.getRGB()) {
+						 * map.setGoalPosition(new Vector2D(x, y));
+						 * map.getListThing().add(new Goal(new Vector2D(x, y)));
+						 * 
+						 * } else if (rgb == Color.blue.getRGB()) { Key cle =
+						 * new Key(new Vector2D(x, y)); map.setKey(cle);
+						 * map.getListThing().add(cle);
+						 */
 					} else if (rgb == Color.yellow.getRGB()) {
-						map.setGoalPosition(new Vector2D(x, y));
-						map.getListThing().add(new Goal(new Vector2D(x, y)));
+						Armure armure = new Armure(new Vector2D(x, y));
+						map.getListThing().add(armure);
 					} else if (rgb == Color.blue.getRGB()) {
-						Key cle = new Key(new Vector2D(x, y));
-						map.setKey(cle);
-						map.getListThing().add(cle);
+						Medipack medipack = new Medipack(new Vector2D(x, y));
+						map.getListThing().add(medipack);
 					} else if (rgb == Color.green.getRGB()) {
 						Monstre monstre = new Monstre(new Vector2D(x, y));
 						map.getListThing().add(monstre);

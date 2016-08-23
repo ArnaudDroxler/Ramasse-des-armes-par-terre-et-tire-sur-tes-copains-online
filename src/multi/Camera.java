@@ -334,6 +334,9 @@ public class Camera extends Renderer {
 						if (texY < 0) {
 							texY = 0;
 						}
+						if (texX < 0) {
+							texX = 0;
+						}
 
 						// System.out.println(currentSprite.getRGB(0, 0));
 						// pixel invisible: 16777215
