@@ -17,8 +17,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 
-import multi.thing.Joueur;
 import multi.thing.Thing;
+import multi.thing.personnage.Joueur;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
@@ -285,7 +285,6 @@ public class Camera extends Renderer {
 			// BufferedImage currentSprite = MagasinImage.buffYoanBlanc;
 			// BufferedImage currentSprite = MagasinImage.getNextSprite();
 			BufferedImage currentSprite = current.getSprite();
-		
 
 			int imageWidth = currentSprite.getWidth();
 			int imageHeight = currentSprite.getHeight();
@@ -334,6 +333,9 @@ public class Camera extends Renderer {
 						// texY passe dans les négatifs (min atteint = -4)
 						if (texY < 0) {
 							texY = 0;
+						}
+						if (texX < 0) {
+							texX = 0;
 						}
 
 						// System.out.println(currentSprite.getRGB(0, 0));

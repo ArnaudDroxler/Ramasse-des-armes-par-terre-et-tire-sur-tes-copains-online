@@ -16,20 +16,19 @@ public class ServerSide {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	    
+	    server.addListener(new Listener() {
+	        public void received (Connection connection, Object object) {
+	           if (object instanceof String) {
+	        	  String request = (String)object;
+	              System.out.println(request);
 
-		server.addListener(new Listener() {
-			public void received(Connection connection, Object object) {
-				if (object instanceof String) {
-					String request = (String) object;
-					System.out.println(request);
-
-					String response = new String();
-					response = "Thanks";
-					connection.sendTCP(response);
-				}
-			}
-		});
-
+	              String response = new String();
+	              response = "Thanks";
+	              connection.sendTCP(response);
+	           }
+	        }
+	     });
 	}
 
 }

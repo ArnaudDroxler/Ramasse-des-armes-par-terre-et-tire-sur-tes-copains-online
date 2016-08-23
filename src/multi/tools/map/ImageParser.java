@@ -9,11 +9,11 @@ import javax.imageio.ImageIO;
 
 import multi.thing.Armure;
 import multi.thing.Goal;
-import multi.thing.Joueur;
 import multi.thing.Key;
 import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
+import multi.thing.personnage.Ennemie;
 import multi.thing.weapon.HandGun;
 import multi.tools.raycasting.Vector2D;
 
@@ -54,30 +54,35 @@ public class ImageParser {
 			for (int x = 0; x < imgToParse.getWidth(); x++) {
 				int rgb = imgToParse.getRGB(x, y);
 				if (rgb != Color.BLACK.getRGB() && rgb != Color.WHITE.getRGB()) {
-					//pack de vie
+					// pack de vie
 					if (Integer.toHexString(rgb).equals("ffff0000")) {
 						map.getListThing().add(new Medipack(new Vector2D(x, y)));
-					}//pack armure
+					} // pack armure
 					else if (Integer.toHexString(rgb).equals("ff0000ff")) {
-						//map.getListThing().add(new Armure(new Vector2D(x, y)));
-					}//point de spawn
+						map.getListThing().add(new Armure(new Vector2D(x, y)));
+					} // point de spawn
 					else if (Integer.toHexString(rgb).equals("ffffff00")) {
-						map.setStartPosition(new Vector2D(x,y));	
-					}//PNJ
+						map.setStartPosition(new Vector2D(x, y));
+					} // PNJ
 					else if (Integer.toHexString(rgb).equals("ffffffaa")) {
-						//map.getListJoueur().add(new Joueur(new Vector2D(x,y), new Vector2D(1,0)));
-					}//Arme de Poing
+						//Ennemie joueur = new Ennemie(new Vector2D(x, y), new Vector2D(1, 0));
+						//map.getListEnnemie().add(joueur);
+						//map.getListThing().add(joueur);
+					} // Arme de Poing
 					else if (Integer.toHexString(rgb).equals("ff00ff00")) {
-						//map.getListThing().add(new HandGun(new Vector2D(x, y)));
-					}//Mitraillette
+						map.getListThing().add(new HandGun(new Vector2D(x, y)));
+					} // Mitraillette
 					else if (Integer.toHexString(rgb).equals("ff00ee00")) {
-						//map.getListThing().add(new Medipack(new Vector2D(x, y)));
-					}//pack munition arme de poing
+						// map.getListThing().add(new Medipack(new Vector2D(x,
+						// y)));
+					} // pack munition arme de poing
 					else if (Integer.toHexString(rgb).equals("ff00ff50")) {
-						//map.getListThing().add(new Medipack(new Vector2D(x, y)));
-					}//pack munition mitraillette
+						// map.getListThing().add(new Medipack(new Vector2D(x,
+						// y)));
+					} // pack munition mitraillette
 					else if (Integer.toHexString(rgb).equals("ff00ee50")) {
-						//map.getListThing().add(new Medipack(new Vector2D(x, y)));
+						// map.getListThing().add(new Medipack(new Vector2D(x,
+						// y)));
 					}
 					imgToParse.setRGB(x, y, Color.white.getRGB());
 				} else {
