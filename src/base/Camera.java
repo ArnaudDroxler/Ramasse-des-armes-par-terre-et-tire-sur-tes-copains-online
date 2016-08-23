@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 
-import base.thing.Heros;
+import base.thing.Héros;
 import base.thing.Thing;
 import base.tools.MagasinImage;
 import base.tools.raycasting.Vector2D;
@@ -43,7 +43,7 @@ public class Camera extends Renderer {
 		listThings = logique.map.getListThing();
 		listAfficher = new TreeMap<Double, Thing>();
 
-		posCamera = new Heros(logique.getMap().getStartPosition(), new Vector2D(1, 0));
+		posCamera = new Héros(logique.getMap().getStartPosition(), new Vector2D(1, 0));
 
 		// Le plan représentant la vision
 		plane = new Vector2D(0, 0);

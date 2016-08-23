@@ -5,16 +5,15 @@ import java.awt.image.BufferedImage;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
-public class Goal extends Thing {
+public class Armure extends Thing {
 
-	public Goal(Vector2D pos) {
+	public Armure(Vector2D pos) {
 		super(pos);
-
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffPorte;
+		return MagasinImage.buffArmure;
 	}
 
 }

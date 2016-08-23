@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import base.thing.Heros;
+import base.thing.Héros;
 import base.thing.Key;
 import base.thing.Monstre;
 import base.thing.Thing;
@@ -43,7 +43,7 @@ public class Logique extends KeyAdapter {
 
 		oldPosition = map.getStartPosition();
 
-		heros = new Heros(oldPosition, new Vector2D(1, 0));
+		heros = new Héros(oldPosition, new Vector2D(1, 0));
 		heros.setVitesse(0.05);
 
 		listeMonstres = map.getListMonstre();
