@@ -1,4 +1,4 @@
-package tests.kryonet;
+package tests.kryonet.TCPString;
 
 import java.io.IOException;
 
