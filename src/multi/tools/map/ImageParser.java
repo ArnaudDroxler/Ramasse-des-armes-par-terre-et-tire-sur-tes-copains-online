@@ -13,6 +13,8 @@ import multi.thing.Key;
 import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
+import multi.thing.personnage.Ennemie;
+import multi.thing.weapon.HandGun;
 import multi.tools.raycasting.Vector2D;
 
 public class ImageParser {
@@ -47,40 +49,46 @@ public class ImageParser {
 		// itérer sur chaque pixel de l'image et ajouter à map startPos,
 		// goalPos, listThing
 		// remplacer par un pixel blanc à chaque fois qu'on rencontre qqch
+
 		for (int y = 0; y < imgToParse.getHeight(); y++) {
 			for (int x = 0; x < imgToParse.getWidth(); x++) {
 				int rgb = imgToParse.getRGB(x, y);
 				if (rgb != Color.BLACK.getRGB() && rgb != Color.WHITE.getRGB()) {
-					if (rgb == Color.RED.getRGB()) {
+					// pack de vie
+					if (Integer.toHexString(rgb).equals("ffff0000")) {
+						map.getListThing().add(new Medipack(new Vector2D(x, y)));
+					} // pack armure
+					else if (Integer.toHexString(rgb).equals("ff0000ff")) {
+						map.getListThing().add(new Armure(new Vector2D(x, y)));
+					} // point de spawn
+					else if (Integer.toHexString(rgb).equals("ffffff00")) {
 						map.setStartPosition(new Vector2D(x, y));
-						// map.getListThing().add(new StartPos(new
-						// Vector2D(x,y)));
-						/*
-						 * } else if (rgb == Color.yellow.getRGB()) {
-						 * map.setGoalPosition(new Vector2D(x, y));
-						 * map.getListThing().add(new Goal(new Vector2D(x, y)));
-						 * 
-						 * } else if (rgb == Color.blue.getRGB()) { Key cle =
-						 * new Key(new Vector2D(x, y)); map.setKey(cle);
-						 * map.getListThing().add(cle);
-						 */
-					} else if (rgb == Color.yellow.getRGB()) {
-						Armure armure = new Armure(new Vector2D(x, y));
-						map.getListThing().add(armure);
-					} else if (rgb == Color.blue.getRGB()) {
-						Medipack medipack = new Medipack(new Vector2D(x, y));
-						map.getListThing().add(medipack);
-					} else if (rgb == Color.green.getRGB()) {
-						Monstre monstre = new Monstre(new Vector2D(x, y));
-						map.getListThing().add(monstre);
-						map.getListMonstre().add(monstre);
+					} // PNJ
+					else if (Integer.toHexString(rgb).equals("ffffffaa")) {
+						Ennemie joueur = new Ennemie(new Vector2D(x, y), new Vector2D(1, 0));
+						map.getListEnnemie().add(joueur);
+						map.getListThing().add(joueur);
+					} // Arme de Poing
+					else if (Integer.toHexString(rgb).equals("ff00ff00")) {
+						map.getListThing().add(new HandGun(new Vector2D(x, y)));
+					} // Mitraillette
+					else if (Integer.toHexString(rgb).equals("ff00ee00")) {
+						// map.getListThing().add(new Medipack(new Vector2D(x,
+						// y)));
+					} // pack munition arme de poing
+					else if (Integer.toHexString(rgb).equals("ff00ff50")) {
+						// map.getListThing().add(new Medipack(new Vector2D(x,
+						// y)));
+					} // pack munition mitraillette
+					else if (Integer.toHexString(rgb).equals("ff00ee50")) {
+						// map.getListThing().add(new Medipack(new Vector2D(x,
+						// y)));
 					}
 					imgToParse.setRGB(x, y, Color.white.getRGB());
 				} else {
 					// rien
 				}
 			}
-			System.out.println();
 
 		}
 

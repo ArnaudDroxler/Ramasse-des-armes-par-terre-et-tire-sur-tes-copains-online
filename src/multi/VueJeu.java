@@ -10,14 +10,14 @@ import java.awt.geom.AffineTransform;
 import multi.thing.Thing;
 
 public class VueJeu extends Renderer {
-	
+
 	private static final long serialVersionUID = -6740877510021842175L;
 	private double zoom;
 	private Graphics2D g2d;
-	
+
 	public VueJeu(Logique _logique) {
 		super(_logique);
-		
+
 		addComponentListener(new ComponentAdapter() {
 
 			@Override
@@ -45,7 +45,7 @@ public class VueJeu extends Renderer {
 	private void drawHeros() {
 		g2d.translate(logique.heros.getPosition().getdX() * zoom, logique.heros.getPosition().getdY() * zoom);
 		g2d.rotate(logique.heros.getDirection().getTheta());
-		
+
 		g2d.setColor(Color.red);
 		g2d.fillRect((int) -zoom / 2, (int) -zoom / 2, (int) zoom, (int) zoom);
 		g2d.setColor(Color.blue);

@@ -1,10 +1,12 @@
-package multi.thing;
+package multi.thing.personnage;
 
 import java.awt.image.BufferedImage;
 
+import multi.thing.weapon.Weapon;
+import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
-public class Joueur extends Thing {
+public class Joueur extends Personnage {
 
 	public Joueur(Vector2D startPosition, Vector2D startDirection) {
 		super(startPosition, startDirection);
@@ -14,7 +16,6 @@ public class Joueur extends Thing {
 
 	@Override
 	public BufferedImage getSprite() {
-
 		return null;
 	}
 
@@ -30,27 +31,6 @@ public class Joueur extends Thing {
 			armure = 100;
 	}
 
-	public void perdVie(int pv) {
-
-		// Si on a de l'armure, baisse d'abord l'armure
-		if (armure > 0) {
-			armure -= pv;
-			if (armure < 0) {
-
-				// Lorsqu'il n'y a plus d'armure, baisse la vie
-				vie += armure;
-				armure = 0;
-			}
-		} else {
-			vie -= pv;
-		}
-		// Si la vie passe en dessous de 0, on meurt
-		if (vie < 0) {
-			// TODO Mort
-			System.out.println("Mort!!!");
-		}
-	}
-
 	public int getVie() {
 		return vie;
 	}
@@ -59,8 +39,12 @@ public class Joueur extends Thing {
 		return armure;
 	}
 
-	private int vie;
-	private int armure;
-	// private Arme arme;
+	public Weapon getArme() {
+		return arme;
+	}
+
+	public void setArme(Weapon arme) {
+		this.arme = arme;
+	}
 
 }

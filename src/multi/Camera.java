@@ -17,8 +17,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 
-import multi.thing.Joueur;
 import multi.thing.Thing;
+import multi.thing.personnage.Joueur;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 

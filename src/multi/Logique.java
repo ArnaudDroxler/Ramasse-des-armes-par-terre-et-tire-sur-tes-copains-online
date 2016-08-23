@@ -10,13 +10,13 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import base.FenetreFin;
 import multi.thing.Armure;
-import multi.thing.Joueur;
 import multi.thing.Key;
 import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
+import multi.thing.personnage.Ennemie;
+import multi.thing.personnage.Joueur;
 import multi.tools.GeometricTools;
 import multi.tools.map.ImageParser;
 import multi.tools.map.LvlMap;
@@ -37,7 +37,7 @@ public class Logique extends KeyAdapter {
 	protected ArrayList<Thing> listeThings;
 
 	// test vie et armure
-	protected ArrayList<Monstre> listeMonstres;
+	protected ArrayList<Ennemie> listEnnemie;
 
 	public Logique(String nomMap) {
 		delay = 10;
@@ -56,7 +56,7 @@ public class Logique extends KeyAdapter {
 
 		// test vie et armure
 		listeThings = map.getListThing();
-		listeMonstres = map.getListMonstre();
+		listEnnemie = map.getListEnnemie();
 
 		animer();
 

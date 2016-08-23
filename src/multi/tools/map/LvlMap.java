@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import multi.thing.Key;
 import multi.thing.Monstre;
 import multi.thing.Thing;
+import multi.thing.personnage.Ennemie;
 import multi.tools.raycasting.Vector2D;
 
 public abstract class LvlMap {
@@ -14,7 +15,7 @@ public abstract class LvlMap {
 	protected int height;
 	private BufferedImage mapBackground;
 	private ArrayList<Thing> listThing;
-	private ArrayList<Monstre> listMonstre;
+	private ArrayList<Ennemie> listEnnemie;
 	private Vector2D startPosition;
 	protected Vector2D startDirection;
 	private Vector2D goalPosition;
@@ -22,19 +23,22 @@ public abstract class LvlMap {
 	private Key key;
 
 	public abstract boolean inWall(Vector2D pos);
+
 	public abstract boolean inWall(double newx, double newy);
-	
+
 	public LvlMap() {
 		listThing = new ArrayList<Thing>();
-		listMonstre = new ArrayList<Monstre>();
+		listEnnemie = new ArrayList<Ennemie>();
 	}
+
 	public BufferedImage getMapBackground() {
 		return mapBackground;
 	}
+
 	public void setMapBackground(BufferedImage mapBackground) {
 		this.mapBackground = mapBackground;
 	}
-	
+
 	public Vector2D getStartPosition() {
 		return startPosition;
 	}
@@ -42,33 +46,41 @@ public abstract class LvlMap {
 	public ArrayList<Thing> getListThing() {
 		return listThing;
 	}
-	public ArrayList<Monstre> getListMonstre() {
-		return listMonstre;
+
+	public ArrayList<Ennemie> getListEnnemie() {
+		return listEnnemie;
 	}
+
 	public void setListThing(ArrayList<Thing> listThing) {
 		this.listThing = listThing;
 	}
+
 	public Vector2D getGoalPosition() {
 		return goalPosition;
 	}
+
 	public void setGoalPosition(Vector2D goalPosition) {
 		this.goalPosition = goalPosition;
 	}
+
 	public void setStartPosition(Vector2D startPosition) {
 		this.startPosition = startPosition;
 	}
+
 	public void setKeyPosition(Vector2D pos) {
 		this.keyPosition = pos;
 	}
+
 	public Vector2D getKeyPosition() {
 		return keyPosition;
 	}
 
 	public void setKey(Key cle) {
-		key=cle;
+		key = cle;
 	}
-	public Key getKey(){
+
+	public Key getKey() {
 		return key;
 	}
-	
+
 }
