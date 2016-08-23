@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import multi.thing.Heros;
+import base.FenetreFin;
+import multi.thing.Joueur;
 import multi.thing.Key;
 import multi.thing.Monstre;
 import multi.thing.Thing;
@@ -23,13 +24,18 @@ import multi.tools.raycasting.algoPiergiovanni;
 public class Logique extends KeyAdapter {
 
 	protected LvlMap map;
-	protected Thing heros;
+	protected Joueur heros;
 	private long delay;
 	private HashSet<Integer> touchesEnfoncees;
 	private Vector2D oldPosition;
 	protected boolean fin;
 	protected Line2D fireLine;
 	public boolean isFiring;
+
+	/*
+	 * pour test perdre vie protected ArrayList<Monstre> listeMonstres; /* fin
+	 * test
+	 */
 
 	public Logique(String nomMap) {
 		delay = 10;
@@ -38,12 +44,17 @@ public class Logique extends KeyAdapter {
 
 		oldPosition = map.getStartPosition();
 
-		heros = new Heros(oldPosition, new Vector2D(1, 0));
+		heros = new Joueur(oldPosition, new Vector2D(1, 0));
 		heros.setVitesse(0.05);
 
 		touchesEnfoncees = new HashSet<Integer>(6);
-		
+
 		fin = false;
+
+		/*
+		 * pour test perdre vie listeMonstres = map.getListMonstre(); /* fin
+		 * test
+		 */
 
 		animer();
 
@@ -86,7 +97,7 @@ public class Logique extends KeyAdapter {
 
 		// collisison avec les murs
 		if (map.inWall(heros.getPosition())) {
-			moveAlongWalls(); 
+			moveAlongWalls();
 		}
 
 		if (touchesEnfoncees.contains(KeyEvent.VK_LEFT)) {
@@ -96,6 +107,17 @@ public class Logique extends KeyAdapter {
 			heros.rotateRight();
 		}
 
+		/*
+		 * pour test perdre vie
+		 * 
+		 * // collisison avec les monstres for (Thing thing : listeMonstres) {
+		 * if (collapse(thing.getPosition(), .8)) { heros.perdVie(30);
+		 * System.out.println("vie restante: " + heros.getVie() +
+		 * "armure restante: " + heros.getArmure());
+		 * 
+		 * } } /* fin test perdre vie
+		 */
+
 	}
 
 	private void moveAlongWalls() {
@@ -103,21 +125,21 @@ public class Logique extends KeyAdapter {
 		double newy = heros.getPosition().getdY();
 		double oldx = oldPosition.getdX();
 		double oldy = oldPosition.getdY();
-		
+
 		int caseX = (int) oldx;
 		int caseY = (int) oldy;
 
-		if(oldx <= newx){
-			if(oldy <= newy)
+		if (oldx <= newx) {
+			if (oldy <= newy)
 				// bas droite
-				testAndMove(newx, newy, caseX+.99, caseY+.99);
+				testAndMove(newx, newy, caseX + .99, caseY + .99);
 			else
 				// haut droite
-				testAndMove(newx, newy, caseX+.99, caseY);
-		}else{
-			if(oldy <= newy)
+				testAndMove(newx, newy, caseX + .99, caseY);
+		} else {
+			if (oldy <= newy)
 				// bas gauche
-				testAndMove(newx, newy, caseX, caseY+.99);
+				testAndMove(newx, newy, caseX, caseY + .99);
 			else
 				// haut gauche
 				testAndMove(newx, newy, caseX, caseY);
@@ -126,13 +148,13 @@ public class Logique extends KeyAdapter {
 
 	private void testAndMove(double newx, double newy, double lockX, double lockY) {
 		// on essaye de glisser horizontalement
-		if(! map.inWall(newx, lockY)){
+		if (!map.inWall(newx, lockY)) {
 			// on déplace si on est pas dans un mur
 			heros.setPosition(newx, lockY);
-		}else if(! map.inWall(lockX, newy)){
+		} else if (!map.inWall(lockX, newy)) {
 			// sinon, on essaye de glisser verticalement
 			heros.setPosition(lockX, newy);
-		}else{
+		} else {
 			// on est dans un mur dans les deux cas
 			// on ne bouge plus, on se met dans le coin
 			heros.setPosition(lockX, lockY);
@@ -140,8 +162,8 @@ public class Logique extends KeyAdapter {
 	}
 
 	private boolean collapse(Vector2D point, double r) {
-		double x =  heros.getPosition().getdX();
-		double y =  heros.getPosition().getdY();
+		double x = heros.getPosition().getdX();
+		double y = heros.getPosition().getdY();
 
 		return (x >= point.getdX() - r && x <= point.getdX() + r && y >= point.getdY() - r && y <= point.getdY() + r);
 	}
@@ -172,8 +194,6 @@ public class Logique extends KeyAdapter {
 		double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
 
 		fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
-
-
 
 	}
 
