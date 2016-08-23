@@ -285,6 +285,7 @@ public class Camera extends Renderer {
 			// BufferedImage currentSprite = MagasinImage.buffYoanBlanc;
 			// BufferedImage currentSprite = MagasinImage.getNextSprite();
 			BufferedImage currentSprite = current.getSprite();
+		
 
 			int imageWidth = currentSprite.getWidth();
 			int imageHeight = currentSprite.getHeight();

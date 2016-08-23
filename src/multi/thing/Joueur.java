@@ -2,6 +2,8 @@ package multi.thing;
 
 import java.awt.image.BufferedImage;
 
+import multi.thing.weapon.Weapon;
+import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
 public class Joueur extends Thing {
@@ -15,7 +17,7 @@ public class Joueur extends Thing {
 	@Override
 	public BufferedImage getSprite() {
 
-		return null;
+		return MagasinImage.buffYoanBlanc;
 	}
 
 	public void ajoutVie(int pv) {
@@ -58,9 +60,18 @@ public class Joueur extends Thing {
 	public int getArmure() {
 		return armure;
 	}
+	
+	public Weapon getArme() {
+		return arme;
+	}
+
+	public void setArme(Weapon arme) {
+		this.arme = arme;
+	}
 
 	private int vie;
 	private int armure;
-	// private Arme arme;
+	private Weapon arme;
+	
 
 }

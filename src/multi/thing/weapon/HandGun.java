@@ -2,10 +2,13 @@ package multi.thing.weapon;
 
 import java.awt.image.BufferedImage;
 
+import multi.tools.MagasinImage;
+import multi.tools.raycasting.Vector2D;
+
 public class HandGun extends Weapon {
 	
-	public HandGun() {
-		super();
+	public HandGun(Vector2D pos) {
+		super(pos);
 		ammo = 0;
 		RoF = 2;
 		DpS = 50;
@@ -21,13 +24,13 @@ public class HandGun extends Weapon {
 	@Override
 	public BufferedImage getSpriteHUD() {
 	
-		return null;
+		return MagasinImage.buffHandGunHUD;
 	}
 
 	@Override
 	public BufferedImage getSprite() {
 	
-		return null;
+		return MagasinImage.buffHandGun;
 	}
 
 }

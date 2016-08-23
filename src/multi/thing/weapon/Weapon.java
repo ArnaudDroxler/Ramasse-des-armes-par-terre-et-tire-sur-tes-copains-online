@@ -2,8 +2,8 @@ package multi.thing.weapon;
 
 import java.awt.image.BufferedImage;
 
-import base.thing.Thing;
-import base.tools.raycasting.Vector2D;
+import multi.thing.Thing;
+import multi.tools.raycasting.Vector2D;
 
 public abstract class Weapon extends Thing{
 	
@@ -14,8 +14,8 @@ public abstract class Weapon extends Thing{
 	public abstract int computeDamage();
 	public abstract BufferedImage getSpriteHUD();
 	
-	public Weapon() {
-		super();
+	public Weapon(Vector2D pos) {
+		super(pos);
 		// TODO Auto-generated constructor stub
 	}
 	

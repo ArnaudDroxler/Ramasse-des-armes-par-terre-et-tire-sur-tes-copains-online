@@ -3,6 +3,7 @@ package multi.tools.map;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import multi.thing.Joueur;
 import multi.thing.Key;
 import multi.thing.Monstre;
 import multi.thing.Thing;
@@ -14,7 +15,7 @@ public abstract class LvlMap {
 	protected int height;
 	private BufferedImage mapBackground;
 	private ArrayList<Thing> listThing;
-	private ArrayList<Monstre> listMonstre;
+	private ArrayList<Joueur> listPNJ;
 	private Vector2D startPosition;
 	protected Vector2D startDirection;
 	private Vector2D goalPosition;
@@ -26,7 +27,7 @@ public abstract class LvlMap {
 	
 	public LvlMap() {
 		listThing = new ArrayList<Thing>();
-		listMonstre = new ArrayList<Monstre>();
+		listPNJ = new ArrayList<Joueur>();
 	}
 	public BufferedImage getMapBackground() {
 		return mapBackground;
@@ -42,8 +43,8 @@ public abstract class LvlMap {
 	public ArrayList<Thing> getListThing() {
 		return listThing;
 	}
-	public ArrayList<Monstre> getListMonstre() {
-		return listMonstre;
+	public ArrayList<Joueur> getListJoueur() {
+		return listPNJ;
 	}
 	public void setListThing(ArrayList<Thing> listThing) {
 		this.listThing = listThing;
