@@ -4,9 +4,9 @@ import java.awt.image.BufferedImage;
 
 import base.tools.raycasting.Vector2D;
 
-public class Heros extends Thing {
+public class Héros extends Thing {
 
-	public Heros(Vector2D startPosition, Vector2D startDirection) {
+	public Héros(Vector2D startPosition, Vector2D startDirection) {
 		super(startPosition, startDirection);
 	}
 

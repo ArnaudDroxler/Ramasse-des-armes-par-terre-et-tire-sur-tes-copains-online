@@ -24,8 +24,8 @@ public class MagasinImage {
 	public static final BufferedImage buffYoanBlanc = ImageLoader.loadBufferedImage("yoan.png");
 	public static final BufferedImage buffCle = ImageLoader.loadBufferedImage("cle.png");
 	public static final BufferedImage buffPorte = ImageLoader.loadBufferedImage("porte.png");
-	
-	
+	public static final BufferedImage buffMedipack = ImageLoader.loadBufferedImage("medipack.png");
+	public static final BufferedImage buffArmure = ImageLoader.loadBufferedImage("armure.png");
 
 	/*------------------------------------------------------------------*\
 	|*		Version Assynchrone	(non bloquant)							*|

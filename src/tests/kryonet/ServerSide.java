@@ -7,11 +7,11 @@ import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
 public class ServerSide {
-	
+
 	public static void main(String[] args) {
 		Server server = new Server();
-	    server.start();
-	    try {
+		server.start();
+		try {
 			server.bind(54555, 54777);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -29,7 +29,6 @@ public class ServerSide {
 	           }
 	        }
 	     });
-	    
 	}
-	
+
 }
