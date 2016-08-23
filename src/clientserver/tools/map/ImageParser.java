@@ -1,4 +1,4 @@
-package multi.tools.map;
+package clientserver.tools.map;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

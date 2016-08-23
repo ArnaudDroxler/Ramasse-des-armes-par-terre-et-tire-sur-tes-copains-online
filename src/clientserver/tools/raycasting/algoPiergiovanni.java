@@ -1,4 +1,4 @@
-package multi.tools.raycasting;
+package clientserver.tools.raycasting;
 
 import clientserver.tools.map.LvlMap;
 

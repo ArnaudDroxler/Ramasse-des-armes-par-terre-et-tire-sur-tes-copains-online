@@ -1,5 +1,5 @@
 
-package multi;
+package clientserver;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;

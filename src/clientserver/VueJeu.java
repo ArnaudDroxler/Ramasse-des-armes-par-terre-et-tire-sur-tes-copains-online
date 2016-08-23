@@ -1,4 +1,4 @@
-package multi;
+package clientserver;
 
 import java.awt.Color;
 import java.awt.Graphics;

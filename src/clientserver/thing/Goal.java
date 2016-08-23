@@ -1,19 +1,20 @@
-package multi.thing;
+package clientserver.thing;
 
 import java.awt.image.BufferedImage;
 
 import clientserver.tools.MagasinImage;
 import clientserver.tools.raycasting.Vector2D;
 
-public class Key extends Thing {
+public class Goal extends Thing {
 
-	public Key(Vector2D pos) {
+	public Goal(Vector2D pos) {
 		super(pos);
+
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffCle;
+		return MagasinImage.buffPorte;
 	}
 
 }

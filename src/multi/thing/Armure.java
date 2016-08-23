@@ -2,8 +2,8 @@ package multi.thing;
 
 import java.awt.image.BufferedImage;
 
-import multi.tools.MagasinImage;
-import multi.tools.raycasting.Vector2D;
+import clientserver.tools.MagasinImage;
+import clientserver.tools.raycasting.Vector2D;
 
 public class Armure extends Thing {
 

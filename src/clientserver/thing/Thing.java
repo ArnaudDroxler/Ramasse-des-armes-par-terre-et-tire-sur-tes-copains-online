@@ -1,5 +1,5 @@
 
-package multi.thing;
+package clientserver.thing;
 
 import java.awt.image.BufferedImage;
 import java.util.Random;
