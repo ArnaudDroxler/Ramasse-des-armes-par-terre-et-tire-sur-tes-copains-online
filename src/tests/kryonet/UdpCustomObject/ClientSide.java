@@ -5,10 +5,6 @@ import java.util.ArrayList;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
-import com.esotericsoftware.kryonet.Connection;
-import com.esotericsoftware.kryonet.Listener;
-
-import javafx.geometry.Point2D;
 
 public class ClientSide {
 	
@@ -16,10 +12,9 @@ public class ClientSide {
 	    Client client = new Client();
 	    
 	    Kryo kryo = client.getKryo();
-	    kryo.register(Infos.class);
 	    kryo.register(Joueur.class);
+	    kryo.register(Infos.class);
 	    kryo.register(ArrayList.class);
-	    kryo.register(javafx.geometry.Point2D.class);
 	    
 	    client.start();
 	    try {
@@ -28,13 +23,14 @@ public class ClientSide {
 			e.printStackTrace();
 		}
 
-	    Infos infos = new Infos();
-	    infos.setTexte("Lancement de la partie");
-	    infos.addJoueurs(new Joueur("Aicha Rizzotti",112,12,0,1));
-	    infos.addJoueurs(new Joueur("Yoan Blanc",32,54,1,0));
+	    Infos infos = new Infos("coucou");
+
+	    Joueur j= new Joueur("aicha", 12, 2);
+	    infos.addJoueur(j);
+	    infos.addJoueur(new Joueur("yoan", 4, 4));
 	    
 	    int nbBSent = client.sendUDP(infos);
-	    System.out.println(nbBSent + " bytes envoyés");
+	    System.out.println(nbBSent + " bytes envoyÃ©s");
 	}
 
 }
