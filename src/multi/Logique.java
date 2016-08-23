@@ -32,10 +32,7 @@ public class Logique extends KeyAdapter {
 	protected Line2D fireLine;
 	public boolean isFiring;
 
-	/*
-	 * pour test perdre vie protected ArrayList<Monstre> listeMonstres; /* fin
-	 * test
-	 */
+//	protected ArrayList<Monstre> listeMonstres;
 
 	public Logique(String nomMap) {
 		delay = 10;
@@ -51,10 +48,7 @@ public class Logique extends KeyAdapter {
 
 		fin = false;
 
-		/*
-		 * pour test perdre vie listeMonstres = map.getListMonstre(); /* fin
-		 * test
-		 */
+//		listeMonstres = map.getListMonstre();
 
 		animer();
 
@@ -107,16 +101,15 @@ public class Logique extends KeyAdapter {
 			heros.rotateRight();
 		}
 
-		/*
-		 * pour test perdre vie
-		 * 
-		 * // collisison avec les monstres for (Thing thing : listeMonstres) {
-		 * if (collapse(thing.getPosition(), .8)) { heros.perdVie(30);
-		 * System.out.println("vie restante: " + heros.getVie() +
-		 * "armure restante: " + heros.getArmure());
-		 * 
-		 * } } /* fin test perdre vie
-		 */
+		// pour test perdre vie
+//		// collisison avec les monstres
+//		for (Thing thing : listeMonstres) {
+//			if (collapse(thing.getPosition(), .8)) {
+//				heros.perdVie(30);
+//				System.out.println("vie restante: " + heros.getVie() + "armure restante: " + heros.getArmure());
+//
+//			}
+//		}
 
 	}
 
