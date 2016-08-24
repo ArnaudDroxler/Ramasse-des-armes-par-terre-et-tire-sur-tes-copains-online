@@ -291,44 +291,36 @@ public class Camera extends Renderer {
 				double angle = posCamera.getDirection().getAngleOriente(current.getDirection());
 				// en fonction de l'angle, attribuer le bon int (1,2,3,4)
 				// dir =
-				if (angle >= -(Math.PI / 4) && angle <= (Math.PI / 4)) {
-					// System.out.println("face");
+				if (angle >= -(Math.PI / 8) && angle <= (Math.PI / 8)) {
+					dir = 0;
+					currentSprite = current.getSprite(dir);
+				}
+				if (angle < -(Math.PI / 8) && angle > -3 * (Math.PI / 8)) {
 					dir = 1;
 					currentSprite = current.getSprite(dir);
 				}
-				if (angle > -3 * (Math.PI / 4) && angle < -(Math.PI / 4)) {
-					// System.out.println("gauche");
-					dir = 4;
-					currentSprite = current.getSprite(dir);
-				}
-				if (angle >= 3 * (Math.PI / 4) || angle <= -3 * (Math.PI / 4)) {
-					// System.out.println("dos");
-					dir = 3;
-					currentSprite = current.getSprite(dir);
-				}
-				if (angle > (Math.PI / 4) && angle < 3 * (Math.PI / 4)) {
-					// System.out.println("droite");
+				if (angle <= -3 * (Math.PI / 8) && angle >= -5 * (Math.PI / 8)) {
 					dir = 2;
 					currentSprite = current.getSprite(dir);
 				}
-				if (angle >= -(Math.PI / 4) && angle <= (Math.PI / 4)) {
-					// System.out.println("mi-gauche");
-					dir = 1;
-					currentSprite = current.getSprite(dir);
-				}
-				if (angle > -3 * (Math.PI / 4) && angle < -(Math.PI / 4)) {
-					// System.out.println("3 quart gauche");
-					dir = 4;
-					currentSprite = current.getSprite(dir);
-				}
-				if (angle >= 3 * (Math.PI / 4) || angle <= -3 * (Math.PI / 4)) {
-					// System.out.println("dos");
+				if (angle < -5 * (Math.PI / 8) && angle > -7 * (Math.PI / 8)) {
 					dir = 3;
 					currentSprite = current.getSprite(dir);
 				}
-				if (angle > (Math.PI / 4) && angle < 3 * (Math.PI / 4)) {
-					// System.out.println("droite");
-					dir = 2;
+				if (angle <= -7 * (Math.PI / 8) || angle >= 7 * (Math.PI / 8)) {
+					dir = 4;
+					currentSprite = current.getSprite(dir);
+				}
+				if (angle < 7 * (Math.PI / 8) && angle > 5 * (Math.PI / 8)) {
+					dir = 5;
+					currentSprite = current.getSprite(dir);
+				}
+				if (angle <= 5 * (Math.PI / 8) && angle >= 3 * (Math.PI / 8)) {
+					dir = 6;
+					currentSprite = current.getSprite(dir);
+				}
+				if (angle < 3 * (Math.PI / 8) && angle > (Math.PI / 8)) {
+					dir = 7;
 					currentSprite = current.getSprite(dir);
 				}
 

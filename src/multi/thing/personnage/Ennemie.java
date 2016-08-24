@@ -22,37 +22,37 @@ public class Ennemie extends Personnage {
 	@Override
 	public BufferedImage getSprite(int dir) {
 
+		if (dir == 1) {
+			// gauche 1
+			return MagasinImage.buffFantome1;
+		}
 		if (dir == 2) {
 			// gauche 2
-			return MagasinImage.;
+			return MagasinImage.buffFantome2;
 		}
 		if (dir == 3) {
 			// gauche 3
-			return MagasinImage.;
+			return MagasinImage.buffFantome3;
 		}
 		if (dir == 4) {
-			// gauche 4
-			return MagasinImage.;
+			// dos 4
+			return MagasinImage.buffFantome4;
 		}
 		if (dir == 5) {
-			// dos
-			return MagasinImage.;
+			// droite 5
+			return MagasinImage.buffFantome5;
 		}
 		if (dir == 6) {
-			// dos
-			return MagasinImage.;
+			// droite 6
+			return MagasinImage.buffFantome6;
 		}
 		if (dir == 7) {
-			// gauche
-			return MagasinImage.;
-		}
-		if (dir == 8) {
-			// gauche
-			return MagasinImage.;
+			// droite 7
+			return MagasinImage.buffFantome7;
 		}
 
-		// face 1
-		return MagasinImage.;
+		// face 0
+		return MagasinImage.buffFantome0;
 
 	}
 

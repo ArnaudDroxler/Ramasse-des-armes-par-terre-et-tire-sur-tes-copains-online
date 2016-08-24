@@ -30,6 +30,15 @@ public class MagasinImage {
 	public static final BufferedImage buffHandGunHUD = ImageLoader.loadBufferedImage("handgunhud.png");
 	public static final BufferedImage buffAmmoPackHG = ImageLoader.loadBufferedImage("ammopackHG.png");
 
+	public static final BufferedImage buffFantome0 = ImageLoader.loadBufferedImage("images fantome/fantome0.png");
+	public static final BufferedImage buffFantome1 = ImageLoader.loadBufferedImage("images fantome/fantome1.png");
+	public static final BufferedImage buffFantome2 = ImageLoader.loadBufferedImage("images fantome/fantome2.png");
+	public static final BufferedImage buffFantome3 = ImageLoader.loadBufferedImage("images fantome/fantome3.png");
+	public static final BufferedImage buffFantome4 = ImageLoader.loadBufferedImage("images fantome/fantome4.png");
+	public static final BufferedImage buffFantome5 = ImageLoader.loadBufferedImage("images fantome/fantome5.png");
+	public static final BufferedImage buffFantome6 = ImageLoader.loadBufferedImage("images fantome/fantome6.png");
+	public static final BufferedImage buffFantome7 = ImageLoader.loadBufferedImage("images fantome/fantome7.png");
+
 	/*------------------------------------------------------------------*\
 	|*		Version Assynchrone	(non bloquant)							*|
 	\*------------------------------------------------------------------*/
