@@ -14,6 +14,7 @@ import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemie;
+import multi.thing.weapon.AmmoPackHG;
 import multi.thing.weapon.HandGun;
 import multi.tools.raycasting.Vector2D;
 
@@ -77,8 +78,7 @@ public class ImageParser {
 						// y)));
 					} // pack munition arme de poing
 					else if (Integer.toHexString(rgb).equals("ff00ff50")) {
-						// map.getListThing().add(new Medipack(new Vector2D(x,
-						// y)));
+						map.getListThing().add(new AmmoPackHG(new Vector2D(x, y)));
 					} // pack munition mitraillette
 					else if (Integer.toHexString(rgb).equals("ff00ee50")) {
 						// map.getListThing().add(new Medipack(new Vector2D(x,

@@ -28,7 +28,8 @@ public class MagasinImage {
 	public static final BufferedImage buffArmure = ImageLoader.loadBufferedImage("armure.png");
 	public static final BufferedImage buffHandGun = ImageLoader.loadBufferedImage("handgun.png");
 	public static final BufferedImage buffHandGunHUD = ImageLoader.loadBufferedImage("handgunhud.png");
-	
+	public static final BufferedImage buffAmmoPackHG = ImageLoader.loadBufferedImage("ammopackHG.png");
+
 	/*------------------------------------------------------------------*\
 	|*		Version Assynchrone	(non bloquant)							*|
 	\*------------------------------------------------------------------*/
