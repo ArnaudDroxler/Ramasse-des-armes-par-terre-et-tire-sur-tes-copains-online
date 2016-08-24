@@ -251,32 +251,54 @@ public class Logique extends KeyAdapter {
 
 	protected synchronized void fire() {
 		if (heros.getArme() != null) {
-			double posx = heros.getPosition().getdX();
-			double posy = heros.getPosition().getdY();
-			double dirx = heros.getDirection().getdX();
-			double diry = heros.getDirection().getdY();
-			double r = .5;
 
-			double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
+			Thread threadRoF = new Thread(new Runnable() {
 
-			fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
-			isFiring = true;
+				@Override
+				public void run() {
+					try {
+						isFiring = true;
+						Thread.sleep((long) (1000 / heros.getArme().getRoF()));
+						isFiring = false;
+					} catch (InterruptedException e) {
 
-			heros.getArme().sousAmmo(1);
+						e.printStackTrace();
+					}
 
-			Iterator<Ennemie> iterator = listEnnemie.iterator();
-			while (iterator.hasNext()) {
-				Ennemie ennemie = iterator.next();
-				Rectangle2D rect = new Rectangle2D.Double(ennemie.getPosition().getdX() - r / 2,
-						ennemie.getPosition().getdY() - r / 2, r, r);
-				if (fireLine.intersects(rect)) {
-					ennemie.perdVie(heros.getArme().computeDamage(d));
-					System.out.println("Ennemie  : vie restante: " + ennemie.getVie() + " / armure restante: "
-							+ ennemie.getArmure());
+				}
+			});
 
+			if (!isFiring && heros.getArme().getAmmo() > 0) {
+
+				threadRoF.start();
+
+				heros.getArme().sousAmmo(1);
+
+				double posx = heros.getPosition().getdX();
+				double posy = heros.getPosition().getdY();
+				double dirx = heros.getDirection().getdX();
+				double diry = heros.getDirection().getdY();
+				double r = .5;
+
+				double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
+
+				fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
+
+				Iterator<Ennemie> iterator = listEnnemie.iterator();
+				while (iterator.hasNext()) {
+					Ennemie ennemie = iterator.next();
+					Rectangle2D rect = new Rectangle2D.Double(ennemie.getPosition().getdX() - r / 2,
+							ennemie.getPosition().getdY() - r / 2, r, r);
+					if (fireLine.intersects(rect)) {
+						ennemie.perdVie(heros.getArme().computeDamage(d));
+						System.out.println("Ennemie  : vie restante: " + ennemie.getVie() + " / armure restante: "
+								+ ennemie.getArmure());
+
+					}
 				}
 			}
 		}
+
 	}
 
 	@Override

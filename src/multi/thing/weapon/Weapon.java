@@ -15,6 +15,18 @@ public abstract class Weapon extends Thing {
 
 	public abstract BufferedImage getSpriteHUD();
 
+	public double getDpS() {
+		return DpS;
+	}
+
+	public double getRoF() {
+		return RoF;
+	}
+
+	public int getAmmo() {
+		return ammo;
+	}
+
 	public void sumAmmo(int a) {
 		ammo = +a;
 	}
