@@ -293,6 +293,7 @@ public class Logique extends KeyAdapter {
 
 				double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
 
+				System.out.println("d : " + d);
 				fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
 
 				Iterator<Ennemie> iterator = listEnnemie.iterator();
