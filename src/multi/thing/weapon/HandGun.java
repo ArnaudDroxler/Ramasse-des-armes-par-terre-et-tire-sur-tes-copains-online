@@ -16,12 +16,7 @@ public class HandGun extends Weapon {
 
 	@Override
 	public int computeDamage(double d) {
-		if (ammo > 0) {
-			return 50;
-		} else {
-			return 0;
-		}
-
+		return 50;
 	}
 
 	@Override

@@ -15,17 +15,30 @@ public abstract class Weapon extends Thing {
 
 	public abstract BufferedImage getSpriteHUD();
 
-	public void sumAmmo(int a) {
-		ammo = +a;
+	public double getDpS() {
+		return DpS;
 	}
 
-	public void sousAmmo(int a) {
+	public double getRoF() {
+		return RoF;
+	}
+
+	public int getAmmo() {
+		return ammo;
+	}
+
+	public void sumAmmo(int a) {
+		ammo += a;
+		System.out.println("Ammo : " + ammo);
+	}
+
+	public void subAmmo(int a) {
 		ammo -= a;
+		System.out.println("Ammo : " + ammo);
 	}
 
 	public Weapon(Vector2D pos) {
 		super(pos);
-		// TODO Auto-generated constructor stub
 	}
 
 }
