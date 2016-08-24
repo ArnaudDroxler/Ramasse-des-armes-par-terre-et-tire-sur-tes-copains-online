@@ -10,15 +10,15 @@ public class Joueur {
 	private int posy;
 	private int dirx;
 	private int diry;
-	private Connection connection;
+	private int connectionId;
 	
 	public Joueur() {
 		
 	}
 
-	public Joueur(String pseudo, Connection connection) {
+	public Joueur(String pseudo, int connectionId) {
 		this.pseudo=pseudo;
-		this.connection=connection;
+		this.connectionId=connectionId;
 	}
 
 	public String getPseudo() {
@@ -29,6 +29,10 @@ public class Joueur {
 	public String toString() {
 		return pseudo + ", vie=" + vie + ", pos=(" + posx + "," + posy + "), dir=(" + dirx
 				+ "," + diry + ")";
+	}
+
+	public void setPos(int pos) {
+		posx=pos;		
 	}
 	
 }
