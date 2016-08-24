@@ -34,14 +34,18 @@ public class MainServer {
 					ClientConnexionMessage ccm = (ClientConnexionMessage) object;
 					connection.setName(ccm.getPseudo()+":"+connection.getID());
 					System.out.println("nouveau joueur : " + ccm.getPseudo());
-					Joueur nouveaujoueur = new Joueur(ccm.getPseudo(), connection);
-					partie.updateJoueur(connection.getID(), nouveaujoueur);
+					Joueur nouveaujoueur = new Joueur(ccm.getPseudo(), connection.getID());
+					partie.addJoueur(connection.getID(), nouveaujoueur);
 					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie);
 					connection.sendTCP(acm);
-				} else if (object instanceof Joueur) {
-					Joueur j = (Joueur) object;
-					partie.updateJoueur(connection.getID(), j);
+				} else if (object instanceof ClientUpdateMessage) {
+					
+					
+					ClientUpdateMessage cum = (ClientUpdateMessage) object;
+					partie.updateJoueur(connection.getID(), cum);
+					//System.out.println(cum.getPos());
 					connection.sendUDP(partie);
+					
 				}
 
 			}

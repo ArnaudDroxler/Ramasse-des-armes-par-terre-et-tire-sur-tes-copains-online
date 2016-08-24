@@ -12,8 +12,13 @@ public class Partie {
 		joueurs = new HashMap<Integer,Joueur>();
 	}
 
-	public void updateJoueur(int id, Joueur j) {
-		joueurs.put(id, j);
+	public void updateJoueur(int id, ClientUpdateMessage cum) {
+		Joueur j = joueurs.get(id);
+		j.setPos(cum.getPos());
+	}
+
+	public void addJoueur(int id, Joueur nouveaujoueur) {
+		joueurs.put(id, nouveaujoueur);
 	}
 
 	public void removeJoueur(int id) {
@@ -23,11 +28,11 @@ public class Partie {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("map :");
+		sb.append("map : ");
 		sb.append(nomMap+"\n");
-		sb.append("Joueurs :\n");
+		sb.append("Joueurs :");
 		for (Joueur j : joueurs.values()) {
-			sb.append(j + "\n");
+			sb.append("\n\t" + j);
 		}
 		return sb.toString();
 	}
