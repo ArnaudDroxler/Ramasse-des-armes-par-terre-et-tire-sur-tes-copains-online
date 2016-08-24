@@ -18,7 +18,7 @@ import com.esotericsoftware.kryonet.Listener;
 public class MainClient {
 
 	public static void main(String[] args) {
-		String serverIp = "127.0.0.1";
+		String serverIp = "157.26.111.186";
 
 		JFrame frame = new JFrame();
 		frame.setSize(500, 400);
@@ -30,9 +30,9 @@ public class MainClient {
 		panel.add(tfPseudo);
 		JButton button = new JButton("yolo");
 		panel.add(button);
-		JSlider slider = new JSlider(0,100);
+		JSlider slider = new JSlider(0, 100);
 		panel.add(slider);
-		JTextArea textarea = new JTextArea(20,40);
+		JTextArea textarea = new JTextArea(20, 40);
 		panel.add(textarea);
 		frame.setVisible(true);
 
@@ -44,14 +44,14 @@ public class MainClient {
 				if (object instanceof AcceptClientMessage) {
 					AcceptClientMessage acm = (AcceptClientMessage) object;
 					System.out.println(acm.getMsg());
-					
+
 					Thread t = new Thread(new Runnable() {
-						
+
 						@Override
 						public void run() {
 							ClientUpdateMessage cum = new ClientUpdateMessage();
-							int i=0;
-							while(true){
+							int i = 0;
+							while (true) {
 								try {
 									Thread.sleep(100);
 								} catch (InterruptedException e) {
@@ -63,10 +63,10 @@ public class MainClient {
 						}
 					});
 					t.start();
-					
+
 				} else if (object instanceof Partie) {
 					textarea.setText(object.toString());
-				}else if (object instanceof String) {
+				} else if (object instanceof String) {
 					System.out.println(object);
 				}
 			}
@@ -82,7 +82,7 @@ public class MainClient {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				
+
 				String pseudo = tfPseudo.getText().toString();
 				ClientConnexionMessage ccm = new ClientConnexionMessage(pseudo);
 				client.sendUDP(ccm);

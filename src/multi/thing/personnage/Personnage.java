@@ -9,7 +9,7 @@ public abstract class Personnage extends Thing {
 	protected int vie;
 	protected int armure;
 	protected Weapon arme;
-	private boolean estMort;
+	protected boolean estMort;
 
 	public Personnage(Vector2D pos, Vector2D dir) {
 		super(pos, dir);
@@ -31,7 +31,7 @@ public abstract class Personnage extends Thing {
 			vie -= pv;
 		}
 		// Si la vie passe en dessous de 0, on meurt
-		if (vie < 0) {
+		if (vie <= 0) {
 			// TODO Mort
 			estMort = true;
 			System.out.println("Mort!!!");
@@ -45,7 +45,8 @@ public abstract class Personnage extends Thing {
 	public int getArmure() {
 		return armure;
 	}
-	public boolean getMort(){
+
+	public boolean getMort() {
 		return estMort;
 	}
 

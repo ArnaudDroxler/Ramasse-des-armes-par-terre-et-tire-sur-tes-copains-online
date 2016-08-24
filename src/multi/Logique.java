@@ -1,5 +1,6 @@
 package multi;
 
+import java.awt.AWTException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
@@ -162,6 +163,14 @@ public class Logique extends KeyAdapter {
 				switch (thing.getClass().getSimpleName()) {
 				case "Ennemie":
 					heros.perdVie(5);
+					if (heros.getMort()) {
+
+						// TODO: random pour le nouveau point de spawn,
+						// Ajout des points à la personne qui nous a tué.
+
+						heros = new Joueur(map.getStartPosition(), new Vector2D(1, 0));
+						heros.setVitesse(0.05);
+					}
 					break;
 				case "Armure":
 					heros.ajoutArmure(10);
