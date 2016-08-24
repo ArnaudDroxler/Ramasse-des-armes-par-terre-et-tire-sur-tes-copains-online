@@ -12,11 +12,7 @@ public class MainServer {
 
 	public static void main(String[] args) {
 		Server server = new Server();
-
-		// Kryo kryo = server.getKryo();
-		// kryo.register(Joueur.class);
-		// kryo.register(Infos.class);
-		// kryo.register(ArrayList.class);
+		Registerer.registerFor(server);
 
 		server.start();
 
@@ -29,16 +25,24 @@ public class MainServer {
 		Partie partie = new Partie();
 
 		server.addListener(new Listener() {
+			public void connected(Connection connection){
+				connection.sendTCP("vous êtes connectés au serveur");
+			}
 			public void received(Connection connection, Object object) {
 				if (object instanceof ClientConnexionMessage) {
 					ClientConnexionMessage ccm = (ClientConnexionMessage) object;
 					System.out.println("nouveau joueur : " + ccm.getPseudo());
 					partie.ajouterJoueur(ccm.getPseudo());
-					connection.sendTCP("bienvenue sur le serveur");
+					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo());
+					connection.sendTCP("bienvenue sur le serveur " + ccm.getPseudo());
 				} else if (object instanceof Joueur) {
 					Joueur j = (Joueur) object;
 					partie.updateJoueur(j);
 					connection.sendUDP(partie);
+				} else if (object instanceof String) {
+					String s = (String) object;
+					System.out.println(s);
+					connection.sendUDP(s);
 				}
 
 			}
