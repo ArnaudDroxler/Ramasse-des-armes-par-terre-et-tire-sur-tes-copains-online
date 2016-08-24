@@ -144,7 +144,7 @@ public class Camera extends Renderer {
 			renderThings();
 			g2d.drawImage(bufferThings, 0, 0, null);
 
-			// drawCursor(g2d);
+			drawCursor(g2d);
 			drawWeapon(g2d);
 		}
 	}
