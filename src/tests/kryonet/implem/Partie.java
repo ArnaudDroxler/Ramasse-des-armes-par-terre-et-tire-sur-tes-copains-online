@@ -8,6 +8,10 @@ public class Partie {
 	private HashMap<String,Joueur> joueurs;
 	private String nomMap;
 	
+	public Partie(){
+		joueurs = new HashMap<String,Joueur>();
+	}
+	
 	public void ajouterJoueur(String pseudo) {
 		joueurs.put(pseudo, new Joueur(pseudo));
 	}
