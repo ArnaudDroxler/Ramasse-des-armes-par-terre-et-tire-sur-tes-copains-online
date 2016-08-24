@@ -2,6 +2,7 @@ package multi.thing.personnage;
 
 import java.awt.image.BufferedImage;
 
+import multi.tools.ImageLoader;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
@@ -20,7 +21,39 @@ public class Ennemie extends Personnage {
 
 	@Override
 	public BufferedImage getSprite(int dir) {
-		return MagasinImage.buffYoanBlanc;
+
+		if (dir == 2) {
+			// gauche 2
+			return MagasinImage.;
+		}
+		if (dir == 3) {
+			// gauche 3
+			return MagasinImage.;
+		}
+		if (dir == 4) {
+			// gauche 4
+			return MagasinImage.;
+		}
+		if (dir == 5) {
+			// dos
+			return MagasinImage.;
+		}
+		if (dir == 6) {
+			// dos
+			return MagasinImage.;
+		}
+		if (dir == 7) {
+			// gauche
+			return MagasinImage.;
+		}
+		if (dir == 8) {
+			// gauche
+			return MagasinImage.;
+		}
+
+		// face 1
+		return MagasinImage.;
+
 	}
 
 }

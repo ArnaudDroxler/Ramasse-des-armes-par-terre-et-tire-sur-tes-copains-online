@@ -134,7 +134,6 @@ public class Logique extends KeyAdapter {
 				}
 			}
 			if (collapse(thing.getPosition(), .8)) {
-				System.out.println(thing.getClass().getSimpleName());
 				switch (thing.getClass().getSimpleName()) {
 				case "Ennemie":
 					heros.perdVie(5);

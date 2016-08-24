@@ -144,28 +144,29 @@ public class Camera extends Renderer {
 			renderThings();
 			g2d.drawImage(bufferThings, 0, 0, null);
 
-			//drawCursor(g2d);
+			// drawCursor(g2d);
 			drawWeapon(g2d);
 		}
 	}
-	
+
 	private void drawCursor(Graphics2D g2d) {
 		g2d.setColor(Color.red);
-		g2d.drawLine(getWidth()/2,getHeight()/2-20,getWidth()/2,getHeight()/2+20);
-		g2d.drawLine(getWidth()/2-20,getHeight()/2,getWidth()/2+20,getHeight()/2);
-		g2d.drawLine(getWidth()/2-5,getHeight()/2-20,getWidth()/2+5,getHeight()/2-20);
-		g2d.drawLine(getWidth()/2-5,getHeight()/2+20,getWidth()/2+5,getHeight()/2+20);
-		g2d.drawLine(getWidth()/2-20,getHeight()/2-5,getWidth()/2-20,getHeight()/2+5);
-		g2d.drawLine(getWidth()/2+20,getHeight()/2-5,getWidth()/2+20,getHeight()/2+5);
-		
+		g2d.drawLine(getWidth() / 2, getHeight() / 2 - 20, getWidth() / 2, getHeight() / 2 + 20);
+		g2d.drawLine(getWidth() / 2 - 20, getHeight() / 2, getWidth() / 2 + 20, getHeight() / 2);
+		g2d.drawLine(getWidth() / 2 - 5, getHeight() / 2 - 20, getWidth() / 2 + 5, getHeight() / 2 - 20);
+		g2d.drawLine(getWidth() / 2 - 5, getHeight() / 2 + 20, getWidth() / 2 + 5, getHeight() / 2 + 20);
+		g2d.drawLine(getWidth() / 2 - 20, getHeight() / 2 - 5, getWidth() / 2 - 20, getHeight() / 2 + 5);
+		g2d.drawLine(getWidth() / 2 + 20, getHeight() / 2 - 5, getWidth() / 2 + 20, getHeight() / 2 + 5);
+
 	}
-	
+
 	private void drawWeapon(Graphics2D g2d) {
-		if(logique.heros.getArme() != null){
-			g2d.drawImage(logique.heros.getArme().getSpriteHUD(), null , getWidth()/2,getHeight()-logique.heros.getArme().getSpriteHUD().getHeight());
+		if (logique.heros.getArme() != null) {
+			g2d.drawImage(logique.heros.getArme().getSpriteHUD(), null, getWidth() / 2,
+					getHeight() - logique.heros.getArme().getSpriteHUD().getHeight());
 		}
 	}
-	
+
 	/**
 	 * ======================================================== Algorithme
 	 * adapté à partir du code C++ fournit par Lode Vandevenne
@@ -284,28 +285,61 @@ public class Camera extends Renderer {
 			// BufferedImage currentSprite = MagasinImage.buffYoanBlanc;
 			// BufferedImage currentSprite = MagasinImage.getNextSprite();
 
-			// A calculer ici si on est face, dos ou coté de l'objet et ajouter
-			// dans le getSprite()
-			// un int par exemple avec 1 = face, 2 = droite, 3 = dos, 4 =
-			// gauche. Le getSprite() retournera
-			// donc la bonne image.
+			switch (current.getClass().getSimpleName()) {
+			case "Ennemie":
+				// Calcul de l'angle
+				double angle = posCamera.getDirection().getAngleOriente(current.getDirection());
+				// en fonction de l'angle, attribuer le bon int (1,2,3,4)
+				// dir =
+				if (angle >= -(Math.PI / 4) && angle <= (Math.PI / 4)) {
+					// System.out.println("face");
+					dir = 1;
+					currentSprite = current.getSprite(dir);
+				}
+				if (angle > -3 * (Math.PI / 4) && angle < -(Math.PI / 4)) {
+					// System.out.println("gauche");
+					dir = 4;
+					currentSprite = current.getSprite(dir);
+				}
+				if (angle >= 3 * (Math.PI / 4) || angle <= -3 * (Math.PI / 4)) {
+					// System.out.println("dos");
+					dir = 3;
+					currentSprite = current.getSprite(dir);
+				}
+				if (angle > (Math.PI / 4) && angle < 3 * (Math.PI / 4)) {
+					// System.out.println("droite");
+					dir = 2;
+					currentSprite = current.getSprite(dir);
+				}
+				if (angle >= -(Math.PI / 4) && angle <= (Math.PI / 4)) {
+					// System.out.println("mi-gauche");
+					dir = 1;
+					currentSprite = current.getSprite(dir);
+				}
+				if (angle > -3 * (Math.PI / 4) && angle < -(Math.PI / 4)) {
+					// System.out.println("3 quart gauche");
+					dir = 4;
+					currentSprite = current.getSprite(dir);
+				}
+				if (angle >= 3 * (Math.PI / 4) || angle <= -3 * (Math.PI / 4)) {
+					// System.out.println("dos");
+					dir = 3;
+					currentSprite = current.getSprite(dir);
+				}
+				if (angle > (Math.PI / 4) && angle < 3 * (Math.PI / 4)) {
+					// System.out.println("droite");
+					dir = 2;
+					currentSprite = current.getSprite(dir);
+				}
 
-			// on regarde si la classe est celle de ennemi.
-			// Si oui on fait:
+				break;
 
-			// current.getDirection()
-			// posCamera.getDirection()
+			default:
+				currentSprite = current.getSprite();
+				break;
+			}
 
-			// Calcul de l'angle
-
-			// en fonction de l'angle, attribuer le bon int (1,2,3,4)
-			// int dir =
-
-			// BufferedImage currentSprite = current.getSprite(dir);
-
-			// si non, on fait:
-
-			BufferedImage currentSprite = current.getSprite();
+			// BufferedImage currentSprite = current.getSprite();
 
 			int imageWidth = currentSprite.getWidth();
 			int imageHeight = currentSprite.getHeight();
@@ -391,8 +425,12 @@ public class Camera extends Renderer {
 
 	public Vector2D plane;
 
+	private int dir;
+	private BufferedImage currentSprite;
+
 	// Juste pour le test, à enlever plus tard
 	private Vector2D oldPos;
 	private Vector2D oldDir;
 	private Vector2D oldPlane;
+
 }

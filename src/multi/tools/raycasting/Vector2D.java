@@ -147,16 +147,28 @@ public class Vector2D {
 	}
 
 	/**
+	 * Angle entre deux vecteurs
+	 * 
+	 * @param v2
+	 * @return
+	 */
+	public double getAngle(Vector2D v2) {
+		return Math.acos((this.dX * v2.dX + this.dY * v2.dY) / (this.norm() * v2.norm()));
+	}
+
+	/**
 	 * Angle orienté entre deux vecteurs
 	 * 
 	 * @param v2
 	 * @return
 	 */
 	public double getAngleOriente(Vector2D v2) {
-		if (this.normalize().det(v2.normalize()) < 0)
-			return (-1 * this.normalize().dotProduct(v2.normalize()));
-		else
-			return this.normalize().dotProduct(v2.normalize());
+		if (this.det(v2) > 0) {
+			return this.getAngle(v2);
+		} else {
+			return (-1) * this.getAngle(v2);
+		}
+
 	}
 
 	/*------------------------------*\
