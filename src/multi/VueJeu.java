@@ -51,7 +51,17 @@ public class VueJeu extends Renderer {
 		g2d.setColor(Color.blue);
 		g2d.fillOval((int) -zoom / 4, (int) -zoom / 4, (int) zoom / 2, (int) zoom / 2);
 		g2d.fillRect(0, -1, (int) zoom, 2);
-
+		
+		if (logique.isFiring) {
+			drawTir();
+		}
+	}
+	
+	private void drawTir() {
+		double x = logique.fireLine.getX2() - logique.fireLine.getX1();
+		double y = logique.fireLine.getY2() - logique.fireLine.getY1();
+		double d = Math.sqrt(x * x + y * y);
+		g2d.drawLine(0, 0, (int) (d * zoom), 0);
 	}
 
 }

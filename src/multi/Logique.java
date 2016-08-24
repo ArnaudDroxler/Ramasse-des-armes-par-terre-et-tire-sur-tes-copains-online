@@ -17,6 +17,7 @@ import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemie;
 import multi.thing.personnage.Joueur;
+import multi.thing.weapon.HandGun;
 import multi.tools.GeometricTools;
 import multi.tools.map.ImageParser;
 import multi.tools.map.LvlMap;
@@ -53,6 +54,7 @@ public class Logique extends KeyAdapter {
 		touchesEnfoncees = new HashSet<Integer>(6);
 
 		fin = false;
+		isFiring = false;
 
 		// test vie et armure
 		listeThings = map.getListThing();
@@ -116,11 +118,26 @@ public class Logique extends KeyAdapter {
 		Iterator<Thing> iterator = listeThings.iterator();
 		while (iterator.hasNext()) {
 			Thing thing = iterator.next();
+			if (collapse(thing.getPosition(), 1.2)) {
+				switch (thing.getClass().getSimpleName()) {
+				case "HandGun":
+					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+						heros.setArme(new HandGun(heros.getPosition()));
+						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						iterator.remove();
+					} else if (heros.getArme() != null) {
+						heros.getArme().sumAmmo(10);
+						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						iterator.remove();
+					}
+					break;
+				}
+			}
 			if (collapse(thing.getPosition(), .8)) {
 				System.out.println(thing.getClass().getSimpleName());
 				switch (thing.getClass().getSimpleName()) {
-				case "Monstre":
-					heros.perdVie(1);
+				case "Ennemie":
+					heros.perdVie(5);
 					break;
 				case "Armure":
 					heros.ajoutArmure(10);
@@ -135,6 +152,7 @@ public class Logique extends KeyAdapter {
 				}
 				System.out.println("vie restante: " + heros.getVie() + " / armure restante: " + heros.getArmure());
 			}
+
 		}
 	}
 
@@ -151,6 +169,9 @@ public class Logique extends KeyAdapter {
 						break;
 					case "Medipack":
 						listeThings.add(new Medipack(position));
+						break;
+					case "HandGun":
+						listeThings.add(new HandGun(position));
 						break;
 					}
 
@@ -209,7 +230,6 @@ public class Logique extends KeyAdapter {
 	private boolean collapse(Vector2D point, double r) {
 		double x = heros.getPosition().getdX();
 		double y = heros.getPosition().getdY();
-
 		return (x >= point.getdX() - r && x <= point.getdX() + r && y >= point.getdY() - r && y <= point.getdY() + r);
 	}
 
@@ -230,16 +250,33 @@ public class Logique extends KeyAdapter {
 	}
 
 	protected synchronized void fire() {
-		double posx = heros.getPosition().getdX();
-		double posy = heros.getPosition().getdY();
-		double dirx = heros.getDirection().getdX();
-		double diry = heros.getDirection().getdY();
-		double r = .5;
+		if (heros.getArme() != null) {
+			double posx = heros.getPosition().getdX();
+			double posy = heros.getPosition().getdY();
+			double dirx = heros.getDirection().getdX();
+			double diry = heros.getDirection().getdY();
+			double r = .5;
 
-		double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
+			double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
 
-		fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
+			fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
+			isFiring = true;
 
+			heros.getArme().sousAmmo(1);
+
+			Iterator<Ennemie> iterator = listEnnemie.iterator();
+			while (iterator.hasNext()) {
+				Ennemie ennemie = iterator.next();
+				Rectangle2D rect = new Rectangle2D.Double(ennemie.getPosition().getdX() - r / 2,
+						ennemie.getPosition().getdY() - r / 2, r, r);
+				if (fireLine.intersects(rect)) {
+					ennemie.perdVie(heros.getArme().computeDamage(d));
+					System.out.println("Ennemie  : vie restante: " + ennemie.getVie() + " / armure restante: "
+							+ ennemie.getArmure());
+
+				}
+			}
+		}
 	}
 
 	@Override
