@@ -26,25 +26,28 @@ public class MainServer {
 
 		server.addListener(new Listener() {
 			public void connected(Connection connection){
-				connection.sendTCP("vous êtes connectés au serveur");
+				System.out.println(connection + " connected");
+				connection.sendTCP("vous êtes connectés au serveur avec l'id " + connection.getID() +", addresse UDP: " + connection.getRemoteAddressUDP());
 			}
 			public void received(Connection connection, Object object) {
 				if (object instanceof ClientConnexionMessage) {
 					ClientConnexionMessage ccm = (ClientConnexionMessage) object;
+					connection.setName(ccm.getPseudo()+":"+connection.getID());
 					System.out.println("nouveau joueur : " + ccm.getPseudo());
-					partie.ajouterJoueur(ccm.getPseudo());
-					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo());
-					connection.sendTCP("bienvenue sur le serveur " + ccm.getPseudo());
+					Joueur nouveaujoueur = new Joueur(ccm.getPseudo(), connection);
+					partie.updateJoueur(connection.getID(), nouveaujoueur);
+					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie);
+					connection.sendTCP(acm);
 				} else if (object instanceof Joueur) {
 					Joueur j = (Joueur) object;
-					partie.updateJoueur(j);
+					partie.updateJoueur(connection.getID(), j);
 					connection.sendUDP(partie);
-				} else if (object instanceof String) {
-					String s = (String) object;
-					System.out.println(s);
-					connection.sendUDP(s);
 				}
 
+			}
+			public void disconnected(Connection connection){
+				System.out.println(connection + " disconnected");
+				partie.removeJoueur(connection.getID());
 			}
 		});
 

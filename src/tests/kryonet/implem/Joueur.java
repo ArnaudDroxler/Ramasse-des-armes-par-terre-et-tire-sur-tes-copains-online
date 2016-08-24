@@ -1,5 +1,7 @@
 package tests.kryonet.implem;
 
+import com.esotericsoftware.kryonet.Connection;
+
 public class Joueur {
 
 	private String pseudo;
@@ -8,26 +10,25 @@ public class Joueur {
 	private int posy;
 	private int dirx;
 	private int diry;
-	
-	public Joueur(String pseudo, int vie, int posx, int posy, int dirx, int diry) {
-		this.pseudo = pseudo;
-		this.vie = vie;
-		this.posx = posx;
-		this.posy = posy;
-		this.dirx = dirx;
-		this.diry = diry;
-	}
-	
-	public Joueur(String pseudo) {
-		this.pseudo = pseudo;
-	}
+	private Connection connection;
 	
 	public Joueur() {
 		
 	}
 
+	public Joueur(String pseudo, Connection connection) {
+		this.pseudo=pseudo;
+		this.connection=connection;
+	}
+
 	public String getPseudo() {
 		return pseudo;
+	}
+
+	@Override
+	public String toString() {
+		return pseudo + ", vie=" + vie + ", pos=(" + posx + "," + posy + "), dir=(" + dirx
+				+ "," + diry + ")";
 	}
 	
 }
