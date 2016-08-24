@@ -27,7 +27,6 @@ public class Vector2D {
 	|*							Methodes Public							*|
 	\*------------------------------------------------------------------*/
 
-
 	// Convert vector to a string ...
 	@Override
 	public String toString() {
@@ -74,8 +73,8 @@ public class Vector2D {
 
 		return v2;
 	}
-	
-	public double norm(){
+
+	public double norm() {
 		return Math.sqrt(this.dX * this.dX + this.dY * this.dY);
 	}
 
@@ -132,9 +131,32 @@ public class Vector2D {
 		double theta = Math.atan2(dY, dX);
 		return theta < 0 ? theta + (2 * Math.PI) : theta;
 	}
-	
+
 	public Vector2D mult(double d) {
-		return new Vector2D(d*dX,d*dY);
+		return new Vector2D(d * dX, d * dY);
+	}
+
+	/**
+	 * calcul du déterminant entre deux vecteurs
+	 * 
+	 * @param v2
+	 * @return
+	 */
+	public double det(Vector2D v2) {
+		return this.dX * v2.dY + this.dY * v2.dX;
+	}
+
+	/**
+	 * Angle orienté entre deux vecteurs
+	 * 
+	 * @param v2
+	 * @return
+	 */
+	public double getAngleOriente(Vector2D v2) {
+		if (this.normalize().det(v2.normalize()) < 0)
+			return (-1 * this.normalize().dotProduct(v2.normalize()));
+		else
+			return this.normalize().dotProduct(v2.normalize());
 	}
 
 	/*------------------------------*\

@@ -284,6 +284,28 @@ public class Camera extends Renderer {
 
 			// BufferedImage currentSprite = MagasinImage.buffYoanBlanc;
 			// BufferedImage currentSprite = MagasinImage.getNextSprite();
+
+			// A calculer ici si on est face, dos ou coté de l'objet et ajouter
+			// dans le getSprite()
+			// un int par exemple avec 1 = face, 2 = droite, 3 = dos, 4 =
+			// gauche. Le getSprite() retournera
+			// donc la bonne image.
+
+			// on regarde si la classe est celle de ennemi.
+			// Si oui on fait:
+
+			// current.getDirection()
+			// posCamera.getDirection()
+
+			// Calcul de l'angle
+
+			// en fonction de l'angle, attribuer le bon int (1,2,3,4)
+			// int dir =
+
+			// BufferedImage currentSprite = current.getSprite(dir);
+
+			// si non, on fait:
+
 			BufferedImage currentSprite = current.getSprite();
 
 			int imageWidth = currentSprite.getWidth();

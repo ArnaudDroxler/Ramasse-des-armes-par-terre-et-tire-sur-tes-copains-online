@@ -26,7 +26,7 @@ public abstract class Thing {
 		direction.setdX(dirX);
 		direction.setdY(dirY);
 		dAlpha = 1;
-	
+
 	}
 
 	public Thing() {
@@ -138,7 +138,11 @@ public abstract class Thing {
 	private Vector2D direction;
 	protected double v;
 	private double dAlpha;
-	
+
 	public abstract BufferedImage getSprite();
+
+	public BufferedImage getSprite(int dir) {
+		return null;
+	}
 
 }
