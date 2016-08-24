@@ -292,7 +292,6 @@ public class Logique extends KeyAdapter {
 
 				double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
 
-				System.out.println("d : " + d);
 				fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
 
 				Iterator<Ennemie> iterator = listEnnemie.iterator();
@@ -300,8 +299,11 @@ public class Logique extends KeyAdapter {
 					Ennemie ennemie = iterator.next();
 					Rectangle2D rect = new Rectangle2D.Double(ennemie.getPosition().getdX() - r / 2,
 							ennemie.getPosition().getdY() - r / 2, r, r);
+
 					if (fireLine.intersects(rect)) {
-						ennemie.perdVie(heros.getArme().computeDamage(d));
+
+						fireLine.setLine(posx, posy, ennemie.getPosition().getdX(), ennemie.getPosition().getdY());
+						ennemie.perdVie(heros.getArme().computeDamage(fireLine.getP1().distance(fireLine.getP2())));
 						System.out.println("Ennemie  : vie restante: " + ennemie.getVie() + " / armure restante: "
 								+ ennemie.getArmure());
 
