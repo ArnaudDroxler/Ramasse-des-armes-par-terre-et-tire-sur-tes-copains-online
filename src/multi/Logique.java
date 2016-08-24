@@ -17,6 +17,7 @@ import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemie;
 import multi.thing.personnage.Joueur;
+import multi.thing.weapon.AmmoPackHG;
 import multi.thing.weapon.HandGun;
 import multi.tools.GeometricTools;
 import multi.tools.map.ImageParser;
@@ -149,6 +150,13 @@ public class Logique extends KeyAdapter {
 					repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
 					iterator.remove();
 					break;
+				case "AmmoPackHG":
+					if (heros.getArme() != null && heros.getArme().getClass().getSimpleName().equals("HandGun")) {
+						heros.getArme().sumAmmo(10);
+						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						iterator.remove();
+					}
+					break;
 				}
 				System.out.println("vie restante: " + heros.getVie() + " / armure restante: " + heros.getArmure());
 			}
@@ -172,6 +180,9 @@ public class Logique extends KeyAdapter {
 						break;
 					case "HandGun":
 						listeThings.add(new HandGun(position));
+						break;
+					case "AmmoPackHG":
+						listeThings.add(new AmmoPackHG(position));
 						break;
 					}
 
@@ -272,13 +283,13 @@ public class Logique extends KeyAdapter {
 
 				threadRoF.start();
 
-				heros.getArme().sousAmmo(1);
+				heros.getArme().subAmmo(1);
 
 				double posx = heros.getPosition().getdX();
 				double posy = heros.getPosition().getdY();
 				double dirx = heros.getDirection().getdX();
 				double diry = heros.getDirection().getdY();
-				double r = .5;
+				double r = 0.5;
 
 				double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
 

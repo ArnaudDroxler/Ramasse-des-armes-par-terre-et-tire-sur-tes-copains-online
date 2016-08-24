@@ -28,16 +28,17 @@ public abstract class Weapon extends Thing {
 	}
 
 	public void sumAmmo(int a) {
-		ammo = +a;
+		ammo += a;
+		System.out.println("Ammo : " + ammo);
 	}
 
-	public void sousAmmo(int a) {
+	public void subAmmo(int a) {
 		ammo -= a;
+		System.out.println("Ammo : " + ammo);
 	}
 
 	public Weapon(Vector2D pos) {
 		super(pos);
-		// TODO Auto-generated constructor stub
 	}
 
 }
