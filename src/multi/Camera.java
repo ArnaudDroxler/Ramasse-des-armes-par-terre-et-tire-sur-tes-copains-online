@@ -290,7 +290,6 @@ public class Camera extends Renderer {
 				// Calcul de l'angle
 				double angle = posCamera.getDirection().getAngleOriente(current.getDirection());
 				// en fonction de l'angle, attribuer le bon int (1,2,3,4)
-				// dir =
 				if (angle >= -(Math.PI / 8) && angle <= (Math.PI / 8)) {
 					dir = 0;
 					currentSprite = current.getSprite(dir);
@@ -330,8 +329,6 @@ public class Camera extends Renderer {
 				currentSprite = current.getSprite();
 				break;
 			}
-
-			// BufferedImage currentSprite = current.getSprite();
 
 			int imageWidth = currentSprite.getWidth();
 			int imageHeight = currentSprite.getHeight();

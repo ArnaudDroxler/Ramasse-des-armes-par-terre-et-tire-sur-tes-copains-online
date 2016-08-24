@@ -12,11 +12,16 @@ public class HandGun extends Weapon {
 		ammo = 10;
 		RoF = 2;
 		DpS = 50;
+		RaoF = 15;
 	}
 
 	@Override
 	public int computeDamage(double d) {
-		return 50;
+		if (d < RaoF) {
+			return (int) DpS;
+		} else {
+			return (int) (45 * (1 - Math.exp(0.06 * (d - RaoF))) + DpS);
+		}
 	}
 
 	@Override

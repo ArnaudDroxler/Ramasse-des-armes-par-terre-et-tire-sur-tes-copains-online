@@ -9,6 +9,7 @@ public abstract class Weapon extends Thing {
 
 	protected double DpS;
 	protected double RoF;
+	protected double RaoF;
 	protected int ammo;
 
 	public abstract int computeDamage(double d);

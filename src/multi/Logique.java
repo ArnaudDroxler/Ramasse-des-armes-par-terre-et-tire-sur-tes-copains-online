@@ -75,6 +75,7 @@ public class Logique extends KeyAdapter {
 						if (!touchesEnfoncees.isEmpty()) {
 							updateDeplacement();
 						}
+						updateEnnemis();
 						Thread.sleep(delay);
 					}
 				} catch (InterruptedException e) {
@@ -83,6 +84,29 @@ public class Logique extends KeyAdapter {
 			}
 		});
 		thread.start();
+	}
+
+	protected void updateEnnemis() {
+
+		Iterator<Ennemie> iter = listEnnemie.iterator();
+		double alphaMax = Math.PI / 8;
+
+		while (iter.hasNext()) {
+			Thing monstre = iter.next();
+			double randAlpha = Math.random() * alphaMax - alphaMax / 2;
+
+			Vector2D oldPos = monstre.getPosition();
+
+			monstre.forward();
+			Vector2D direction = monstre.getDirection().rotate(randAlpha);
+			monstre.setDirection(direction);
+
+			// collisison avec les murs
+			if (collision(monstre)) {
+				monstre.setPosition(oldPos);
+				monstre.setDirection(monstre.getDirection().rotate(Math.PI));
+			}
+		}
 	}
 
 	synchronized protected void updateDeplacement() {
@@ -292,7 +316,6 @@ public class Logique extends KeyAdapter {
 
 				double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
 
-				System.out.println("d : " + d);
 				fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
 
 				Iterator<Ennemie> iterator = listEnnemie.iterator();
@@ -300,10 +323,17 @@ public class Logique extends KeyAdapter {
 					Ennemie ennemie = iterator.next();
 					Rectangle2D rect = new Rectangle2D.Double(ennemie.getPosition().getdX() - r / 2,
 							ennemie.getPosition().getdY() - r / 2, r, r);
+
 					if (fireLine.intersects(rect)) {
-						ennemie.perdVie(heros.getArme().computeDamage(d));
+
+						fireLine.setLine(posx, posy, ennemie.getPosition().getdX(), ennemie.getPosition().getdY());
+						ennemie.perdVie(heros.getArme().computeDamage(fireLine.getP1().distance(fireLine.getP2())));
 						System.out.println("Ennemie  : vie restante: " + ennemie.getVie() + " / armure restante: "
 								+ ennemie.getArmure());
+						if (ennemie.getMort()) {
+							iterator.remove();
+							listeThings.remove(ennemie);
+						}
 
 					}
 				}
