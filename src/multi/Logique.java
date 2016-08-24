@@ -75,6 +75,7 @@ public class Logique extends KeyAdapter {
 						if (!touchesEnfoncees.isEmpty()) {
 							updateDeplacement();
 						}
+						updateEnnemis();
 						Thread.sleep(delay);
 					}
 				} catch (InterruptedException e) {
@@ -83,6 +84,29 @@ public class Logique extends KeyAdapter {
 			}
 		});
 		thread.start();
+	}
+
+	protected void updateEnnemis() {
+
+		Iterator<Ennemie> iter = listEnnemie.iterator();
+		double alphaMax = Math.PI / 8;
+
+		while (iter.hasNext()) {
+			Thing monstre = iter.next();
+			double randAlpha = Math.random() * alphaMax - alphaMax / 2;
+
+			Vector2D oldPos = monstre.getPosition();
+
+			monstre.forward();
+			Vector2D direction = monstre.getDirection().rotate(randAlpha);
+			monstre.setDirection(direction);
+
+			// collisison avec les murs
+			if (collision(monstre)) {
+				monstre.setPosition(oldPos);
+				monstre.setDirection(monstre.getDirection().rotate(Math.PI));
+			}
+		}
 	}
 
 	synchronized protected void updateDeplacement() {
@@ -304,6 +328,10 @@ public class Logique extends KeyAdapter {
 						ennemie.perdVie(heros.getArme().computeDamage(d));
 						System.out.println("Ennemie  : vie restante: " + ennemie.getVie() + " / armure restante: "
 								+ ennemie.getArmure());
+						if (ennemie.getMort()) {
+							iterator.remove();
+							listeThings.remove(ennemie);
+						}
 
 					}
 				}

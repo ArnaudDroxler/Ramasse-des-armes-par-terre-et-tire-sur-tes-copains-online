@@ -12,6 +12,7 @@ public class Ennemie extends Personnage {
 		super(startPosition, startDirection);
 		vie = 100;
 		armure = 0;
+		v = random.nextDouble() * .06;
 	}
 
 	@Override
@@ -24,7 +25,7 @@ public class Ennemie extends Personnage {
 
 		if (dir == 1) {
 			// gauche 1
-			return MagasinImage.buffFantome1;
+			return MagasinImage.buffFantome3;
 		}
 		if (dir == 2) {
 			// gauche 2
@@ -32,15 +33,15 @@ public class Ennemie extends Personnage {
 		}
 		if (dir == 3) {
 			// gauche 3
-			return MagasinImage.buffFantome3;
+			return MagasinImage.buffFantome1;
 		}
 		if (dir == 4) {
 			// dos 4
-			return MagasinImage.buffFantome4;
+			return MagasinImage.buffFantome0;
 		}
 		if (dir == 5) {
 			// droite 5
-			return MagasinImage.buffFantome5;
+			return MagasinImage.buffFantome7;
 		}
 		if (dir == 6) {
 			// droite 6
@@ -48,11 +49,11 @@ public class Ennemie extends Personnage {
 		}
 		if (dir == 7) {
 			// droite 7
-			return MagasinImage.buffFantome7;
+			return MagasinImage.buffFantome5;
 		}
 
 		// face 0
-		return MagasinImage.buffFantome0;
+		return MagasinImage.buffFantome4;
 
 	}
 
