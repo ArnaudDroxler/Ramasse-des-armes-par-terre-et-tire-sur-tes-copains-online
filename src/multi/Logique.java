@@ -312,11 +312,13 @@ public class Logique extends KeyAdapter {
 				double posy = heros.getPosition().getdY();
 				double dirx = heros.getDirection().getdX();
 				double diry = heros.getDirection().getdY();
-				double r = 0.5;
+				double r = 0.8;
 
 				double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
 
 				fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
+
+				Ennemie ennemieTouche = null;
 
 				Iterator<Ennemie> iterator = listEnnemie.iterator();
 				while (iterator.hasNext()) {
@@ -325,16 +327,17 @@ public class Logique extends KeyAdapter {
 							ennemie.getPosition().getdY() - r / 2, r, r);
 
 					if (fireLine.intersects(rect)) {
-
 						fireLine.setLine(posx, posy, ennemie.getPosition().getdX(), ennemie.getPosition().getdY());
-						ennemie.perdVie(heros.getArme().computeDamage(fireLine.getP1().distance(fireLine.getP2())));
-						System.out.println("Ennemie  : vie restante: " + ennemie.getVie() + " / armure restante: "
-								+ ennemie.getArmure());
-						if (ennemie.getMort()) {
-							iterator.remove();
-							listeThings.remove(ennemie);
-						}
-
+						ennemieTouche = ennemie;
+					}
+				}
+				if (ennemieTouche != null) {
+					ennemieTouche.perdVie(heros.getArme().computeDamage(fireLine.getP1().distance(fireLine.getP2())));
+					System.out.println("Ennemie " + ennemieTouche.hashCode() + " : vie restante: "
+							+ ennemieTouche.getVie() + " / armure restante: " + ennemieTouche.getArmure());
+					if (ennemieTouche.getMort()) {
+						iterator.remove();
+						listeThings.remove(ennemieTouche);
 					}
 				}
 			}
