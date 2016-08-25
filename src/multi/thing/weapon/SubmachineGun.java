@@ -8,9 +8,8 @@ import multi.tools.raycasting.Vector2D;
 
 public class SubmachineGun extends Weapon {
 
-	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("handgunhud0.png"),
-			ImageLoader.loadBufferedImage("handgunhud1.png"), ImageLoader.loadBufferedImage("handgunhud2.png"),
-			ImageLoader.loadBufferedImage("handgunhud3.png") };
+	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("submachingunhud0.png"),
+			ImageLoader.loadBufferedImage("submachingunhud1.png"), ImageLoader.loadBufferedImage("submachingunhud2.png")};
 
 	private int cpt;
 
@@ -45,11 +44,11 @@ public class SubmachineGun extends Weapon {
 			public void run() {
 				try {
 
-					for (cpt = 1; cpt < 4; cpt++) {
+					for (cpt = 1; cpt < 2; cpt++) {
 						Thread.sleep(100);
 					}
 					cpt = 0;
-
+					
 				} catch (InterruptedException e) {
 
 					e.printStackTrace();
@@ -67,7 +66,7 @@ public class SubmachineGun extends Weapon {
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffCle;
+		return MagasinImage.buffSubMachinGun;
 	}
 
 }
