@@ -20,6 +20,7 @@ import multi.thing.personnage.Ennemie;
 import multi.thing.personnage.Joueur;
 import multi.thing.weapon.AmmoPackHG;
 import multi.thing.weapon.HandGun;
+import multi.thing.weapon.SubmachineGun;
 import multi.tools.GeometricTools;
 import multi.tools.map.ImageParser;
 import multi.tools.map.LvlMap;
@@ -76,7 +77,7 @@ public class Logique extends KeyAdapter {
 						if (!touchesEnfoncees.isEmpty()) {
 							updateDeplacement();
 						}
-						updateEnnemis();
+						// updateEnnemis();
 						Thread.sleep(delay);
 					}
 				} catch (InterruptedException e) {
@@ -145,14 +146,28 @@ public class Logique extends KeyAdapter {
 		while (iterator.hasNext()) {
 			Thing thing = iterator.next();
 			if (collapse(thing.getPosition(), 1.2)) {
+				System.out.println(thing.getClass().getSimpleName());
 				switch (thing.getClass().getSimpleName()) {
 				case "HandGun":
 					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
 						heros.setArme(new HandGun(heros.getPosition()));
 						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
 						iterator.remove();
-					} else if (heros.getArme() != null) {
+					} else if (heros.getArme() != null
+							&& heros.getArme().getClass().getSimpleName().equals("HandGun")) {
 						heros.getArme().sumAmmo(10);
+						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						iterator.remove();
+					}
+					break;
+				case "SubmachineGun":
+					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+						heros.setArme(new SubmachineGun(heros.getPosition()));
+						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						iterator.remove();
+					} else if (heros.getArme() != null
+							&& heros.getArme().getClass().getSimpleName().equals("SubmachineGun")) {
+						heros.getArme().sumAmmo(30);
 						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
 						iterator.remove();
 					}
@@ -210,12 +225,16 @@ public class Logique extends KeyAdapter {
 					case "Medipack":
 						listeThings.add(new Medipack(position));
 						break;
-					case "HandGun":
-						listeThings.add(new HandGun(position));
-						break;
 					case "AmmoPackHG":
 						listeThings.add(new AmmoPackHG(position));
 						break;
+					case "HandGun":
+						listeThings.add(new HandGun(position));
+						break;
+					case "SubmachineGun":
+						listeThings.add(new SubmachineGun(position));
+						break;
+
 					}
 
 				} catch (InterruptedException e) {
@@ -283,76 +302,54 @@ public class Logique extends KeyAdapter {
 	@Override
 	public void keyPressed(KeyEvent e) {
 
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			if (!touchesEnfoncees.contains(e.getKeyCode())) {
-				fire();
-			}
-		}
+		/*
+		 * if (e.getKeyCode() == KeyEvent.VK_SPACE) { if
+		 * (!touchesEnfoncees.contains(e.getKeyCode())) { fire(); } }
+		 */
 
 		touchesEnfoncees.add(e.getKeyCode());
 	}
 
 	protected synchronized void fire() {
-		if (heros.getArme() != null) {
 
-			Thread threadRoF = new Thread(new Runnable() {
+		if (heros.getArme() != null && heros.getArme().getAmmo() > 0) {
 
-				@Override
-				public void run() {
-					try {
-						isFiring = true;
-						heros.getArme().setFiring(true);
-						Thread.sleep((long) (1000 / heros.getArme().getRoF()));
-						isFiring = false;
-					} catch (InterruptedException e) {
+			heros.getArme().subAmmo(1);
+			heros.getArme().setFiring(true);
 
-						e.printStackTrace();
-					}
+			double posx = heros.getPosition().getdX();
+			double posy = heros.getPosition().getdY();
+			double dirx = heros.getDirection().getdX();
+			double diry = heros.getDirection().getdY();
+			double r = 0.8;
 
+			double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
+
+			fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
+
+			Ennemie ennemieTouche = null;
+
+			Iterator<Ennemie> iterator = listEnnemie.iterator();
+			while (iterator.hasNext()) {
+				Ennemie ennemie = iterator.next();
+				Rectangle2D rect = new Rectangle2D.Double(ennemie.getPosition().getdX() - r / 2,
+						ennemie.getPosition().getdY() - r / 2, r, r);
+
+				if (fireLine.intersects(rect)) {
+					fireLine.setLine(posx, posy, ennemie.getPosition().getdX(), ennemie.getPosition().getdY());
+					ennemieTouche = ennemie;
 				}
-			});
-
-			if (!isFiring && heros.getArme().getAmmo() > 0) {
-
-				threadRoF.start();
-
-				heros.getArme().subAmmo(1);
-
-				double posx = heros.getPosition().getdX();
-				double posy = heros.getPosition().getdY();
-				double dirx = heros.getDirection().getdX();
-				double diry = heros.getDirection().getdY();
-				double r = 0.8;
-
-				double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
-
-				fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
-
-				Ennemie ennemieTouche = null;
-
-				Iterator<Ennemie> iterator = listEnnemie.iterator();
-				while (iterator.hasNext()) {
-					Ennemie ennemie = iterator.next();
-					Rectangle2D rect = new Rectangle2D.Double(ennemie.getPosition().getdX() - r / 2,
-							ennemie.getPosition().getdY() - r / 2, r, r);
-
-					if (fireLine.intersects(rect)) {
-						fireLine.setLine(posx, posy, ennemie.getPosition().getdX(), ennemie.getPosition().getdY());
-						ennemieTouche = ennemie;
-					}
-				}
-				if (ennemieTouche != null) {
-					ennemieTouche.perdVie(heros.getArme().computeDamage(fireLine.getP1().distance(fireLine.getP2())));
-					System.out.println("Ennemie " + ennemieTouche.hashCode() + " : vie restante: "
-							+ ennemieTouche.getVie() + " / armure restante: " + ennemieTouche.getArmure());
-					if (ennemieTouche.getMort()) {
-						listEnnemie.remove(ennemieTouche);
-						listeThings.remove(ennemieTouche);
-					}
+			}
+			if (ennemieTouche != null) {
+				ennemieTouche.perdVie(heros.getArme().computeDamage(fireLine.getP1().distance(fireLine.getP2())));
+				System.out.println("Ennemie " + ennemieTouche.hashCode() + " : vie restante: " + ennemieTouche.getVie()
+						+ " / armure restante: " + ennemieTouche.getArmure());
+				if (ennemieTouche.getMort()) {
+					listEnnemie.remove(ennemieTouche);
+					listeThings.remove(ennemieTouche);
 				}
 			}
 		}
-
 	}
 
 	@Override
