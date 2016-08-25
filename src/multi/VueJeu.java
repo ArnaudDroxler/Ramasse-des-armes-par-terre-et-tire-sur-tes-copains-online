@@ -39,6 +39,7 @@ public class VueJeu extends Renderer {
 		g2d.drawImage(logique.map.getMapBackground(), 0, 0, null);
 		g2d.setTransform(init);
 
+		drawMonstres();
 		drawHeros();
 	}
 
@@ -51,17 +52,28 @@ public class VueJeu extends Renderer {
 		g2d.setColor(Color.blue);
 		g2d.fillOval((int) -zoom / 4, (int) -zoom / 4, (int) zoom / 2, (int) zoom / 2);
 		g2d.fillRect(0, -1, (int) zoom, 2);
-		
+
 		if (logique.isFiring) {
 			drawTir();
 		}
 	}
-	
+
 	private void drawTir() {
 		double x = logique.fireLine.getX2() - logique.fireLine.getX1();
 		double y = logique.fireLine.getY2() - logique.fireLine.getY1();
 		double d = Math.sqrt(x * x + y * y);
 		g2d.drawLine(0, 0, (int) (d * zoom), 0);
+	}
+
+	private void drawMonstres() {
+		g2d.setColor(Color.green);
+		int a = (int) zoom;
+		// a protéger
+		for (Thing monstre : logique.listEnnemie) {
+			double x = (monstre.getPosition().getdX() * zoom);
+			double y = (monstre.getPosition().getdY() * zoom);
+			g2d.fillOval((int) (x - zoom / 2), ((int) (y - zoom / 2)), a, a);
+		}
 	}
 
 }

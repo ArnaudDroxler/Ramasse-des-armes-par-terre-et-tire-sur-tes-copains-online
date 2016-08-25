@@ -13,7 +13,7 @@ public class Joueur extends Personnage {
 		super(startPosition, startDirection);
 		vie = 100;
 		armure = 50;
-		
+
 	}
 
 	@Override
@@ -39,6 +39,16 @@ public class Joueur extends Personnage {
 
 	public void setArme(Weapon arme) {
 		this.arme = arme;
+	}
+
+	public void respawn(Vector2D startPosition, Vector2D startDirection) {
+		estMort = false;
+		this.setPosition(startPosition);
+		this.setDirection(startDirection);
+		vie = 100;
+		armure = 50;
+		setArme(null);
+
 	}
 
 }

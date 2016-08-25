@@ -74,7 +74,7 @@ public class Logique extends KeyAdapter {
 						if (!touchesEnfoncees.isEmpty()) {
 							updateDeplacement();
 						}
-						updateMonstres();
+						// updateMonstres();
 						Thread.sleep(delay);
 					}
 				} catch (InterruptedException e) {
@@ -102,7 +102,7 @@ public class Logique extends KeyAdapter {
 
 		// collisison avec les murs
 		if (map.inWall(heros.getPosition())) {
-			moveAlongWalls(); 
+			moveAlongWalls();
 		}
 
 		// collisison avec les monstres
@@ -147,21 +147,21 @@ public class Logique extends KeyAdapter {
 		double newy = heros.getPosition().getdY();
 		double oldx = oldPosition.getdX();
 		double oldy = oldPosition.getdY();
-		
+
 		int caseX = (int) oldx;
 		int caseY = (int) oldy;
 
-		if(oldx <= newx){
-			if(oldy <= newy)
+		if (oldx <= newx) {
+			if (oldy <= newy)
 				// bas droite
-				testAndMove(newx, newy, caseX+.99, caseY+.99);
+				testAndMove(newx, newy, caseX + .99, caseY + .99);
 			else
 				// haut droite
-				testAndMove(newx, newy, caseX+.99, caseY);
-		}else{
-			if(oldy <= newy)
+				testAndMove(newx, newy, caseX + .99, caseY);
+		} else {
+			if (oldy <= newy)
 				// bas gauche
-				testAndMove(newx, newy, caseX, caseY+.99);
+				testAndMove(newx, newy, caseX, caseY + .99);
 			else
 				// haut gauche
 				testAndMove(newx, newy, caseX, caseY);
@@ -170,13 +170,13 @@ public class Logique extends KeyAdapter {
 
 	private void testAndMove(double newx, double newy, double lockX, double lockY) {
 		// on essaye de glisser horizontalement
-		if(! map.inWall(newx, lockY)){
+		if (!map.inWall(newx, lockY)) {
 			// on déplace si on est pas dans un mur
 			heros.setPosition(newx, lockY);
-		}else if(! map.inWall(lockX, newy)){
+		} else if (!map.inWall(lockX, newy)) {
 			// sinon, on essaye de glisser verticalement
 			heros.setPosition(lockX, newy);
-		}else{
+		} else {
 			// on est dans un mur dans les deux cas
 			// on ne bouge plus, on se met dans le coin
 			heros.setPosition(lockX, lockY);
@@ -184,8 +184,8 @@ public class Logique extends KeyAdapter {
 	}
 
 	private boolean collapse(Vector2D point, double r) {
-		double x =  heros.getPosition().getdX();
-		double y =  heros.getPosition().getdY();
+		double x = heros.getPosition().getdX();
+		double y = heros.getPosition().getdY();
 
 		return (x >= point.getdX() - r && x <= point.getdX() + r && y >= point.getdY() - r && y <= point.getdY() + r);
 	}
@@ -277,3 +277,9 @@ public class Logique extends KeyAdapter {
 	}
 
 }
+
+
+
+
+
+

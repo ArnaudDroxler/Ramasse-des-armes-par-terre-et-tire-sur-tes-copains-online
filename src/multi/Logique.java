@@ -1,5 +1,6 @@
 package multi;
 
+import java.awt.AWTException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
@@ -75,7 +76,7 @@ public class Logique extends KeyAdapter {
 						if (!touchesEnfoncees.isEmpty()) {
 							updateDeplacement();
 						}
-						updateEnnemis();
+						// updateEnnemis();
 						Thread.sleep(delay);
 					}
 				} catch (InterruptedException e) {
@@ -162,6 +163,14 @@ public class Logique extends KeyAdapter {
 				switch (thing.getClass().getSimpleName()) {
 				case "Ennemie":
 					heros.perdVie(5);
+					if (heros.getMort()) {
+
+						// TODO: random pour le nouveau point de spawn,
+						// Ajout des points à la personne qui nous a tué.
+
+						heros = new Joueur(map.getStartPosition(), new Vector2D(1, 0));
+						heros.setVitesse(0.05);
+					}
 					break;
 				case "Armure":
 					heros.ajoutArmure(10);
@@ -292,6 +301,7 @@ public class Logique extends KeyAdapter {
 				public void run() {
 					try {
 						isFiring = true;
+						heros.getArme().setFiring(true);
 						Thread.sleep((long) (1000 / heros.getArme().getRoF()));
 						isFiring = false;
 					} catch (InterruptedException e) {
@@ -307,16 +317,19 @@ public class Logique extends KeyAdapter {
 				threadRoF.start();
 
 				heros.getArme().subAmmo(1);
+				
 
 				double posx = heros.getPosition().getdX();
 				double posy = heros.getPosition().getdY();
 				double dirx = heros.getDirection().getdX();
 				double diry = heros.getDirection().getdY();
-				double r = 0.5;
+				double r = 0.8;
 
 				double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
 
 				fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
+
+				Ennemie ennemieTouche = null;
 
 				Iterator<Ennemie> iterator = listEnnemie.iterator();
 				while (iterator.hasNext()) {
@@ -325,16 +338,17 @@ public class Logique extends KeyAdapter {
 							ennemie.getPosition().getdY() - r / 2, r, r);
 
 					if (fireLine.intersects(rect)) {
-
 						fireLine.setLine(posx, posy, ennemie.getPosition().getdX(), ennemie.getPosition().getdY());
-						ennemie.perdVie(heros.getArme().computeDamage(fireLine.getP1().distance(fireLine.getP2())));
-						System.out.println("Ennemie  : vie restante: " + ennemie.getVie() + " / armure restante: "
-								+ ennemie.getArmure());
-						if (ennemie.getMort()) {
-							iterator.remove();
-							listeThings.remove(ennemie);
-						}
-
+						ennemieTouche = ennemie;
+					}
+				}
+				if (ennemieTouche != null) {
+					ennemieTouche.perdVie(heros.getArme().computeDamage(fireLine.getP1().distance(fireLine.getP2())));
+					System.out.println("Ennemie " + ennemieTouche.hashCode() + " : vie restante: "
+							+ ennemieTouche.getVie() + " / armure restante: " + ennemieTouche.getArmure());
+					if (ennemieTouche.getMort()) {
+						listEnnemie.remove(ennemieTouche);
+						listeThings.remove(ennemieTouche);
 					}
 				}
 			}
