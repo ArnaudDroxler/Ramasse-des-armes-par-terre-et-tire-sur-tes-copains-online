@@ -76,7 +76,7 @@ public class Logique extends KeyAdapter {
 						if (!touchesEnfoncees.isEmpty()) {
 							updateDeplacement();
 						}
-						// updateEnnemis();
+						updateEnnemis();
 						Thread.sleep(delay);
 					}
 				} catch (InterruptedException e) {
@@ -317,7 +317,6 @@ public class Logique extends KeyAdapter {
 				threadRoF.start();
 
 				heros.getArme().subAmmo(1);
-				
 
 				double posx = heros.getPosition().getdX();
 				double posy = heros.getPosition().getdY();
