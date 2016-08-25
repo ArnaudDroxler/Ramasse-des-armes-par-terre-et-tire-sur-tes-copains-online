@@ -37,6 +37,10 @@ public class MagasinImage {
 	public static final BufferedImage buffFantome5 = ImageLoader.loadBufferedImage("images fantome/fantome5.png");
 	public static final BufferedImage buffFantome6 = ImageLoader.loadBufferedImage("images fantome/fantome6.png");
 	public static final BufferedImage buffFantome7 = ImageLoader.loadBufferedImage("images fantome/fantome7.png");
+	
+	public static final BufferedImage buffFantomes[] = {
+			buffFantome0,buffFantome1,buffFantome2,buffFantome3,buffFantome4,buffFantome5,buffFantome6,buffFantome7
+		};
 
 	/*------------------------------------------------------------------*\
 	|*		Version Assynchrone	(non bloquant)							*|

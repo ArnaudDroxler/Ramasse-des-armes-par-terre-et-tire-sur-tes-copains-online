@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import multi.thing.Key;
 import multi.thing.Monstre;
 import multi.thing.Thing;
-import multi.thing.personnage.Ennemie;
+import multi.thing.personnage.Ennemi;
 import multi.tools.raycasting.Vector2D;
 
 public abstract class LvlMap {
@@ -15,7 +15,7 @@ public abstract class LvlMap {
 	protected int height;
 	private BufferedImage mapBackground;
 	private ArrayList<Thing> listThing;
-	private ArrayList<Ennemie> listEnnemie;
+	private ArrayList<Ennemi> listEnnemie;
 	private Vector2D startPosition;
 	protected Vector2D startDirection;
 	private Vector2D goalPosition;
@@ -28,7 +28,7 @@ public abstract class LvlMap {
 
 	public LvlMap() {
 		listThing = new ArrayList<Thing>();
-		listEnnemie = new ArrayList<Ennemie>();
+		listEnnemie = new ArrayList<Ennemi>();
 	}
 
 	public BufferedImage getMapBackground() {
@@ -47,7 +47,7 @@ public abstract class LvlMap {
 		return listThing;
 	}
 
-	public ArrayList<Ennemie> getListEnnemie() {
+	public ArrayList<Ennemi> getListEnnemie() {
 		return listEnnemie;
 	}
 

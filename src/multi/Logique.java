@@ -16,7 +16,7 @@ import multi.thing.Key;
 import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
-import multi.thing.personnage.Ennemie;
+import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
 import multi.thing.weapon.AmmoPackHG;
 import multi.thing.weapon.HandGun;
@@ -40,7 +40,7 @@ public class Logique extends KeyAdapter {
 	protected ArrayList<Thing> listeThings;
 
 	// test vie et armure
-	protected ArrayList<Ennemie> listEnnemie;
+	protected ArrayList<Ennemi> listEnnemie;
 
 	public Logique(String nomMap) {
 		delay = 10;
@@ -89,18 +89,14 @@ public class Logique extends KeyAdapter {
 
 	protected void updateEnnemis() {
 
-		Iterator<Ennemie> iter = listEnnemie.iterator();
-		double alphaMax = Math.PI / 8;
-
+		Iterator<Ennemi> iter = listEnnemie.iterator();
+		
 		while (iter.hasNext()) {
-			Thing monstre = iter.next();
-			double randAlpha = Math.random() * alphaMax - alphaMax / 2;
-
+			Ennemi monstre = iter.next();
+			
 			Vector2D oldPos = monstre.getPosition();
 
-			monstre.forward();
-			Vector2D direction = monstre.getDirection().rotate(randAlpha);
-			monstre.setDirection(direction);
+			monstre.bouge();
 
 			// collisison avec les murs
 			if (collision(monstre)) {
@@ -328,11 +324,11 @@ public class Logique extends KeyAdapter {
 
 				fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
 
-				Ennemie ennemieTouche = null;
+				Ennemi ennemieTouche = null;
 
-				Iterator<Ennemie> iterator = listEnnemie.iterator();
+				Iterator<Ennemi> iterator = listEnnemie.iterator();
 				while (iterator.hasNext()) {
-					Ennemie ennemie = iterator.next();
+					Ennemi ennemie = iterator.next();
 					Rectangle2D rect = new Rectangle2D.Double(ennemie.getPosition().getdX() - r / 2,
 							ennemie.getPosition().getdY() - r / 2, r, r);
 

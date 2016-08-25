@@ -13,7 +13,7 @@ import multi.thing.Key;
 import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
-import multi.thing.personnage.Ennemie;
+import multi.thing.personnage.Ennemi;
 import multi.thing.weapon.AmmoPackHG;
 import multi.thing.weapon.HandGun;
 import multi.tools.raycasting.Vector2D;
@@ -66,7 +66,7 @@ public class ImageParser {
 						map.setStartPosition(new Vector2D(x, y));
 					} // PNJ
 					else if (Integer.toHexString(rgb).equals("ffffffaa")) {
-						Ennemie joueur = new Ennemie(new Vector2D(x, y), new Vector2D(1, 0));
+						Ennemi joueur = new Ennemi(new Vector2D(x, y), new Vector2D(1, 0));
 						map.getListEnnemie().add(joueur);
 						map.getListThing().add(joueur);
 					} // Arme de Poing
