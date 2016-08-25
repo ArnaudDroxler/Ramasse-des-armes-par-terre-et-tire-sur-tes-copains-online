@@ -18,7 +18,7 @@ public class JFrameClient extends JFrame {
 	
 	public JFrameClient(){
 		setSize(500, 400);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Client");
 		
 		panel = new JPanel();

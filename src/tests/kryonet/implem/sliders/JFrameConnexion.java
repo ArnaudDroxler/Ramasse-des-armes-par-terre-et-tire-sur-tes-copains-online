@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 
 public class JFrameConnexion extends JFrame {
 
@@ -32,32 +33,34 @@ public class JFrameConnexion extends JFrame {
 	|*							Methodes Private						*|
 	\*------------------------------------------------------------------*/
 
+	
 	private void geometry() {
-		// JComponent : Instanciation
-		JPanel panel = new JPanel();
-		tfIp = new JTextField();
+		JPanel formPanel = new JPanel(new SpringLayout());
+
+		tfIp = new JTextField(12);
 		tfPseudo = new JTextField();
 		btnConnexion = new JButton("Rejoindre");
+		
+		JLabel lblAdIp = new JLabel("Adresse du serveur : ", JLabel.TRAILING);
+		formPanel.add(lblAdIp);
+		lblAdIp.setLabelFor(tfIp);
+		formPanel.add(tfIp);
 
-		// Layout : Specification
-		{
-			GridLayout layout = new GridLayout(3, 2);
-
-			layout.setHgap(5);
-			layout.setVgap(5);
-
-			panel.setLayout(layout);
-		}
-
-		// JComponent : add
-
-		panel.add(new JLabel("Adresse du serveur"));
-		panel.add(tfIp);
-		panel.add(new JLabel("Votre pseudo"));
-		panel.add(tfPseudo);
-		panel.add(new JLabel(""));
+		JLabel lblPseudo = new JLabel("Votre pseudo : ", JLabel.TRAILING);
+		formPanel.add(lblPseudo);
+		lblPseudo.setLabelFor(tfPseudo);
+		formPanel.add(tfPseudo);
+		
+		SpringUtilities.makeCompactGrid(formPanel,
+				2, 2, // rows, cols
+				6, 6, // initX, initY
+				6, 6); // xPad, yPad
+		
+		JPanel panel = new JPanel();
+		panel.add(formPanel);
 		panel.add(btnConnexion);
-		add(new JPanelDecorator(panel, 20));
+
+		setContentPane(new JPanelDecorator(panel, 10));
 	}
 
 	private void control() {
@@ -91,7 +94,7 @@ public class JFrameConnexion extends JFrame {
 	}
 
 	private void appearance() {
-		setSize(450, 150);
+		setSize(350, 150);
 		setResizable(false);
 		setTitle("Connexion");
 		tfIp.selectAll();
@@ -105,8 +108,8 @@ public class JFrameConnexion extends JFrame {
 			new PcClient(tfIp.getText(), tfPseudo.getText());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			// e.printStackTrace();
 			System.err.println("Serveur inaccessible");
+			e.printStackTrace();
 		}
 	}
 

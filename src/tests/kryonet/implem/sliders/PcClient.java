@@ -1,5 +1,11 @@
 package tests.kryonet.implem.sliders;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 
 import com.esotericsoftware.kryonet.Client;
@@ -16,7 +22,7 @@ public class PcClient {
 		Registerer.registerFor(client);
 		
 		client.start();
-		client.connect(5000, ip, 54555, 54777);
+		client.connect(100000, ip, 54555, 54777);
 
 		jfc = new JFrameClient();
 		
@@ -54,6 +60,14 @@ public class PcClient {
 				}
 			}
 		});
+		
+		jfc.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				client.close();
+			}
+		});
+		
 	}
 
 }
