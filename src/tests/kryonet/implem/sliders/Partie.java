@@ -1,4 +1,4 @@
-package tests.kryonet.implem;
+package tests.kryonet.implem.sliders;
 
 import java.util.HashMap;
 import java.util.HashSet;
