@@ -9,7 +9,7 @@ public abstract class Personnage extends Thing {
 	protected int vie;
 	protected int armure;
 	protected Weapon arme;
-	private boolean estMort;
+	protected boolean estMort;
 
 	public Personnage(Vector2D pos, Vector2D dir) {
 		super(pos, dir);
