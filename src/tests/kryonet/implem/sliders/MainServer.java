@@ -1,6 +1,8 @@
-package tests.kryonet.implem;
+package tests.kryonet.implem.sliders;
 
 import java.io.IOException;
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import com.esotericsoftware.kryo.Kryo;
@@ -40,14 +42,12 @@ public class MainServer {
 					connection.sendTCP(acm);
 				} else if (object instanceof ClientUpdateMessage) {
 					
-					
 					ClientUpdateMessage cum = (ClientUpdateMessage) object;
 					partie.updateJoueur(connection.getID(), cum);
 					//System.out.println(cum.getPos());
 					connection.sendUDP(partie);
 					
 				}
-
 			}
 			public void disconnected(Connection connection){
 				System.out.println(connection + " disconnected");
@@ -55,7 +55,13 @@ public class MainServer {
 			}
 		});
 
-		System.out.println("le serveur est ouvert");
+		try {
+			System.out.println("le serveur est ouvert à l'adresse " + 
+					Inet4Address.getLocalHost().getHostAddress() + "\nPorts : TCP 54555, UDP 54777");
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
