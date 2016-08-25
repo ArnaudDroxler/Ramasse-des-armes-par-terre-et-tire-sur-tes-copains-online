@@ -11,6 +11,7 @@ public abstract class Weapon extends Thing {
 	protected double RoF;
 	protected double RaoF;
 	protected int ammo;
+	protected boolean isFiring;
 
 	public abstract int computeDamage(double d);
 
@@ -41,5 +42,15 @@ public abstract class Weapon extends Thing {
 	public Weapon(Vector2D pos) {
 		super(pos);
 	}
+	
+
+	public boolean isFiring() {
+		return isFiring;
+	}
+
+	public void setFiring(boolean isFiring) {
+		this.isFiring = isFiring;
+	}
+
 
 }

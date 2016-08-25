@@ -18,7 +18,7 @@ import com.esotericsoftware.kryonet.Listener;
 public class MainClient {
 
 	public static void main(String[] args) {
-		String serverIp = "157.26.111.186";
+		String serverIp = "157.26.88.179";
 
 		JFrame frame = new JFrame();
 		frame.setSize(500, 400);

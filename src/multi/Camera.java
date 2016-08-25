@@ -144,7 +144,7 @@ public class Camera extends Renderer {
 			renderThings();
 			g2d.drawImage(bufferThings, 0, 0, null);
 
-			drawCursor(g2d);
+			// drawCursor(g2d);
 			drawWeapon(g2d);
 		}
 	}
@@ -162,7 +162,7 @@ public class Camera extends Renderer {
 
 	private void drawWeapon(Graphics2D g2d) {
 		if (logique.heros.getArme() != null) {
-			g2d.drawImage(logique.heros.getArme().getSpriteHUD(), null, getWidth() / 2,
+			g2d.drawImage(logique.heros.getArme().getSpriteHUD(), null, getWidth() / 2 - 80,
 					getHeight() - logique.heros.getArme().getSpriteHUD().getHeight());
 		}
 	}

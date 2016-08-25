@@ -2,10 +2,17 @@ package multi.thing.weapon;
 
 import java.awt.image.BufferedImage;
 
+import multi.tools.ImageLoader;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
 public class HandGun extends Weapon {
+
+	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("handgunhud0.png"),
+			ImageLoader.loadBufferedImage("handgunhud1.png"), ImageLoader.loadBufferedImage("handgunhud2.png"),
+			ImageLoader.loadBufferedImage("handgunhud3.png") };
+
+	private int cpt;
 
 	public HandGun(Vector2D pos) {
 		super(pos);
@@ -13,6 +20,7 @@ public class HandGun extends Weapon {
 		RoF = 2;
 		DpS = 50;
 		RaoF = 10;
+		cpt = 0;
 	}
 
 	@Override
@@ -30,7 +38,31 @@ public class HandGun extends Weapon {
 
 	@Override
 	public BufferedImage getSpriteHUD() {
-		return MagasinImage.buffHandGunHUD;
+
+		Thread threadAnimation = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+
+					for (cpt = 1; cpt < 4; cpt++) {
+						Thread.sleep(100);
+					}
+					cpt = 0;
+
+				} catch (InterruptedException e) {
+
+					e.printStackTrace();
+				}
+
+			}
+		});
+
+		if (isFiring) {
+			isFiring = false;
+			threadAnimation.start();
+		}
+		return sprites[cpt];
 	}
 
 	@Override

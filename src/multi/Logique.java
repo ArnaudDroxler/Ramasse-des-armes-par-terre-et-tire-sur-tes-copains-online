@@ -292,6 +292,7 @@ public class Logique extends KeyAdapter {
 				public void run() {
 					try {
 						isFiring = true;
+						heros.getArme().setFiring(true);
 						Thread.sleep((long) (1000 / heros.getArme().getRoF()));
 						isFiring = false;
 					} catch (InterruptedException e) {
@@ -307,6 +308,7 @@ public class Logique extends KeyAdapter {
 				threadRoF.start();
 
 				heros.getArme().subAmmo(1);
+				
 
 				double posx = heros.getPosition().getdX();
 				double posy = heros.getPosition().getdY();
@@ -336,7 +338,7 @@ public class Logique extends KeyAdapter {
 					System.out.println("Ennemie " + ennemieTouche.hashCode() + " : vie restante: "
 							+ ennemieTouche.getVie() + " / armure restante: " + ennemieTouche.getArmure());
 					if (ennemieTouche.getMort()) {
-						iterator.remove();
+						listEnnemie.remove(ennemieTouche);
 						listeThings.remove(ennemieTouche);
 					}
 				}
