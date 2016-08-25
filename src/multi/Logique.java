@@ -19,6 +19,8 @@ import multi.thing.Thing;
 import multi.thing.personnage.Ennemie;
 import multi.thing.personnage.Joueur;
 import multi.thing.weapon.AmmoPackHG;
+import multi.thing.weapon.AmmoPackSmG;
+import multi.thing.weapon.AmmoPack;
 import multi.thing.weapon.HandGun;
 import multi.thing.weapon.SubmachineGun;
 import multi.tools.GeometricTools;
@@ -199,7 +201,14 @@ public class Logique extends KeyAdapter {
 					break;
 				case "AmmoPackHG":
 					if (heros.getArme() != null && heros.getArme().getClass().getSimpleName().equals("HandGun")) {
-						heros.getArme().sumAmmo(10);
+						heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
+						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						iterator.remove();
+					}
+					break;
+				case "AmmoPackSmG":
+					if (heros.getArme() != null && heros.getArme().getClass().getSimpleName().equals("SubmachineGun")) {
+						heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
 						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
 						iterator.remove();
 					}
@@ -227,6 +236,9 @@ public class Logique extends KeyAdapter {
 						break;
 					case "AmmoPackHG":
 						listeThings.add(new AmmoPackHG(position));
+						break;
+					case "AmmoPackSmG":
+						listeThings.add(new AmmoPackSmG(position));
 						break;
 					case "HandGun":
 						listeThings.add(new HandGun(position));
@@ -312,7 +324,7 @@ public class Logique extends KeyAdapter {
 
 	protected synchronized void fire() {
 
-		if (heros.getArme() != null && heros.getArme().getAmmo() > 0) {
+		if ( heros.getArme().getAmmo() > 0) {
 
 			heros.getArme().subAmmo(1);
 			heros.getArme().setFiring(true);

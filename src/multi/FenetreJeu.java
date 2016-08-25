@@ -97,8 +97,10 @@ public class FenetreJeu extends JFrame {
 						}
 					}
 				});
-				threadFire.start();
 
+				if (logique.heros.getArme() != null) {
+					threadFire.start();
+				}
 			}
 
 			@Override
