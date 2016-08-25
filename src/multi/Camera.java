@@ -3,6 +3,7 @@ package multi;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
@@ -146,6 +147,17 @@ public class Camera extends Renderer {
 
 			// drawCursor(g2d);
 			drawWeapon(g2d);
+
+			if (logique.waitRespawn) {
+				String strMort = new String("Vous êtes mort!");
+				Font font = new Font("Helvetica", Font.BOLD, 60);
+				g2d.setFont(font);
+				g2d.setColor(Color.red);
+				// Pour centrage:
+				int stringLen = (int) g2d.getFontMetrics().getStringBounds(strMort, g2d).getWidth();
+				int stringHei = (int) g2d.getFontMetrics().getStringBounds(strMort, g2d).getHeight();
+				g2d.drawString(strMort, getWidth() / 2 - stringLen / 2, getHeight() / 2);
+			}
 		}
 	}
 

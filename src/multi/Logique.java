@@ -1,11 +1,9 @@
 package multi;
 
-import java.awt.AWTException;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
-import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
+
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,6 +36,8 @@ public class Logique extends KeyAdapter {
 	protected Line2D fireLine;
 	public boolean isFiring;
 	protected ArrayList<Thing> listeThings;
+	private boolean mort;
+	public boolean waitRespawn;
 
 	// test vie et armure
 	protected ArrayList<Ennemie> listEnnemie;
@@ -61,6 +61,9 @@ public class Logique extends KeyAdapter {
 		// test vie et armure
 		listeThings = map.getListThing();
 		listEnnemie = map.getListEnnemie();
+
+		mort = false;
+		waitRespawn = false;
 
 		animer();
 
@@ -111,6 +114,8 @@ public class Logique extends KeyAdapter {
 	}
 
 	synchronized protected void updateDeplacement() {
+		mort = false;
+
 		oldPosition = heros.getPosition();
 		if (touchesEnfoncees.contains(KeyEvent.VK_W)) {
 			heros.forward();
@@ -141,20 +146,20 @@ public class Logique extends KeyAdapter {
 
 		// Utilisation d'un itérateur car on supprime un objet d'une liste qu'on
 		// parcourt
-		Iterator<Thing> iterator = listeThings.iterator();
-		while (iterator.hasNext()) {
-			Thing thing = iterator.next();
+		Iterator<Thing> iteratorThing = listeThings.iterator();
+		while (iteratorThing.hasNext() && !mort) {
+			Thing thing = iteratorThing.next();
 			if (collapse(thing.getPosition(), 1.2)) {
 				switch (thing.getClass().getSimpleName()) {
 				case "HandGun":
 					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
 						heros.setArme(new HandGun(heros.getPosition()));
 						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
-						iterator.remove();
+						iteratorThing.remove();
 					} else if (heros.getArme() != null) {
 						heros.getArme().sumAmmo(10);
 						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
-						iterator.remove();
+						iteratorThing.remove();
 					}
 					break;
 				}
@@ -168,25 +173,35 @@ public class Logique extends KeyAdapter {
 						// TODO: random pour le nouveau point de spawn,
 						// Ajout des points à la personne qui nous a tué.
 
-						heros = new Joueur(map.getStartPosition(), new Vector2D(1, 0));
-						heros.setVitesse(0.05);
+						try {
+							waitRespawn = true;
+							Thread.sleep(10000);
+							heros = new Joueur(map.getStartPosition(), new Vector2D(1, 0));
+							heros.setVitesse(0.05);
+							waitRespawn = false;
+							mort = true;
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+
 					}
 					break;
 				case "Armure":
 					heros.ajoutArmure(10);
 					repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
-					iterator.remove();
+					iteratorThing.remove();
 					break;
 				case "Medipack":
 					heros.ajoutVie(10);
 					repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
-					iterator.remove();
+					iteratorThing.remove();
 					break;
 				case "AmmoPackHG":
 					if (heros.getArme() != null && heros.getArme().getClass().getSimpleName().equals("HandGun")) {
 						heros.getArme().sumAmmo(10);
 						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
-						iterator.remove();
+						iteratorThing.remove();
 					}
 					break;
 				}
@@ -330,9 +345,9 @@ public class Logique extends KeyAdapter {
 
 				Ennemie ennemieTouche = null;
 
-				Iterator<Ennemie> iterator = listEnnemie.iterator();
-				while (iterator.hasNext()) {
-					Ennemie ennemie = iterator.next();
+				Iterator<Ennemie> iteratorEnnemi = listEnnemie.iterator();
+				while (iteratorEnnemi.hasNext()) {
+					Ennemie ennemie = iteratorEnnemi.next();
 					Rectangle2D rect = new Rectangle2D.Double(ennemie.getPosition().getdX() - r / 2,
 							ennemie.getPosition().getdY() - r / 2, r, r);
 

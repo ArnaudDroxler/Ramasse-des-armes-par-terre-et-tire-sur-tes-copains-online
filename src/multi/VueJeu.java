@@ -56,6 +56,7 @@ public class VueJeu extends Renderer {
 		if (logique.isFiring) {
 			drawTir();
 		}
+
 	}
 
 	private void drawTir() {
