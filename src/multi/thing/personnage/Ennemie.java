@@ -25,15 +25,15 @@ public class Ennemie extends Personnage {
 
 		if (dir == 1) {
 			// gauche 1
-			return MagasinImage.buffFantome3;
+			return MagasinImage.buffFantome5;
 		}
 		if (dir == 2) {
 			// gauche 2
-			return MagasinImage.buffFantome2;
+			return MagasinImage.buffFantome6;
 		}
 		if (dir == 3) {
 			// gauche 3
-			return MagasinImage.buffFantome1;
+			return MagasinImage.buffFantome7;
 		}
 		if (dir == 4) {
 			// dos 4
@@ -41,15 +41,15 @@ public class Ennemie extends Personnage {
 		}
 		if (dir == 5) {
 			// droite 5
-			return MagasinImage.buffFantome7;
+			return MagasinImage.buffFantome1;
 		}
 		if (dir == 6) {
 			// droite 6
-			return MagasinImage.buffFantome6;
+			return MagasinImage.buffFantome2;
 		}
 		if (dir == 7) {
 			// droite 7
-			return MagasinImage.buffFantome5;
+			return MagasinImage.buffFantome3;
 		}
 
 		// face 0
