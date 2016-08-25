@@ -1,11 +1,9 @@
 
 package tests.kryonet.implem.sliders;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.prefs.Preferences;
@@ -80,7 +78,6 @@ public class JFrameConnexion extends JFrame {
 							btnConnexion.setText("Connexion en cours");
 							btnConnexion.setEnabled(false);
 							connect();
-							// dispose(); // close the JFrame
 							btnConnexion.setText("Rejoindre");
 							btnConnexion.setEnabled(true);
 						} catch (RemoteException | UnknownHostException e) {
@@ -106,6 +103,7 @@ public class JFrameConnexion extends JFrame {
 	protected void connect() throws RemoteException, UnknownHostException {
 		try {
 			new PcClient(tfIp.getText(), tfPseudo.getText());
+			// dispose(); // close the JFrame
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			System.err.println("Serveur inaccessible");

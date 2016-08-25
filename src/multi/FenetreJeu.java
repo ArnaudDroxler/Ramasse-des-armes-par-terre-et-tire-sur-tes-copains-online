@@ -18,6 +18,7 @@ public class FenetreJeu extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Robot robot;
 	private boolean robotOff;
+	private boolean mousePressed;
 
 	public FenetreJeu(String pngFileName) throws AWTException {
 		Logique logique = new Logique(pngFileName);
@@ -42,10 +43,23 @@ public class FenetreJeu extends JFrame {
 		robot = new Robot();
 		robotOff = false;
 
+		mousePressed = false;
+
 		addMouseMotionListener(new MouseMotionAdapter() {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
+				if (!robotOff) {
+					int dx = e.getX() - getWidth() / 2;
+					logique.heros.rotate(dx);
+					robot.mouseMove((int) (getLocation().getX() + getWidth() / 2),
+							(int) (getLocation().getY() + getHeight() / 2));
+
+				}
+			}
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
 				if (!robotOff) {
 					int dx = e.getX() - getWidth() / 2;
 					logique.heros.rotate(dx);
@@ -69,7 +83,32 @@ public class FenetreJeu extends JFrame {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				logique.fire();
+
+				mousePressed = true;
+
+				Thread threadFire = new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						try {
+							while (mousePressed) {
+								logique.fire();
+								Thread.sleep((long) (1000 / logique.heros.getArme().getRoF()));
+							}
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
+				});
+
+				if (logique.heros.getArme() != null) {
+					threadFire.start();
+				}
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				mousePressed = false;
 			}
 
 		});

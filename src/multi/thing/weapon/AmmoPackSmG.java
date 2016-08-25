@@ -1,3 +1,4 @@
+
 package multi.thing.weapon;
 
 import java.awt.image.BufferedImage;
@@ -6,11 +7,11 @@ import java.awt.image.BufferedImage;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
-public class AmmoPackHG extends AmmoPack {
+public class AmmoPackSmG extends AmmoPack {
 
-	public AmmoPackHG(Vector2D pos) {
+	public AmmoPackSmG(Vector2D pos) {
 		super(pos);
-		ammo = 20;
+		ammo = 60;
 	}
 
 	@Override

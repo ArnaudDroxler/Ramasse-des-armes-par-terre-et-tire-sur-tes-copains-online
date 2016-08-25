@@ -6,8 +6,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.Stroke;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
@@ -20,7 +18,6 @@ import java.util.TreeMap;
 
 import multi.thing.Thing;
 import multi.thing.personnage.Joueur;
-import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
 public class Camera extends Renderer {
@@ -108,8 +105,13 @@ public class Camera extends Renderer {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				int w = getWidth();
-				int h = getHeight();
+				if (customSize) {
+					h = customHeight;
+					w = customWidth;
+				} else {
+					h = getHeight();
+					w = getWidth();
+				}
 				tabDistStripes = new double[w];
 
 				bufferThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -128,6 +130,11 @@ public class Camera extends Renderer {
 
 	private void draw(Graphics2D g2d) {
 		if (g2dBuff != null) {
+			if (customSize) {
+				double sx = getWidth() / (double) customWidth;
+				double sy = getHeight() / (double) customHeight;
+				g2d.scale(sx, sy);
+			}
 			// Ici ça permet de clear rapidement une bufferedImage
 			AlphaComposite alphacomp = AlphaComposite.getInstance(AlphaComposite.CLEAR, 0.0f);
 			g2dBuff.setComposite(alphacomp);
@@ -156,7 +163,7 @@ public class Camera extends Renderer {
 				// Pour centrage:
 				int stringLen = (int) g2d.getFontMetrics().getStringBounds(strMort, g2d).getWidth();
 				int stringHei = (int) g2d.getFontMetrics().getStringBounds(strMort, g2d).getHeight();
-				g2d.drawString(strMort, getWidth() / 2 - stringLen / 2, getHeight() / 2);
+				g2d.drawString(strMort, w / 2 - stringLen / 2, h / 2);
 			}
 		}
 	}
@@ -174,8 +181,8 @@ public class Camera extends Renderer {
 
 	private void drawWeapon(Graphics2D g2d) {
 		if (logique.heros.getArme() != null) {
-			g2d.drawImage(logique.heros.getArme().getSpriteHUD(), null, getWidth() / 2 - 80,
-					getHeight() - logique.heros.getArme().getSpriteHUD().getHeight());
+			g2d.drawImage(logique.heros.getArme().getSpriteHUD(), null, w / 2 - 80,
+					h - logique.heros.getArme().getSpriteHUD().getHeight());
 		}
 	}
 
@@ -189,8 +196,7 @@ public class Camera extends Renderer {
 	 */
 
 	private void algoRaycasting(Graphics2D g2d) {
-		int w = this.getWidth();
-		int h = this.getHeight();
+
 		for (int x = 0; x < w; x++) {
 			double cameraX = 2 * x / (double) w - 1;
 			Vector2D pos = posCamera.getPosition();
@@ -347,8 +353,6 @@ public class Camera extends Renderer {
 			int imageWidth = currentSprite.getWidth();
 			int imageHeight = currentSprite.getHeight();
 
-			int h = this.getHeight();
-			int w = this.getWidth();
 			int spriteScreenX = (int) (w / 2 * (1 + transformX / transformY));
 
 			// Calculer la hauteur du sprite en cours de dessin
@@ -415,6 +419,10 @@ public class Camera extends Renderer {
 	\*------------------------------------------------------------------*/
 
 	// Tools
+	private int h, w;
+	public static int customHeight = 540;
+	public static int customWidth = 720;
+	public static boolean customSize = true;
 
 	private ArrayList<Thing> listThings;
 	private TreeMap<Double, Thing> listAfficher;
