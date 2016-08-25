@@ -149,36 +149,31 @@ public class Logique extends KeyAdapter {
 			Thing thing = iterator.next();
 			if (collapse(thing.getPosition(), 1.2)) {
 				System.out.println(thing.getClass().getSimpleName());
-				switch (thing.getClass().getSimpleName()) {
-				case "HandGun":
+				if (thing instanceof HandGun) {
 					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
 						heros.setArme(new HandGun(heros.getPosition()));
-						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						repopObjet(thing.getPosition(), thing);
 						iterator.remove();
-					} else if (heros.getArme() != null
-							&& heros.getArme().getClass().getSimpleName().equals("HandGun")) {
+					} else if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
 						heros.getArme().sumAmmo(10);
-						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						repopObjet(thing.getPosition(), thing);
 						iterator.remove();
 					}
-					break;
-				case "SubmachineGun":
+				}
+				if (thing instanceof SubmachineGun) {
 					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
 						heros.setArme(new SubmachineGun(heros.getPosition()));
-						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						repopObjet(thing.getPosition(), thing);
 						iterator.remove();
-					} else if (heros.getArme() != null
-							&& heros.getArme().getClass().getSimpleName().equals("SubmachineGun")) {
+					} else if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
 						heros.getArme().sumAmmo(30);
-						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						repopObjet(thing.getPosition(), thing);
 						iterator.remove();
 					}
-					break;
 				}
 			}
 			if (collapse(thing.getPosition(), .8)) {
-				switch (thing.getClass().getSimpleName()) {
-				case "Ennemie":
+				if (thing instanceof Ennemie) {
 					heros.perdVie(5);
 					if (heros.getMort()) {
 
@@ -188,31 +183,31 @@ public class Logique extends KeyAdapter {
 						heros = new Joueur(map.getStartPosition(), new Vector2D(1, 0));
 						heros.setVitesse(0.05);
 					}
-					break;
-				case "Armure":
+				}
+				if (thing instanceof Armure) {
 					heros.ajoutArmure(10);
-					repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+					repopObjet(thing.getPosition(), thing);
 					iterator.remove();
-					break;
-				case "Medipack":
+				}
+				if (thing instanceof Medipack) {
 					heros.ajoutVie(10);
-					repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+					repopObjet(thing.getPosition(), thing);
 					iterator.remove();
-					break;
-				case "AmmoPackHG":
-					if (heros.getArme() != null && heros.getArme().getClass().getSimpleName().equals("HandGun")) {
+				}
+				if (thing instanceof AmmoPackHG) {
+					if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
+
 						heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
-						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						repopObjet(thing.getPosition(), thing);
 						iterator.remove();
 					}
-					break;
-				case "AmmoPackSmG":
-					if (heros.getArme() != null && heros.getArme().getClass().getSimpleName().equals("SubmachineGun")) {
+				}
+				if (thing instanceof AmmoPackSmG) {
+					if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
 						heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
-						repopObjet(thing.getPosition(), thing.getClass().getSimpleName());
+						repopObjet(thing.getPosition(), thing);
 						iterator.remove();
 					}
-					break;
 				}
 				System.out.println("vie restante: " + heros.getVie() + " / armure restante: " + heros.getArmure());
 			}
@@ -220,33 +215,30 @@ public class Logique extends KeyAdapter {
 		}
 	}
 
-	private void repopObjet(Vector2D position, String type) {
+	private void repopObjet(Vector2D position, Thing type) {
 		Thread threadrepop = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				try {
 					Thread.sleep(tempsRepop);
-					switch (type) {
-					case "Armure":
+					if (type instanceof Armure) {
 						listeThings.add(new Armure(position));
-						break;
-					case "Medipack":
+					}
+					if (type instanceof Medipack) {
 						listeThings.add(new Medipack(position));
-						break;
-					case "AmmoPackHG":
+					}
+					if (type instanceof AmmoPackHG) {
 						listeThings.add(new AmmoPackHG(position));
-						break;
-					case "AmmoPackSmG":
+					}
+					if (type instanceof AmmoPackSmG) {
 						listeThings.add(new AmmoPackSmG(position));
-						break;
-					case "HandGun":
+					}
+					if (type instanceof HandGun) {
 						listeThings.add(new HandGun(position));
-						break;
-					case "SubmachineGun":
+					}
+					if (type instanceof SubmachineGun) {
 						listeThings.add(new SubmachineGun(position));
-						break;
-
 					}
 
 				} catch (InterruptedException e) {
@@ -324,7 +316,7 @@ public class Logique extends KeyAdapter {
 
 	protected synchronized void fire() {
 
-		if ( heros.getArme().getAmmo() > 0) {
+		if (heros.getArme().getAmmo() > 0) {
 
 			heros.getArme().subAmmo(1);
 			heros.getArme().setFiring(true);
