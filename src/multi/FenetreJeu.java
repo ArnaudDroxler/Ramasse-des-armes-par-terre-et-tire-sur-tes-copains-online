@@ -81,25 +81,27 @@ public class FenetreJeu extends JFrame {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
-				mousePressed = true;
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					mousePressed = true;
 
-				Thread threadFire = new Thread(new Runnable() {
+					Thread threadFire = new Thread(new Runnable() {
 
-					@Override
-					public void run() {
-						try {
-							while (mousePressed) {
-								logique.fire();
-								Thread.sleep((long) (1000 / logique.heros.getArme().getRoF()));
+						@Override
+						public void run() {
+							try {
+								while (mousePressed) {
+									logique.fire();
+									Thread.sleep((long) (1000 / logique.heros.getArme().getRoF()));
+								}
+							} catch (InterruptedException e) {
+								e.printStackTrace();
 							}
-						} catch (InterruptedException e) {
-							e.printStackTrace();
 						}
-					}
-				});
+					});
 
-				if (logique.heros.getArme() != null) {
-					threadFire.start();
+					if (logique.heros.getArme() != null) {
+						threadFire.start();
+					}
 				}
 			}
 
