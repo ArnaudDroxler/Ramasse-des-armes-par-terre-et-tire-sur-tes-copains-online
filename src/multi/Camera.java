@@ -3,6 +3,7 @@ package multi;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
@@ -105,10 +106,10 @@ public class Camera extends Renderer {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
-				if(customSize){
+				if (customSize) {
 					h = customHeight;
 					w = customWidth;
-				}else{
+				} else {
 					h = getHeight();
 					w = getWidth();
 				}
@@ -130,9 +131,9 @@ public class Camera extends Renderer {
 
 	private void draw(Graphics2D g2d) {
 		if (g2dBuff != null) {
-			if(customSize){
-				double sx = getWidth()/(double)customWidth;
-				double sy = getHeight()/(double)customHeight;
+			if (customSize) {
+				double sx = getWidth() / (double) customWidth;
+				double sy = getHeight() / (double) customHeight;
 				g2d.scale(sx, sy);
 			}
 			// Ici ça permet de clear rapidement une bufferedImage
@@ -154,6 +155,17 @@ public class Camera extends Renderer {
 
 			// drawCursor(g2d);
 			drawWeapon(g2d);
+
+			if (logique.waitRespawn) {
+				String strMort = new String("Vous êtes mort!");
+				Font font = new Font("Helvetica", Font.BOLD, 60);
+				g2d.setFont(font);
+				g2d.setColor(Color.red);
+				// Pour centrage:
+				int stringLen = (int) g2d.getFontMetrics().getStringBounds(strMort, g2d).getWidth();
+				int stringHei = (int) g2d.getFontMetrics().getStringBounds(strMort, g2d).getHeight();
+				g2d.drawString(strMort, w / 2 - stringLen / 2, h / 2);
+			}
 		}
 	}
 
@@ -388,7 +400,7 @@ public class Camera extends Renderer {
 	\*------------------------------------------------------------------*/
 
 	// Tools
-	private int h,w;
+	private int h, w;
 	public static int customHeight = 540;
 	public static int customWidth = 720;
 	public static boolean customSize = false;

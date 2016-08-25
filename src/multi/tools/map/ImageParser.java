@@ -15,7 +15,9 @@ import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.weapon.AmmoPackHG;
+import multi.thing.weapon.AmmoPackSmG;
 import multi.thing.weapon.HandGun;
+import multi.thing.weapon.SubmachineGun;
 import multi.tools.raycasting.Vector2D;
 
 public class ImageParser {
@@ -74,15 +76,13 @@ public class ImageParser {
 						map.getListThing().add(new HandGun(new Vector2D(x, y)));
 					} // Mitraillette
 					else if (Integer.toHexString(rgb).equals("ff00ee00")) {
-						// map.getListThing().add(new Medipack(new Vector2D(x,
-						// y)));
+						map.getListThing().add(new SubmachineGun(new Vector2D(x, y)));
 					} // pack munition arme de poing
 					else if (Integer.toHexString(rgb).equals("ff00ff50")) {
 						map.getListThing().add(new AmmoPackHG(new Vector2D(x, y)));
 					} // pack munition mitraillette
 					else if (Integer.toHexString(rgb).equals("ff00ee50")) {
-						// map.getListThing().add(new Medipack(new Vector2D(x,
-						// y)));
+						map.getListThing().add(new AmmoPackSmG(new Vector2D(x, y)));
 					}
 					imgToParse.setRGB(x, y, Color.white.getRGB());
 				} else {
