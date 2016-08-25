@@ -247,7 +247,9 @@ public class Camera extends Renderer {
 				g2d.setColor(Color.GRAY);
 			}
 			int middle = h / 2;
-			g2d.drawLine(x, middle - lineHeight / 2, x, middle + lineHeight / 2);
+
+			// le -15 permet d'augmenter la hauteur des murs.
+			g2d.drawLine(x, middle - lineHeight / 2 - 15, x, middle + lineHeight / 2);
 		}
 	}
 
