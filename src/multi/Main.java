@@ -8,7 +8,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
-			new FenetreJeu("openworld.png");
+			new FenetreJeu("testRespawn.png");
 		} catch (AWTException e) {
 			e.printStackTrace();
 		}

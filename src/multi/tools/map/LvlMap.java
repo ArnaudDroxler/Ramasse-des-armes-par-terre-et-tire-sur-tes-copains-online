@@ -22,6 +22,8 @@ public abstract class LvlMap {
 	private Vector2D keyPosition;
 	private Key key;
 
+	private ArrayList<Vector2D> listStartPosition;
+
 	public abstract boolean inWall(Vector2D pos);
 
 	public abstract boolean inWall(double newx, double newy);
@@ -29,6 +31,7 @@ public abstract class LvlMap {
 	public LvlMap() {
 		listThing = new ArrayList<Thing>();
 		listEnnemie = new ArrayList<Ennemi>();
+		listStartPosition = new ArrayList<Vector2D>();
 	}
 
 	public BufferedImage getMapBackground() {
@@ -40,7 +43,11 @@ public abstract class LvlMap {
 	}
 
 	public Vector2D getStartPosition() {
-		return startPosition;
+
+		int posTab = (int) (Math.random() * listStartPosition.size());
+		return listStartPosition.get(posTab);
+
+		// return startPosition;
 	}
 
 	public ArrayList<Thing> getListThing() {
@@ -81,6 +88,14 @@ public abstract class LvlMap {
 
 	public Key getKey() {
 		return key;
+	}
+
+	public void setListStartPosition(ArrayList<Vector2D> listPos) {
+		listStartPosition = listPos;
+	}
+
+	public ArrayList<Vector2D> getListStartPosition() {
+		return listStartPosition;
 	}
 
 }

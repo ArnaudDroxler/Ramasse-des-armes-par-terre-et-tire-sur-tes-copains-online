@@ -65,7 +65,8 @@ public class ImageParser {
 						map.getListThing().add(new Armure(new Vector2D(x, y)));
 					} // point de spawn
 					else if (Integer.toHexString(rgb).equals("ffffff00")) {
-						map.setStartPosition(new Vector2D(x, y));
+						//map.setStartPosition(new Vector2D(x, y));
+						map.getListStartPosition().add(new Vector2D(x, y));
 					} // PNJ
 					else if (Integer.toHexString(rgb).equals("ffffffaa")) {
 						Ennemi joueur = new Ennemi(new Vector2D(x, y), new Vector2D(1, 0));
