@@ -13,7 +13,7 @@ import multi.thing.Key;
 import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
-import multi.thing.personnage.Ennemie;
+import multi.thing.personnage.Ennemi;
 import multi.thing.weapon.AmmoPackHG;
 import multi.thing.weapon.AmmoPackSmG;
 import multi.thing.weapon.HandGun;
@@ -65,10 +65,11 @@ public class ImageParser {
 						map.getListThing().add(new Armure(new Vector2D(x, y)));
 					} // point de spawn
 					else if (Integer.toHexString(rgb).equals("ffffff00")) {
-						map.setStartPosition(new Vector2D(x, y));
+						//map.setStartPosition(new Vector2D(x, y));
+						map.getListStartPosition().add(new Vector2D(x, y));
 					} // PNJ
 					else if (Integer.toHexString(rgb).equals("ffffffaa")) {
-						Ennemie joueur = new Ennemie(new Vector2D(x, y), new Vector2D(1, 0));
+						Ennemi joueur = new Ennemi(new Vector2D(x, y), new Vector2D(1, 0));
 						map.getListEnnemie().add(joueur);
 						map.getListThing().add(joueur);
 					} // Arme de Poing

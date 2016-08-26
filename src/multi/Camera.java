@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import multi.thing.Thing;
+import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
 import multi.tools.raycasting.Vector2D;
 
@@ -109,10 +110,10 @@ public class Camera extends Renderer {
 				if (customSize) {
 					h = customHeight;
 					w = customWidth;
-					
-					scaleHeight =(double) customHeight/InitialcustomHeight;
-					scaleWidth =(double) customWidth/InitialcustomWidth;
-					
+
+					scaleHeight = (double) customHeight / InitialcustomHeight;
+					scaleWidth = (double) customWidth / InitialcustomWidth;
+
 					System.out.println(scaleHeight);
 				} else {
 					h = getHeight();
@@ -154,6 +155,7 @@ public class Camera extends Renderer {
 				algoRaycasting(g2d);
 			} catch (Exception e) {
 				System.out.println("coucou y a probleme");
+				e.printStackTrace();
 			}
 			renderThings();
 			g2d.drawImage(bufferThings, 0, 0, null);
@@ -163,6 +165,10 @@ public class Camera extends Renderer {
 			if (logique.waitRespawn) {
 				String strMort = new String("Vous êtes mort!");
 				Font font = new Font("Helvetica", Font.BOLD, 60);
+				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
+				g2d.setColor(Color.black);
+				g2d.draw(rectangle);
+				g2d.fill(rectangle);
 				g2d.setFont(font);
 				g2d.setColor(Color.red);
 				// Pour centrage:
@@ -175,21 +181,18 @@ public class Camera extends Renderer {
 
 	private void drawCursor(Graphics2D g2d) {
 		g2d.setColor(Color.red);
-		g2d.drawLine(getWidth() / 2, getHeight() / 2 - 20, getWidth() / 2, getHeight() / 2 + 20);
-		g2d.drawLine(getWidth() / 2 - 20, getHeight() / 2, getWidth() / 2 + 20, getHeight() / 2);
-		g2d.drawLine(getWidth() / 2 - 5, getHeight() / 2 - 20, getWidth() / 2 + 5, getHeight() / 2 - 20);
-		g2d.drawLine(getWidth() / 2 - 5, getHeight() / 2 + 20, getWidth() / 2 + 5, getHeight() / 2 + 20);
-		g2d.drawLine(getWidth() / 2 - 20, getHeight() / 2 - 5, getWidth() / 2 - 20, getHeight() / 2 + 5);
-		g2d.drawLine(getWidth() / 2 + 20, getHeight() / 2 - 5, getWidth() / 2 + 20, getHeight() / 2 + 5);
+		g2d.drawLine(w / 2, h / 2 - 20, w / 2, h / 2 + 20);
+		g2d.drawLine(w / 2 - 20, h / 2, w / 2 + 20, h / 2);
+		g2d.drawLine(w / 2 - 5, h / 2 - 20, w / 2 + 5, h / 2 - 20);
+		g2d.drawLine(w / 2 - 5, h / 2 + 20, w / 2 + 5, h / 2 + 20);
+		g2d.drawLine(w / 2 - 20, h / 2 - 5, w / 2 - 20, h / 2 + 5);
+		g2d.drawLine(w / 2 + 20, h / 2 - 5, w / 2 + 20, h / 2 + 5);
 	}
 
 	private void drawWeapon(Graphics2D g2d) {
 		if (logique.heros.getArme() != null) {
-			
-			
 			BufferedImage img = scale(logique.heros.getArme().getSpriteHUD());
-			
-			g2d.drawImage(img, null, w / 2 , h - img.getHeight());
+			g2d.drawImage(img, null, w / 2, h - img.getHeight());
 		}
 	}
 
@@ -200,7 +203,8 @@ public class Camera extends Renderer {
 		Graphics2D graphics = biNew.createGraphics();
 		graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 		graphics.drawImage(bi, 0, 0, width, height, null);
 		graphics.dispose();
 		return biNew;
@@ -256,7 +260,8 @@ public class Camera extends Renderer {
 				stepY = 1;
 				sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY;
 			}
-			while (hit == 0) {
+			int step = 0;
+			while (hit == 0 && ++step < 1000) {
 				if (sideDistX < sideDistY) {
 					sideDistX += deltaDistX;
 					mapX += stepX;
@@ -266,7 +271,6 @@ public class Camera extends Renderer {
 					mapY += stepY;
 					side = 1;
 				}
-
 				if (logique.getMap().inWall(mapX, mapY)) {
 					hit = 1;
 				}
@@ -322,52 +326,30 @@ public class Camera extends Renderer {
 			double transformX = projected.getdX();
 			double transformY = projected.getdY();
 
-			// BufferedImage currentSprite = MagasinImage.buffYoanBlanc;
-			// BufferedImage currentSprite = MagasinImage.getNextSprite();
-
-			switch (current.getClass().getSimpleName()) {
-			case "Ennemie":
+			if (current instanceof Ennemi) {
 				// Calcul de l'angle
-				double angle = posCamera.getDirection().getAngleOriente(current.getDirection());
-				// en fonction de l'angle, attribuer le bon int (1,2,3,4)
-				if (angle >= -(Math.PI / 8) && angle <= (Math.PI / 8)) {
-					dir = 0;
-					currentSprite = current.getSprite(dir);
-				}
-				if (angle < -(Math.PI / 8) && angle > -3 * (Math.PI / 8)) {
-					dir = 1;
-					currentSprite = current.getSprite(dir);
-				}
-				if (angle <= -3 * (Math.PI / 8) && angle >= -5 * (Math.PI / 8)) {
-					dir = 2;
-					currentSprite = current.getSprite(dir);
-				}
-				if (angle < -5 * (Math.PI / 8) && angle > -7 * (Math.PI / 8)) {
-					dir = 3;
-					currentSprite = current.getSprite(dir);
-				}
-				if (angle <= -7 * (Math.PI / 8) || angle >= 7 * (Math.PI / 8)) {
-					dir = 4;
-					currentSprite = current.getSprite(dir);
-				}
-				if (angle < 7 * (Math.PI / 8) && angle > 5 * (Math.PI / 8)) {
-					dir = 5;
-					currentSprite = current.getSprite(dir);
-				}
-				if (angle <= 5 * (Math.PI / 8) && angle >= 3 * (Math.PI / 8)) {
-					dir = 6;
-					currentSprite = current.getSprite(dir);
-				}
-				if (angle < 3 * (Math.PI / 8) && angle > (Math.PI / 8)) {
-					dir = 7;
-					currentSprite = current.getSprite(dir);
-				}
-
-				break;
-
-			default:
+				// v2 est le vecteur inverse à la direction de l'ennemi
+				Vector2D v2 = current.getDirection().mult(-1);
+				// v1 est le vecteur qui relie la camera à l'ennemi
+				double dx = current.getPosition().getdX() - posCamera.getPosition().getdX();
+				double dy = current.getPosition().getdY() - posCamera.getPosition().getdY();
+				Vector2D v1 = new Vector2D(dx, dy);
+				// l'angle dirigé de v2 et v1, merci à
+				// http://stackoverflow.com/questions/21483999/using-atan2-to-find-angle-between-two-vectors
+				double angle = Math.atan2(v2.getdY(), v2.getdX()) - Math.atan2(v1.getdY(), v1.getdX());
+				if (angle < 0)
+					angle += 2 * Math.PI;
+				// le nombre d'angles de vue possibles pour cet ennemi
+				int nbSecteurs = current.getNbSecteurs();
+				// l'angle de vue choisi selon l'angle
+				int secteur = (int) (((nbSecteurs * angle / (2 * Math.PI)) + 0.5) % nbSecteurs);
+				/*
+				 * secteurs : 6 5 7 4 ennemi-> 0 3 1 2 l'image 1 de l'ennemi
+				 * sera chargée si le joueur est en 1 etc...
+				 */
+				currentSprite = current.getSprite(secteur);
+			} else {
 				currentSprite = current.getSprite();
-				break;
 			}
 
 			int imageWidth = currentSprite.getWidth();
@@ -440,23 +422,28 @@ public class Camera extends Renderer {
 
 	// Tools
 	private int h, w;
+
 	public static int InitialcustomHeight = 288;
 	public static int InitialcustomWidth = 512;
-	
-	/*public static int customHeight = 360;
-	public static int customWidth = 640;*/
-	
+
+	/*
+	 * public static int customHeight = 360; public static int customWidth =
+	 * 640;
+	 */
+
 	public static int customHeight = 720;
 	public static int customWidth = 1280;
-	
-	/*public static int customHeight = 1080;
-	public static int customWidth = 1920;*/
+
+	/*
+	 * public static int customHeight = 1080; public static int customWidth =
+	 * 1920;
+	 */
 
 	public static boolean customSize = true;
-	
-	private static  double scaleWidth;
-	private static  double scaleHeight;
-	
+
+	private static double scaleWidth;
+	private static double scaleHeight;
+
 	private ArrayList<Thing> listThings;
 	private TreeMap<Double, Thing> listAfficher;
 

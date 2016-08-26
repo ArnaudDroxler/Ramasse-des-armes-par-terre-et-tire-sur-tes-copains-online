@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import multi.thing.Key;
 import multi.thing.Monstre;
 import multi.thing.Thing;
-import multi.thing.personnage.Ennemie;
+import multi.thing.personnage.Ennemi;
 import multi.tools.raycasting.Vector2D;
 
 public abstract class LvlMap {
@@ -15,12 +15,14 @@ public abstract class LvlMap {
 	protected int height;
 	private BufferedImage mapBackground;
 	private ArrayList<Thing> listThing;
-	private ArrayList<Ennemie> listEnnemie;
+	private ArrayList<Ennemi> listEnnemie;
 	private Vector2D startPosition;
 	protected Vector2D startDirection;
 	private Vector2D goalPosition;
 	private Vector2D keyPosition;
 	private Key key;
+
+	private ArrayList<Vector2D> listStartPosition;
 
 	public abstract boolean inWall(Vector2D pos);
 
@@ -28,7 +30,8 @@ public abstract class LvlMap {
 
 	public LvlMap() {
 		listThing = new ArrayList<Thing>();
-		listEnnemie = new ArrayList<Ennemie>();
+		listEnnemie = new ArrayList<Ennemi>();
+		listStartPosition = new ArrayList<Vector2D>();
 	}
 
 	public BufferedImage getMapBackground() {
@@ -40,14 +43,18 @@ public abstract class LvlMap {
 	}
 
 	public Vector2D getStartPosition() {
-		return startPosition;
+
+		int posTab = (int) (Math.random() * listStartPosition.size());
+		return listStartPosition.get(posTab);
+
+		// return startPosition;
 	}
 
 	public ArrayList<Thing> getListThing() {
 		return listThing;
 	}
 
-	public ArrayList<Ennemie> getListEnnemie() {
+	public ArrayList<Ennemi> getListEnnemie() {
 		return listEnnemie;
 	}
 
@@ -81,6 +88,14 @@ public abstract class LvlMap {
 
 	public Key getKey() {
 		return key;
+	}
+
+	public void setListStartPosition(ArrayList<Vector2D> listPos) {
+		listStartPosition = listPos;
+	}
+
+	public ArrayList<Vector2D> getListStartPosition() {
+		return listStartPosition;
 	}
 
 }

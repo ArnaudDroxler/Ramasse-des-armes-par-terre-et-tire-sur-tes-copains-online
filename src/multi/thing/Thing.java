@@ -4,6 +4,7 @@ package multi.thing;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
 public abstract class Thing {
@@ -143,6 +144,9 @@ public abstract class Thing {
 
 	public BufferedImage getSprite(int dir) {
 		return null;
+	}
+	public int getNbSecteurs(){
+		return 1;
 	}
 
 }

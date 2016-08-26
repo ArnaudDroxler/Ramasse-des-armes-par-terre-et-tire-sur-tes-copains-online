@@ -9,6 +9,7 @@ public class algoPiergiovanni {
 	}
 
 	public static double algoRaycasting(Vector2D pos, Vector2D dir, LvlMap map) {
+		System.out.println("wesh");
 		double rayPosX = pos.getdX();
 		double rayPosY = pos.getdY();
 		double rayDirX = dir.getdX();
@@ -44,6 +45,7 @@ public class algoPiergiovanni {
 			stepY = 1;
 			sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY;
 		}
+		
 		while (hit == 0) {
 			if (sideDistX < sideDistY) {
 				sideDistX += deltaDistX;
