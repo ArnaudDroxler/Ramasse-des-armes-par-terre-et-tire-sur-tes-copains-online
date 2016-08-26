@@ -179,12 +179,57 @@ public class Logique extends KeyAdapter {
 					if (heros.getMort()) {
 
 						// TODO: random pour le nouveau point de spawn,
-						// Ajout des points à la personne qui nous a tué.
+
+						// Envoyer comme point de repop la position la plus loin
+						// du point central calculé avant
 
 						try {
 							waitRespawn = true;
-							Thread.sleep(10000);
-							heros = new Joueur(map.getStartPosition(), new Vector2D(1, 0));
+							Thread.sleep(5000);
+
+							// Récupérer position de tous les ennemis et
+							// calculer
+							// point central
+							Vector2D vecPointCentral = new Vector2D();
+							for (int i = 0; i < listEnnemie.size(); i++) {
+								// Bizarre, méthode add qui ne fonctionne pas!
+								// vecPointCentral.add(listEnnemie.get(i).getPosition());
+
+								vecPointCentral
+										.setdX(vecPointCentral.getdX() + listEnnemie.get(i).getPosition().getdX());
+								vecPointCentral
+										.setdY(vecPointCentral.getdY() + listEnnemie.get(i).getPosition().getdY());
+							}
+
+							System.out.println(vecPointCentral);
+							// Meme bug bizarre que la fonction add
+							// vecPointCentral.div(listEnnemie.size());
+
+							vecPointCentral.setdX(vecPointCentral.getdX() / listEnnemie.size());
+							vecPointCentral.setdY(vecPointCentral.getdY() / listEnnemie.size());
+
+							System.out.println(vecPointCentral);
+
+							Vector2D pointRespawn = new Vector2D();
+
+							// Calculer point le plus loin de la liste des
+							// positions de départ
+							double normCentre = vecPointCentral.norm();
+							double normMax = 0;
+
+							for (int i = 0; i < map.getListStartPosition().size(); i++) {
+
+								if (Math.abs(normCentre - map.getListStartPosition().get(i).norm()) > normMax) {
+									normMax = Math.abs(normCentre - map.getListStartPosition().get(i).norm());
+
+									pointRespawn.setdX(map.getListStartPosition().get(i).getdX());
+									pointRespawn.setdY(map.getListStartPosition().get(i).getdY());
+
+								}
+
+							}
+
+							heros = new Joueur(pointRespawn, new Vector2D(1, 0));
 							heros.setVitesse(0.05);
 							waitRespawn = false;
 							mort = true;
