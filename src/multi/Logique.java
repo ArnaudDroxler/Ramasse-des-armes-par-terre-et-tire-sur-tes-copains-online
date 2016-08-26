@@ -320,12 +320,6 @@ public class Logique extends KeyAdapter {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-
-		/*
-		 * if (e.getKeyCode() == KeyEvent.VK_SPACE) { if
-		 * (!touchesEnfoncees.contains(e.getKeyCode())) { fire(); } }
-		 */
-
 		touchesEnfoncees.add(e.getKeyCode());
 	}
 
