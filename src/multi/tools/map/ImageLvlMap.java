@@ -20,11 +20,14 @@ public class ImageLvlMap extends LvlMap {
 
 	@Override
 	public boolean inWall(double x, double y) {
+		// vérifie si le point donné est dans l'image
+		// pour éviter de chercher dans une mémoire inexistante
 		if(x>=0 && x < getMapBackground().getWidth() && y>=0 && y < getMapBackground().getHeight()){
+			// si le pixel qui correspond à ce point est noir, on est dans un mur, on envoie true
 			return (getMapBackground().getRGB((int)x, (int)y) == Color.black.getRGB()); 
-		}else{
-			return false;
 		}
+		// si on est en dehors de la map
+		return false;
 	}
 
 }

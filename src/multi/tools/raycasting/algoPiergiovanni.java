@@ -9,6 +9,7 @@ public class algoPiergiovanni {
 	}
 
 	public static double algoRaycasting(Vector2D pos, Vector2D dir, LvlMap map) {
+		System.out.println("wesh");
 		double rayPosX = pos.getdX();
 		double rayPosY = pos.getdY();
 		double rayDirX = dir.getdX();
