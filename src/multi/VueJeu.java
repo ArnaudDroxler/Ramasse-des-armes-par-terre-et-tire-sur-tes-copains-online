@@ -6,8 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
+import java.util.Iterator;
 
 import multi.thing.Thing;
+import multi.thing.personnage.Ennemi;
 
 public class VueJeu extends Renderer {
 
@@ -54,15 +57,34 @@ public class VueJeu extends Renderer {
 		g2d.fillRect(0, -1, (int) zoom, 2);
 
 		if (logique.isFiring) {
-			drawTir();
+			//drawTir();
 		}
 	}
 
 	private void drawTir() {
-		double x = logique.fireLine.getX2() - logique.fireLine.getX1();
-		double y = logique.fireLine.getY2() - logique.fireLine.getY1();
-		double d = Math.sqrt(x * x + y * y);
-		g2d.drawLine(0, 0, (int) (d * zoom), 0);
+		
+		 double x = logique.fireLine.getX2() - logique.fireLine.getX1();
+		 double y = logique.fireLine.getY2() - logique.fireLine.getY1();
+		 double d = Math.sqrt(x * x + y * y); g2d.drawLine(0, 0, (int) (d *zoom), 0);
+		
+		/*int i=0;
+		/*Iterator<Line2D> iterator = logique.fireLineList.iterator();
+		while (iterator.hasNext()) {
+			Line2D fireLine = iterator.next();
+			*/
+		/*for (Line2D fireLine : logique.fireLineList) {
+			
+			//Line2D fireLine = logique.fireLineList.get(3);
+
+			double x = fireLine.getX2() - fireLine.getX1();
+			double y = fireLine.getY2() - fireLine.getY1();
+			double d = Math.sqrt(x * x + y * y);
+			
+			g2d.drawLine(0, 0, (int) (y*zoom), (int)(x*zoom ));
+			//g2d.drawLine((int) fireLine.getX1(),(int) fireLine.getX2(),(int)fireLine.getY1(), (int)fireLine.getY2());
+			*/
+		//}
+		
 	}
 
 	private void drawMonstres(AffineTransform init) {
@@ -72,7 +94,7 @@ public class VueJeu extends Renderer {
 		for (Thing monstre : logique.listEnnemie) {
 			g2d.translate(monstre.getPosition().getdX() * zoom, monstre.getPosition().getdY() * zoom);
 			g2d.rotate(monstre.getDirection().getTheta());
-			g2d.fillOval((int) (- zoom / 2), ((int) (- zoom / 2)), a, a);
+			g2d.fillOval((int) (-zoom / 2), ((int) (-zoom / 2)), a, a);
 			g2d.fillRect(0, -1, (int) zoom, 2);
 			g2d.setTransform(init);
 		}
