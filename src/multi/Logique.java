@@ -303,18 +303,11 @@ public class Logique extends KeyAdapter {
 					// point central
 					Vector2D vecPointCentral = new Vector2D();
 					for (int i = 0; i < listEnnemie.size(); i++) {
-						// Bizarre, méthode add qui ne fonctionne pas!
-						// vecPointCentral.add(listEnnemie.get(i).getPosition());
+						vecPointCentral = vecPointCentral.add(listEnnemie.get(i).getPosition());
 
-						vecPointCentral.setdX(vecPointCentral.getdX() + listEnnemie.get(i).getPosition().getdX());
-						vecPointCentral.setdY(vecPointCentral.getdY() + listEnnemie.get(i).getPosition().getdY());
 					}
 
-					// Meme bug bizarre que la fonction add
-					// vecPointCentral.div(listEnnemie.size());
-
-					vecPointCentral.setdX(vecPointCentral.getdX() / listEnnemie.size());
-					vecPointCentral.setdY(vecPointCentral.getdY() / listEnnemie.size());
+					vecPointCentral = vecPointCentral.div(listEnnemie.size());
 
 					Vector2D pointRespawn = new Vector2D();
 

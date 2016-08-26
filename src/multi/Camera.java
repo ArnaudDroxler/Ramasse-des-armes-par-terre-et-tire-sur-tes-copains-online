@@ -184,7 +184,7 @@ public class Camera extends Renderer {
 				// g2d.drawString(strMort, w / 2 - stringLen / 2, h / 2);
 			}
 
-			if (logique.heros.prendDegats()) {
+			if (logique.heros.prendDegats() && !logique.heros.getMort()) {
 				Point2D center = new Point2D.Float(w / 2, h / 2);
 				float radius = w / 2;
 				float[] dist = { 0.0f, 0.9f };
@@ -459,10 +459,10 @@ public class Camera extends Renderer {
 	public static int customHeight = 720;
 	public static int customWidth = 1280;
 
-	
-	 /*public static int customHeight = 1080;
-	 public static int customWidth =1920;*/
-	 
+	/*
+	 * public static int customHeight = 1080; public static int customWidth
+	 * =1920;
+	 */
 
 	public static boolean customSize = true;
 
