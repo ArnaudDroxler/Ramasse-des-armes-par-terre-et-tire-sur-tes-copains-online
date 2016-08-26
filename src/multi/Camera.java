@@ -159,6 +159,10 @@ public class Camera extends Renderer {
 			if (logique.waitRespawn) {
 				String strMort = new String("Vous êtes mort!");
 				Font font = new Font("Helvetica", Font.BOLD, 60);
+				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
+				g2d.setColor(Color.black);
+				g2d.draw(rectangle);
+				g2d.fill(rectangle);
 				g2d.setFont(font);
 				g2d.setColor(Color.red);
 				// Pour centrage:
@@ -303,31 +307,29 @@ public class Camera extends Renderer {
 			double transformX = projected.getdX();
 			double transformY = projected.getdY();
 
-			if(current instanceof Ennemi){
+			if (current instanceof Ennemi) {
 				// Calcul de l'angle
 				// v2 est le vecteur inverse à la direction de l'ennemi
 				Vector2D v2 = current.getDirection().mult(-1);
 				// v1 est le vecteur qui relie la camera à l'ennemi
 				double dx = current.getPosition().getdX() - posCamera.getPosition().getdX();
 				double dy = current.getPosition().getdY() - posCamera.getPosition().getdY();
-				Vector2D v1 = new Vector2D(dx,dy);
-				// l'angle dirigé de v2 et v1, merci à http://stackoverflow.com/questions/21483999/using-atan2-to-find-angle-between-two-vectors
+				Vector2D v1 = new Vector2D(dx, dy);
+				// l'angle dirigé de v2 et v1, merci à
+				// http://stackoverflow.com/questions/21483999/using-atan2-to-find-angle-between-two-vectors
 				double angle = Math.atan2(v2.getdY(), v2.getdX()) - Math.atan2(v1.getdY(), v1.getdX());
-				if (angle < 0) angle += 2 * Math.PI;
+				if (angle < 0)
+					angle += 2 * Math.PI;
 				// le nombre d'angles de vue possibles pour cet ennemi
 				int nbSecteurs = current.getNbSecteurs();
 				// l'angle de vue choisi selon l'angle
-				int secteur = (int) (((nbSecteurs*angle/(2*Math.PI)) + 0.5)%nbSecteurs);
-				/*  secteurs :
-											6
-										5		7
-									4	 ennemi->	0
-										3		1
-											2
-				l'image 1 de l'ennemi sera chargée si le joueur est en 1 etc...
-				*/
+				int secteur = (int) (((nbSecteurs * angle / (2 * Math.PI)) + 0.5) % nbSecteurs);
+				/*
+				 * secteurs : 6 5 7 4 ennemi-> 0 3 1 2 l'image 1 de l'ennemi
+				 * sera chargée si le joueur est en 1 etc...
+				 */
 				currentSprite = current.getSprite(secteur);
-			}else{
+			} else {
 				currentSprite = current.getSprite();
 			}
 
