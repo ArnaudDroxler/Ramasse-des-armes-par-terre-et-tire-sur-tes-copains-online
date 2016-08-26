@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
@@ -109,6 +110,11 @@ public class Camera extends Renderer {
 				if (customSize) {
 					h = customHeight;
 					w = customWidth;
+
+					scaleHeight = (double) customHeight / InitialcustomHeight;
+					scaleWidth = (double) customWidth / InitialcustomWidth;
+
+					System.out.println(scaleHeight);
 				} else {
 					h = getHeight();
 					w = getWidth();
@@ -154,7 +160,6 @@ public class Camera extends Renderer {
 			renderThings();
 			g2d.drawImage(bufferThings, 0, 0, null);
 
-			// drawCursor(g2d);
 			drawWeapon(g2d);
 
 			if (logique.waitRespawn) {
@@ -186,9 +191,23 @@ public class Camera extends Renderer {
 
 	private void drawWeapon(Graphics2D g2d) {
 		if (logique.heros.getArme() != null) {
-			g2d.drawImage(logique.heros.getArme().getSpriteHUD(), null, w / 2 - 80,
-					h - logique.heros.getArme().getSpriteHUD().getHeight());
+			BufferedImage img = scale(logique.heros.getArme().getSpriteHUD());
+			g2d.drawImage(img, null, w / 2, h - img.getHeight());
 		}
+	}
+
+	public static BufferedImage scale(BufferedImage bi) {
+		int width = (int) (bi.getWidth() * scaleWidth);
+		int height = (int) (bi.getHeight() * scaleHeight);
+		BufferedImage biNew = new BufferedImage(width, height, bi.getType());
+		Graphics2D graphics = biNew.createGraphics();
+		graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		graphics.drawImage(bi, 0, 0, width, height, null);
+		graphics.dispose();
+		return biNew;
 	}
 
 	/**
@@ -200,7 +219,7 @@ public class Camera extends Renderer {
 	 * ========================================================
 	 */
 
-private void algoRaycasting(Graphics2D g2d) {
+	private void algoRaycasting(Graphics2D g2d) {
 
 		for (int x = 0; x < w; x++) {
 			double cameraX = 2 * x / (double) w - 1;
@@ -241,7 +260,7 @@ private void algoRaycasting(Graphics2D g2d) {
 				stepY = 1;
 				sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY;
 			}
-			int step=0;
+			int step = 0;
 			while (hit == 0 && ++step < 1000) {
 				if (sideDistX < sideDistY) {
 					sideDistX += deltaDistX;
@@ -403,9 +422,27 @@ private void algoRaycasting(Graphics2D g2d) {
 
 	// Tools
 	private int h, w;
-	public static int customHeight = 540;
-	public static int customWidth = 720;
-	public static boolean customSize = false;
+
+	public static int InitialcustomHeight = 288;
+	public static int InitialcustomWidth = 512;
+
+	/*
+	 * public static int customHeight = 360; public static int customWidth =
+	 * 640;
+	 */
+
+	public static int customHeight = 720;
+	public static int customWidth = 1280;
+
+	/*
+	 * public static int customHeight = 1080; public static int customWidth =
+	 * 1920;
+	 */
+
+	public static boolean customSize = true;
+
+	private static double scaleWidth;
+	private static double scaleHeight;
 
 	private ArrayList<Thing> listThings;
 	private TreeMap<Double, Thing> listAfficher;

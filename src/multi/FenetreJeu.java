@@ -19,6 +19,7 @@ public class FenetreJeu extends JFrame {
 	private Robot robot;
 	private boolean robotOff;
 	private boolean mousePressed;
+	private boolean isFiring;
 
 	public FenetreJeu(String pngFileName) throws AWTException {
 		Logique logique = new Logique(pngFileName);
@@ -31,12 +32,12 @@ public class FenetreJeu extends JFrame {
 
 		JFrame frameVueJeu = new JFrame();
 		frameVueJeu.add(vueJeu);
-		frameVueJeu.setSize(600, 600);
+		frameVueJeu.setSize(600,600);
 		frameVueJeu.setVisible(true);
 		frameVueJeu.addKeyListener(logique);
 
-		setSize(1000, 600);
-		setLocation(600, 0);
+		setSize(camera.customWidth,camera.customHeight);
+		setLocation(0, 0);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 
@@ -44,6 +45,7 @@ public class FenetreJeu extends JFrame {
 		robotOff = false;
 
 		mousePressed = false;
+		isFiring = false;
 
 		addMouseMotionListener(new MouseMotionAdapter() {
 
@@ -92,10 +94,12 @@ public class FenetreJeu extends JFrame {
 						@Override
 						public void run() {
 							try {
+								isFiring = true;
 								while (mousePressed) {
 									logique.fire();
 									Thread.sleep((long) (1000 / logique.heros.getArme().getRoF()));
 								}
+								isFiring = false;
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 
@@ -103,7 +107,7 @@ public class FenetreJeu extends JFrame {
 						}
 					});
 
-					if (logique.heros.getArme() != null) {
+					if (logique.heros.getArme() != null &&  !isFiring) {
 						threadFire.start();
 					}
 				}
