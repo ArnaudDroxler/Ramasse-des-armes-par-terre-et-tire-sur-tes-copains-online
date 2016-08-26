@@ -17,10 +17,16 @@ import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
 import multi.thing.weapon.AmmoPackHG;
+import multi.thing.weapon.AmmoPackPR;
+import multi.thing.weapon.AmmoPackSG;
 import multi.thing.weapon.AmmoPackSmG;
+import multi.thing.weapon.Cut;
 import multi.thing.weapon.AmmoPack;
 import multi.thing.weapon.HandGun;
+import multi.thing.weapon.PrecisionRifle;
+import multi.thing.weapon.ShootGun;
 import multi.thing.weapon.SubmachineGun;
+import multi.thing.weapon.Weapon;
 import multi.tools.GeometricTools;
 import multi.tools.map.ImageParser;
 import multi.tools.map.LvlMap;
@@ -152,26 +158,61 @@ public class Logique extends KeyAdapter {
 			Thing thing = iterator.next();
 			if (collapse(thing.getPosition(), 1.2) && !heros.getMort()) {
 				System.out.println(thing.getClass().getSimpleName());
-				if (thing instanceof HandGun) {
-					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-						heros.setArme(new HandGun(heros.getPosition()));
-						repopObjet(thing.getPosition(), thing);
-						iterator.remove();
-					} else if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
-						heros.getArme().sumAmmo(10);
-						repopObjet(thing.getPosition(), thing);
-						iterator.remove();
+				if (thing instanceof Weapon) {
+					if (thing instanceof HandGun) {
+						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+							heros.setArme(new HandGun(heros.getPosition()));
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						} else if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
+							heros.getArme().sumAmmo(10);
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
 					}
-				}
-				if (thing instanceof SubmachineGun) {
-					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-						heros.setArme(new SubmachineGun(heros.getPosition()));
-						repopObjet(thing.getPosition(), thing);
-						iterator.remove();
-					} else if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
-						heros.getArme().sumAmmo(30);
-						repopObjet(thing.getPosition(), thing);
-						iterator.remove();
+					if (thing instanceof SubmachineGun) {
+						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+							heros.setArme(new SubmachineGun(heros.getPosition()));
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						} else if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
+							heros.getArme().sumAmmo(30);
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
+					}
+					if (thing instanceof ShootGun) {
+						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+							heros.setArme(new ShootGun(heros.getPosition()));
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						} else if (heros.getArme() != null && heros.getArme() instanceof ShootGun) {
+							heros.getArme().sumAmmo(30);
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
+					}
+					if (thing instanceof PrecisionRifle) {
+						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+							heros.setArme(new PrecisionRifle(heros.getPosition()));
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						} else if (heros.getArme() != null && heros.getArme() instanceof PrecisionRifle) {
+							heros.getArme().sumAmmo(30);
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
+					}
+					if (thing instanceof Cut) {
+						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+							heros.setArme(new Cut(heros.getPosition()));
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						} else if (heros.getArme() != null && heros.getArme() instanceof Cut) {
+							heros.getArme().sumAmmo(30);
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
 					}
 				}
 			}
@@ -192,19 +233,35 @@ public class Logique extends KeyAdapter {
 					repopObjet(thing.getPosition(), thing);
 					iterator.remove();
 				}
-				if (thing instanceof AmmoPackHG) {
-					if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
+				if (thing instanceof AmmoPack) {
+					if (thing instanceof AmmoPackHG) {
+						if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
 
-						heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
-						repopObjet(thing.getPosition(), thing);
-						iterator.remove();
+							heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
 					}
-				}
-				if (thing instanceof AmmoPackSmG) {
-					if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
-						heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
-						repopObjet(thing.getPosition(), thing);
-						iterator.remove();
+					if (thing instanceof AmmoPackSmG) {
+						if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
+							heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
+					}
+					if (thing instanceof AmmoPackSG) {
+						if (heros.getArme() != null && heros.getArme() instanceof ShootGun) {
+							heros.getArme().sumAmmo(AmmoPackSG.getAmmo());
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
+					}
+					if (thing instanceof AmmoPackPR) {
+						if (heros.getArme() != null && heros.getArme() instanceof PrecisionRifle) {
+							heros.getArme().sumAmmo(AmmoPackPR.getAmmo());
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
 					}
 				}
 				System.out.println("vie restante: " + heros.getVie() + " / armure restante: " + heros.getArmure());
@@ -294,11 +351,26 @@ public class Logique extends KeyAdapter {
 					if (type instanceof AmmoPackSmG) {
 						listeThings.add(new AmmoPackSmG(position));
 					}
+					if (type instanceof AmmoPackSG) {
+						listeThings.add(new AmmoPackSG(position));
+					}
+					if (type instanceof AmmoPackPR) {
+						listeThings.add(new AmmoPackPR(position));
+					}
 					if (type instanceof HandGun) {
 						listeThings.add(new HandGun(position));
 					}
 					if (type instanceof SubmachineGun) {
 						listeThings.add(new SubmachineGun(position));
+					}
+					if (type instanceof ShootGun) {
+						listeThings.add(new ShootGun(position));
+					}
+					if (type instanceof PrecisionRifle) {
+						listeThings.add(new PrecisionRifle(position));
+					}
+					if (type instanceof Cut) {
+						listeThings.add(new Cut(position));
 					}
 
 				} catch (InterruptedException e) {
@@ -366,6 +438,31 @@ public class Logique extends KeyAdapter {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		touchesEnfoncees.add(e.getKeyCode());
+	}
+
+	public void mousePressed() {
+		Thread threadFire = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					isFiring = true;
+					while (FenetreJeu.mousePressed) {
+						fire();
+						Thread.sleep((long) (1000 / heros.getArme().getRoF()));
+					}
+					isFiring = false;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+
+				}
+			}
+		});
+
+		if (heros.getArme() != null && !isFiring) {
+			threadFire.start();
+		}
+
 	}
 
 	protected synchronized void fire() {
