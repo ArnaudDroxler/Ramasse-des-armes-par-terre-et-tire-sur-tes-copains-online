@@ -151,7 +151,6 @@ public class Logique extends KeyAdapter {
 		while (iterator.hasNext() && !mort) {
 			Thing thing = iterator.next();
 			if (collapse(thing.getPosition(), 1.2) && !heros.getMort()) {
-				System.out.println(thing.getClass().getSimpleName());
 				if (thing instanceof HandGun) {
 					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
 						heros.setArme(new HandGun(heros.getPosition()));
@@ -178,7 +177,9 @@ public class Logique extends KeyAdapter {
 			if (collapse(thing.getPosition(), .8) && !heros.getMort()) {
 				if (thing instanceof Ennemi) {
 					heros.perdVie(5);
+					animationDegatsPris();
 					if (heros.getMort()) {
+						mort = true;
 						respawn();
 					}
 				}
@@ -207,10 +208,28 @@ public class Logique extends KeyAdapter {
 						iterator.remove();
 					}
 				}
-				System.out.println("vie restante: " + heros.getVie() + " / armure restante: " + heros.getArmure());
 			}
 
 		}
+	}
+
+	private void animationDegatsPris() {
+		Thread threadDegats = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(1000);
+					heros.resetPrendDegats();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
+		threadDegats.start();
+
 	}
 
 	private void respawn() {
@@ -221,7 +240,6 @@ public class Logique extends KeyAdapter {
 			@Override
 			public void run() {
 				try {
-					System.out.println("respawn");
 					Thread.sleep(tempsRespawn);
 					// Récupérer position de tous les ennemis et
 					// calculer
@@ -235,14 +253,11 @@ public class Logique extends KeyAdapter {
 						vecPointCentral.setdY(vecPointCentral.getdY() + listEnnemie.get(i).getPosition().getdY());
 					}
 
-					System.out.println(vecPointCentral);
 					// Meme bug bizarre que la fonction add
 					// vecPointCentral.div(listEnnemie.size());
 
 					vecPointCentral.setdX(vecPointCentral.getdX() / listEnnemie.size());
 					vecPointCentral.setdY(vecPointCentral.getdY() / listEnnemie.size());
-
-					System.out.println(vecPointCentral);
 
 					Vector2D pointRespawn = new Vector2D();
 
@@ -264,6 +279,7 @@ public class Logique extends KeyAdapter {
 					}
 					heros.respawn();
 					heros.setPosition(pointRespawn);
+					mort = false;
 
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block

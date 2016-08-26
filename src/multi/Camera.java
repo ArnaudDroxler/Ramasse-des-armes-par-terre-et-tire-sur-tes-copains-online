@@ -6,10 +6,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -167,13 +169,12 @@ public class Camera extends Renderer {
 				Font font = new Font("Helvetica", Font.BOLD, 60);
 				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
 				Color couleur = new Color(0f, 0f, 0f, .5f);
-
 				g2d.setColor(couleur);
 				g2d.draw(rectangle);
 				g2d.fill(rectangle);
 				// g2d.setFont(font);
-				// g2d.setColor(Color.red);
-				// Pour centrage:
+				// g2d.setColor(new Color(1f, 0f, 0f, .5f));
+				// // Pour centrage:
 				// int stringLen = (int)
 				// g2d.getFontMetrics().getStringBounds(strMort,
 				// g2d).getWidth();
@@ -182,6 +183,24 @@ public class Camera extends Renderer {
 				// g2d).getHeight();
 				// g2d.drawString(strMort, w / 2 - stringLen / 2, h / 2);
 			}
+
+			if (logique.heros.prendDegats()) {
+				Point2D center = new Point2D.Float(w / 2, h / 2);
+				float radius = w / 2;
+				float[] dist = { 0.0f, 0.9f };
+
+				Color trans = new Color(1f, 1f, 1f, 0f);
+				Color rouge = new Color(1f, 0f, 0f, .5f);
+
+				Color[] colors = { trans, rouge };
+				RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
+
+				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
+				g2d.setPaint(gradient);
+				g2d.fill(rectangle);
+
+			}
+
 		}
 	}
 
