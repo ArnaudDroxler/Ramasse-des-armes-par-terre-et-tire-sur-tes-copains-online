@@ -10,15 +10,17 @@ public abstract class Personnage extends Thing {
 	protected int armure;
 	protected Weapon arme;
 	protected boolean estMort;
+	protected boolean prendDegats;
 
 	public Personnage(Vector2D pos, Vector2D dir) {
 		super(pos, dir);
 		estMort = false;
 		setVitesse(0.05);
+		prendDegats = false;
 	}
 
 	public void perdVie(int pv) {
-
+		prendDegats = true;
 		// Si on a de l'armure, baisse d'abord l'armure
 		if (armure > 0) {
 			armure -= pv;
@@ -49,6 +51,14 @@ public abstract class Personnage extends Thing {
 
 	public boolean getMort() {
 		return estMort;
+	}
+
+	public boolean prendDegats() {
+		return prendDegats;
+	}
+	
+	public void resetPrendDegats(){
+		prendDegats = false;
 	}
 
 }

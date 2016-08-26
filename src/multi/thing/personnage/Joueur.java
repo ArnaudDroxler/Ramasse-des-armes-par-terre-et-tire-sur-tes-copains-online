@@ -40,14 +40,10 @@ public class Joueur extends Personnage {
 		this.arme = arme;
 	}
 
-	public void respawn(Vector2D startPosition, Vector2D startDirection) {
+	public void respawn() {
 		estMort = false;
-		this.setPosition(startPosition);
-		this.setDirection(startDirection);
 		vie = 100;
 		armure = 50;
-		setArme(null);
-
 	}
 
 }

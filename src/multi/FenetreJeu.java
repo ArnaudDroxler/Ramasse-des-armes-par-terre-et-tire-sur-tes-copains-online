@@ -4,6 +4,7 @@ import java.awt.AWTException;
 import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.Robot;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
@@ -18,7 +19,7 @@ public class FenetreJeu extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Robot robot;
 	private boolean robotOff;
-	private boolean mousePressed;
+	public static boolean mousePressed;
 
 	public FenetreJeu(String pngFileName) throws AWTException {
 		Logique logique = new Logique(pngFileName);
@@ -35,8 +36,8 @@ public class FenetreJeu extends JFrame {
 		frameVueJeu.setVisible(true);
 		frameVueJeu.addKeyListener(logique);
 
-		setSize(1000, 600);
-		setLocation(600, 0);
+		setSize(camera.customWidth, camera.customHeight);
+		setLocation(0, 0);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
 
@@ -86,26 +87,7 @@ public class FenetreJeu extends JFrame {
 
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					mousePressed = true;
-
-					Thread threadFire = new Thread(new Runnable() {
-
-						@Override
-						public void run() {
-							try {
-								while (mousePressed) {
-									logique.fire();
-									Thread.sleep((long) (1000 / logique.heros.getArme().getRoF()));
-								}
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-
-							}
-						}
-					});
-
-					if (logique.heros.getArme() != null) {
-						threadFire.start();
-					}
+					logique.mousePressed();
 				}
 			}
 
@@ -116,19 +98,7 @@ public class FenetreJeu extends JFrame {
 
 		});
 
-		addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-
-			}
+		addKeyListener(new KeyAdapter() {
 
 			@Override
 			public void keyPressed(KeyEvent e) {

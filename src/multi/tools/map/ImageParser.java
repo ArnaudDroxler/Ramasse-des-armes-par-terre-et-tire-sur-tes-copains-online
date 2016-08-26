@@ -15,8 +15,13 @@ import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.weapon.AmmoPackHG;
+import multi.thing.weapon.AmmoPackPR;
+import multi.thing.weapon.AmmoPackSG;
 import multi.thing.weapon.AmmoPackSmG;
+import multi.thing.weapon.Cut;
 import multi.thing.weapon.HandGun;
+import multi.thing.weapon.PrecisionRifle;
+import multi.thing.weapon.ShootGun;
 import multi.thing.weapon.SubmachineGun;
 import multi.tools.raycasting.Vector2D;
 
@@ -65,7 +70,8 @@ public class ImageParser {
 						map.getListThing().add(new Armure(new Vector2D(x, y)));
 					} // point de spawn
 					else if (Integer.toHexString(rgb).equals("ffffff00")) {
-						map.setStartPosition(new Vector2D(x, y));
+						//map.setStartPosition(new Vector2D(x, y));
+						map.getListStartPosition().add(new Vector2D(x, y));
 					} // PNJ
 					else if (Integer.toHexString(rgb).equals("ffffffaa")) {
 						Ennemi joueur = new Ennemi(new Vector2D(x, y), new Vector2D(1, 0));
@@ -77,12 +83,27 @@ public class ImageParser {
 					} // Mitraillette
 					else if (Integer.toHexString(rgb).equals("ff00ee00")) {
 						map.getListThing().add(new SubmachineGun(new Vector2D(x, y)));
+					} // Fusil a ponpe
+					else if (Integer.toHexString(rgb).equals("ff00dd00")) {
+						map.getListThing().add(new ShootGun(new Vector2D(x, y)));
+					} // pack munition arme de poing
+					else if (Integer.toHexString(rgb).equals("ff00cc00")) {
+						map.getListThing().add(new PrecisionRifle(new Vector2D(x, y)));
+					} // pack munition arme de poing
+					else if (Integer.toHexString(rgb).equals("ff00bb00")) {
+						map.getListThing().add(new Cut(new Vector2D(x, y)));
 					} // pack munition arme de poing
 					else if (Integer.toHexString(rgb).equals("ff00ff50")) {
 						map.getListThing().add(new AmmoPackHG(new Vector2D(x, y)));
 					} // pack munition mitraillette
 					else if (Integer.toHexString(rgb).equals("ff00ee50")) {
 						map.getListThing().add(new AmmoPackSmG(new Vector2D(x, y)));
+					}// AmmoPackSG
+					else if (Integer.toHexString(rgb).equals("ff00dd50")) {
+						map.getListThing().add(new AmmoPackSG(new Vector2D(x, y)));
+					}// AmmoPackPR
+					else if (Integer.toHexString(rgb).equals("ff00cc50")) {
+						map.getListThing().add(new AmmoPackPR(new Vector2D(x, y)));
 					}
 					imgToParse.setRGB(x, y, Color.white.getRGB());
 				} else {

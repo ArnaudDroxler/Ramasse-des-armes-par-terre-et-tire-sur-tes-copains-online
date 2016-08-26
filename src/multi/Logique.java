@@ -17,10 +17,16 @@ import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
 import multi.thing.weapon.AmmoPackHG;
+import multi.thing.weapon.AmmoPackPR;
+import multi.thing.weapon.AmmoPackSG;
 import multi.thing.weapon.AmmoPackSmG;
+import multi.thing.weapon.Cut;
 import multi.thing.weapon.AmmoPack;
 import multi.thing.weapon.HandGun;
+import multi.thing.weapon.PrecisionRifle;
+import multi.thing.weapon.ShootGun;
 import multi.thing.weapon.SubmachineGun;
+import multi.thing.weapon.Weapon;
 import multi.tools.GeometricTools;
 import multi.tools.map.ImageParser;
 import multi.tools.map.LvlMap;
@@ -41,6 +47,7 @@ public class Logique extends KeyAdapter {
 	protected ArrayList<Thing> listeThings;
 	private boolean mort;
 	public boolean waitRespawn;
+	private long tempsRespawn;
 
 	// test vie et armure
 	protected ArrayList<Ennemi> listEnnemie;
@@ -48,6 +55,7 @@ public class Logique extends KeyAdapter {
 	public Logique(String nomMap) {
 		delay = 10;
 		tempsRepop = 15000;
+		tempsRespawn = 5000;
 
 		map = ImageParser.getMap(nomMap);
 
@@ -129,7 +137,7 @@ public class Logique extends KeyAdapter {
 		}
 
 		// collisison avec les murs
-		if (map.inWall(heros.getPosition())) {
+		if (map.inWall(heros.getPosition()) && !heros.getMort()) {
 			moveAlongWalls();
 		}
 
@@ -147,51 +155,72 @@ public class Logique extends KeyAdapter {
 		Iterator<Thing> iterator = listeThings.iterator();
 		while (iterator.hasNext() && !mort) {
 			Thing thing = iterator.next();
-			if (collapse(thing.getPosition(), 1.2)) {
-				System.out.println(thing.getClass().getSimpleName());
-				if (thing instanceof HandGun) {
-					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-						heros.setArme(new HandGun(heros.getPosition()));
-						repopObjet(thing.getPosition(), thing);
-						iterator.remove();
-					} else if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
-						heros.getArme().sumAmmo(10);
-						repopObjet(thing.getPosition(), thing);
-						iterator.remove();
+			if (collapse(thing.getPosition(), 1.2) && !heros.getMort()) {
+				if (thing instanceof Weapon) {
+					if (thing instanceof HandGun) {
+						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+							heros.setArme(new HandGun(heros.getPosition()));
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						} else if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
+							heros.getArme().sumAmmo(10);
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
 					}
-				}
-				if (thing instanceof SubmachineGun) {
-					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-						heros.setArme(new SubmachineGun(heros.getPosition()));
-						repopObjet(thing.getPosition(), thing);
-						iterator.remove();
-					} else if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
-						heros.getArme().sumAmmo(30);
-						repopObjet(thing.getPosition(), thing);
-						iterator.remove();
+					if (thing instanceof SubmachineGun) {
+						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+							heros.setArme(new SubmachineGun(heros.getPosition()));
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						} else if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
+							heros.getArme().sumAmmo(30);
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
+					}
+					if (thing instanceof ShootGun) {
+						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+							heros.setArme(new ShootGun(heros.getPosition()));
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						} else if (heros.getArme() != null && heros.getArme() instanceof ShootGun) {
+							heros.getArme().sumAmmo(30);
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
+					}
+					if (thing instanceof PrecisionRifle) {
+						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+							heros.setArme(new PrecisionRifle(heros.getPosition()));
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						} else if (heros.getArme() != null && heros.getArme() instanceof PrecisionRifle) {
+							heros.getArme().sumAmmo(30);
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
+					}
+					if (thing instanceof Cut) {
+						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+							heros.setArme(new Cut(heros.getPosition()));
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						} else if (heros.getArme() != null && heros.getArme() instanceof Cut) {
+							heros.getArme().sumAmmo(30);
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
 					}
 				}
 			}
-			if (collapse(thing.getPosition(), .8)) {
+			if (collapse(thing.getPosition(), .8) && !heros.getMort()) {
 				if (thing instanceof Ennemi) {
 					heros.perdVie(5);
+					animationDegatsPris();
 					if (heros.getMort()) {
-
-						// TODO: random pour le nouveau point de spawn,
-						// Ajout des points à la personne qui nous a tué.
-
-						try {
-							waitRespawn = true;
-							Thread.sleep(10000);
-							heros = new Joueur(map.getStartPosition(), new Vector2D(1, 0));
-							heros.setVitesse(0.05);
-							waitRespawn = false;
-							mort = true;
-						} catch (InterruptedException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-
+						mort = true;
+						respawn();
 					}
 				}
 				if (thing instanceof Armure) {
@@ -204,25 +233,111 @@ public class Logique extends KeyAdapter {
 					repopObjet(thing.getPosition(), thing);
 					iterator.remove();
 				}
-				if (thing instanceof AmmoPackHG) {
-					if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
+				if (thing instanceof AmmoPack) {
+					if (thing instanceof AmmoPackHG) {
+						if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
 
-						heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
-						repopObjet(thing.getPosition(), thing);
-						iterator.remove();
+							heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
+					}
+					if (thing instanceof AmmoPackSmG) {
+						if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
+							heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
+					}
+					if (thing instanceof AmmoPackSG) {
+						if (heros.getArme() != null && heros.getArme() instanceof ShootGun) {
+							heros.getArme().sumAmmo(AmmoPackSG.getAmmo());
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
+					}
+					if (thing instanceof AmmoPackPR) {
+						if (heros.getArme() != null && heros.getArme() instanceof PrecisionRifle) {
+							heros.getArme().sumAmmo(AmmoPackPR.getAmmo());
+							repopObjet(thing.getPosition(), thing);
+							iterator.remove();
+						}
 					}
 				}
-				if (thing instanceof AmmoPackSmG) {
-					if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
-						heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
-						repopObjet(thing.getPosition(), thing);
-						iterator.remove();
-					}
-				}
-				System.out.println("vie restante: " + heros.getVie() + " / armure restante: " + heros.getArmure());
 			}
 
 		}
+	}
+
+	private void animationDegatsPris() {
+		Thread threadDegats = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(1000);
+					heros.resetPrendDegats();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
+		threadDegats.start();
+
+	}
+
+	private void respawn() {
+
+		heros.setArme(null);
+		Thread threadTimerRespawn = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(tempsRespawn);
+					// Récupérer position de tous les ennemis et
+					// calculer
+					// point central
+					Vector2D vecPointCentral = new Vector2D();
+					for (int i = 0; i < listEnnemie.size(); i++) {
+						vecPointCentral = vecPointCentral.add(listEnnemie.get(i).getPosition());
+
+					}
+
+					vecPointCentral = vecPointCentral.div(listEnnemie.size());
+
+					Vector2D pointRespawn = new Vector2D();
+
+					// Calculer point le plus loin de la liste des
+					// positions de départ
+					double normCentre = vecPointCentral.norm();
+					double normMax = 0;
+
+					for (int i = 0; i < map.getListStartPosition().size(); i++) {
+
+						if (Math.abs(normCentre - map.getListStartPosition().get(i).norm()) > normMax) {
+							normMax = Math.abs(normCentre - map.getListStartPosition().get(i).norm());
+
+							pointRespawn.setdX(map.getListStartPosition().get(i).getdX());
+							pointRespawn.setdY(map.getListStartPosition().get(i).getdY());
+
+						}
+
+					}
+					heros.respawn();
+					heros.setPosition(pointRespawn);
+					mort = false;
+
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
+		threadTimerRespawn.start();
 	}
 
 	private void repopObjet(Vector2D position, Thing type) {
@@ -244,11 +359,26 @@ public class Logique extends KeyAdapter {
 					if (type instanceof AmmoPackSmG) {
 						listeThings.add(new AmmoPackSmG(position));
 					}
+					if (type instanceof AmmoPackSG) {
+						listeThings.add(new AmmoPackSG(position));
+					}
+					if (type instanceof AmmoPackPR) {
+						listeThings.add(new AmmoPackPR(position));
+					}
 					if (type instanceof HandGun) {
 						listeThings.add(new HandGun(position));
 					}
 					if (type instanceof SubmachineGun) {
 						listeThings.add(new SubmachineGun(position));
+					}
+					if (type instanceof ShootGun) {
+						listeThings.add(new ShootGun(position));
+					}
+					if (type instanceof PrecisionRifle) {
+						listeThings.add(new PrecisionRifle(position));
+					}
+					if (type instanceof Cut) {
+						listeThings.add(new Cut(position));
 					}
 
 				} catch (InterruptedException e) {
@@ -315,13 +445,32 @@ public class Logique extends KeyAdapter {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-
-		/*
-		 * if (e.getKeyCode() == KeyEvent.VK_SPACE) { if
-		 * (!touchesEnfoncees.contains(e.getKeyCode())) { fire(); } }
-		 */
-
 		touchesEnfoncees.add(e.getKeyCode());
+	}
+
+	public void mousePressed() {
+		Thread threadFire = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					isFiring = true;
+					while (FenetreJeu.mousePressed) {
+						fire();
+						Thread.sleep((long) (1000 / heros.getArme().getRoF()));
+					}
+					isFiring = false;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+
+				}
+			}
+		});
+
+		if (heros.getArme() != null && !isFiring) {
+			threadFire.start();
+		}
+
 	}
 
 	protected synchronized void fire() {

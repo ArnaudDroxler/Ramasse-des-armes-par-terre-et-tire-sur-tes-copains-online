@@ -136,6 +136,10 @@ public class Vector2D {
 		return new Vector2D(d * dX, d * dY);
 	}
 
+	public Vector2D div(double d) {
+		return new Vector2D(dX / d, dY / d);
+	}
+
 	/**
 	 * calcul du déterminant entre deux vecteurs
 	 * 

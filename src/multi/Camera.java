@@ -6,9 +6,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RadialGradientPaint;
+import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -109,6 +112,11 @@ public class Camera extends Renderer {
 				if (customSize) {
 					h = customHeight;
 					w = customWidth;
+
+					scaleHeight = (double) customHeight / InitialcustomHeight;
+					scaleWidth = (double) customWidth / InitialcustomWidth;
+
+					System.out.println(scaleHeight);
 				} else {
 					h = getHeight();
 					w = getWidth();
@@ -154,23 +162,45 @@ public class Camera extends Renderer {
 			renderThings();
 			g2d.drawImage(bufferThings, 0, 0, null);
 
-			// drawCursor(g2d);
 			drawWeapon(g2d);
 
-			if (logique.waitRespawn) {
+			if (logique.heros.getMort()) {
 				String strMort = new String("Vous êtes mort!");
 				Font font = new Font("Helvetica", Font.BOLD, 60);
 				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
-				g2d.setColor(Color.black);
+				Color couleur = new Color(0f, 0f, 0f, .5f);
+				g2d.setColor(couleur);
 				g2d.draw(rectangle);
 				g2d.fill(rectangle);
-				g2d.setFont(font);
-				g2d.setColor(Color.red);
-				// Pour centrage:
-				int stringLen = (int) g2d.getFontMetrics().getStringBounds(strMort, g2d).getWidth();
-				int stringHei = (int) g2d.getFontMetrics().getStringBounds(strMort, g2d).getHeight();
-				g2d.drawString(strMort, w / 2 - stringLen / 2, h / 2);
+				// g2d.setFont(font);
+				// g2d.setColor(new Color(1f, 0f, 0f, .5f));
+				// // Pour centrage:
+				// int stringLen = (int)
+				// g2d.getFontMetrics().getStringBounds(strMort,
+				// g2d).getWidth();
+				// int stringHei = (int)
+				// g2d.getFontMetrics().getStringBounds(strMort,
+				// g2d).getHeight();
+				// g2d.drawString(strMort, w / 2 - stringLen / 2, h / 2);
 			}
+
+			if (logique.heros.prendDegats() && !logique.heros.getMort()) {
+				Point2D center = new Point2D.Float(w / 2, h / 2);
+				float radius = w / 2;
+				float[] dist = { 0.0f, 0.9f };
+
+				Color trans = new Color(1f, 1f, 1f, 0f);
+				Color rouge = new Color(1f, 0f, 0f, .5f);
+
+				Color[] colors = { trans, rouge };
+				RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
+
+				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
+				g2d.setPaint(gradient);
+				g2d.fill(rectangle);
+
+			}
+
 		}
 	}
 
@@ -186,9 +216,23 @@ public class Camera extends Renderer {
 
 	private void drawWeapon(Graphics2D g2d) {
 		if (logique.heros.getArme() != null) {
-			g2d.drawImage(logique.heros.getArme().getSpriteHUD(), null, w / 2 - 80,
-					h - logique.heros.getArme().getSpriteHUD().getHeight());
+			BufferedImage img = scale(logique.heros.getArme().getSpriteHUD());
+			g2d.drawImage(img, null, w / 2, h - img.getHeight());
 		}
+	}
+
+	public static BufferedImage scale(BufferedImage bi) {
+		int width = (int) (bi.getWidth() * scaleWidth);
+		int height = (int) (bi.getHeight() * scaleHeight);
+		BufferedImage biNew = new BufferedImage(width, height, bi.getType());
+		Graphics2D graphics = biNew.createGraphics();
+		graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		graphics.drawImage(bi, 0, 0, width, height, null);
+		graphics.dispose();
+		return biNew;
 	}
 
 	/**
@@ -200,7 +244,7 @@ public class Camera extends Renderer {
 	 * ========================================================
 	 */
 
-private void algoRaycasting(Graphics2D g2d) {
+	private void algoRaycasting(Graphics2D g2d) {
 
 		for (int x = 0; x < w; x++) {
 			double cameraX = 2 * x / (double) w - 1;
@@ -241,7 +285,7 @@ private void algoRaycasting(Graphics2D g2d) {
 				stepY = 1;
 				sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY;
 			}
-			int step=0;
+			int step = 0;
 			while (hit == 0 && ++step < 1000) {
 				if (sideDistX < sideDistY) {
 					sideDistX += deltaDistX;
@@ -403,9 +447,27 @@ private void algoRaycasting(Graphics2D g2d) {
 
 	// Tools
 	private int h, w;
-	public static int customHeight = 540;
-	public static int customWidth = 720;
-	public static boolean customSize = false;
+
+	public static int InitialcustomHeight = 288;
+	public static int InitialcustomWidth = 512;
+
+	/*
+	 * public static int customHeight = 360; public static int customWidth =
+	 * 640;
+	 */
+
+	public static int customHeight = 720;
+	public static int customWidth = 1280;
+
+	/*
+	 * public static int customHeight = 1080; public static int customWidth
+	 * =1920;
+	 */
+
+	public static boolean customSize = true;
+
+	private static double scaleWidth;
+	private static double scaleHeight;
 
 	private ArrayList<Thing> listThings;
 	private TreeMap<Double, Thing> listAfficher;
