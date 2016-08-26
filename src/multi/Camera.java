@@ -459,10 +459,10 @@ public class Camera extends Renderer {
 	public static int customHeight = 720;
 	public static int customWidth = 1280;
 
-	/*
-	 * public static int customHeight = 1080; public static int customWidth =
-	 * 1920;
-	 */
+	
+	 /*public static int customHeight = 1080;
+	 public static int customWidth =1920;*/
+	 
 
 	public static boolean customSize = true;
 

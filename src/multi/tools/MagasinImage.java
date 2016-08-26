@@ -29,6 +29,7 @@ public class MagasinImage {
 	public static final BufferedImage buffHandGun = ImageLoader.loadBufferedImage("handgun2.png");
 	public static final BufferedImage buffSubMachinGun = ImageLoader.loadBufferedImage("submachingun.png");
 	public static final BufferedImage buffAmmoPackHG = ImageLoader.loadBufferedImage("ammopackHG.png");
+	public static final BufferedImage buffAmmoPackSmG = ImageLoader.loadBufferedImage("ammopackSmG.png");
 
 	public static final BufferedImage buffFantome0 = ImageLoader.loadBufferedImage("images fantome/fantome0.png");
 	public static final BufferedImage buffFantome1 = ImageLoader.loadBufferedImage("images fantome/fantome1.png");

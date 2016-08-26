@@ -10,7 +10,7 @@ public class Ennemi extends Personnage {
 
 	public Ennemi(Vector2D startPosition, Vector2D startDirection) {
 		super(startPosition, startDirection);
-		vie = 5;
+		vie = 100;
 		armure = 0;
 		t=0;
 		v = random.nextDouble() * .03 + 0.01 ;
