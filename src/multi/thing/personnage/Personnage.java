@@ -14,6 +14,7 @@ public abstract class Personnage extends Thing {
 	public Personnage(Vector2D pos, Vector2D dir) {
 		super(pos, dir);
 		estMort = false;
+		setVitesse(0.05);
 	}
 
 	public void perdVie(int pv) {

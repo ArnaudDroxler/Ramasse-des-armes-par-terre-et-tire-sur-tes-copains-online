@@ -1,4 +1,3 @@
-
 package tests.kryonet.implem.premiere.client;
 
 import java.awt.event.ActionEvent;
@@ -77,15 +76,11 @@ public class JFrameConnexion extends JFrame {
 
 					@Override
 					public void run() {
-						try {
-							btnConnexion.setText("Connexion en cours");
-							btnConnexion.setEnabled(false);
-							connect();
-							btnConnexion.setText("Rejoindre");
-							btnConnexion.setEnabled(true);
-						} catch (RemoteException | UnknownHostException e) {
-							e.printStackTrace();
-						}
+						btnConnexion.setText("Connexion en cours");
+						btnConnexion.setEnabled(false);
+						connect();
+						btnConnexion.setText("Rejoindre");
+						btnConnexion.setEnabled(true);
 					}
 				});
 				threadConnect.start();
@@ -103,12 +98,11 @@ public class JFrameConnexion extends JFrame {
 		setVisible(true); // last!
 	}
 
-	protected void connect() throws RemoteException, UnknownHostException {
+	protected void connect(){
 		try {
 			new PcClient(tfIp.getText(), tfPseudo.getText());
 			// dispose(); // close the JFrame
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			System.err.println("Serveur inaccessible");
 			e.printStackTrace();
 		}

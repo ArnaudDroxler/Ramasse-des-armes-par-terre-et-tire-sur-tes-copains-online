@@ -2,13 +2,13 @@ package tests.kryonet.implem.premiere.messages;
 
 public class ClientUpdateMessage{
 
-	private int pos;
+	private double pos;
 	
-	public void setPosition(int p) {
-		pos=p;
+	public void setPosition(double d) {
+		pos=d;
 	}
 
-	public int getPos() {
+	public double getPos() {
 		return pos;
 	}
 	

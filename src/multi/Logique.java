@@ -54,7 +54,6 @@ public class Logique extends KeyAdapter {
 		oldPosition = map.getStartPosition();
 
 		heros = new Joueur(oldPosition, new Vector2D(1, 0));
-		heros.setVitesse(0.05);
 
 		touchesEnfoncees = new HashSet<Integer>(6);
 

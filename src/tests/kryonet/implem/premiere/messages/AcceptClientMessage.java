@@ -1,16 +1,17 @@
 package tests.kryonet.implem.premiere.messages;
 
-import com.esotericsoftware.kryonet.Connection;
-
 import tests.kryonet.implem.premiere.server.Partie;
 
 public class AcceptClientMessage {
 
 	private String msg;
-	
+	private Partie partie;
+	private int id;
 
-	public AcceptClientMessage(String pseudo, Partie partie) {
-		msg = "Bienvenue " + pseudo + "\nInfos partie : " + partie.toString();
+	public AcceptClientMessage(String pseudo, Partie partie, int id) {
+		msg = "Bienvenue " + pseudo + ", vous avez l'ID "+id+"\nInfos partie : " + partie.toString();
+		this.partie = partie;
+		this.id=id;
 	}
 
 	public AcceptClientMessage() {
@@ -18,6 +19,14 @@ public class AcceptClientMessage {
 
 	public String getMsg() {
 		return msg;
+	}
+	
+	public Partie getPartie(){
+		return partie;
+	}
+
+	public int getId() {
+		return id;
 	}
 
 }
