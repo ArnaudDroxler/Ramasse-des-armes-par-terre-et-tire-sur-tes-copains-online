@@ -11,7 +11,7 @@ public class JoueurOnline {
 	private int connectionId;
 	
 	public JoueurOnline() {
-		
+		this.pseudo="";
 	}
 
 	public JoueurOnline(String pseudo, int connectionId) {

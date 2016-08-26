@@ -53,6 +53,8 @@ public class VueMap  extends Renderer {
 		int a = (int) zoom;
 		
 		g2d.translate(joueur.posx * zoom, joueur.posy * zoom);
+		//g2d.drawString(joueur.pseudo, 0, (int) -zoom);
+		printSimpleString(joueur.pseudo);
 		//g2d.rotate(joueur.getDirection().getTheta());
 		g2d.rotate(Math.atan2(joueur.diry, joueur.diry));
 		g2d.fillOval((int) (- zoom / 2), ((int) (- zoom / 2)), a, a);
@@ -82,5 +84,12 @@ public class VueMap  extends Renderer {
 			drawPersonnage(ennemi, init);
 		}
 	}
+	
+	private void printSimpleString(String s){
+        int stringLen = (int)
+            g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();
+        int start = -stringLen/2;
+        g2d.drawString(s, start, -10);
+ }
 
 }

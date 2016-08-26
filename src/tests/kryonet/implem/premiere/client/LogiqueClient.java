@@ -61,15 +61,10 @@ public class LogiqueClient extends KeyAdapter {
 
 	public void updatePartie(Partie partie) {
 		HashMap<Integer, JoueurOnline> joueurs = partie.getJoueurs();
+		// to do : avoir aussi un hashmap côté client
 		joueur = joueurs.remove(joueurId);
-		//joueur.setPosition(j.posx, j.posy);
-		//listEnnemis = new ArrayList<JoueurOnline>(8);
 		listEnnemis.clear();
 		listEnnemis.addAll(joueurs.values());
-		/*
-		for (JoueurOnline autreJoueur : joueurs.values()) {
-			listEnnemis.add(new Ennemi(new Vector2D(autreJoueur.posx, autreJoueur.posy),new Vector2D(1,0)));
-		}*/
 	}
 
 	public void setId(int id) {
