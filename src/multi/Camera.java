@@ -149,6 +149,7 @@ public class Camera extends Renderer {
 				algoRaycasting(g2d);
 			} catch (Exception e) {
 				System.out.println("coucou y a probleme");
+				e.printStackTrace();
 			}
 			renderThings();
 			g2d.drawImage(bufferThings, 0, 0, null);
@@ -171,12 +172,12 @@ public class Camera extends Renderer {
 
 	private void drawCursor(Graphics2D g2d) {
 		g2d.setColor(Color.red);
-		g2d.drawLine(getWidth() / 2, getHeight() / 2 - 20, getWidth() / 2, getHeight() / 2 + 20);
-		g2d.drawLine(getWidth() / 2 - 20, getHeight() / 2, getWidth() / 2 + 20, getHeight() / 2);
-		g2d.drawLine(getWidth() / 2 - 5, getHeight() / 2 - 20, getWidth() / 2 + 5, getHeight() / 2 - 20);
-		g2d.drawLine(getWidth() / 2 - 5, getHeight() / 2 + 20, getWidth() / 2 + 5, getHeight() / 2 + 20);
-		g2d.drawLine(getWidth() / 2 - 20, getHeight() / 2 - 5, getWidth() / 2 - 20, getHeight() / 2 + 5);
-		g2d.drawLine(getWidth() / 2 + 20, getHeight() / 2 - 5, getWidth() / 2 + 20, getHeight() / 2 + 5);
+		g2d.drawLine(w / 2, h / 2 - 20, w / 2, h / 2 + 20);
+		g2d.drawLine(w / 2 - 20, h / 2, w / 2 + 20, h / 2);
+		g2d.drawLine(w / 2 - 5, h / 2 - 20, w / 2 + 5, h / 2 - 20);
+		g2d.drawLine(w / 2 - 5, h / 2 + 20, w / 2 + 5, h / 2 + 20);
+		g2d.drawLine(w / 2 - 20, h / 2 - 5, w / 2 - 20, h / 2 + 5);
+		g2d.drawLine(w / 2 + 20, h / 2 - 5, w / 2 + 20, h / 2 + 5);
 
 	}
 
@@ -196,7 +197,7 @@ public class Camera extends Renderer {
 	 * ========================================================
 	 */
 
-	private void algoRaycasting(Graphics2D g2d) {
+private void algoRaycasting(Graphics2D g2d) {
 
 		for (int x = 0; x < w; x++) {
 			double cameraX = 2 * x / (double) w - 1;
@@ -237,7 +238,8 @@ public class Camera extends Renderer {
 				stepY = 1;
 				sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY;
 			}
-			while (hit == 0) {
+			int step=0;
+			while (hit == 0 && ++step < 1000) {
 				if (sideDistX < sideDistY) {
 					sideDistX += deltaDistX;
 					mapX += stepX;
@@ -247,7 +249,6 @@ public class Camera extends Renderer {
 					mapY += stepY;
 					side = 1;
 				}
-
 				if (logique.getMap().inWall(mapX, mapY)) {
 					hit = 1;
 				}

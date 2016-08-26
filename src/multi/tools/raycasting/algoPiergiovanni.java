@@ -44,6 +44,7 @@ public class algoPiergiovanni {
 			stepY = 1;
 			sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY;
 		}
+		
 		while (hit == 0) {
 			if (sideDistX < sideDistY) {
 				sideDistX += deltaDistX;

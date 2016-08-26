@@ -20,7 +20,11 @@ public class ImageLvlMap extends LvlMap {
 
 	@Override
 	public boolean inWall(double x, double y) {
-		return (getMapBackground().getRGB((int)x, (int)y) == Color.black.getRGB()); 
+		if(x>=0 && x < getMapBackground().getWidth() && y>=0 && y < getMapBackground().getHeight()){
+			return (getMapBackground().getRGB((int)x, (int)y) == Color.black.getRGB()); 
+		}else{
+			return false;
+		}
 	}
 
 }
