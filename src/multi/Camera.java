@@ -182,7 +182,6 @@ public class Camera extends Renderer {
 		g2d.drawLine(w / 2 - 5, h / 2 + 20, w / 2 + 5, h / 2 + 20);
 		g2d.drawLine(w / 2 - 20, h / 2 - 5, w / 2 - 20, h / 2 + 5);
 		g2d.drawLine(w / 2 + 20, h / 2 - 5, w / 2 + 20, h / 2 + 5);
-
 	}
 
 	private void drawWeapon(Graphics2D g2d) {
