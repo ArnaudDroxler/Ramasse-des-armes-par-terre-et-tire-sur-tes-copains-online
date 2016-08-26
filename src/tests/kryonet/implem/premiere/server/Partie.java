@@ -18,7 +18,8 @@ public class Partie{
 
 	public void updateJoueur(int id, ClientUpdateMessage cum) {
 		JoueurOnline j = joueurs.get(id);
-		j.setPos(cum.getPos());
+		j.setPosx(cum.getPosx());
+		j.setPosy(cum.getPosy());
 	}
 
 	public void addJoueur(int id, JoueurOnline nouveaujoueur) {

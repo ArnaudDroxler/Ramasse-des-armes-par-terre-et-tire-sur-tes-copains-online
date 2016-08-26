@@ -10,6 +10,7 @@ import java.awt.geom.AffineTransform;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Personnage;
+import tests.kryonet.implem.premiere.server.JoueurOnline;
 
 public class VueMap  extends Renderer {
 
@@ -48,11 +49,12 @@ public class VueMap  extends Renderer {
 		drawAutresJoueurs(init);
 	}
 
-	private void drawPersonnage(Personnage perso, AffineTransform init) {
+	private void drawPersonnage(JoueurOnline joueur, AffineTransform init) {
 		int a = (int) zoom;
 		
-		g2d.translate(perso.getPosition().getdX() * zoom, perso.getPosition().getdY() * zoom);
-		g2d.rotate(perso.getDirection().getTheta());
+		g2d.translate(joueur.posx * zoom, joueur.posy * zoom);
+		//g2d.rotate(joueur.getDirection().getTheta());
+		g2d.rotate(Math.atan2(joueur.diry, joueur.diry));
 		g2d.fillOval((int) (- zoom / 2), ((int) (- zoom / 2)), a, a);
 		g2d.fillRect(0, -1, (int) zoom, 2);
 		g2d.setTransform(init);
@@ -76,7 +78,7 @@ public class VueMap  extends Renderer {
 		g2d.setColor(Color.green);
 		int a = (int) zoom;
 		// a protéger
-		for (Ennemi ennemi : lc.listEnnemis) {
+		for (JoueurOnline ennemi : lc.listEnnemis) {
 			drawPersonnage(ennemi, init);
 		}
 	}

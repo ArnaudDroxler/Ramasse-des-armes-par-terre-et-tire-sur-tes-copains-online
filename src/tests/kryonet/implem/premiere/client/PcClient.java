@@ -68,7 +68,7 @@ public class PcClient {
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}
-								cum.setPosition(jfc.slider.getValue());
+								cum.setPosition(jfc.slider1.getValue(),jfc.slider2.getValue());
 								client.sendUDP(cum);
 							}
 						}

@@ -11,7 +11,8 @@ import tests.kryonet.implem.premiere.server.Partie;
 
 public class JFrameClient extends JFrame {
 
-	public JSlider slider;
+	public JSlider slider1;
+	public JSlider slider2;
 
 	public JFrameClient(VueMap vueMap) {
 		super();
@@ -22,8 +23,10 @@ public class JFrameClient extends JFrame {
 		VueMap vueMap = new VueMap(lc);
 		addKeyListener(lc);
 		*/
-		slider = new JSlider();
-		vueMap.add(slider);
+		slider1 = new JSlider();
+		vueMap.add(slider1);
+		slider2 = new JSlider();
+		vueMap.add(slider2);
 		add(vueMap);
 		
 		setVisible(true);

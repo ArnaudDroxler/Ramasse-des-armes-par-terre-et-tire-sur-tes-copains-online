@@ -2,12 +2,12 @@ package tests.kryonet.implem.premiere.server;
 
 public class JoueurOnline {
 
-	private String pseudo;
-	private int vie;
+	public String pseudo;
+	public int vie;
 	public double posx;
 	public double posy;
-	private int dirx;
-	private int diry;
+	public int dirx;
+	public int diry;
 	private int connectionId;
 	
 	public JoueurOnline() {
@@ -29,9 +29,13 @@ public class JoueurOnline {
 		return pseudo + ", vie=" + vie + ", pos=(" + posx + "," + posy + "), dir=(" + dirx
 				+ "," + diry + ")";
 	}
+	
+	public void setPosx(double posx2) {
+		posx=posx2;		
+	}
 
-	public void setPos(double d) {
-		posx=d;		
+	public void setPosy(double posy2) {
+		posy=posy2;		
 	}
 	
 }
