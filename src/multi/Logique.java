@@ -66,7 +66,6 @@ public class Logique extends KeyAdapter {
 		oldPosition = map.getStartPosition();
 
 		heros = new Joueur(oldPosition, new Vector2D(1, 0));
-		heros.setVitesse(0.05);
 
 		touchesEnfoncees = new HashSet<Integer>(6);
 
@@ -161,7 +160,6 @@ public class Logique extends KeyAdapter {
 		while (iterator.hasNext() && !mort) {
 			Thing thing = iterator.next();
 			if (collapse(thing.getPosition(), 1.2) && !heros.getMort()) {
-				System.out.println(thing.getClass().getSimpleName());
 				if (thing instanceof Weapon) {
 					if (thing instanceof HandGun) {
 						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
@@ -223,7 +221,9 @@ public class Logique extends KeyAdapter {
 			if (collapse(thing.getPosition(), .8) && !heros.getMort()) {
 				if (thing instanceof Ennemi) {
 					heros.perdVie(5);
+					animationDegatsPris();
 					if (heros.getMort()) {
+						mort = true;
 						respawn();
 					}
 				}
@@ -268,10 +268,28 @@ public class Logique extends KeyAdapter {
 						}
 					}
 				}
-				System.out.println("vie restante: " + heros.getVie() + " / armure restante: " + heros.getArmure());
 			}
 
 		}
+	}
+
+	private void animationDegatsPris() {
+		Thread threadDegats = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(1000);
+					heros.resetPrendDegats();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
+		threadDegats.start();
+
 	}
 
 	private void respawn() {
@@ -282,28 +300,17 @@ public class Logique extends KeyAdapter {
 			@Override
 			public void run() {
 				try {
-					System.out.println("respawn");
 					Thread.sleep(tempsRespawn);
 					// Récupérer position de tous les ennemis et
 					// calculer
 					// point central
 					Vector2D vecPointCentral = new Vector2D();
 					for (int i = 0; i < listEnnemie.size(); i++) {
-						// Bizarre, méthode add qui ne fonctionne pas!
-						// vecPointCentral.add(listEnnemie.get(i).getPosition());
+						vecPointCentral = vecPointCentral.add(listEnnemie.get(i).getPosition());
 
-						vecPointCentral.setdX(vecPointCentral.getdX() + listEnnemie.get(i).getPosition().getdX());
-						vecPointCentral.setdY(vecPointCentral.getdY() + listEnnemie.get(i).getPosition().getdY());
 					}
 
-					System.out.println(vecPointCentral);
-					// Meme bug bizarre que la fonction add
-					// vecPointCentral.div(listEnnemie.size());
-
-					vecPointCentral.setdX(vecPointCentral.getdX() / listEnnemie.size());
-					vecPointCentral.setdY(vecPointCentral.getdY() / listEnnemie.size());
-
-					System.out.println(vecPointCentral);
+					vecPointCentral = vecPointCentral.div(listEnnemie.size());
 
 					Vector2D pointRespawn = new Vector2D();
 
@@ -325,6 +332,7 @@ public class Logique extends KeyAdapter {
 					}
 					heros.respawn();
 					heros.setPosition(pointRespawn);
+					mort = false;
 
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block

@@ -4,21 +4,25 @@ import java.util.HashMap;
 
 import tests.kryonet.implem.premiere.messages.ClientUpdateMessage;
 
-public class Partie {
+public class Partie{
 
-	private HashMap<Integer,Joueur> joueurs;
+	private HashMap<Integer,JoueurOnline> joueurs;
 	private String nomMap;
+	private long t1,t2;
+	private int tempsSecondes;
 	
 	public Partie(){
-		joueurs = new HashMap<Integer,Joueur>();
+		joueurs = new HashMap<Integer,JoueurOnline>();
+		nomMap="StandDeTire.png";
 	}
 
 	public void updateJoueur(int id, ClientUpdateMessage cum) {
-		Joueur j = joueurs.get(id);
-		j.setPos(cum.getPos());
+		JoueurOnline j = joueurs.get(id);
+		j.setPosx(cum.getPosx());
+		j.setPosy(cum.getPosy());
 	}
 
-	public void addJoueur(int id, Joueur nouveaujoueur) {
+	public void addJoueur(int id, JoueurOnline nouveaujoueur) {
 		joueurs.put(id, nouveaujoueur);
 	}
 
@@ -31,11 +35,20 @@ public class Partie {
 		StringBuffer sb = new StringBuffer();
 		sb.append("map : ");
 		sb.append(nomMap+"\n");
-		sb.append("Joueurs :");
-		for (Joueur j : joueurs.values()) {
+		sb.append("Temps : " + tempsSecondes);
+		sb.append("\nJoueurs :");
+		for (JoueurOnline j : joueurs.values()) {
 			sb.append("\n\t" + j);
 		}
 		return sb.toString();
+	}
+	
+	public String getNomMap(){
+		return nomMap;
+	}
+
+	public HashMap<Integer,JoueurOnline> getJoueurs() {
+		return joueurs;
 	}
 	
 }
