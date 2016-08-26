@@ -162,19 +162,25 @@ public class Camera extends Renderer {
 
 			drawWeapon(g2d);
 
-			if (logique.waitRespawn) {
+			if (logique.heros.getMort()) {
 				String strMort = new String("Vous êtes mort!");
 				Font font = new Font("Helvetica", Font.BOLD, 60);
 				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
-				g2d.setColor(Color.black);
+				Color couleur = new Color(0f, 0f, 0f, .5f);
+
+				g2d.setColor(couleur);
 				g2d.draw(rectangle);
 				g2d.fill(rectangle);
-				g2d.setFont(font);
-				g2d.setColor(Color.red);
+				// g2d.setFont(font);
+				// g2d.setColor(Color.red);
 				// Pour centrage:
-				int stringLen = (int) g2d.getFontMetrics().getStringBounds(strMort, g2d).getWidth();
-				int stringHei = (int) g2d.getFontMetrics().getStringBounds(strMort, g2d).getHeight();
-				g2d.drawString(strMort, w / 2 - stringLen / 2, h / 2);
+				// int stringLen = (int)
+				// g2d.getFontMetrics().getStringBounds(strMort,
+				// g2d).getWidth();
+				// int stringHei = (int)
+				// g2d.getFontMetrics().getStringBounds(strMort,
+				// g2d).getHeight();
+				// g2d.drawString(strMort, w / 2 - stringLen / 2, h / 2);
 			}
 		}
 	}
