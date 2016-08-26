@@ -1,24 +1,23 @@
 package tests.kryonet.implem.premiere.server;
 
-import com.esotericsoftware.kryonet.Connection;
-
-public class Joueur {
+public class JoueurOnline {
 
 	private String pseudo;
 	private int vie;
-	private int posx;
-	private int posy;
+	public double posx;
+	public double posy;
 	private int dirx;
 	private int diry;
 	private int connectionId;
 	
-	public Joueur() {
+	public JoueurOnline() {
 		
 	}
 
-	public Joueur(String pseudo, int connectionId) {
+	public JoueurOnline(String pseudo, int connectionId) {
 		this.pseudo=pseudo;
 		this.connectionId=connectionId;
+		posx=posy=20;
 	}
 
 	public String getPseudo() {
@@ -31,8 +30,8 @@ public class Joueur {
 				+ "," + diry + ")";
 	}
 
-	public void setPos(int pos) {
-		posx=pos;		
+	public void setPos(double d) {
+		posx=d;		
 	}
 	
 }

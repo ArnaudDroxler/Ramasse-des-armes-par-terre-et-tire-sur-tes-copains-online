@@ -1,43 +1,33 @@
 package tests.kryonet.implem.premiere.client;
 
-import java.awt.GraphicsConfiguration;
-import java.awt.HeadlessException;
-
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
+
+import multi.Logique;
+import multi.VueJeu;
+import tests.kryonet.implem.premiere.server.Partie;
 
 public class JFrameClient extends JFrame {
 
-	private JPanel panel;
-	private JSlider slider;
-	private JTextArea textarea;
-	
-	public JFrameClient(){
-		setSize(500, 400);
-		//setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public JSlider slider;
+
+	public JFrameClient(VueMap vueMap) {
+		super();
+		setSize(600, 600);
 		setTitle("Client");
+		/*
+		LogiqueClient lc = new LogiqueClient("StandDeTire.png");
+		VueMap vueMap = new VueMap(lc);
+		addKeyListener(lc);
+		*/
+		slider = new JSlider();
+		vueMap.add(slider);
+		add(vueMap);
 		
-		panel = new JPanel();
-		add(panel);
-		slider = new JSlider(0,100);
-		panel.add(slider);
-		textarea = new JTextArea(20,40);
-		panel.add(textarea);
 		setVisible(true);
+		
 	}
-
-	public void debug(String string) {
-		textarea.setText(string);
-	}
-
-	public int getValue() {
-		return slider.getValue();
-	}
-
-	
 	
 }
