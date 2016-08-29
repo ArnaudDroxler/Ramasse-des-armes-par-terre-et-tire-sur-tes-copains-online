@@ -178,12 +178,33 @@ public class Camera extends Renderer {
 			drawWeapon(g2d);
 
 			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheMur) {
-				BufferedImage img = scale(logique.heros.getArme().getSpriteImpactMur(),scaleWidth,scaleHeight);
-				g2d.drawImage(img, null, w / 2, h / 2);
+				// BufferedImage img =
+				// scale(logique.heros.getArme().getSpriteImpactMur());
+				BufferedImage img = logique.heros.getArme().getSpriteImpactMur();
+
+				double longueurligne = Math.sqrt(Math.pow((logique.fireLine.getX2() - logique.fireLine.getX1()), 2)
+						+ Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()), 2));
+
+				if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
+					g2d.drawImage(img, null, w / 2, h / 2);
+					// g2d.drawImage(img, null, w / 2, (int) (h / 2 -
+					// longueurligne));
+				}
+
 			}
 			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheEnnemi) {
-				BufferedImage img = scale(logique.heros.getArme().getSpriteImpactEnnemi(),scaleWidth,scaleHeight);
-				g2d.drawImage(img, null, w / 2, h / 2);
+				// BufferedImage img =
+				// scale(logique.heros.getArme().getSpriteImpactEnnemi());
+				BufferedImage img = logique.heros.getArme().getSpriteImpactEnnemi();
+
+				double longueurligne = Math.sqrt(Math.pow((logique.fireLine.getX2() - logique.fireLine.getX1()), 2)
+						+ Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()), 2));
+				if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
+					g2d.drawImage(img, null, w / 2, h / 2);
+					// g2d.drawImage(img, null, w / 2, (int) (h / 2 -
+					// longueurligne));
+				}
+
 			}
 
 			if (logique.heros.getMort()) {
@@ -227,27 +248,25 @@ public class Camera extends Renderer {
 	}
 
 	private void drawWeapon(Graphics2D g2d) {
-		
 		if (logique.heros.getArme() instanceof PrecisionRifle && FenetreJeu.mouseRightPressed) {
-			
+
 			Point2D center = new Point2D.Float(0, 0);
 			float radius = 200;
-			float[] dist = { 0.0f, 0.9f, 1.0f};
+			float[] dist = { 0.0f, 0.9f, 1.0f };
 
 			Color trans = new Color(0f, 0f, 0f, 0f);
 
-			Color[] colors = {trans, trans, Color.black };
+			Color[] colors = { trans, trans, Color.black };
 			RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
 
 			Rectangle2D rectangle = new Rectangle2D.Double(-w / 2, -h / 2, w, h);
 			g2d.setPaint(gradient);
 			g2d.fill(rectangle);
-			
+
 			g2d.setColor(Color.black);
-			g2d.drawLine(-w/2, 0, w/2, 0);
-			g2d.drawLine(0, -h/2,0, h/2);
-		}
-		else if(logique.heros.getArme() != null ) {
+			g2d.drawLine(-w / 2, 0, w / 2, 0);
+			g2d.drawLine(0, -h / 2, 0, h / 2);
+		} else if (logique.heros.getArme() != null) {
 			BufferedImage img = scale(logique.heros.getArme().getSpriteHUD(), scaleWidth, scaleHeight);
 			g2d.drawImage(img, null, 0, h / 2 - img.getHeight());
 		}
