@@ -1,4 +1,4 @@
-package tests.kryonet.implem.serveurChef.client;
+package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.Graphics2D;
 

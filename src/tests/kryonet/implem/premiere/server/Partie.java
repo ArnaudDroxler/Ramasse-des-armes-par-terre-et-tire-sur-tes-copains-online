@@ -3,7 +3,7 @@ package tests.kryonet.implem.premiere.server;
 import java.util.HashMap;
 
 import multi.tools.raycasting.Vector2D;
-import tests.kryonet.implem.serveurChef.messages.ClientUpdateMessage;
+import tests.kryonet.implem.logiqueCoteClient.messages.PlayerUpdateMessage;
 
 public class Partie{
 
@@ -16,7 +16,7 @@ public class Partie{
 		nomMap="StandDeTire.png";
 	}
 
-	public void updateJoueur(int id, ClientUpdateMessage cum) {
+	public void updateJoueur(int id, PlayerUpdateMessage cum) {
 		JoueurOnline j = joueurs.get(id);
 		j.setPosition(cum.getPos());
 	}

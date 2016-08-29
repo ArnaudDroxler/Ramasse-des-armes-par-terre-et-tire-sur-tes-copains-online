@@ -13,8 +13,8 @@ import multi.thing.personnage.Personnage;
 import multi.tools.map.ImageParser;
 import multi.tools.map.LvlMap;
 import multi.tools.raycasting.Vector2D;
-import tests.kryonet.implem.serveurChef.server.JoueurOnline;
-import tests.kryonet.implem.serveurChef.server.Partie;
+import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;
+import tests.kryonet.implem.logiqueCoteClient.server.Partie;
 
 public class LogiqueClient extends KeyAdapter {
 

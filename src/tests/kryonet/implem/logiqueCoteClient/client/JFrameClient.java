@@ -1,4 +1,4 @@
-package tests.kryonet.implem.serveurChef.client;
+package tests.kryonet.implem.logiqueCoteClient.client;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -7,7 +7,7 @@ import javax.swing.JTextArea;
 
 import multi.Logique;
 import multi.VueJeu;
-import tests.kryonet.implem.serveurChef.server.Partie;
+import tests.kryonet.implem.logiqueCoteClient.server.Partie;
 
 public class JFrameClient extends JFrame {
 

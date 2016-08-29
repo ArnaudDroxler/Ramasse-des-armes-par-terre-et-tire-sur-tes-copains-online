@@ -1,6 +1,6 @@
-package tests.kryonet.implem.serveurChef.messages;
+package tests.kryonet.implem.logiqueCoteClient.messages;
 
-import tests.kryonet.implem.serveurChef.server.Partie;
+import tests.kryonet.implem.logiqueCoteClient.server.Partie;
 
 public class AcceptClientMessage {
 

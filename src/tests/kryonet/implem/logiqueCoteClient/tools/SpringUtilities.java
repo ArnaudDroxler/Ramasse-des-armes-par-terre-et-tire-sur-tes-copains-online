@@ -1,4 +1,4 @@
-package tests.kryonet.implem.serveurChef.tools;
+package tests.kryonet.implem.logiqueCoteClient.tools;
 /*
  * Copyright (c) 1995, 2008, Oracle and/or its affiliates. All rights reserved.
  *

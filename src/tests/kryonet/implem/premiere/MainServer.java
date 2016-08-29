@@ -7,13 +7,13 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
 
-import tests.kryonet.implem.serveurChef.messages.AcceptClientMessage;
-import tests.kryonet.implem.serveurChef.messages.ClientConnexionMessage;
-import tests.kryonet.implem.serveurChef.messages.ClientUpdateMessage;
-import tests.kryonet.implem.serveurChef.server.JFramePartie;
-import tests.kryonet.implem.serveurChef.server.JoueurOnline;
-import tests.kryonet.implem.serveurChef.server.Partie;
-import tests.kryonet.implem.serveurChef.tools.Registerer;
+import tests.kryonet.implem.logiqueCoteClient.messages.AcceptClientMessage;
+import tests.kryonet.implem.logiqueCoteClient.messages.ClientConnexionMessage;
+import tests.kryonet.implem.logiqueCoteClient.messages.PlayerUpdateMessage;
+import tests.kryonet.implem.logiqueCoteClient.server.JFramePartie;
+import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;
+import tests.kryonet.implem.logiqueCoteClient.server.Partie;
+import tests.kryonet.implem.logiqueCoteClient.tools.Registerer;
 
 public class MainServer {
 
@@ -48,9 +48,9 @@ public class MainServer {
 					partie.addJoueur(connection.getID(), nouveaujoueur);
 					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID());
 					connection.sendTCP(acm);
-				} else if (object instanceof ClientUpdateMessage) {
+				} else if (object instanceof PlayerUpdateMessage) {
 					
-					ClientUpdateMessage cum = (ClientUpdateMessage) object;
+					PlayerUpdateMessage cum = (PlayerUpdateMessage) object;
 					partie.updateJoueur(connection.getID(), cum);
 					//System.out.println(cum.getPos());
 					connection.sendUDP(partie);

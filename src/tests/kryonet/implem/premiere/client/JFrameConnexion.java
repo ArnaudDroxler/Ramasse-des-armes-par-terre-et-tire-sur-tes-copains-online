@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SpringLayout;
 
-import tests.kryonet.implem.serveurChef.tools.JPanelDecorator;
-import tests.kryonet.implem.serveurChef.tools.SpringUtilities;
+import tests.kryonet.implem.logiqueCoteClient.tools.JPanelDecorator;
+import tests.kryonet.implem.logiqueCoteClient.tools.SpringUtilities;
 
 public class JFrameConnexion extends JFrame {
 

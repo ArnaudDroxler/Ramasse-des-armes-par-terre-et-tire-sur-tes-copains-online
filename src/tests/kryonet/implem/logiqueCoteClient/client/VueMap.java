@@ -1,4 +1,4 @@
-package tests.kryonet.implem.serveurChef.client;
+package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,7 +10,7 @@ import java.awt.geom.AffineTransform;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Personnage;
-import tests.kryonet.implem.serveurChef.server.JoueurOnline;
+import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;
 
 public class VueMap extends Renderer {
 

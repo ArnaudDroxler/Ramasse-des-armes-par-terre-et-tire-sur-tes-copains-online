@@ -1,4 +1,4 @@
-package tests.kryonet.implem.serveurChef.client;
+package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -10,11 +10,11 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-import tests.kryonet.implem.serveurChef.messages.AcceptClientMessage;
-import tests.kryonet.implem.serveurChef.messages.ClientConnexionMessage;
-import tests.kryonet.implem.serveurChef.messages.ClientUpdateMessage;
-import tests.kryonet.implem.serveurChef.server.Partie;
-import tests.kryonet.implem.serveurChef.tools.Registerer;
+import tests.kryonet.implem.logiqueCoteClient.messages.AcceptClientMessage;
+import tests.kryonet.implem.logiqueCoteClient.messages.ClientConnexionMessage;
+import tests.kryonet.implem.logiqueCoteClient.messages.PlayerUpdateMessage;
+import tests.kryonet.implem.logiqueCoteClient.server.Partie;
+import tests.kryonet.implem.logiqueCoteClient.tools.Registerer;
 
 public class PcClient {
 
@@ -60,10 +60,10 @@ public class PcClient {
 
 						@Override
 						public void run() {
-							ClientUpdateMessage cum = new ClientUpdateMessage();
+							PlayerUpdateMessage pum = new PlayerUpdateMessage();
 							while (true) {
-								cum.setPosition(jfc.slider1.getValue(),jfc.slider2.getValue());
-								client.sendUDP(cum);
+								pum.setPosition(jfc.slider1.getValue(),jfc.slider2.getValue());
+								client.sendUDP(pum);
 								try {
 									Thread.sleep(100);
 								} catch (InterruptedException e) {

@@ -9,11 +9,11 @@ import base.thing.Thing;
 import multi.thing.personnage.Joueur;
 import multi.thing.personnage.Personnage;
 import multi.tools.raycasting.Vector2D;
-import tests.kryonet.implem.serveurChef.messages.AcceptClientMessage;
-import tests.kryonet.implem.serveurChef.messages.ClientConnexionMessage;
-import tests.kryonet.implem.serveurChef.messages.ClientUpdateMessage;
-import tests.kryonet.implem.serveurChef.server.JoueurOnline;
-import tests.kryonet.implem.serveurChef.server.Partie;
+import tests.kryonet.implem.logiqueCoteClient.messages.AcceptClientMessage;
+import tests.kryonet.implem.logiqueCoteClient.messages.ClientConnexionMessage;
+import tests.kryonet.implem.logiqueCoteClient.messages.PlayerUpdateMessage;
+import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;
+import tests.kryonet.implem.logiqueCoteClient.server.Partie;
 
 public class Registerer {
 
@@ -21,7 +21,7 @@ public class Registerer {
 		Kryo kryo = endPoint.getKryo();
 		// Messages
 		kryo.register(ClientConnexionMessage.class);
-		kryo.register(ClientUpdateMessage.class);
+		kryo.register(PlayerUpdateMessage.class);
 		kryo.register(AcceptClientMessage.class);
 		kryo.register(Partie.class);
 		

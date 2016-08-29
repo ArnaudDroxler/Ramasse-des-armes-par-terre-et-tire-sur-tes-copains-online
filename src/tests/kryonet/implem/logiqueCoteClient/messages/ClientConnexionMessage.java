@@ -1,4 +1,4 @@
-package tests.kryonet.implem.serveurChef.messages;
+package tests.kryonet.implem.logiqueCoteClient.messages;
 
 public class ClientConnexionMessage {
 

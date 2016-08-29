@@ -1,5 +1,5 @@
 
-package tests.kryonet.implem.serveurChef.tools;
+package tests.kryonet.implem.logiqueCoteClient.tools;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

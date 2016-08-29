@@ -1,8 +1,8 @@
-package tests.kryonet.implem.serveurChef.messages;
+package tests.kryonet.implem.logiqueCoteClient.messages;
 
 import multi.tools.raycasting.Vector2D;
 
-public class ClientUpdateMessage{
+public class PlayerUpdateMessage{
 
 	private double posx;
 	private double posy;
@@ -12,7 +12,7 @@ public class ClientUpdateMessage{
 		posy=y;
 	}
 	
-	public ClientUpdateMessage(){}
+	public PlayerUpdateMessage(){}
 
 	public double getPosx() {
 		return posx;

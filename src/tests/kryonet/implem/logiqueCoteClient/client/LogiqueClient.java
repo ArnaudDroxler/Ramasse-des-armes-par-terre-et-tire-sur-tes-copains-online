@@ -1,4 +1,4 @@
-package tests.kryonet.implem.serveurChef.client;
+package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -13,8 +13,8 @@ import multi.thing.personnage.Personnage;
 import multi.tools.map.ImageParser;
 import multi.tools.map.LvlMap;
 import multi.tools.raycasting.Vector2D;
-import tests.kryonet.implem.serveurChef.server.JoueurOnline;
-import tests.kryonet.implem.serveurChef.server.Partie;
+import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;
+import tests.kryonet.implem.logiqueCoteClient.server.Partie;
 
 public class LogiqueClient extends KeyAdapter {
 
@@ -24,7 +24,7 @@ public class LogiqueClient extends KeyAdapter {
 	protected HashMap<Integer, JoueurOnline> ennemis;
 	protected JoueurOnline joueur;
 	private Vector2D oldPosition;
-	private HashSet<Integer> touchesEnfoncees;
+	protected HashSet<Integer> touchesEnfoncees;
 	private int joueurId;
 
 	public LogiqueClient(String nomMap) {

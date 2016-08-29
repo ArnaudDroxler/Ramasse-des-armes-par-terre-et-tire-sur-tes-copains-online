@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere;
+package tests.kryonet.implem.logiqueCoteClient;
 
 import tests.kryonet.implem.logiqueCoteClient.client.JFrameConnexion;
 
