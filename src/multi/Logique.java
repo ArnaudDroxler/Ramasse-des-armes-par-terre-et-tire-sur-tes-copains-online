@@ -85,6 +85,8 @@ public class Logique extends KeyAdapter {
 		toucheMur = false;
 		toucheEnnemi = false;
 
+		fireLineList = new ArrayList<Line2D>(5);
+
 		animer();
 
 	}
@@ -486,7 +488,7 @@ public class Logique extends KeyAdapter {
 	protected synchronized void fire() {
 
 		if (heros.getArme().getAmmo() > 0) {
-
+			fireLineList.clear();
 			heros.getArme().subAmmo(1);
 			heros.getArme().setFiring(true);
 
@@ -498,7 +500,7 @@ public class Logique extends KeyAdapter {
 
 			double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
 
-			fireLineList = new ArrayList<Line2D>(5);
+			// fireLineList = new ArrayList<Line2D>(5);
 
 			HashMap<Ennemi, Line2D> dictEnnemiFireLine = new HashMap<>();
 
@@ -528,13 +530,13 @@ public class Logique extends KeyAdapter {
 					}
 				}
 				if (ennemiTouche != null) {
-					toucheEnnemi = true;
 					toucheMur = false;
+					toucheEnnemi = true;
 					heros.getArme().setImpactEnnemi(true);
 					dictEnnemiFireLine.put(ennemiTouche, line2d);
 				} else {
-					toucheMur = true;
 					toucheEnnemi = false;
+					toucheMur = true;
 					heros.getArme().setImpactMur(true);
 				}
 

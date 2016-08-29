@@ -166,12 +166,33 @@ public class Camera extends Renderer {
 			drawWeapon(g2d);
 
 			if (logique.isFiring && !(logique.heros.getArme() instanceof Cut) && logique.toucheMur) {
-				BufferedImage img = scale(logique.heros.getArme().getSpriteImpactMur());
-				g2d.drawImage(img, null, w / 2, h / 2);
+				// BufferedImage img =
+				// scale(logique.heros.getArme().getSpriteImpactMur());
+				BufferedImage img = logique.heros.getArme().getSpriteImpactMur();
+
+				double longueurligne = Math.sqrt(Math.pow((logique.fireLine.getX2() - logique.fireLine.getX1()), 2)
+						+ Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()), 2));
+
+				if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
+					g2d.drawImage(img, null, w / 2, h / 2);
+					// g2d.drawImage(img, null, w / 2, (int) (h / 2 -
+					// longueurligne));
+				}
+
 			}
 			if (logique.isFiring && !(logique.heros.getArme() instanceof Cut) && logique.toucheEnnemi) {
-				BufferedImage img = scale(logique.heros.getArme().getSpriteImpactEnnemi());
-				g2d.drawImage(img, null, w / 2, h / 2);
+				// BufferedImage img =
+				// scale(logique.heros.getArme().getSpriteImpactEnnemi());
+				BufferedImage img = logique.heros.getArme().getSpriteImpactEnnemi();
+
+				double longueurligne = Math.sqrt(Math.pow((logique.fireLine.getX2() - logique.fireLine.getX1()), 2)
+						+ Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()), 2));
+				if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
+					g2d.drawImage(img, null, w / 2, h / 2);
+					// g2d.drawImage(img, null, w / 2, (int) (h / 2 -
+					// longueurligne));
+				}
+
 			}
 
 			if (logique.heros.getMort()) {
@@ -228,6 +249,7 @@ public class Camera extends Renderer {
 		if (logique.heros.getArme() != null) {
 			BufferedImage img = scale(logique.heros.getArme().getSpriteHUD());
 			g2d.drawImage(img, null, w / 2, h - img.getHeight());
+
 		}
 	}
 
