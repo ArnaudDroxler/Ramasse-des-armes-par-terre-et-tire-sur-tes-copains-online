@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere.server;
+package tests.kryonet.implem.logiqueCoteClient.server;
 
 import java.util.HashMap;
 

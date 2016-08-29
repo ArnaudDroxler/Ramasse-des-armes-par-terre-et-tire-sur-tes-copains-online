@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere.client;
+package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -60,10 +60,10 @@ public class PcClient {
 
 						@Override
 						public void run() {
-							PlayerUpdateMessage cum = new PlayerUpdateMessage();
+							PlayerUpdateMessage pum = new PlayerUpdateMessage();
 							while (true) {
-								cum.setPosition(jfc.slider1.getValue(),jfc.slider2.getValue());
-								client.sendUDP(cum);
+								pum.setPosition(jfc.slider1.getValue(),jfc.slider2.getValue());
+								client.sendUDP(pum);
 								try {
 									Thread.sleep(100);
 								} catch (InterruptedException e) {
