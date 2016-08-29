@@ -1,23 +1,21 @@
 package tests.kryonet.implem.premiere.server;
 
-public class JoueurOnline {
+import multi.thing.personnage.Joueur;
+import multi.tools.raycasting.Vector2D;
 
-	private String pseudo;
-	private int vie;
-	public double posx;
-	public double posy;
-	private int dirx;
-	private int diry;
+public class JoueurOnline extends Joueur{
+
+	public String pseudo;
 	private int connectionId;
 	
 	public JoueurOnline() {
-		
+		pseudo="";
 	}
 
 	public JoueurOnline(String pseudo, int connectionId) {
+		super(new Vector2D(),new Vector2D());
 		this.pseudo=pseudo;
 		this.connectionId=connectionId;
-		posx=posy=20;
 	}
 
 	public String getPseudo() {
@@ -26,12 +24,7 @@ public class JoueurOnline {
 
 	@Override
 	public String toString() {
-		return pseudo + ", vie=" + vie + ", pos=(" + posx + "," + posy + "), dir=(" + dirx
-				+ "," + diry + ")";
-	}
-
-	public void setPos(double d) {
-		posx=d;		
+		return pseudo + ", vie=" + vie;
 	}
 	
 }

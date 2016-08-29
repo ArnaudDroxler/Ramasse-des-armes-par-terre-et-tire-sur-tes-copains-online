@@ -18,6 +18,8 @@ public abstract class Personnage extends Thing {
 		setVitesse(0.05);
 		prendDegats = false;
 	}
+	
+	public Personnage(){}
 
 	public void perdVie(int pv) {
 		prendDegats = true;

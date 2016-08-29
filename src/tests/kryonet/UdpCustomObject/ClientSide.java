@@ -24,7 +24,7 @@ public class ClientSide {
 		}
 
 	    Infos infos = new Infos("coucou");
-
+	    
 	    Joueur j= new Joueur("aicha", 12, 2);
 	    infos.addJoueur(j);
 	    infos.addJoueur(new Joueur("yoan", 4, 4));

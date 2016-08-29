@@ -13,7 +13,9 @@ public class Joueur extends Personnage {
 		super(startPosition, startDirection);
 		vie = 100;
 		armure = 50;
-	}
+	}		
+	
+	public Joueur() {}	
 
 	@Override
 	public BufferedImage getSprite() {

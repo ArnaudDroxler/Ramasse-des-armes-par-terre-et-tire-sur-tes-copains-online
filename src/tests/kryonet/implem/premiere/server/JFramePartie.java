@@ -27,12 +27,16 @@ public class JFramePartie extends JFrame implements Runnable{
 
 	public void run() {
 		while(true){
-			textarea.setText(partie.toString());
+			debug(partie.toString());
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void debug(String str){
+		textarea.setText(str);
 	}
 }

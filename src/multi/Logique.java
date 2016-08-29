@@ -6,8 +6,11 @@ import java.awt.geom.Line2D;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.function.BiConsumer;
 
 import multi.thing.Armure;
 import multi.thing.Key;
@@ -43,6 +46,7 @@ public class Logique extends KeyAdapter {
 	private Vector2D oldPosition;
 	protected boolean fin;
 	protected Line2D fireLine;
+	protected ArrayList<Line2D> fireLineList;
 	public boolean isFiring;
 	protected ArrayList<Thing> listeThings;
 	private boolean mort;
@@ -494,40 +498,70 @@ public class Logique extends KeyAdapter {
 
 			double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
 
-			fireLine = new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d);
+			fireLineList = new ArrayList<Line2D>(5);
+
+			HashMap<Ennemi, Line2D> dictEnnemiFireLine = new HashMap<>();
+
+			if (heros.getArme() instanceof ShootGun) {
+				Joueur perso = new Joueur(heros.getPosition(), heros.getDirection());
+				for (int i = 0; i <= 4; i++) {
+					perso.rotate(Math.toRadians(i - 2) + 10);
+					fireLineList.add(new Line2D.Double(posx, posy, posx + perso.getDirection().getdX() * d,
+							posy + perso.getDirection().getdY() * d));
+				}
+			} else {
+				fireLineList.add(new Line2D.Double(posx, posy, posx + dirx * d, posy + diry * d));
+				fireLine = fireLineList.get(0);
+			}
 
 			Ennemi ennemiTouche = null;
 
-			Iterator<Ennemi> iterator = listEnnemie.iterator();
-			while (iterator.hasNext()) {
-				Ennemi ennemie = iterator.next();
-				Rectangle2D rect = new Rectangle2D.Double(ennemie.getPosition().getdX() - r / 2,
-						ennemie.getPosition().getdY() - r / 2, r, r);
-
-				if (fireLine.intersects(rect)) {
-					fireLine.setLine(posx, posy, ennemie.getPosition().getdX(), ennemie.getPosition().getdY());
-					ennemiTouche = ennemie;
+			for (Line2D line2d : fireLineList) {
+				Iterator<Ennemi> iterator = listEnnemie.iterator();
+				while (iterator.hasNext()) {
+					Ennemi ennemie = iterator.next();
+					Rectangle2D rect = new Rectangle2D.Double(ennemie.getPosition().getdX() - r / 2,
+							ennemie.getPosition().getdY() - r / 2, r, r);
+					if (line2d.intersects(rect)) {
+						line2d.setLine(posx, posy, ennemie.getPosition().getdX(), ennemie.getPosition().getdY());
+						ennemiTouche = ennemie;
+					}
 				}
+				if (ennemiTouche != null) {
+					toucheEnnemi = true;
+					toucheMur = false;
+					heros.getArme().setImpactEnnemi(true);
+					dictEnnemiFireLine.put(ennemiTouche, line2d);
+				} else {
+					toucheMur = true;
+					toucheEnnemi = false;
+					heros.getArme().setImpactMur(true);
+				}
+
 			}
+			System.out.println(dictEnnemiFireLine);
+			System.out.println(dictEnnemiFireLine.isEmpty());
+			if (!dictEnnemiFireLine.isEmpty()) {
+				System.out.println("coiucou");
+				dictEnnemiFireLine.forEach(new BiConsumer<Ennemi, Line2D>() {
 
-			if (ennemiTouche != null) {
-				toucheEnnemi = true;
-				toucheMur = false;
-				heros.getArme().setImpactEnnemi(true);
-				ennemiTouche.perdVie(heros.getArme().computeDamage(fireLine.getP1().distance(fireLine.getP2())));
-				System.out.println("Ennemie " + ennemiTouche.hashCode() + " : vie restante: " + ennemiTouche.getVie()
-						+ " / armure restante: " + ennemiTouche.getArmure());
-				if (ennemiTouche.getMort()) {
-					listEnnemie.remove(ennemiTouche);
-					listeThings.remove(ennemiTouche);
-				}
-			} else {
-				toucheMur = true;
-				toucheEnnemi = false;
-				heros.getArme().setImpactMur(true);
+					@Override
+					public void accept(Ennemi ennemi, Line2D fireLine) {
+						ennemi.perdVie(heros.getArme().computeDamage(fireLine.getP1().distance(fireLine.getP2())));
+						// System.out.println("Ennemie " + ennemi.hashCode() + "
+						// : vie restante: " + ennemi.getVie()
+						// + " / armure restante: " + ennemi.getArmure());
+						if (ennemi.getMort()) {
+							listEnnemie.remove(ennemi);
+							listeThings.remove(ennemi);
+
+						}
+					}
+
+				});
+
 			}
 		}
-
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class MainServer {
 		}
 
 		Partie partie = new Partie();
-		new JFramePartie(partie);
+		//JFramePartie jfp = new JFramePartie(partie);
 
 		server.addListener(new Listener() {
 			public void connected(Connection connection){
@@ -64,8 +64,9 @@ public class MainServer {
 		});
 
 		try {
-			System.out.println("le serveur est ouvert à l'adresse " + 
-					Inet4Address.getLocalHost().getHostAddress() + "\nPorts : TCP 54555, UDP 54777");
+			String str = "le serveur est ouvert à l'adresse " + 
+					Inet4Address.getLocalHost().getHostAddress() + "\nPorts : TCP 54555, UDP 54777";
+			System.out.println(str);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -2,6 +2,7 @@ package tests.kryonet.implem.premiere.server;
 
 import java.util.HashMap;
 
+import multi.tools.raycasting.Vector2D;
 import tests.kryonet.implem.premiere.messages.ClientUpdateMessage;
 
 public class Partie{
@@ -18,7 +19,7 @@ public class Partie{
 
 	public void updateJoueur(int id, ClientUpdateMessage cum) {
 		JoueurOnline j = joueurs.get(id);
-		j.setPos(cum.getPos());
+		j.setPosition(cum.getPos());
 	}
 
 	public void addJoueur(int id, JoueurOnline nouveaujoueur) {
