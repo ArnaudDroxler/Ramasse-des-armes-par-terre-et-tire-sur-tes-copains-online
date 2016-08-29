@@ -22,6 +22,7 @@ import java.util.TreeMap;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
+import multi.thing.weapon.PrecisionRifle;
 import multi.tools.raycasting.Vector2D;
 
 public class Camera extends Renderer {
@@ -76,6 +77,10 @@ public class Camera extends Renderer {
 		plane.setdY(oldPlane.getdY());
 	}
 
+	public void zoom() {
+
+	}
+
 	/*------------------------------*\
 	|*				Set				*|
 	\*------------------------------*/
@@ -116,7 +121,6 @@ public class Camera extends Renderer {
 					scaleHeight = (double) customHeight / InitialcustomHeight;
 					scaleWidth = (double) customWidth / InitialcustomWidth;
 
-					System.out.println(scaleHeight);
 				} else {
 					h = getHeight();
 					w = getWidth();
@@ -153,21 +157,28 @@ public class Camera extends Renderer {
 			setDirection(logique.heros.getDirection());
 
 			g2d.setBackground(Color.BLACK);
+
+			g2d.translate(w / 2, h / 2);
 			try {
+				if (FenetreJeu.mouseRightPressed && logique.heros.getArme() instanceof PrecisionRifle) {
+					g2d.scale(2, 2);
+				}
 				algoRaycasting(g2d);
 			} catch (Exception e) {
 				System.out.println("coucou y a probleme");
 				e.printStackTrace();
 			}
+
 			renderThings();
-			g2d.drawImage(bufferThings, 0, 0, null);
+
+			g2d.drawImage(bufferThings, null, -w / 2, -h / 2);
 
 			drawWeapon(g2d);
 
 			if (logique.heros.getMort()) {
 				String strMort = new String("Vous êtes mort!");
 				Font font = new Font("Helvetica", Font.BOLD, 60);
-				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
+				Rectangle2D rectangle = new Rectangle2D.Double(-w / 2, -h / 2, w, h);
 				Color couleur = new Color(0f, 0f, 0f, .5f);
 				g2d.setColor(couleur);
 				g2d.draw(rectangle);
@@ -184,8 +195,8 @@ public class Camera extends Renderer {
 				// g2d.drawString(strMort, w / 2 - stringLen / 2, h / 2);
 			}
 
-			if (logique.heros.prendDegats() && !logique.heros.getMort()) {
-				Point2D center = new Point2D.Float(w / 2, h / 2);
+			else if (logique.heros.prendDegats()) {
+				Point2D center = new Point2D.Float(0, 0);
 				float radius = w / 2;
 				float[] dist = { 0.0f, 0.9f };
 
@@ -195,7 +206,7 @@ public class Camera extends Renderer {
 				Color[] colors = { trans, rouge };
 				RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
 
-				Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
+				Rectangle2D rectangle = new Rectangle2D.Double(-w / 2, -h / 2, w, h);
 				g2d.setPaint(gradient);
 				g2d.fill(rectangle);
 
@@ -204,26 +215,36 @@ public class Camera extends Renderer {
 		}
 	}
 
-	private void drawCursor(Graphics2D g2d) {
-		g2d.setColor(Color.red);
-		g2d.drawLine(w / 2, h / 2 - 20, w / 2, h / 2 + 20);
-		g2d.drawLine(w / 2 - 20, h / 2, w / 2 + 20, h / 2);
-		g2d.drawLine(w / 2 - 5, h / 2 - 20, w / 2 + 5, h / 2 - 20);
-		g2d.drawLine(w / 2 - 5, h / 2 + 20, w / 2 + 5, h / 2 + 20);
-		g2d.drawLine(w / 2 - 20, h / 2 - 5, w / 2 - 20, h / 2 + 5);
-		g2d.drawLine(w / 2 + 20, h / 2 - 5, w / 2 + 20, h / 2 + 5);
-	}
-
 	private void drawWeapon(Graphics2D g2d) {
-		if (logique.heros.getArme() != null) {
-			BufferedImage img = scale(logique.heros.getArme().getSpriteHUD());
-			g2d.drawImage(img, null, w / 2, h - img.getHeight());
+		
+		if (logique.heros.getArme() instanceof PrecisionRifle && FenetreJeu.mouseRightPressed) {
+			
+			Point2D center = new Point2D.Float(0, 0);
+			float radius = 200;
+			float[] dist = { 0.0f, 0.9f, 1.0f};
+
+			Color trans = new Color(0f, 0f, 0f, 0f);
+
+			Color[] colors = {trans, trans, Color.black };
+			RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
+
+			Rectangle2D rectangle = new Rectangle2D.Double(-w / 2, -h / 2, w, h);
+			g2d.setPaint(gradient);
+			g2d.fill(rectangle);
+			
+			g2d.setColor(Color.black);
+			g2d.drawLine(-w/2, 0, w/2, 0);
+			g2d.drawLine(0, -h/2,0, h/2);
+		}
+		else if(logique.heros.getArme() != null ) {
+			BufferedImage img = scale(logique.heros.getArme().getSpriteHUD(), scaleWidth, scaleHeight);
+			g2d.drawImage(img, null, 0, h / 2 - img.getHeight());
 		}
 	}
 
-	public static BufferedImage scale(BufferedImage bi) {
-		int width = (int) (bi.getWidth() * scaleWidth);
-		int height = (int) (bi.getHeight() * scaleHeight);
+	public static BufferedImage scale(BufferedImage bi, double scaleWidth2, double scaleHeight2) {
+		int width = (int) (bi.getWidth() * scaleWidth2);
+		int height = (int) (bi.getHeight() * scaleHeight2);
 		BufferedImage biNew = new BufferedImage(width, height, bi.getType());
 		Graphics2D graphics = biNew.createGraphics();
 		graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -246,6 +267,7 @@ public class Camera extends Renderer {
 
 	private void algoRaycasting(Graphics2D g2d) {
 
+		g2d.translate(-w / 2, -h / 2);
 		for (int x = 0; x < w; x++) {
 			double cameraX = 2 * x / (double) w - 1;
 			Vector2D pos = posCamera.getPosition();
@@ -316,8 +338,9 @@ public class Camera extends Renderer {
 			int middle = h / 2;
 
 			// le -15 permet d'augmenter la hauteur des murs.
-			g2d.drawLine(x, middle - lineHeight / 2 - 15, x, middle + lineHeight / 2);
+			g2d.drawLine(x, (middle - lineHeight / 2 - 15), x, (middle + lineHeight / 2));
 		}
+		g2d.translate(w / 2, h / 2);
 	}
 
 	// On part ici du principe qu'elles sont ordonnées
@@ -439,6 +462,7 @@ public class Camera extends Renderer {
 		}
 		// A la fin de l'affichage, on clear la liste
 		listAfficher.clear();
+
 	}
 
 	/*------------------------------------------------------------------*\
@@ -451,10 +475,8 @@ public class Camera extends Renderer {
 	public static int InitialcustomHeight = 288;
 	public static int InitialcustomWidth = 512;
 
-	/*
-	 * public static int customHeight = 360; public static int customWidth =
-	 * 640;
-	 */
+	// public static int customHeight = 360;
+	// public static int customWidth = 640;
 
 	public static int customHeight = 720;
 	public static int customWidth = 1280;
@@ -488,5 +510,7 @@ public class Camera extends Renderer {
 	private Vector2D oldPos;
 	private Vector2D oldDir;
 	private Vector2D oldPlane;
+
+	protected boolean zoom;
 
 }

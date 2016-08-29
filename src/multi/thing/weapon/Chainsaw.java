@@ -6,15 +6,15 @@ import multi.tools.ImageLoader;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
-public class Cut extends Weapon {
+public class Chainsaw extends Weapon {
 
-	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("handgunhud0.png"),
-			ImageLoader.loadBufferedImage("handgunhud1.png"), ImageLoader.loadBufferedImage("handgunhud2.png"),
-			ImageLoader.loadBufferedImage("handgunhud3.png") };
+	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("weapon/chainsaw/chainsawhud0.png"),
+			ImageLoader.loadBufferedImage("weapon/chainsaw/chainsawhud0.png"), ImageLoader.loadBufferedImage("weapon/chainsaw/chainsawhud0.png"),
+			ImageLoader.loadBufferedImage("weapon/chainsaw/chainsawhud0.png") };
 
 	private int cpt;
 
-	public Cut(Vector2D pos) {
+	public Chainsaw(Vector2D pos) {
 		super(pos);
 		ammo = 1000;
 		RoF = 2;
@@ -62,7 +62,7 @@ public class Cut extends Weapon {
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffCle;
+		return MagasinImage.buffChainsaw;
 	}
 
 }

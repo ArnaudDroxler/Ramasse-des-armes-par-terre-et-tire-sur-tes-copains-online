@@ -16,18 +16,19 @@ public class MagasinImage {
 	|*		 Version Synchrone (bloquant)								*|
 	\*------------------------------------------------------------------*/
 
-	public static final ImageIcon pingouin = ImageLoader.loadSynchrone("penguin.png");
-	public static final BufferedImage buffPingouin = ImageLoader.loadBufferedImage("penguin.png");
-	public static final BufferedImage buffGiraffe = ImageLoader.loadBufferedImage("giraffe.png");
-	public static final BufferedImage buffGoat = ImageLoader.loadBufferedImage("goat.png");
-	public static final BufferedImage buffSheep = ImageLoader.loadBufferedImage("sheep.png");
 	public static final BufferedImage buffYoanBlanc = ImageLoader.loadBufferedImage("yoan00.png");
 	public static final BufferedImage buffCle = ImageLoader.loadBufferedImage("cle.png");
 	public static final BufferedImage buffPorte = ImageLoader.loadBufferedImage("porte.png");
 	public static final BufferedImage buffMedipack = ImageLoader.loadBufferedImage("medipack.png");
 	public static final BufferedImage buffArmure = ImageLoader.loadBufferedImage("armure.png");
-	public static final BufferedImage buffHandGun = ImageLoader.loadBufferedImage("handgun2.png");
-	public static final BufferedImage buffSubMachinGun = ImageLoader.loadBufferedImage("submachingun.png");
+	
+	
+	public static final BufferedImage buffHandGun = ImageLoader.loadBufferedImage("weapon/testgun.png");
+	public static final BufferedImage buffShootGun = ImageLoader.loadBufferedImage("weapon/shootgun.png");
+	public static final BufferedImage buffSubMachinGun = ImageLoader.loadBufferedImage("weapon/submachingun.png");
+	public static final BufferedImage buffPrecisionRifle = ImageLoader.loadBufferedImage("weapon/sniper.png");
+	public static final BufferedImage buffChainsaw = ImageLoader.loadBufferedImage("weapon/chainsaw/chainsaw.png");
+	
 	public static final BufferedImage buffAmmoPackHG = ImageLoader.loadBufferedImage("ammopackHG.png");
 	public static final BufferedImage buffAmmoPackSmG = ImageLoader.loadBufferedImage("ammopackSmG.png");
 
