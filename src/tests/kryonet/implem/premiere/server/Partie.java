@@ -9,8 +9,7 @@ public class Partie{
 
 	private HashMap<Integer,JoueurOnline> joueurs;
 	private String nomMap;
-	private long t1,t2;
-	private int tempsSecondes;
+	private long tempsSecondes;
 	
 	public Partie(){
 		joueurs = new HashMap<Integer,JoueurOnline>();
@@ -35,7 +34,7 @@ public class Partie{
 		StringBuffer sb = new StringBuffer();
 		sb.append("map : ");
 		sb.append(nomMap+"\n");
-		sb.append("Temps : " + tempsSecondes);
+		sb.append("Temps : " + tempsSecondes/60 + " min " + tempsSecondes%60 + " s");
 		sb.append("\nJoueurs :");
 		for (JoueurOnline j : joueurs.values()) {
 			sb.append("\n\t" + j);
@@ -49,6 +48,10 @@ public class Partie{
 
 	public HashMap<Integer,JoueurOnline> getJoueurs() {
 		return joueurs;
+	}
+
+	public void setTempsSecondes(long l) {
+		tempsSecondes = l;
 	}
 	
 }

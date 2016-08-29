@@ -32,7 +32,7 @@ public class MainServer {
 		}
 
 		Partie partie = new Partie();
-		//JFramePartie jfp = new JFramePartie(partie);
+		JFramePartie jfp = new JFramePartie(partie);
 
 		server.addListener(new Listener() {
 			public void connected(Connection connection){

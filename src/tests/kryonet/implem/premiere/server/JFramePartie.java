@@ -26,7 +26,11 @@ public class JFramePartie extends JFrame implements Runnable{
 	}
 
 	public void run() {
+		
+		long t1=System.currentTimeMillis(),t2;
 		while(true){
+			t2=System.currentTimeMillis();
+			partie.setTempsSecondes((t2-t1)/1000);
 			debug(partie.toString());
 			try {
 				Thread.sleep(100);
