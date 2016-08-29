@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere.client;
+package tests.kryonet.implem.logiqueCoteClient.client;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;

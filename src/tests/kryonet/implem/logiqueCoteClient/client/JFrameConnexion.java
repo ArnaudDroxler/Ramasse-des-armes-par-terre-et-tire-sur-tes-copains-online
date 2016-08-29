@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere.client;
+package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

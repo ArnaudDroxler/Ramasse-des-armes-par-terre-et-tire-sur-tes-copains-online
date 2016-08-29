@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere.client;
+package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.Color;
 import java.awt.Graphics;

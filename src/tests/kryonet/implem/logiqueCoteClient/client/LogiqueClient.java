@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere.client;
+package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -24,7 +24,7 @@ public class LogiqueClient extends KeyAdapter {
 	protected HashMap<Integer, JoueurOnline> ennemis;
 	protected JoueurOnline joueur;
 	private Vector2D oldPosition;
-	private HashSet<Integer> touchesEnfoncees;
+	protected HashSet<Integer> touchesEnfoncees;
 	private int joueurId;
 
 	public LogiqueClient(String nomMap) {

@@ -26,5 +26,6 @@ public class Infos {
 	@Override
 	public String toString() {
 		return "Infos [texte=" + texte + ", joueur=" + joueurs + "]";
+		//return "Infos [texte=" + texte + "]";
 	}	
 }

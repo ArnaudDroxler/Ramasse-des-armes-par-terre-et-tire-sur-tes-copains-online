@@ -53,6 +53,9 @@ public class Logique extends KeyAdapter {
 	public boolean waitRespawn;
 	private long tempsRespawn;
 
+	public boolean toucheMur;
+	public boolean toucheEnnemi;
+
 	// test vie et armure
 	protected ArrayList<Ennemi> listEnnemie;
 
@@ -78,6 +81,9 @@ public class Logique extends KeyAdapter {
 
 		mort = false;
 		waitRespawn = false;
+
+		toucheMur = false;
+		toucheEnnemi = false;
 
 		animer();
 
@@ -522,7 +528,14 @@ public class Logique extends KeyAdapter {
 					}
 				}
 				if (ennemiTouche != null) {
+					toucheEnnemi = true;
+					toucheMur = false;
+					heros.getArme().setImpactEnnemi(true);
 					dictEnnemiFireLine.put(ennemiTouche, line2d);
+				} else {
+					toucheMur = true;
+					toucheEnnemi = false;
+					heros.getArme().setImpactMur(true);
 				}
 
 			}

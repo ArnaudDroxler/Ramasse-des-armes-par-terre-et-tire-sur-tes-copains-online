@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere.messages;
+package tests.kryonet.implem.logiqueCoteClient.messages;
 
 import tests.kryonet.implem.logiqueCoteClient.server.Partie;
 
