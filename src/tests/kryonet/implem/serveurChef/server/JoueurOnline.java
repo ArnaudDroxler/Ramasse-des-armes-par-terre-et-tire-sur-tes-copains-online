@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere.server;
+package tests.kryonet.implem.serveurChef.server;
 
 import multi.thing.personnage.Joueur;
 import multi.tools.raycasting.Vector2D;

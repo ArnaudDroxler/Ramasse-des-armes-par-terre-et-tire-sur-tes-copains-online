@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere;
+package tests.kryonet.implem.serveurChef;
 
 import java.io.IOException;
 import java.net.Inet4Address;

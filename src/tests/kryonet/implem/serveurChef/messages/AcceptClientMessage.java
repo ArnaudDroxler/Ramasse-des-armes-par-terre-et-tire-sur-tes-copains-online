@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere.messages;
+package tests.kryonet.implem.serveurChef.messages;
 
 import tests.kryonet.implem.serveurChef.server.Partie;
 

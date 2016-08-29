@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere.client;
+package tests.kryonet.implem.serveurChef.client;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

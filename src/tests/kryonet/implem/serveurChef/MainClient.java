@@ -1,4 +1,4 @@
-package tests.kryonet.implem.premiere;
+package tests.kryonet.implem.serveurChef;
 
 import tests.kryonet.implem.serveurChef.client.JFrameConnexion;
 
