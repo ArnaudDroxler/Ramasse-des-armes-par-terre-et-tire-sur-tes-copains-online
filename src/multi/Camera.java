@@ -22,6 +22,7 @@ import java.util.TreeMap;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
+import multi.thing.weapon.Cut;
 import multi.tools.raycasting.Vector2D;
 
 public class Camera extends Renderer {
@@ -163,6 +164,15 @@ public class Camera extends Renderer {
 			g2d.drawImage(bufferThings, 0, 0, null);
 
 			drawWeapon(g2d);
+
+			if (logique.isFiring && !(logique.heros.getArme() instanceof Cut) && logique.toucheMur) {
+				BufferedImage img = scale(logique.heros.getArme().getSpriteImpactMur());
+				g2d.drawImage(img, null, w / 2, h / 2);
+			}
+			if (logique.isFiring && !(logique.heros.getArme() instanceof Cut) && logique.toucheEnnemi) {
+				BufferedImage img = scale(logique.heros.getArme().getSpriteImpactEnnemi());
+				g2d.drawImage(img, null, w / 2, h / 2);
+			}
 
 			if (logique.heros.getMort()) {
 				String strMort = new String("Vous êtes mort!");

@@ -39,10 +39,20 @@ public class MagasinImage {
 	public static final BufferedImage buffFantome5 = ImageLoader.loadBufferedImage("images fantome/fantome5.png");
 	public static final BufferedImage buffFantome6 = ImageLoader.loadBufferedImage("images fantome/fantome6.png");
 	public static final BufferedImage buffFantome7 = ImageLoader.loadBufferedImage("images fantome/fantome7.png");
+
+	public static final BufferedImage buffImpactEnnemi0 = ImageLoader.loadBufferedImage("images impact/impact_ennemi0.png");
+	public static final BufferedImage buffImpactEnnemi1 = ImageLoader.loadBufferedImage("images impact/impact_ennemi1.png");
+	public static final BufferedImage buffImpactEnnemi2 = ImageLoader.loadBufferedImage("images impact/impact_ennemi2.png");
+	public static final BufferedImage buffImpactEnnemi3 = ImageLoader.loadBufferedImage("images impact/impact_ennemi3.png");
+
+	public static final BufferedImage buffImpactMur0 = ImageLoader.loadBufferedImage("images impact/impact_mur0.png");
+	public static final BufferedImage buffImpactMur1 = ImageLoader.loadBufferedImage("images impact/impact_mur1.png");
+	public static final BufferedImage buffImpactMur2 = ImageLoader.loadBufferedImage("images impact/impact_mur2.png");
+	public static final BufferedImage buffImpactMur3 = ImageLoader.loadBufferedImage("images impact/impact_mur3.png");
+	public static final BufferedImage buffImpactMur4 = ImageLoader.loadBufferedImage("images impact/impact_mur4.png");
 	
-	public static final BufferedImage buffFantomes[] = {
-			buffFantome0,buffFantome1,buffFantome2,buffFantome3,buffFantome4,buffFantome5,buffFantome6,buffFantome7
-		};
+	public static final BufferedImage buffFantomes[] = { buffFantome0, buffFantome1, buffFantome2, buffFantome3,
+			buffFantome4, buffFantome5, buffFantome6, buffFantome7 };
 
 	/*------------------------------------------------------------------*\
 	|*		Version Assynchrone	(non bloquant)							*|

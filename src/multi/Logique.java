@@ -49,6 +49,9 @@ public class Logique extends KeyAdapter {
 	public boolean waitRespawn;
 	private long tempsRespawn;
 
+	public boolean toucheMur;
+	public boolean toucheEnnemi;
+
 	// test vie et armure
 	protected ArrayList<Ennemi> listEnnemie;
 
@@ -74,6 +77,9 @@ public class Logique extends KeyAdapter {
 
 		mort = false;
 		waitRespawn = false;
+
+		toucheMur = false;
+		toucheEnnemi = false;
 
 		animer();
 
@@ -505,6 +511,9 @@ public class Logique extends KeyAdapter {
 			}
 
 			if (ennemiTouche != null) {
+				toucheEnnemi = true;
+				toucheMur = false;
+				heros.getArme().setImpactEnnemi(true);
 				ennemiTouche.perdVie(heros.getArme().computeDamage(fireLine.getP1().distance(fireLine.getP2())));
 				System.out.println("Ennemie " + ennemiTouche.hashCode() + " : vie restante: " + ennemiTouche.getVie()
 						+ " / armure restante: " + ennemiTouche.getArmure());
@@ -512,6 +521,10 @@ public class Logique extends KeyAdapter {
 					listEnnemie.remove(ennemiTouche);
 					listeThings.remove(ennemiTouche);
 				}
+			} else {
+				toucheMur = true;
+				toucheEnnemi = false;
+				heros.getArme().setImpactMur(true);
 			}
 		}
 
