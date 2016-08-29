@@ -19,6 +19,10 @@ public abstract class Thing {
 		this(pos.getdX(), pos.getdY(), dir.getdX(), dir.getdY());
 	}
 
+	public Thing() {
+		this(new Vector2D(0, 0), new Vector2D(1, 0));
+	}
+
 	public Thing(double posX, double posY, double dirX, double dirY) {
 		position = new Vector2D();
 		direction = new Vector2D();
@@ -28,10 +32,6 @@ public abstract class Thing {
 		direction.setdY(dirY);
 		dAlpha = 1;
 
-	}
-
-	public Thing() {
-		this(new Vector2D(0, 0), new Vector2D(1, 0));
 	}
 
 	public Thing(Vector2D vector2d) {

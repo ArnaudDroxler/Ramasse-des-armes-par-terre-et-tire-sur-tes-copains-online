@@ -21,7 +21,7 @@ public class LogiqueClient extends KeyAdapter {
 	protected static final long delay = 150;
 	protected boolean fin;
 	protected LvlMap map;
-	protected ArrayList<JoueurOnline> listEnnemis;
+	protected HashMap<Integer, JoueurOnline> ennemis;
 	protected JoueurOnline joueur;
 	private Vector2D oldPosition;
 	private HashSet<Integer> touchesEnfoncees;
@@ -33,7 +33,7 @@ public class LogiqueClient extends KeyAdapter {
 		map = ImageParser.getMap(nomMap);
 		oldPosition = map.getStartPosition();
 		joueur = new JoueurOnline();
-		listEnnemis = new ArrayList<JoueurOnline>(8);
+		ennemis = new HashMap<Integer, JoueurOnline>(8);
 		animer();
 	}	
 
@@ -60,11 +60,15 @@ public class LogiqueClient extends KeyAdapter {
 	}
 
 	public void updatePartie(Partie partie) {
+		/*
 		HashMap<Integer, JoueurOnline> joueurs = partie.getJoueurs();
 		// to do : avoir aussi un hashmap côté client
 		joueur = joueurs.remove(joueurId);
 		listEnnemis.clear();
 		listEnnemis.addAll(joueurs.values());
+		*/
+		ennemis = partie.getJoueurs();
+		joueur = ennemis.remove(joueurId);
 	}
 
 	public void setId(int id) {

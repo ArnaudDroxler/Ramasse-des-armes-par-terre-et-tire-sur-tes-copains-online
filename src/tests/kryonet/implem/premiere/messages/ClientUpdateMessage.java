@@ -1,5 +1,7 @@
 package tests.kryonet.implem.premiere.messages;
 
+import multi.tools.raycasting.Vector2D;
+
 public class ClientUpdateMessage{
 
 	private double posx;
@@ -18,6 +20,10 @@ public class ClientUpdateMessage{
 
 	public double getPosy() {
 		return posy;
+	}
+
+	public Vector2D getPos() {
+		return new Vector2D(posx,posy);
 	}
 
 }

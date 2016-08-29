@@ -52,11 +52,11 @@ public class VueMap  extends Renderer {
 	private void drawPersonnage(JoueurOnline joueur, AffineTransform init) {
 		int a = (int) zoom;
 		
-		g2d.translate(joueur.posx * zoom, joueur.posy * zoom);
+		g2d.translate(joueur.getPosition().getdX() * zoom, joueur.getPosition().getdY() * zoom);
 		//g2d.drawString(joueur.pseudo, 0, (int) -zoom);
 		printSimpleString(joueur.pseudo);
 		//g2d.rotate(joueur.getDirection().getTheta());
-		g2d.rotate(Math.atan2(joueur.diry, joueur.diry));
+		g2d.rotate(Math.atan2(joueur.getDirection().getdX(), joueur.getDirection().getdY()));
 		g2d.fillOval((int) (- zoom / 2), ((int) (- zoom / 2)), a, a);
 		g2d.fillRect(0, -1, (int) zoom, 2);
 		g2d.setTransform(init);
@@ -80,7 +80,7 @@ public class VueMap  extends Renderer {
 		g2d.setColor(Color.green);
 		int a = (int) zoom;
 		// a protéger
-		for (JoueurOnline ennemi : lc.listEnnemis) {
+		for (JoueurOnline ennemi : lc.ennemis.values()) {
 			drawPersonnage(ennemi, init);
 		}
 	}
@@ -89,7 +89,7 @@ public class VueMap  extends Renderer {
         int stringLen = (int)
             g2d.getFontMetrics().getStringBounds(s, g2d).getWidth();
         int start = -stringLen/2;
-        g2d.drawString(s, start, -10);
+        g2d.drawString(s, start, (int) -zoom);
  }
 
 }
