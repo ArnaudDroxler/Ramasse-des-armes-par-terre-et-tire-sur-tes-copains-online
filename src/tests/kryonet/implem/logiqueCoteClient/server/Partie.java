@@ -2,7 +2,6 @@ package tests.kryonet.implem.logiqueCoteClient.server;
 
 import java.util.HashMap;
 
-import multi.tools.raycasting.Vector2D;
 import tests.kryonet.implem.logiqueCoteClient.messages.PlayerUpdateMessage;
 
 public class Partie{
@@ -17,8 +16,7 @@ public class Partie{
 	}
 
 	public void updateJoueur(int id, PlayerUpdateMessage cum) {
-		JoueurOnline j = joueurs.get(id);
-		j.setPosition(cum.getPos());
+		joueurs.put(id, cum.getJoueur());
 	}
 
 	public void addJoueur(int id, JoueurOnline nouveaujoueur) {

@@ -9,6 +9,7 @@ public class JoueurOnline extends Joueur{
 	
 	public JoueurOnline() {
 		pseudo="";
+		v=0.1;
 	}
 
 	public JoueurOnline(String pseudo) {

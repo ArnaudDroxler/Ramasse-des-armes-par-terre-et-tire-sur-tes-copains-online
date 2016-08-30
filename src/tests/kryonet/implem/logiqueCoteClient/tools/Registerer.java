@@ -5,7 +5,7 @@ import java.util.HashMap;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 
-import base.thing.Thing;
+import multi.thing.Thing;
 import multi.thing.personnage.Joueur;
 import multi.thing.personnage.Personnage;
 import multi.tools.raycasting.Vector2D;

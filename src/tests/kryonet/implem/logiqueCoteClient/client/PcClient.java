@@ -19,12 +19,9 @@ import tests.kryonet.implem.logiqueCoteClient.tools.Registerer;
 public class PcClient {
 
 	private JFrameClient jfc;
-	private Partie partie;
 	private LogiqueClient lc;
 	public JSlider slider;
 	private VueMap vueMap;
-
-	private boolean WaitingForResponse;
 
 	public PcClient(String ip, String pseudo) throws IOException {
 
@@ -39,7 +36,8 @@ public class PcClient {
 		lc = new LogiqueClient("StandDeTire.png");
 		vueMap = new VueMap(lc);
 		jfc = new JFrameClient(vueMap);
-		jfc.addKeyListener(lc);
+		vueMap.setFocusable(true);
+		vueMap.addKeyListener(lc);
 
 		ClientConnexionMessage ccm = new ClientConnexionMessage(pseudo);
 		client.sendTCP(ccm);
@@ -62,10 +60,10 @@ public class PcClient {
 						public void run() {
 							PlayerUpdateMessage pum = new PlayerUpdateMessage();
 							while (true) {
-								pum.setPosition(jfc.slider1.getValue(),jfc.slider2.getValue());
+								pum.setJoueur(lc.joueur);
 								client.sendUDP(pum);
 								try {
-									Thread.sleep(100);
+									Thread.sleep((int) jfc.spinner.getValue());
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}

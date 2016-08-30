@@ -2,14 +2,9 @@ package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import multi.thing.personnage.Ennemi;
-import multi.thing.personnage.Joueur;
-import multi.thing.personnage.Personnage;
 import multi.tools.map.ImageParser;
 import multi.tools.map.LvlMap;
 import multi.tools.raycasting.Vector2D;
@@ -18,7 +13,7 @@ import tests.kryonet.implem.logiqueCoteClient.server.Partie;
 
 public class LogiqueClient extends KeyAdapter {
 
-	protected static final long delay = 150;
+	protected static final long delay = 20;
 	protected boolean fin;
 	protected LvlMap map;
 	protected HashMap<Integer, JoueurOnline> ennemis;
@@ -33,9 +28,10 @@ public class LogiqueClient extends KeyAdapter {
 		map = ImageParser.getMap(nomMap);
 		oldPosition = map.getStartPosition();
 		joueur = new JoueurOnline();
+		joueur.setPosition(oldPosition);
 		ennemis = new HashMap<Integer, JoueurOnline>(8);
 		animer();
-	}	
+	}
 
 	private void animer() {
 		Thread thread = new Thread(new Runnable() {
@@ -45,8 +41,7 @@ public class LogiqueClient extends KeyAdapter {
 				try {
 					while (!fin) {
 						if (!touchesEnfoncees.isEmpty()) {
-							//updateDeplacement();
-							//joueur.forward();
+							updateDeplacement();
 						}
 						// updateEnnemis();
 						Thread.sleep(delay);
@@ -59,20 +54,99 @@ public class LogiqueClient extends KeyAdapter {
 		thread.start();
 	}
 
+	@Override
+	public void keyPressed(KeyEvent e) {
+		touchesEnfoncees.add(e.getKeyCode());
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		touchesEnfoncees.remove(e.getKeyCode());
+	}
+	
+	protected void updateDeplacement() {
+		oldPosition = joueur.getPosition();
+		if (touchesEnfoncees.contains(KeyEvent.VK_W)) {
+			joueur.forward();
+		}
+		if (touchesEnfoncees.contains(KeyEvent.VK_S)) {
+			joueur.backward();
+		}
+		if (touchesEnfoncees.contains(KeyEvent.VK_A)) {
+			joueur.strafeLeft();
+		}
+		if (touchesEnfoncees.contains(KeyEvent.VK_D)) {
+			joueur.strafeRight();
+		}
+
+		// collisison avec les murs
+		if (map.inWall(joueur.getPosition()) && !joueur.getMort()) {
+			moveAlongWalls();
+		}
+
+		if (touchesEnfoncees.contains(KeyEvent.VK_LEFT)) {
+			joueur.rotateLeft();
+		}
+		if (touchesEnfoncees.contains(KeyEvent.VK_RIGHT)) {
+			joueur.rotateRight();
+		}
+
+	}
+
 	public void updatePartie(Partie partie) {
 		/*
-		HashMap<Integer, JoueurOnline> joueurs = partie.getJoueurs();
-		// to do : avoir aussi un hashmap côté client
-		joueur = joueurs.remove(joueurId);
-		listEnnemis.clear();
-		listEnnemis.addAll(joueurs.values());
-		*/
+		 * HashMap<Integer, JoueurOnline> joueurs = partie.getJoueurs(); // to
+		 * do : avoir aussi un hashmap côté client joueur =
+		 * joueurs.remove(joueurId); listEnnemis.clear();
+		 * listEnnemis.addAll(joueurs.values());
+		 */
 		ennemis = partie.getJoueurs();
-		joueur = ennemis.remove(joueurId);
+		//joueur = ennemis.remove(joueurId);
 	}
 
 	public void setId(int id) {
 		joueurId = id;
 	}
 	
+	private void moveAlongWalls() {
+		double newx = joueur.getPosition().getdX();
+		double newy = joueur.getPosition().getdY();
+		double oldx = oldPosition.getdX();
+		double oldy = oldPosition.getdY();
+
+		int caseX = (int) oldx;
+		int caseY = (int) oldy;
+
+		if (oldx <= newx) {
+			if (oldy <= newy)
+				// bas droite
+				testAndMove(newx, newy, caseX + .99, caseY + .99);
+			else
+				// haut droite
+				testAndMove(newx, newy, caseX + .99, caseY);
+		} else {
+			if (oldy <= newy)
+				// bas gauche
+				testAndMove(newx, newy, caseX, caseY + .99);
+			else
+				// haut gauche
+				testAndMove(newx, newy, caseX, caseY);
+		}
+	}
+
+	private void testAndMove(double newx, double newy, double lockX, double lockY) {
+		// on essaye de glisser horizontalement
+		if (!map.inWall(newx, lockY)) {
+			// on déplace si on est pas dans un mur
+			joueur.setPosition(newx, lockY);
+		} else if (!map.inWall(lockX, newy)) {
+			// sinon, on essaye de glisser verticalement
+			joueur.setPosition(lockX, newy);
+		} else {
+			// on est dans un mur dans les deux cas
+			// on ne bouge plus, on se met dans le coin
+			joueur.setPosition(lockX, lockY);
+		}
+	}
+
 }

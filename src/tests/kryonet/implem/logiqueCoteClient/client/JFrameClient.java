@@ -1,18 +1,12 @@
 package tests.kryonet.implem.logiqueCoteClient.client;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JSlider;
-import javax.swing.JTextArea;
-
-import multi.Logique;
-import multi.VueJeu;
-import tests.kryonet.implem.logiqueCoteClient.server.Partie;
+import javax.swing.JSpinner;
 
 public class JFrameClient extends JFrame {
 
-	public JSlider slider1;
-	public JSlider slider2;
+	public JSpinner spinner;
 
 	public JFrameClient(VueMap vueMap) {
 		super();
@@ -23,10 +17,11 @@ public class JFrameClient extends JFrame {
 		VueMap vueMap = new VueMap(lc);
 		addKeyListener(lc);
 		*/
-		slider1 = new JSlider();
-		vueMap.add(slider1);
-		slider2 = new JSlider();
-		vueMap.add(slider2);
+		
+		spinner = new JSpinner();
+		spinner.setValue(10);
+		vueMap.add(spinner);
+		
 		add(vueMap);
 		
 		setVisible(true);

@@ -7,9 +7,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
 
-import multi.thing.Thing;
-import multi.thing.personnage.Ennemi;
-import multi.thing.personnage.Personnage;
 import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;
 
 public class VueMap extends Renderer {
@@ -45,8 +42,9 @@ public class VueMap extends Renderer {
 		g2d.setTransform(init);
 
 		g2d.setColor(Color.red);
-		drawPersonnage(lc.joueur, init);
 		drawAutresJoueurs(init);
+		g2d.setColor(Color.green);
+		drawPersonnage(lc.joueur, init);
 	}
 
 	private void drawPersonnage(JoueurOnline joueur, AffineTransform init) {
@@ -56,7 +54,7 @@ public class VueMap extends Renderer {
 		// g2d.drawString(joueur.pseudo, 0, (int) -zoom);
 		printSimpleString(joueur.pseudo);
 		// g2d.rotate(joueur.getDirection().getTheta());
-		g2d.rotate(Math.atan2(joueur.getDirection().getdX(), joueur.getDirection().getdY()));
+		g2d.rotate(Math.atan2(joueur.getDirection().getdY(), joueur.getDirection().getdX()));
 		g2d.fillOval((int) (-zoom / 2), ((int) (-zoom / 2)), a, a);
 		g2d.fillRect(0, -1, (int) zoom, 2);
 		g2d.setTransform(init);
@@ -74,7 +72,6 @@ public class VueMap extends Renderer {
 	}
 
 	private void drawAutresJoueurs(AffineTransform init) {
-		g2d.setColor(Color.green);
 		int a = (int) zoom;
 		// a protéger
 		for (JoueurOnline ennemi : lc.ennemis.values()) {

@@ -10,11 +10,11 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
-import tests.kryonet.implem.logiqueCoteClient.messages.AcceptClientMessage;
-import tests.kryonet.implem.logiqueCoteClient.messages.ClientConnexionMessage;
-import tests.kryonet.implem.logiqueCoteClient.messages.PlayerUpdateMessage;
-import tests.kryonet.implem.logiqueCoteClient.server.Partie;
-import tests.kryonet.implem.logiqueCoteClient.tools.Registerer;
+import tests.kryonet.implem.premiere.messages.AcceptClientMessage;
+import tests.kryonet.implem.premiere.messages.ClientConnexionMessage;
+import tests.kryonet.implem.premiere.messages.ClientUpdateMessage;
+import tests.kryonet.implem.premiere.server.Partie;
+import tests.kryonet.implem.premiere.tools.Registerer;
 
 public class PcClient {
 
@@ -60,7 +60,7 @@ public class PcClient {
 
 						@Override
 						public void run() {
-							PlayerUpdateMessage cum = new PlayerUpdateMessage();
+							ClientUpdateMessage cum = new ClientUpdateMessage();
 							while (true) {
 								cum.setPosition(jfc.slider1.getValue(),jfc.slider2.getValue());
 								client.sendUDP(cum);
