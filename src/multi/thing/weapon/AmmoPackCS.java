@@ -7,16 +7,16 @@ import java.awt.image.BufferedImage;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
-public class AmmoPackSmG extends AmmoPack {
+public class AmmoPackCS extends AmmoPack {
 
-	public AmmoPackSmG(Vector2D pos) {
+	public AmmoPackCS(Vector2D pos) {
 		super(pos);
-		ammo = 60;
+		ammo = 20;
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffAmmoPackHG;
+		return MagasinImage.buffAmmoPackCS;
 	}
 
 }
