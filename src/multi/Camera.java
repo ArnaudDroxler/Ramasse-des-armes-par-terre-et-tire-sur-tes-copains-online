@@ -177,7 +177,7 @@ public class Camera extends Renderer {
 
 			drawWeapon(g2d);
 
-			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheMur) {
+			/*if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheMur) {
 				// BufferedImage img =
 				// scale(logique.heros.getArme().getSpriteImpactMur());
 				BufferedImage img = logique.heros.getArme().getSpriteImpactMur();
@@ -205,7 +205,7 @@ public class Camera extends Renderer {
 					// longueurligne));
 				}
 
-			}
+			}*/
 
 			if (logique.heros.getMort()) {
 				String strMort = new String("Vous êtes mort!");
@@ -251,7 +251,7 @@ public class Camera extends Renderer {
 		if (logique.heros.getArme() instanceof PrecisionRifle && FenetreJeu.mouseRightPressed) {
 
 			Point2D center = new Point2D.Float(0, 0);
-			float radius = 200;
+			float radius = w/8;
 			float[] dist = { 0.0f, 0.9f, 1.0f };
 
 			Color trans = new Color(0f, 0f, 0f, 0f);
@@ -268,7 +268,7 @@ public class Camera extends Renderer {
 			g2d.drawLine(0, -h / 2, 0, h / 2);
 		} else if (logique.heros.getArme() != null) {
 			BufferedImage img = scale(logique.heros.getArme().getSpriteHUD(), scaleWidth, scaleHeight);
-			g2d.drawImage(img, null, 0, h / 2 - img.getHeight());
+			g2d.drawImage(img, null, -img.getWidth()/2, h / 2 - img.getHeight());
 		}
 	}
 
@@ -505,8 +505,8 @@ public class Camera extends Renderer {
 	public static int InitialcustomHeight = 288;
 	public static int InitialcustomWidth = 512;
 
-	// public static int customHeight = 360;
-	// public static int customWidth = 640;
+	//public static int customHeight = 360;
+	//public static int customWidth = 640;
 
 	public static int customHeight = 720;
 	public static int customWidth = 1280;

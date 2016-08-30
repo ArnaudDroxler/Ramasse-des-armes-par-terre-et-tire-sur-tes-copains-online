@@ -8,10 +8,6 @@ import multi.tools.raycasting.Vector2D;
 
 public class HandGun extends Weapon {
 
-	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("weapon/handgunhud0.png"),
-			ImageLoader.loadBufferedImage("weapon/handgunhud1.png"), ImageLoader.loadBufferedImage("weapon/handgunhud2.png"),
-			ImageLoader.loadBufferedImage("weapon/handgunhud3.png") };
-
 	private int cpt;
 
 	public HandGun(Vector2D pos) {
@@ -62,7 +58,7 @@ public class HandGun extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return sprites[cpt];
+		return MagasinImage.buffShootgunHUD[cpt];
 	}
 
 	@Override

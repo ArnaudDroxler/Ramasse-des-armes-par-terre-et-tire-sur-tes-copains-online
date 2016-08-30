@@ -2,33 +2,32 @@ package multi.thing.weapon;
 
 import java.awt.image.BufferedImage;
 
+import com.sun.javafx.font.LogicalFont;
+
+import multi.FenetreJeu;
+import multi.Logique;
 import multi.tools.ImageLoader;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
 public class Chainsaw extends Weapon {
 
-	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("weapon/chainsaw/chainsawhud0.png"),
-			ImageLoader.loadBufferedImage("weapon/chainsaw/chainsawhud0.png"), ImageLoader.loadBufferedImage("weapon/chainsaw/chainsawhud0.png"),
-			ImageLoader.loadBufferedImage("weapon/chainsaw/chainsawhud0.png") };
-
 	private int cpt;
 
 	public Chainsaw(Vector2D pos) {
 		super(pos);
-		ammo = 1000;
-		RoF = 2;
-		DpS = 100;
-		RaoF = 1.5;
+		ammo = 200;
+		RoF = 5;
+		DpS = 50;
+		RaoF = 2;
 		cpt = 0;
 	}
 
 	@Override
 	public int computeDamage(double d) {
-		if (d < RaoF) 
+		if (d < RaoF)
 			return (int) DpS;
 		return 0;
-		
 	}
 
 	@Override
@@ -39,25 +38,24 @@ public class Chainsaw extends Weapon {
 			@Override
 			public void run() {
 				try {
-
-					for (cpt = 1; cpt < 4; cpt++) {
+					int i = 0;
+					while(FenetreJeu.mouseLeftPressed){
+						cpt = i++%2+2;
 						Thread.sleep(100);
 					}
-					cpt = 0;
-
+					cpt=0;
+					
 				} catch (InterruptedException e) {
-
 					e.printStackTrace();
 				}
 
 			}
 		});
-
 		if (isFiring) {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return sprites[cpt];
+		return MagasinImage.buffChainsawHUD[cpt];
 	}
 
 	@Override

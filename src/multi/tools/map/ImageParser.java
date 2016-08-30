@@ -14,10 +14,13 @@ import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
+import multi.thing.weapon.AmmoPackAR;
+import multi.thing.weapon.AmmoPackCS;
 import multi.thing.weapon.AmmoPackHG;
 import multi.thing.weapon.AmmoPackPR;
 import multi.thing.weapon.AmmoPackSG;
 import multi.thing.weapon.AmmoPackSmG;
+import multi.thing.weapon.AssaultRifle;
 import multi.thing.weapon.Chainsaw;
 import multi.thing.weapon.HandGun;
 import multi.thing.weapon.PrecisionRifle;
@@ -86,10 +89,13 @@ public class ImageParser {
 					} // Fusil a ponpe
 					else if (Integer.toHexString(rgb).equals("ff00dd00")) {
 						map.getListThing().add(new ShootGun(new Vector2D(x, y)));
-					} // pack munition arme de poing
+					} // sniper
 					else if (Integer.toHexString(rgb).equals("ff00cc00")) {
 						map.getListThing().add(new PrecisionRifle(new Vector2D(x, y)));
-					} // pack munition arme de poing
+					} // fusil d assault
+					else if (Integer.toHexString(rgb).equals("ff00aa00")) {
+						map.getListThing().add(new AssaultRifle(new Vector2D(x, y)));
+					} // chainsaw
 					else if (Integer.toHexString(rgb).equals("ff00bb00")) {
 						map.getListThing().add(new Chainsaw(new Vector2D(x, y)));
 					} // pack munition arme de poing
@@ -104,6 +110,12 @@ public class ImageParser {
 					}// AmmoPackPR
 					else if (Integer.toHexString(rgb).equals("ff00cc50")) {
 						map.getListThing().add(new AmmoPackPR(new Vector2D(x, y)));
+					}
+					else if (Integer.toHexString(rgb).equals("ff00aa50")) {
+						map.getListThing().add(new AmmoPackAR(new Vector2D(x, y)));
+					}
+					else if (Integer.toHexString(rgb).equals("ff00bb50")) {
+						map.getListThing().add(new AmmoPackCS(new Vector2D(x, y)));
 					}
 					imgToParse.setRGB(x, y, Color.white.getRGB());
 				} else {

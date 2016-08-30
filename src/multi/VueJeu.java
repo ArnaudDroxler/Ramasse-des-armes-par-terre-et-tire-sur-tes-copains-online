@@ -1,4 +1,4 @@
-package multi;
+ï»¿package multi;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -56,40 +56,38 @@ public class VueJeu extends Renderer {
 		g2d.fillRect(0, -1, (int) zoom, 2);
 
 		if (logique.isFiring) {
-			//drawTir();
+			drawTir();
 		}
 	}
 
 	private void drawTir() {
-		
-		 double x = logique.fireLine.getX2() - logique.fireLine.getX1();
-		 double y = logique.fireLine.getY2() - logique.fireLine.getY1();
-		 double d = Math.sqrt(x * x + y * y); g2d.drawLine(0, 0, (int) (d *zoom), 0);
-		
-		/*int i=0;
-		/*Iterator<Line2D> iterator = logique.fireLineList.iterator();
+
+		// double x = logique.fireLine.getX2() - logique.fireLine.getX1();
+		// double y = logique.fireLine.getY2() - logique.fireLine.getY1();
+		// double d = Math.sqrt(x * x + y * y); g2d.drawLine(0, 0, (int) (d
+		// *zoom), 0);
+
+		int i = 0;
+		Iterator<Line2D> iterator = logique.fireLineList.iterator();
 		while (iterator.hasNext()) {
-			Line2D fireLine = iterator.next();
-			*/
-		/*for (Line2D fireLine : logique.fireLineList) {
-			
-			//Line2D fireLine = logique.fireLineList.get(3);
+			Line2D fireLine1 = iterator.next();
 
-			double x = fireLine.getX2() - fireLine.getX1();
-			double y = fireLine.getY2() - fireLine.getY1();
+			// Line2D fireLine = logique.fireLineList.get(3);
+
+			double x = fireLine1.getX2() - fireLine1.getX1();
+			double y = fireLine1.getY2() - fireLine1.getY1();
 			double d = Math.sqrt(x * x + y * y);
-			
-			g2d.drawLine(0, 0, (int) (y*zoom), (int)(x*zoom ));
-			//g2d.drawLine((int) fireLine.getX1(),(int) fireLine.getX2(),(int)fireLine.getY1(), (int)fireLine.getY2());
-			*/
-		//}
-		
-	}
 
+			g2d.drawLine(0, 0, (int) (y * zoom), (int) (x * zoom));
+			// g2d.drawLine((int) fireLine.getX1(),(int)
+			// fireLine.getX2(),(int)fireLine.getY1(), (int)fireLine.getY2());
+
+		}
+	}
 	private void drawMonstres(AffineTransform init) {
 		g2d.setColor(Color.green);
 		int a = (int) zoom;
-		// a protéger
+		// a protï¿½ger
 		for (Thing monstre : logique.listEnnemie) {
 			g2d.translate(monstre.getPosition().getdX() * zoom, monstre.getPosition().getdY() * zoom);
 			g2d.rotate(monstre.getDirection().getTheta());

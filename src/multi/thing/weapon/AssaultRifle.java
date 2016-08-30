@@ -1,3 +1,4 @@
+
 package multi.thing.weapon;
 
 import java.awt.image.BufferedImage;
@@ -6,17 +7,16 @@ import multi.tools.ImageLoader;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
-public class SubmachineGun extends Weapon {
+public class AssaultRifle extends Weapon {
 
-	
 	private int cpt;
 
-	public SubmachineGun(Vector2D pos) {
+	public AssaultRifle(Vector2D pos) {
 		super(pos);
 		ammo = 30;
-		RoF = 8;
-		DpS = 30;
-		RaoF = 20;
+		RoF = 3;
+		DpS = 60;
+		RaoF = 40;
 		cpt = 0;
 	}
 
@@ -42,11 +42,11 @@ public class SubmachineGun extends Weapon {
 			public void run() {
 				try {
 
-					for (cpt = 1; cpt < 2; cpt++) {
+					for (cpt = 1; cpt < 3; cpt++) {
 						Thread.sleep(100);
 					}
 					cpt = 0;
-					
+
 				} catch (InterruptedException e) {
 
 					e.printStackTrace();
@@ -59,12 +59,12 @@ public class SubmachineGun extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return MagasinImage.buffSubmachingunHUD[cpt];
+		return MagasinImage.buffAssaltRifleHUD[cpt];
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffSubMachinGun;
+		return MagasinImage.buffAssaltRifle;
 	}
 
 }

@@ -23,14 +23,16 @@ public class MagasinImage {
 	public static final BufferedImage buffArmure = ImageLoader.loadBufferedImage("armure.png");
 	
 	
-	public static final BufferedImage buffHandGun = ImageLoader.loadBufferedImage("weapon/testgun.png");
-	public static final BufferedImage buffShootGun = ImageLoader.loadBufferedImage("weapon/shootgun.png");
-	public static final BufferedImage buffSubMachinGun = ImageLoader.loadBufferedImage("weapon/submachingun.png");
-	public static final BufferedImage buffPrecisionRifle = ImageLoader.loadBufferedImage("weapon/sniper.png");
+	public static final BufferedImage buffHandGun = ImageLoader.loadBufferedImage("weapon/handgun/handgun.png");
+	public static final BufferedImage buffShootGun = ImageLoader.loadBufferedImage("weapon/shootgun/shootgun.png");
+	public static final BufferedImage buffSubMachinGun = ImageLoader.loadBufferedImage("weapon/submachingun/submachingun.png");
+	public static final BufferedImage buffAssaltRifle = ImageLoader.loadBufferedImage("weapon/assaltrifle/assaltrifle.png");
+	public static final BufferedImage buffPrecisionRifle = ImageLoader.loadBufferedImage("weapon/precisionrifle/precisionrifle.png");
 	public static final BufferedImage buffChainsaw = ImageLoader.loadBufferedImage("weapon/chainsaw/chainsaw.png");
 	
 	public static final BufferedImage buffAmmoPackHG = ImageLoader.loadBufferedImage("ammopackHG.png");
 	public static final BufferedImage buffAmmoPackSmG = ImageLoader.loadBufferedImage("ammopackSmG.png");
+	public static final BufferedImage buffAmmoPackCS = ImageLoader.loadBufferedImage("weapon/chainsaw/ammopackcs.png");
 
 	public static final BufferedImage buffFantome0 = ImageLoader.loadBufferedImage("images fantome/fantome0.png");
 	public static final BufferedImage buffFantome1 = ImageLoader.loadBufferedImage("images fantome/fantome1.png");
@@ -54,7 +56,36 @@ public class MagasinImage {
 	
 	public static final BufferedImage buffFantomes[] = { buffFantome0, buffFantome1, buffFantome2, buffFantome3,
 			buffFantome4, buffFantome5, buffFantome6, buffFantome7 };
+	
 
+	public static final BufferedImage buffChainsawHUD0 = ImageLoader.loadBufferedImage("weapon/chainsaw/chainsawhud0.png");
+	public static final BufferedImage buffChainsawHUD1 = ImageLoader.loadBufferedImage("weapon/chainsaw/chainsawhud1.png");
+	public static final BufferedImage buffChainsawHUD2 = ImageLoader.loadBufferedImage("weapon/chainsaw/chainsawhud2.png");
+	public static final BufferedImage buffChainsawHUD3 = ImageLoader.loadBufferedImage("weapon/chainsaw/chainsawhud3.png");
+	
+	public final static BufferedImage buffChainsawHUD[] = { buffChainsawHUD0,buffChainsawHUD1,buffChainsawHUD2,buffChainsawHUD3};
+	
+	public static final BufferedImage buffSubmachingunHUD0 = ImageLoader.loadBufferedImage("weapon/submachingun/submachingunhud0.png");
+	public static final BufferedImage buffSubmachingunHUD1 = ImageLoader.loadBufferedImage("weapon/submachingun/submachingunhud1.png");
+	
+	public final static BufferedImage buffSubmachingunHUD[] = { buffSubmachingunHUD0,buffSubmachingunHUD1};
+	
+	public static final BufferedImage buffShootgunHUD0 = ImageLoader.loadBufferedImage("weapon/shootgun/shootgunhud0.png");
+	public static final BufferedImage buffShootgunHUD1 = ImageLoader.loadBufferedImage("weapon/shootgun/shootgunhud1.png");
+	public static final BufferedImage buffShootgunHUD2 = ImageLoader.loadBufferedImage("weapon/shootgun/shootgunhud2.png");
+	public static final BufferedImage buffShootgunHUD3 = ImageLoader.loadBufferedImage("weapon/shootgun/shootgunhud3.png");
+	public static final BufferedImage buffShootgunHUD4 = ImageLoader.loadBufferedImage("weapon/shootgun/shootgunhud4.png");
+	public static final BufferedImage buffShootgunHUD5 = ImageLoader.loadBufferedImage("weapon/shootgun/shootgunhud5.png");
+	
+	public final static BufferedImage buffShootgunHUD[] = { buffShootgunHUD0,buffShootgunHUD1,buffShootgunHUD2,buffShootgunHUD3,buffShootgunHUD4,buffShootgunHUD5,buffShootgunHUD4,buffShootgunHUD3};
+	
+	public static final BufferedImage buffAssaltRifleHUD0 = ImageLoader.loadBufferedImage("weapon/assaltrifle/assaltriflehud0.png");
+	public static final BufferedImage buffAssaltRifleHUD1 = ImageLoader.loadBufferedImage("weapon/assaltrifle/assaltriflehud1.png");
+	public static final BufferedImage buffAssaltRifleHUD2 = ImageLoader.loadBufferedImage("weapon/assaltrifle/assaltriflehud2.png");
+	
+	public final static BufferedImage buffAssaltRifleHUD[] = { buffAssaltRifleHUD0,buffAssaltRifleHUD1,buffAssaltRifleHUD2};
+	
+	
 	/*------------------------------------------------------------------*\
 	|*		Version Assynchrone	(non bloquant)							*|
 	\*------------------------------------------------------------------*/
