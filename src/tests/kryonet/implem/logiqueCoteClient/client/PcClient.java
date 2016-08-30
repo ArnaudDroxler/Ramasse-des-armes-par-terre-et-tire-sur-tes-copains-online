@@ -56,7 +56,7 @@ public class PcClient {
 							client.close();
 						}
 					});
-					
+
 					Thread t = new Thread(new Runnable() {
 
 						@Override
@@ -74,6 +74,7 @@ public class PcClient {
 						}
 					});
 					t.start();
+
 
 				} else if (object instanceof Partie) {
 					// jfc.debug(object.toString());

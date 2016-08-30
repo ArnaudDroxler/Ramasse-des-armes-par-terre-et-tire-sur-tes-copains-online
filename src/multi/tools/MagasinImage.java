@@ -54,6 +54,8 @@ public class MagasinImage {
 	
 	public static final BufferedImage buffFantomes[] = { buffFantome0, buffFantome1, buffFantome2, buffFantome3,
 			buffFantome4, buffFantome5, buffFantome6, buffFantome7 };
+	
+	public static final BufferedImage buffPika[] = ImageLoader.loadImagesFromFolder("pika");
 
 	/*------------------------------------------------------------------*\
 	|*		Version Assynchrone	(non bloquant)							*|
