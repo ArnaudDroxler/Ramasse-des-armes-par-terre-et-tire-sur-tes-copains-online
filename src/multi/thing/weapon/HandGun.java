@@ -8,9 +8,9 @@ import multi.tools.raycasting.Vector2D;
 
 public class HandGun extends Weapon {
 
-	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("handgunhud0.png"),
-			ImageLoader.loadBufferedImage("handgunhud1.png"), ImageLoader.loadBufferedImage("handgunhud2.png"),
-			ImageLoader.loadBufferedImage("handgunhud3.png") };
+	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("weapon/handgunhud0.png"),
+			ImageLoader.loadBufferedImage("weapon/handgunhud1.png"), ImageLoader.loadBufferedImage("weapon/handgunhud2.png"),
+			ImageLoader.loadBufferedImage("weapon/handgunhud3.png") };
 
 	private int cpt;
 

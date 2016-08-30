@@ -8,8 +8,8 @@ import multi.tools.raycasting.Vector2D;
 
 public class SubmachineGun extends Weapon {
 
-	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("submachingunhud0.png"),
-			ImageLoader.loadBufferedImage("submachingunhud1.png"), ImageLoader.loadBufferedImage("submachingunhud2.png")};
+	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("weapon/submachingunhud0.png"),
+			ImageLoader.loadBufferedImage("weapon/submachingunhud1.png"), ImageLoader.loadBufferedImage("weapon/submachingunhud2.png")};
 
 	private int cpt;
 

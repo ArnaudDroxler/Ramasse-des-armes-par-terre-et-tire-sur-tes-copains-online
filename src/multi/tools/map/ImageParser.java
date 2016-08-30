@@ -18,7 +18,7 @@ import multi.thing.weapon.AmmoPackHG;
 import multi.thing.weapon.AmmoPackPR;
 import multi.thing.weapon.AmmoPackSG;
 import multi.thing.weapon.AmmoPackSmG;
-import multi.thing.weapon.Cut;
+import multi.thing.weapon.Chainsaw;
 import multi.thing.weapon.HandGun;
 import multi.thing.weapon.PrecisionRifle;
 import multi.thing.weapon.ShootGun;
@@ -91,7 +91,7 @@ public class ImageParser {
 						map.getListThing().add(new PrecisionRifle(new Vector2D(x, y)));
 					} // pack munition arme de poing
 					else if (Integer.toHexString(rgb).equals("ff00bb00")) {
-						map.getListThing().add(new Cut(new Vector2D(x, y)));
+						map.getListThing().add(new Chainsaw(new Vector2D(x, y)));
 					} // pack munition arme de poing
 					else if (Integer.toHexString(rgb).equals("ff00ff50")) {
 						map.getListThing().add(new AmmoPackHG(new Vector2D(x, y)));
