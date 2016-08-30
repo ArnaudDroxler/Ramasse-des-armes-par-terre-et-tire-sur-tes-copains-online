@@ -31,7 +31,6 @@ public abstract class Thing {
 		direction.setdX(dirX);
 		direction.setdY(dirY);
 		dAlpha = 1;
-
 	}
 
 	public Thing(Vector2D vector2d) {
