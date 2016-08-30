@@ -16,20 +16,22 @@ public class LogiqueClient extends KeyAdapter {
 	protected static final long delay = 20;
 	protected boolean fin;
 	protected LvlMap map;
-	protected HashMap<Integer, JoueurOnline> ennemis;
+	protected HashMap<Integer, JoueurOnline> joueurs;
 	protected JoueurOnline joueur;
-	private Vector2D oldPosition;
+	protected Vector2D oldPosition;
 	protected HashSet<Integer> touchesEnfoncees;
-	private int joueurId;
+	protected int joueurId;
 
-	public LogiqueClient(String nomMap) {
+	public LogiqueClient(String nomMap, Partie partie, int i) {
 		touchesEnfoncees = new HashSet<Integer>(6);
 		fin = false;
 		map = ImageParser.getMap(nomMap);
 		oldPosition = map.getStartPosition();
-		joueur = new JoueurOnline();
+		
+		joueurId=i;
+		joueurs = partie.getJoueurs();
+		joueur=joueurs.get(i);
 		joueur.setPosition(oldPosition);
-		ennemis = new HashMap<Integer, JoueurOnline>(8);
 		animer();
 	}
 
@@ -100,12 +102,9 @@ public class LogiqueClient extends KeyAdapter {
 		 * joueurs.remove(joueurId); listEnnemis.clear();
 		 * listEnnemis.addAll(joueurs.values());
 		 */
-		ennemis = partie.getJoueurs();
+		joueurs = partie.getJoueurs();
+		// mauvaise solution car très peu performante :
 		//joueur = ennemis.remove(joueurId);
-	}
-
-	public void setId(int id) {
-		joueurId = id;
 	}
 	
 	private void moveAlongWalls() {

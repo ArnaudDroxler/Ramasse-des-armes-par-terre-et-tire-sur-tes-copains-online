@@ -74,8 +74,8 @@ public class VueMap extends Renderer {
 	private void drawAutresJoueurs(AffineTransform init) {
 		int a = (int) zoom;
 		// a protéger
-		for (JoueurOnline ennemi : lc.ennemis.values()) {
-			drawPersonnage(ennemi, init);
+		for (JoueurOnline joueur : lc.joueurs.values()) {
+			drawPersonnage(joueur, init);
 		}
 	}
 

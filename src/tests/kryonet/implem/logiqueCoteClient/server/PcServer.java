@@ -38,8 +38,6 @@ public class PcServer {
 		server.addListener(new Listener() {
 			public void connected(Connection connection) {
 				System.out.println(connection + " connected");
-				connection.sendTCP("vous êtes connectés au serveur avec l'id " + connection.getID() + ", adresse UDP: "
-						+ connection.getRemoteAddressUDP());
 			}
 
 			public void received(Connection connection, Object object) {
@@ -52,12 +50,9 @@ public class PcServer {
 					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID());
 					connection.sendTCP(acm);
 				} else if (object instanceof PlayerUpdateMessage) {
-
-					PlayerUpdateMessage cum = (PlayerUpdateMessage) object;
-					partie.updateJoueur(connection.getID(), cum);
-					// System.out.println(cum.getPos());
+					PlayerUpdateMessage pum = (PlayerUpdateMessage) object;
+					partie.updateJoueur(connection.getID(), pum);
 					connection.sendUDP(partie);
-
 				}
 			}
 
@@ -67,13 +62,8 @@ public class PcServer {
 			}
 		});
 
-		try {
-			String str = "le serveur est ouvert à l'adresse " + Inet4Address.getLocalHost().getHostAddress()
-					+ "\nPorts : TCP 54555, UDP 54777";
-			System.out.println(str);
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		String str = "le serveur est ouvert\nPorts : TCP 54555, UDP 54777";
+		System.out.println(str);
 	}
 }

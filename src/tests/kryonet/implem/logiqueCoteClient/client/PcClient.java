@@ -33,26 +33,29 @@ public class PcClient {
 		// lance une IOException si ça se passe mal
 		client.connect(5000, ip, 54555, 54777);
 
-		lc = new LogiqueClient("StandDeTire.png");
-		vueMap = new VueMap(lc);
-		jfc = new JFrameClient(vueMap);
-		vueMap.setFocusable(true);
-		vueMap.addKeyListener(lc);
-
 		ClientConnexionMessage ccm = new ClientConnexionMessage(pseudo);
 		client.sendTCP(ccm);
 
 		client.addListener(new Listener() {
-			public void connected (Connection connection) {
-				System.out.println("client connecté");
-			}
-
+			
 			public void received(Connection connection, Object object) {
 
 				if (object instanceof AcceptClientMessage) {
 					AcceptClientMessage acm = (AcceptClientMessage) object;
 					System.out.println(acm.getMsg());
-					lc.setId(acm.getId());
+
+					lc = new LogiqueClient("StandDeTire.png", acm.getPartie(), acm.getId());
+					vueMap = new VueMap(lc);
+					jfc = new JFrameClient(vueMap);
+					vueMap.setFocusable(true);
+					vueMap.addKeyListener(lc);
+
+					jfc.addWindowListener(new WindowAdapter() {
+						@Override
+						public void windowClosing(WindowEvent e) {
+							client.close();
+						}
+					});
 					
 					Thread t = new Thread(new Runnable() {
 
@@ -76,15 +79,8 @@ public class PcClient {
 					// jfc.debug(object.toString());
 					lc.updatePartie((Partie) object);
 				} else if (object instanceof String) {
-					System.out.println(object);
+					System.out.println((String)object);
 				}
-			}
-		});
-
-		jfc.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				client.close();
 			}
 		});
 
