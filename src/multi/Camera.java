@@ -21,13 +21,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.Vector;
 
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
 import multi.thing.weapon.PrecisionRifle;
 import multi.thing.weapon.Chainsaw;
-
+import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
 public class Camera extends Renderer {
@@ -131,14 +132,20 @@ public class Camera extends Renderer {
 					w = getWidth();
 				}
 				tabDistStripes = new double[w];
-				
-				GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-				GraphicsConfiguration gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
-				bufferThings = gc.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
-				bufferThings.setAccelerationPriority(1);
 
-				System.out.println(bufferThings.getCapabilities(gc).isAccelerated());
-				//bufferThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+				/*
+				 * GraphicsEnvironment ge =
+				 * GraphicsEnvironment.getLocalGraphicsEnvironment();
+				 * GraphicsConfiguration gc =
+				 * ge.getDefaultScreenDevice().getDefaultConfiguration();
+				 * bufferThings = gc.createCompatibleImage(w, h,
+				 * Transparency.TRANSLUCENT);
+				 * bufferThings.setAccelerationPriority(1);
+				 * 
+				 * System.out.println(bufferThings.getCapabilities(gc).
+				 * isAccelerated());
+				 */
+				bufferThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 				clearRect = new Rectangle2D.Double(0, 0, w, h);
 				g2dBuff = bufferThings.createGraphics();
 				// on relance le thread d'animation
@@ -180,41 +187,45 @@ public class Camera extends Renderer {
 				e.printStackTrace();
 			}
 
-			renderThings();
+			//renderThings();
 
-			g2d.drawImage(bufferThings, null, -w / 2, -h / 2);
+			//g2d.drawImage(bufferThings, null, -w / 2, -h / 2);
 
 			drawWeapon(g2d);
 
-			/*if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheMur) {
-				// BufferedImage img =
-				// scale(logique.heros.getArme().getSpriteImpactMur());
-				BufferedImage img = logique.heros.getArme().getSpriteImpactMur();
-
-				double longueurligne = Math.sqrt(Math.pow((logique.fireLine.getX2() - logique.fireLine.getX1()), 2)
-						+ Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()), 2));
-
-				if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
-					g2d.drawImage(img, null, w / 2, h / 2);
-					// g2d.drawImage(img, null, w / 2, (int) (h / 2 -
-					// longueurligne));
-				}
-
-			}
-			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheEnnemi) {
-				// BufferedImage img =
-				// scale(logique.heros.getArme().getSpriteImpactEnnemi());
-				BufferedImage img = logique.heros.getArme().getSpriteImpactEnnemi();
-
-				double longueurligne = Math.sqrt(Math.pow((logique.fireLine.getX2() - logique.fireLine.getX1()), 2)
-						+ Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()), 2));
-				if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
-					g2d.drawImage(img, null, w / 2, h / 2);
-					// g2d.drawImage(img, null, w / 2, (int) (h / 2 -
-					// longueurligne));
-				}
-
-			}*/
+			/*
+			 * if (logique.isFiring && !(logique.heros.getArme() instanceof
+			 * Chainsaw) && logique.toucheMur) { // BufferedImage img = //
+			 * scale(logique.heros.getArme().getSpriteImpactMur());
+			 * BufferedImage img = logique.heros.getArme().getSpriteImpactMur();
+			 * 
+			 * double longueurligne =
+			 * Math.sqrt(Math.pow((logique.fireLine.getX2() -
+			 * logique.fireLine.getX1()), 2) +
+			 * Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()),
+			 * 2));
+			 * 
+			 * if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
+			 * g2d.drawImage(img, null, w / 2, h / 2); // g2d.drawImage(img,
+			 * null, w / 2, (int) (h / 2 - // longueurligne)); }
+			 * 
+			 * } if (logique.isFiring && !(logique.heros.getArme() instanceof
+			 * Chainsaw) && logique.toucheEnnemi) { // BufferedImage img = //
+			 * scale(logique.heros.getArme().getSpriteImpactEnnemi());
+			 * BufferedImage img =
+			 * logique.heros.getArme().getSpriteImpactEnnemi();
+			 * 
+			 * double longueurligne =
+			 * Math.sqrt(Math.pow((logique.fireLine.getX2() -
+			 * logique.fireLine.getX1()), 2) +
+			 * Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()),
+			 * 2)); if (logique.heros.getArme().computeDamage(longueurligne) >
+			 * 0) { g2d.drawImage(img, null, w / 2, h / 2); //
+			 * g2d.drawImage(img, null, w / 2, (int) (h / 2 - //
+			 * longueurligne)); }
+			 * 
+			 * }
+			 */
 
 			if (logique.heros.getMort()) {
 				String strMort = new String("Vous êtes mort!");
@@ -260,7 +271,7 @@ public class Camera extends Renderer {
 		if (logique.heros.getArme() instanceof PrecisionRifle && FenetreJeu.mouseRightPressed) {
 
 			Point2D center = new Point2D.Float(0, 0);
-			float radius = w/8;
+			float radius = w / 8;
 			float[] dist = { 0.0f, 0.9f, 1.0f };
 
 			Color trans = new Color(0f, 0f, 0f, 0f);
@@ -277,7 +288,7 @@ public class Camera extends Renderer {
 			g2d.drawLine(0, -h / 2, 0, h / 2);
 		} else if (logique.heros.getArme() != null) {
 			BufferedImage img = scale(logique.heros.getArme().getSpriteHUD(), scaleWidth, scaleHeight);
-			g2d.drawImage(img, null, -img.getWidth()/2, h / 2 - img.getHeight());
+			g2d.drawImage(img, null, -img.getWidth() / 2, h / 2 - img.getHeight());
 		}
 	}
 
@@ -305,6 +316,12 @@ public class Camera extends Renderer {
 	 */
 
 	private void algoRaycasting(Graphics2D g2d) {
+
+		int texWidth = 64;
+		int texHeight = 64;
+		BufferedImage buff = new BufferedImage(w, h,  BufferedImage.TYPE_INT_ARGB);
+		
+		Vector<Integer> texture = new Vector<Integer>(1);
 
 		g2d.translate(-w / 2, -h / 2);
 		for (int x = 0; x < w; x++) {
@@ -369,13 +386,45 @@ public class Camera extends Renderer {
 			int lineHeight = (int) (h / perpWallDist);
 			tabDistStripes[x] = perpWallDist;
 
-			if (side == 1) {
-				g2d.setColor(Color.LIGHT_GRAY);
-			} else {
-				g2d.setColor(Color.GRAY);
-			}
 			int middle = h / 2;
+			
+//			 if (side == 1) { g2d.setColor(Color.LIGHT_GRAY); } 
+//			 else { g2d.setColor(Color.GRAY); }
+			 
+			/*
+			
+			int drawStart = -lineHeight / 2 + h / 2;
+			if (drawStart < 0)
+				drawStart = 0;
+			int drawEnd = lineHeight / 2 + h / 2;
+			if (drawEnd >= h)
+				drawEnd = h - 1;
 
+			double wallX; // where exactly the wall was hit
+			if (side == 0)
+				wallX = rayPosY + perpWallDist * rayDirY;
+			else
+				wallX = rayPosX + perpWallDist * rayDirX;
+			wallX -= Math.floor((wallX));
+
+			int texX = (int) (wallX * texWidth);
+			if (side == 0 && rayDirX > 0)
+				texX = texWidth - texX - 1;
+			if (side == 1 && rayDirY < 0)
+				texX = texWidth - texX - 1;
+
+			for (int y = drawStart; y < drawEnd; y++) {
+				int d = y * 256 - h * 128 + lineHeight * 128;
+				int texY = ((d * texHeight) / lineHeight) / 256;
+				int rgb = MagasinImage.buffYoanBlanc.getRGB(texX, texY);
+				// make color darker for y-sides: R, G and B byte each divided
+				// through two with a "shift" and an "and"
+				 if(side == 1) 
+					 rgb = (rgb >> 1) & 8355711;
+				 buff.setRGB(x, y, rgb);
+			}
+			
+			g2d.drawImage(buff, null,0,0);*/
 			// le -15 permet d'augmenter la hauteur des murs.
 			g2d.drawLine(x, (middle - lineHeight / 2 - 15), x, (middle + lineHeight / 2));
 		}
@@ -514,15 +563,14 @@ public class Camera extends Renderer {
 	public static int InitialcustomHeight = 288;
 	public static int InitialcustomWidth = 512;
 
-	//public static int customHeight = 360;
-	//public static int customWidth = 640;
+	public static int customHeight = 360;
+	public static int customWidth = 640;
 
 	//public static int customHeight = 720;
 	//public static int customWidth = 1280;
 
-	 public static int customHeight = 1080;
-	 public static int customWidth=1920;
-	
+	//public static int customHeight = 1080;
+	//public static int customWidth = 1920;
 
 	public static boolean customSize = true;
 
