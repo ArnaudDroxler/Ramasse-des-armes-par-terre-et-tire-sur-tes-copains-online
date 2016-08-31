@@ -185,9 +185,9 @@ public class Camera extends Renderer {
 				e.printStackTrace();
 			}
 
-			//renderThings();
+			renderThings();
 
-			//g2d.drawImage(bufferThings, null, -w / 2, -h / 2);
+			g2d.drawImage(bufferThings, null, -w / 2, -h / 2);
 
 			drawWeapon(g2d);
 
@@ -389,7 +389,6 @@ public class Camera extends Renderer {
 //			 if (side == 1) { g2d.setColor(Color.LIGHT_GRAY); } 
 //			 else { g2d.setColor(Color.GRAY); }
 			 
-			/*
 			
 			int drawStart = -lineHeight / 2 + h / 2;
 			if (drawStart < 0)
@@ -414,18 +413,15 @@ public class Camera extends Renderer {
 			for (int y = drawStart; y < drawEnd; y++) {
 				int d = y * 256 - h * 128 + lineHeight * 128;
 				int texY = ((d * texHeight) / lineHeight) / 256;
-				int rgb = MagasinImage.buffYoanBlanc.getRGB(texX, texY);
-				// make color darker for y-sides: R, G and B byte each divided
-				// through two with a "shift" and an "and"
+				Color c = new Color(MagasinImage.buffYoanBlanc.getRGB(texX, texY));
 				 if(side == 1) 
-					 rgb = (rgb >> 1) & 8355711;
-				 buff.setRGB(x, y, rgb);
+					 c = c.darker();
+				 buff.setRGB(x, y, c.getRGB());
 			}
-			
-			g2d.drawImage(buff, null,0,0);*/
 			// le -15 permet d'augmenter la hauteur des murs.
-			g2d.drawLine(x, (middle - lineHeight / 2 - 15), x, (middle + lineHeight / 2));
+			//g2d.drawLine(x, (middle - lineHeight / 2), x, (middle + lineHeight / 2));
 		}
+		g2d.drawImage(buff, null,0,0);
 		g2d.translate(w / 2, h / 2);
 	}
 
@@ -561,11 +557,11 @@ public class Camera extends Renderer {
 	public static final int InitialcustomHeight = 288;
 	public static final int InitialcustomWidth = 512;
 
-	public  int customHeight = 360;
-	public  int customWidth = 640;
+	//public  int customHeight = 360;
+	//public  int customWidth = 640;
 
-	//public  int customHeight = 720;
-	//public  int customWidth = 1280;
+	public  int customHeight = 720;
+	public  int customWidth = 1280;
 
 	//public  int customHeight = 1080;
 	//public  int customWidth = 1920;
