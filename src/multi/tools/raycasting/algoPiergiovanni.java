@@ -4,12 +4,8 @@ import multi.tools.map.LvlMap;
 
 public class algoPiergiovanni {
 
-	public static double algoRaycasting(double posX, double posY, double dirX, double dirY, LvlMap map) {
-		return algoRaycasting(new Vector2D(posX, posY), new Vector2D(dirX, dirY), map);
-	}
-
 	public static double algoRaycasting(Vector2D pos, Vector2D dir, LvlMap map) {
-		System.out.println("wesh");
+
 		double rayPosX = pos.getdX();
 		double rayPosY = pos.getdY();
 		double rayDirX = dir.getdX();

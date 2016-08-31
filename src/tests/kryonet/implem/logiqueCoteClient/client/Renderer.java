@@ -11,6 +11,8 @@ public abstract class Renderer extends JPanel {
 
 	public Renderer(LogiqueClient _logique) {
 		lc = _logique;
+		setFocusable(true);
+		addKeyListener(lc);
 		animer();
 	}
 

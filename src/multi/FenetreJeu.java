@@ -78,11 +78,13 @@ public class FenetreJeu extends JFrame {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				// place le pointeur au centre
 				robot.mouseMove((int) (getLocation().getX() + getWidth() / 2),
 						(int) (getLocation().getY() + getHeight() / 2));
 				// cache le curseur
 				setCursor(getToolkit().createCustomCursor(new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB),
 						new Point(0, 0), "null"));
+				// active le robot
 				robotOff = false;
 			}
 
@@ -92,8 +94,7 @@ public class FenetreJeu extends JFrame {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					mouseLeftPressed = true;
 					logique.mousePressed();
-				}
-				if (e.getButton() == MouseEvent.BUTTON3) {
+				}else if (e.getButton() == MouseEvent.BUTTON3) {
 					mouseRightPressed = true;
 				}
 			}
@@ -103,8 +104,7 @@ public class FenetreJeu extends JFrame {
 				
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					mouseLeftPressed = false;
-				}
-				if (e.getButton() == MouseEvent.BUTTON3) {
+				}else if (e.getButton() == MouseEvent.BUTTON3) {
 					mouseRightPressed = false;
 				}
 			}

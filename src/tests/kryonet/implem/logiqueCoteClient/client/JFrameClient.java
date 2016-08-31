@@ -8,9 +8,9 @@ public class JFrameClient extends JFrame {
 
 	public JSpinner spinner;
 
-	public JFrameClient(VueMap vueMap) {
+	public JFrameClient(Renderer rederer) {
 		super();
-		setSize(600, 600);
+		setSize(1280, 720);
 		setTitle("Client");
 		/*
 		LogiqueClient lc = new LogiqueClient("StandDeTire.png");
@@ -20,9 +20,9 @@ public class JFrameClient extends JFrame {
 		
 		spinner = new JSpinner();
 		spinner.setValue(10);
-		vueMap.add(spinner);
+		rederer.add(spinner);
 		
-		add(vueMap);
+		add(rederer);
 		
 		setVisible(true);
 		
