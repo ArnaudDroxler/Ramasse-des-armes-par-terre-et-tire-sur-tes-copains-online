@@ -22,7 +22,8 @@ public class FenetreJeu extends JFrame {
 	public static boolean mouseRightPressed;
 	public static boolean mouseLeftPressed;
 
-	public FenetreJeu(String pngFileName) throws AWTException {
+	public FenetreJeu(String pngFileName) throws AWTException {	
+		
 		Logique logique = new Logique(pngFileName);
 
 		Camera camera = new Camera(logique);

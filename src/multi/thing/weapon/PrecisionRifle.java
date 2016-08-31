@@ -42,8 +42,8 @@ public class PrecisionRifle extends Weapon {
 			public void run() {
 				try {
 
-					for (cpt = 1; cpt < 4; cpt++) {
-						Thread.sleep(100);
+					for (cpt = 1; cpt < 6; cpt++) {
+						Thread.sleep(120);
 					}
 					cpt = 0;
 
@@ -59,7 +59,7 @@ public class PrecisionRifle extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return MagasinImage.buffShootgunHUD[cpt];
+		return MagasinImage.buffPrecisionRifleHUD[cpt];
 	}
 
 	@Override

@@ -86,6 +86,14 @@ public class MagasinImage {
 	
 	public final static BufferedImage buffAssaltRifleHUD[] = { buffAssaltRifleHUD0,buffAssaltRifleHUD1,buffAssaltRifleHUD2};
 	
+	public static final BufferedImage buffPrecisionRifleHUD0 = ImageLoader.loadBufferedImage("weapon/precisionrifle/precisionriflehud0.png");
+	public static final BufferedImage buffPrecisionRifleHUD1 = ImageLoader.loadBufferedImage("weapon/precisionrifle/precisionriflehud1.png");
+	public static final BufferedImage buffPrecisionRifleHUD2 = ImageLoader.loadBufferedImage("weapon/precisionrifle/precisionriflehud2.png");
+	public static final BufferedImage buffPrecisionRifleHUD3 = ImageLoader.loadBufferedImage("weapon/precisionrifle/precisionriflehud3.png");
+	
+	public final static BufferedImage buffPrecisionRifleHUD[] = { buffPrecisionRifleHUD0,buffPrecisionRifleHUD1,buffPrecisionRifleHUD2,buffPrecisionRifleHUD3,buffPrecisionRifleHUD2,buffPrecisionRifleHUD1};
+
+	
 	
 	/*------------------------------------------------------------------*\
 	|*		Version Assynchrone	(non bloquant)							*|
