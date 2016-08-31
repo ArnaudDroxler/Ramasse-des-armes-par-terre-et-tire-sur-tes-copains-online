@@ -32,14 +32,13 @@ public class PcServer {
 
 		Partie partie = new Partie();
 		if(modeGraphique){
-			JFramePartie jfp = new JFramePartie(partie);
+			new JFramePartie(partie);
 		}
 		
 		server.addListener(new Listener() {
 			public void connected(Connection connection) {
 				System.out.println(connection + " connected");
 			}
-
 			public void received(Connection connection, Object object) {
 				if (object instanceof ClientConnexionMessage) {
 					ClientConnexionMessage ccm = (ClientConnexionMessage) object;
@@ -55,7 +54,6 @@ public class PcServer {
 					connection.sendUDP(partie);
 				}
 			}
-
 			public void disconnected(Connection connection) {
 				System.out.println(connection + " disconnected");
 				partie.removeJoueur(connection.getID());

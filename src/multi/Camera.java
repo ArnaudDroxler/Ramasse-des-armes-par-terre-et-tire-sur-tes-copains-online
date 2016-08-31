@@ -18,6 +18,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
@@ -34,6 +35,8 @@ import multi.tools.raycasting.Vector2D;
 public class Camera extends Renderer {
 
 	private static final long serialVersionUID = -1160718986443478214L;
+
+	private AffineTransform oldContext;
 
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
@@ -71,7 +74,7 @@ public class Camera extends Renderer {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-		AffineTransform oldContext = g2d.getTransform();
+		oldContext = g2d.getTransform();
 		draw(g2d);
 		g2d.setTransform(oldContext);
 	}
@@ -124,9 +127,6 @@ public class Camera extends Renderer {
 					h = customHeight;
 					w = customWidth;
 
-					scaleHeight = (double) customHeight / InitialcustomHeight;
-					scaleWidth = (double) customWidth / InitialcustomWidth;
-
 				} else {
 					h = getHeight();
 					w = getWidth();
@@ -148,8 +148,6 @@ public class Camera extends Renderer {
 				bufferThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 				clearRect = new Rectangle2D.Double(0, 0, w, h);
 				g2dBuff = bufferThings.createGraphics();
-				// on relance le thread d'animation
-				// animate();
 			}
 
 		});
@@ -174,7 +172,7 @@ public class Camera extends Renderer {
 			setPosition(logique.heros.getPosition());
 			setDirection(logique.heros.getDirection());
 
-			g2d.setBackground(Color.BLACK);
+			//g2d.setBackground(Color.BLACK);
 
 			g2d.translate(w / 2, h / 2);
 			try {
@@ -560,22 +558,23 @@ public class Camera extends Renderer {
 	// Tools
 	private int h, w;
 
-	public static int InitialcustomHeight = 288;
-	public static int InitialcustomWidth = 512;
+	public static final int InitialcustomHeight = 288;
+	public static final int InitialcustomWidth = 512;
 
-	public static int customHeight = 360;
-	public static int customWidth = 640;
+	public  int customHeight = 360;
+	public  int customWidth = 640;
 
-	//public static int customHeight = 720;
-	//public static int customWidth = 1280;
+	//public  int customHeight = 720;
+	//public  int customWidth = 1280;
 
-	//public static int customHeight = 1080;
-	//public static int customWidth = 1920;
+	//public  int customHeight = 1080;
+	//public  int customWidth = 1920;
 
-	public static boolean customSize = true;
 
-	private static double scaleWidth;
-	private static double scaleHeight;
+	public  final boolean customSize = true;
+
+	private  final double scaleWidth = (double) customWidth / InitialcustomWidth;
+	private  final double scaleHeight = (double) customHeight / InitialcustomHeight;
 
 	private ArrayList<Thing> listThings;
 	private TreeMap<Double, Thing> listAfficher;
