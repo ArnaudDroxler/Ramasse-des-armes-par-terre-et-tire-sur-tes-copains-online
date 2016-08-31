@@ -6,8 +6,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
 import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
@@ -128,8 +131,14 @@ public class Camera extends Renderer {
 					w = getWidth();
 				}
 				tabDistStripes = new double[w];
+				
+				GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+				GraphicsConfiguration gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
+				bufferThings = gc.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
+				bufferThings.setAccelerationPriority(1);
 
-				bufferThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+				System.out.println(bufferThings.getCapabilities(gc).isAccelerated());
+				//bufferThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 				clearRect = new Rectangle2D.Double(0, 0, w, h);
 				g2dBuff = bufferThings.createGraphics();
 			}
@@ -508,11 +517,7 @@ public class Camera extends Renderer {
 
 	public static final int customHeight = 720;
 	public static final int customWidth = 1280;
-
-	/*
-	 * public static int customHeight = 1080; public static int customWidth
-	 * =1920;
-	 */
+	
 
 	public static final boolean customSize = true;
 
