@@ -133,6 +133,7 @@ public class Camera extends Renderer {
 				}
 				tabDistStripes = new double[w];
 
+
 				/*
 				 * GraphicsEnvironment ge =
 				 * GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -146,6 +147,7 @@ public class Camera extends Renderer {
 				 * isAccelerated());
 				 */
 				bufferThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
 				clearRect = new Rectangle2D.Double(0, 0, w, h);
 				g2dBuff = bufferThings.createGraphics();
 			}
@@ -172,7 +174,7 @@ public class Camera extends Renderer {
 			setPosition(logique.heros.getPosition());
 			setDirection(logique.heros.getDirection());
 
-			//g2d.setBackground(Color.BLACK);
+			// g2d.setBackground(Color.BLACK);
 
 			g2d.translate(w / 2, h / 2);
 			try {
@@ -473,10 +475,7 @@ public class Camera extends Renderer {
 				int nbSecteurs = current.getNbSecteurs();
 				// l'angle de vue choisi selon l'angle
 				int secteur = (int) (((nbSecteurs * angle / (2 * Math.PI)) + 0.5) % nbSecteurs);
-				/*
-				 * secteurs : 6 5 7 4 ennemi-> 0 3 1 2 l'image 1 de l'ennemi
-				 * sera chargée si le joueur est en 1 etc...
-				 */
+
 				currentSprite = current.getSprite(secteur);
 			} else {
 				currentSprite = current.getSprite();
@@ -515,13 +514,8 @@ public class Camera extends Renderer {
 				int texX = (256 * (j - (-spriteWidth / 2 + spriteScreenX)) * imageWidth / spriteWidth) / 256;
 				if (transformY > 0 && j > 0 && j < w && transformY < tabDistStripes[j]) {
 					for (int y = drawStartY; y < drawEndY; y++) {
-						int d = (y) * 256 - h * 128 + spriteHeight * 128; // 256
-																			// and
-																			// 128
-																			// factors
-																			// to
-																			// avoid
-																			// floats
+						// 256 and 128 factors to avoid floats
+						int d = (y) * 256 - h * 128 + spriteHeight * 128;
 						int texY = ((d * imageHeight) / spriteHeight) / 256;
 
 						// texY passe dans les négatifs (min atteint = -4)
@@ -532,7 +526,6 @@ public class Camera extends Renderer {
 							texX = 0;
 						}
 
-						// System.out.println(currentSprite.getRGB(0, 0));
 						// pixel invisible: 16777215
 						int rgb = currentSprite.getRGB(texX, texY);
 						if (rgb != 16777215) {
@@ -556,6 +549,7 @@ public class Camera extends Renderer {
 
 	public static final int InitialcustomHeight = 288;
 	public static final int InitialcustomWidth = 512;
+
 
 	//public  int customHeight = 360;
 	//public  int customWidth = 640;

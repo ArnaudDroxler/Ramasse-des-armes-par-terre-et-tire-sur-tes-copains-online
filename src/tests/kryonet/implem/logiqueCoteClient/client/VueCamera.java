@@ -18,10 +18,11 @@ import sun.java2d.pipe.DrawImage;
 
 public class VueCamera extends Renderer {
 
-	private Vector2D pos;
-	private Vector2D dir;
-	private Vector2D plane;
-	private int w,h;
+	private Vector2D pos, dir, plane;
+	private int frameW, frameH;
+	public static int customW = 1280;
+	public static int customH = 720;
+	
 	protected double[] tabDistStripes;
 	protected BufferedImage buffImgThings;
 	protected Double clearRect;
@@ -60,7 +61,6 @@ public class VueCamera extends Renderer {
 		setDirection(lc.joueur.getDirection());
 
 		drawMurs();
-		g2d.drawImage(buffImgMurs,0,0,w,h,null);
 		drawThings();
 	}
 
@@ -76,18 +76,17 @@ public class VueCamera extends Renderer {
 	}
 
 	private void init() {
-		h = getHeight();
-		w = getWidth();
-		
-		tabDistStripes = new double[w];
-		
-		clearRect = new Rectangle2D.Double(0, 0, w, h);
+		frameW = getWidth();
+		frameH = getHeight();
 
-		buffImgThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-		g2dThings = buffImgThings.createGraphics();
+		clearRect = new Rectangle2D.Double(0, 0, frameW, frameH);
 
-		buffImgMurs = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		tabDistStripes = new double[frameW];
+		buffImgMurs = new BufferedImage(frameW, frameH, BufferedImage.TYPE_INT_ARGB);
 		g2dMurs = buffImgMurs.createGraphics();
+
+		buffImgThings = new BufferedImage(frameW, frameH, BufferedImage.TYPE_INT_ARGB);
+		g2dThings = buffImgThings.createGraphics();
 		
 		readyToDraw=true;
 	}
@@ -166,20 +165,17 @@ public class VueCamera extends Renderer {
 			tabDistStripes[x] = perpWallDist;
 
 			if (side == 1) {
-				//g2d.setColor(Color.LIGHT_GRAY);
 				g2dMurs.setColor(Color.LIGHT_GRAY);
 			} else {
-				//g2d.setColor(Color.GRAY);
 				g2dMurs.setColor(Color.GRAY);
 			}
 			int middle = h / 2;
-
-			// le -15 permet d'augmenter la hauteur des murs.
-			//g2d.drawLine(x, (middle - lineHeight / 2 -15), x, (middle + lineHeight / 2));
-			g2dMurs.drawLine(x, (middle - lineHeight / 2 -15), x, (middle + lineHeight / 2));
+			
+			g2dMurs.drawLine(x, middle - lineHeight, x, (middle + lineHeight / 2));
 			
 		}
-		//g2d.drawImage(buffImgMurs, null, 0, 0);
+		
+		g2d.drawImage(buffImgMurs,0,0,frameW,frameH,null);
 		
 	}
 	
@@ -188,6 +184,8 @@ public class VueCamera extends Renderer {
 		AlphaComposite alphacomp = AlphaComposite.getInstance(AlphaComposite.CLEAR, 0.0f);
 		g2dThings.setComposite(alphacomp);
 		g2dThings.fill(clearRect);
+		
+		
 	}
 
 }
