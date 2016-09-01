@@ -531,7 +531,7 @@ public class Logique extends KeyAdapter {
 			public void run() {
 				try {
 					isFiring = true;
-					while (FenetreJeu.mouseLeftPressed) {
+					while (FenetreJeu.mouseLeftPressed && !heros.getMort()) {
 						fire();
 						Thread.sleep((long) (1000 / heros.getArme().getRoF()));
 					}

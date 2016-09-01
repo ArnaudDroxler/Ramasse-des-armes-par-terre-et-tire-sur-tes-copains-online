@@ -24,7 +24,6 @@ public class Ennemi extends Personnage {
 	@Override
 	public BufferedImage getSprite(int dir) {
 		return MagasinImage.buffPika[dir];
-		
 	}
 	
 	public int getNbSecteurs(){

@@ -1,6 +1,9 @@
 package tests.kryonet.implem.logiqueCoteClient.server;
 
+import java.awt.image.BufferedImage;
+
 import multi.thing.personnage.Joueur;
+import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
 public class JoueurOnline extends Joueur{
@@ -21,7 +24,16 @@ public class JoueurOnline extends Joueur{
 
 	@Override
 	public String toString() {
-		return pseudo + ", vie=" + vie;
+		return pseudo + ", vie=" + vie + ", pos=" + getPosition();
+	}
+	
+	@Override
+	public BufferedImage getSprite(int dir) {
+		return MagasinImage.buffPika[dir];
+	}
+	
+	public int getNbSecteurs(){
+		return MagasinImage.buffPika.length;
 	}
 	
 }

@@ -24,7 +24,7 @@ public abstract class Renderer extends JPanel {
 				try {
 					while (!logique.fin) {
 						repaint();
-						Thread.sleep(20);
+						Thread.sleep(50);
 					}
 					((JFrame) getTopLevelAncestor()).dispose();
 				} catch (InterruptedException e) {
