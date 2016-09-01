@@ -3,8 +3,6 @@ package tests.kryonet.implem.logiqueCoteClient.client;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.net.UnknownHostException;
-import java.rmi.RemoteException;
 import java.util.prefs.Preferences;
 
 import javax.swing.JButton;

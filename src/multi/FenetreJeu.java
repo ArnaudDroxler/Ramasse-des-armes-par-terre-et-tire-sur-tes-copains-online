@@ -19,7 +19,8 @@ public class FenetreJeu extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private Robot robot;
 	private boolean robotOff;
-	public static boolean mousePressed;
+	public static boolean mouseRightPressed;
+	public static boolean mouseLeftPressed;
 
 	public FenetreJeu(String pngFileName) throws AWTException {
 		Logique logique = new Logique(pngFileName);
@@ -44,7 +45,8 @@ public class FenetreJeu extends JFrame {
 		robot = new Robot();
 		robotOff = false;
 
-		mousePressed = false;
+		mouseRightPressed = false;
+		mouseLeftPressed = false;
 
 		addMouseMotionListener(new MouseMotionAdapter() {
 
@@ -72,6 +74,8 @@ public class FenetreJeu extends JFrame {
 
 		addMouseListener(new MouseAdapter() {
 
+			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				robot.mouseMove((int) (getLocation().getX() + getWidth() / 2),
@@ -86,14 +90,23 @@ public class FenetreJeu extends JFrame {
 			public void mousePressed(MouseEvent e) {
 
 				if (e.getButton() == MouseEvent.BUTTON1) {
-					mousePressed = true;
+					mouseLeftPressed = true;
 					logique.mousePressed();
+				}
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					mouseRightPressed = true;
 				}
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				mousePressed = false;
+				
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					mouseLeftPressed = false;
+				}
+				if (e.getButton() == MouseEvent.BUTTON3) {
+					mouseRightPressed = false;
+				}
 			}
 
 		});

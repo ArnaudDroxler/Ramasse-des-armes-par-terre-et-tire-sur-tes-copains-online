@@ -9,10 +9,6 @@ import multi.tools.raycasting.Vector2D;
 
 public class ShootGun extends Weapon {
 
-	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("handgunhud0.png"),
-			ImageLoader.loadBufferedImage("handgunhud1.png"), ImageLoader.loadBufferedImage("handgunhud2.png"),
-			ImageLoader.loadBufferedImage("handgunhud3.png") };
-
 	private int cpt;
 
 	public ShootGun(Vector2D pos) {
@@ -46,16 +42,14 @@ public class ShootGun extends Weapon {
 			public void run() {
 				try {
 
-					for (cpt = 1; cpt < 4; cpt++) {
-						Thread.sleep(100);
+					for (cpt = 1; cpt < 8; cpt++) {
+						Thread.sleep(80+cpt*5);
 					}
 					cpt = 0;
 
 				} catch (InterruptedException e) {
-
 					e.printStackTrace();
 				}
-
 			}
 		});
 
@@ -63,12 +57,12 @@ public class ShootGun extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return sprites[cpt];
+		return  MagasinImage.buffShootgunHUD[cpt];
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffHandGun;
+		return MagasinImage.buffShootGun;
 	}
 
 }

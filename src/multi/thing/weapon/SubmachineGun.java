@@ -8,16 +8,14 @@ import multi.tools.raycasting.Vector2D;
 
 public class SubmachineGun extends Weapon {
 
-	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("submachingunhud0.png"),
-			ImageLoader.loadBufferedImage("submachingunhud1.png"), ImageLoader.loadBufferedImage("submachingunhud2.png")};
-
+	
 	private int cpt;
 
 	public SubmachineGun(Vector2D pos) {
 		super(pos);
 		ammo = 30;
 		RoF = 8;
-		DpS = 40;
+		DpS = 30;
 		RaoF = 20;
 		cpt = 0;
 	}
@@ -61,7 +59,7 @@ public class SubmachineGun extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return sprites[cpt];
+		return MagasinImage.buffSubmachingunHUD[cpt];
 	}
 
 	@Override

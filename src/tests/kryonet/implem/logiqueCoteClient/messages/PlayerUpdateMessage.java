@@ -1,29 +1,23 @@
 package tests.kryonet.implem.logiqueCoteClient.messages;
 
-import multi.tools.raycasting.Vector2D;
+import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;
 
 public class PlayerUpdateMessage{
 
-	private double posx;
-	private double posy;
-	
-	public void setPosition(double x, double y) {
-		posx=x;
-		posy=y;
-	}
+	private JoueurOnline joueur;
 	
 	public PlayerUpdateMessage(){}
 
-	public double getPosx() {
-		return posx;
+
+
+	public void setJoueur(JoueurOnline joueur) {
+		this.joueur = joueur;
 	}
 
-	public double getPosy() {
-		return posy;
-	}
 
-	public Vector2D getPos() {
-		return new Vector2D(posx,posy);
+
+	public JoueurOnline getJoueur() {
+		return joueur;
 	}
 
 }

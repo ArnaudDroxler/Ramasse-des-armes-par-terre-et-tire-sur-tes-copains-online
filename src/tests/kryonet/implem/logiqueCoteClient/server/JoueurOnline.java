@@ -8,11 +8,10 @@ public class JoueurOnline extends Joueur{
 	public String pseudo;
 	
 	public JoueurOnline() {
-		pseudo="";
 	}
 
 	public JoueurOnline(String pseudo) {
-		super(new Vector2D(),new Vector2D());
+		super(new Vector2D(),new Vector2D(1,0));
 		this.pseudo=pseudo;
 	}
 

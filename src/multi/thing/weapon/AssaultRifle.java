@@ -1,3 +1,4 @@
+
 package multi.thing.weapon;
 
 import java.awt.image.BufferedImage;
@@ -6,29 +7,30 @@ import multi.tools.ImageLoader;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
-public class Cut extends Weapon {
-
-	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("handgunhud0.png"),
-			ImageLoader.loadBufferedImage("handgunhud1.png"), ImageLoader.loadBufferedImage("handgunhud2.png"),
-			ImageLoader.loadBufferedImage("handgunhud3.png") };
+public class AssaultRifle extends Weapon {
 
 	private int cpt;
 
-	public Cut(Vector2D pos) {
+	public AssaultRifle(Vector2D pos) {
 		super(pos);
-		ammo = 1000;
-		RoF = 2;
-		DpS = 100;
-		RaoF = 1.5;
+		ammo = 30;
+		RoF = 3;
+		DpS = 60;
+		RaoF = 40;
 		cpt = 0;
 	}
 
 	@Override
 	public int computeDamage(double d) {
-		if (d < RaoF) 
+		if (d < RaoF) {
 			return (int) DpS;
-		return 0;
-		
+		} else {
+			int dammage = (int) (45 * (1 - Math.exp(0.06 * (Math.abs(RaoF - d)))) + DpS);
+			if (dammage < 0) {
+				return 0;
+			} else
+				return dammage;
+		}
 	}
 
 	@Override
@@ -40,7 +42,7 @@ public class Cut extends Weapon {
 			public void run() {
 				try {
 
-					for (cpt = 1; cpt < 4; cpt++) {
+					for (cpt = 1; cpt < 3; cpt++) {
 						Thread.sleep(100);
 					}
 					cpt = 0;
@@ -57,12 +59,12 @@ public class Cut extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return sprites[cpt];
+		return MagasinImage.buffAssaltRifleHUD[cpt];
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffCle;
+		return MagasinImage.buffAssaltRifle;
 	}
 
 }

@@ -80,7 +80,7 @@ public abstract class Weapon extends Thing {
 		this.impactEnnemi = isImpact;
 	}
 
-	public void setFiring(boolean isFiring) {
+	public void setIsFiring(boolean isFiring) {
 		this.isFiring = isFiring;
 	}
 

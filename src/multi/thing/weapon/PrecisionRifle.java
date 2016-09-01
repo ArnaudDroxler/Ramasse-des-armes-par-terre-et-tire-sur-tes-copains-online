@@ -9,10 +9,6 @@ import multi.tools.raycasting.Vector2D;
 
 public class PrecisionRifle extends Weapon {
 
-	public final BufferedImage[] sprites = { ImageLoader.loadBufferedImage("handgunhud0.png"),
-			ImageLoader.loadBufferedImage("handgunhud1.png"), ImageLoader.loadBufferedImage("handgunhud2.png"),
-			ImageLoader.loadBufferedImage("handgunhud3.png") };
-
 	private int cpt;
 
 	public PrecisionRifle(Vector2D pos) {
@@ -63,12 +59,12 @@ public class PrecisionRifle extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return sprites[cpt];
+		return MagasinImage.buffShootgunHUD[cpt];
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffHandGun;
+		return MagasinImage.buffPrecisionRifle;
 	}
 
 }

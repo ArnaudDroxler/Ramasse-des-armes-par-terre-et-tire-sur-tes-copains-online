@@ -15,19 +15,20 @@ public class Ennemi extends Personnage {
 		t=0;
 		v = random.nextDouble() * .03 + 0.01 ;
 	}
-
+	
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffYoanBlanc;
+		return MagasinImage.buffPika[0];
 	}
 
 	@Override
 	public BufferedImage getSprite(int dir) {
-		return MagasinImage.buffFantomes[dir];
+		return MagasinImage.buffPika[dir];
+		
 	}
 	
 	public int getNbSecteurs(){
-		return MagasinImage.buffFantomes.length;
+		return MagasinImage.buffPika.length;
 	}
 
 	public void bouge() {

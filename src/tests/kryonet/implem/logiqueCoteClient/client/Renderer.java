@@ -1,7 +1,5 @@
 package tests.kryonet.implem.logiqueCoteClient.client;
 
-import java.awt.Graphics2D;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
