@@ -104,7 +104,9 @@ public class Logique extends KeyAdapter {
 						if (!touchesEnfoncees.isEmpty()) {
 							updateDeplacement();
 						}
+
 						// updateEnnemis();
+
 						Thread.sleep(delay);
 					}
 				} catch (InterruptedException e) {

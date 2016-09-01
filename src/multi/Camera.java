@@ -6,8 +6,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
 import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
+import java.awt.Transparency;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
@@ -15,6 +18,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
@@ -31,6 +35,8 @@ import multi.tools.raycasting.Vector2D;
 public class Camera extends Renderer {
 
 	private static final long serialVersionUID = -1160718986443478214L;
+
+	private AffineTransform oldContext;
 
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
@@ -68,7 +74,7 @@ public class Camera extends Renderer {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
-		AffineTransform oldContext = g2d.getTransform();
+		oldContext = g2d.getTransform();
 		draw(g2d);
 		g2d.setTransform(oldContext);
 	}
@@ -121,20 +127,22 @@ public class Camera extends Renderer {
 					h = customHeight;
 					w = customWidth;
 
-					scaleHeight = (double) customHeight / InitialcustomHeight;
-					scaleWidth = (double) customWidth / InitialcustomWidth;
-
 				} else {
 					h = getHeight();
 					w = getWidth();
 				}
 				tabDistStripes = new double[w];
 
-				bufferThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+				GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+				GraphicsConfiguration gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
+				bufferThings = gc.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
+				bufferThings.setAccelerationPriority(1);
+
+				System.out.println(bufferThings.getCapabilities(gc).isAccelerated());
+				// bufferThings = new BufferedImage(w, h,
+				// BufferedImage.TYPE_INT_ARGB);
 				clearRect = new Rectangle2D.Double(0, 0, w, h);
 				g2dBuff = bufferThings.createGraphics();
-				// on relance le thread d'animation
-				// animate();
 			}
 
 		});
@@ -159,7 +167,7 @@ public class Camera extends Renderer {
 			setPosition(logique.heros.getPosition());
 			setDirection(logique.heros.getDirection());
 
-			g2d.setBackground(Color.BLACK);
+			// g2d.setBackground(Color.BLACK);
 
 			g2d.translate(w / 2, h / 2);
 			try {
@@ -179,109 +187,78 @@ public class Camera extends Renderer {
 			drawWeapon(g2d);
 
 			// NON FONCTIONNEL
-//			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheMur) {
-//				BufferedImage img = scale(logique.heros.getArme().getSpriteImpactMur(), scaleWidth, scaleHeight);
-//				// BufferedImage img =
-//				// logique.heros.getArme().getSpriteImpactMur();
-//
-//				for (int i = 0; i < logique.fireLineList.size(); i++) {
-//					double longueurligne = Math.sqrt(Math
-//							.pow((logique.fireLineList.get(i).getX2() - logique.fireLineList.get(i).getX1()), 2)
-//							+ Math.pow((logique.fireLineList.get(i).getY2() - logique.fireLineList.get(i).getY1()), 2));
-//					if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
-//						if (logique.heros.getArme() instanceof ShootGun) {
-//
-//							// Alpha = 10°
-//							double alpha = Math.PI / 18;
-//
-//							for (int j = -2; j < 3; j++) {
-//								System.out.println(longueurligne);
-//								g2d.drawImage(img, null, w / 2, h / 2);
-//								// g2d.drawImage(img, null, (int) (w / 2 +
-//								// Math.sin(alpha * j) * h / 2),
-//								// (int) (h - Math.cos(alpha * j) * h / 2));
-//							}
-//
-//						} else {
-//							System.out.println(longueurligne);
-//							g2d.drawImage(img, null, w / 2, h / 2);
-//						}
-//
-//					}
-//				}
-//			}
-//
-//			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheEnnemi) {
-//				BufferedImage img = scale(logique.heros.getArme().getSpriteImpactEnnemi(), scaleWidth, scaleHeight);
-//				// BufferedImage img =
-//				// logique.heros.getArme().getSpriteImpactMur();
-//
-//				for (int i = 0; i < logique.fireLineList.size(); i++) {
-//					double longueurligne = Math.sqrt(Math
-//							.pow((logique.fireLineList.get(i).getX2() - logique.fireLineList.get(i).getX1()), 2)
-//							+ Math.pow((logique.fireLineList.get(i).getY2() - logique.fireLineList.get(i).getY1()), 2));
-//					if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
-//						if (logique.heros.getArme() instanceof ShootGun) {
-//
-//							// Alpha = 10°
-//							double alpha = Math.PI / 18;
-//
-//							for (int j = -2; j < 3; j++) {
-//								g2d.drawImage(img, null, w / 2, h / 2);
-//								// g2d.drawImage(img, null, (int) (w / 2 +
-//								// Math.sin(alpha * j) * h / 2),
-//								// (int) (h - Math.cos(alpha * j) * h / 2));
-//							}
-//
-//						} else {
-//							System.out.println("test2");
-//							g2d.drawImage(img, null, w / 2, h / 2);
-//						}
-//
-//					}
-//				}
-//			}
-
-			/*
-			 * if (logique.isFiring && !(logique.heros.getArme() instanceof
-			 * Chainsaw) && logique.toucheMur) { // BufferedImage img = //
-			 * scale(logique.heros.getArme().getSpriteImpactMur());
-			 * BufferedImage img = logique.heros.getArme().getSpriteImpactMur();
-			 * 
-			 * for (int i = 0; i < logique.fireLineList.size(); i++) {
-			 * 
-			 * double longueurligne = Math.sqrt(Math
-			 * .pow((logique.fireLineList.get(i).getX2() -
-			 * logique.fireLineList.get(i).getX1()), 2) +
-			 * Math.pow((logique.fireLineList.get(i).getY2() -
-			 * logique.fireLineList.get(i).getY1()), 2));
-			 * 
-			 * if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
-			 * g2d.drawImage(img, null, w / 2 + i * 20, h / 2); //
-			 * g2d.drawImage(img, null, w / 2, (int) (h / 2 - //
-			 * longueurligne)); } }
-			 * 
-			 * } if (logique.isFiring && !(logique.heros.getArme() instanceof
-			 * Chainsaw) && logique.toucheEnnemi) { // BufferedImage img = //
-			 * scale(logique.heros.getArme().getSpriteImpactEnnemi());
-			 * BufferedImage img =
-			 * logique.heros.getArme().getSpriteImpactEnnemi();
-			 * 
-			 * for (int i = 0; i < logique.fireLineList.size(); i++) {
-			 * 
-			 * double longueurligne = Math.sqrt(Math
-			 * .pow((logique.fireLineList.get(i).getX2() -
-			 * logique.fireLineList.get(i).getX1()), 2) +
-			 * Math.pow((logique.fireLineList.get(i).getY2() -
-			 * logique.fireLineList.get(i).getY1()), 2));
-			 * 
-			 * if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
-			 * g2d.drawImage(img, null, w / 2 + i * 20, h / 2); //
-			 * g2d.drawImage(img, null, w / 2, (int) (h / 2 - //
-			 * longueurligne)); } }
-			 * 
-			 * }
-			 */
+			// if (logique.isFiring && !(logique.heros.getArme() instanceof
+			// Chainsaw) && logique.toucheMur) {
+			// BufferedImage img =
+			// scale(logique.heros.getArme().getSpriteImpactMur(), scaleWidth,
+			// scaleHeight);
+			// // BufferedImage img =
+			// // logique.heros.getArme().getSpriteImpactMur();
+			//
+			// for (int i = 0; i < logique.fireLineList.size(); i++) {
+			// double longueurligne = Math.sqrt(Math
+			// .pow((logique.fireLineList.get(i).getX2() -
+			// logique.fireLineList.get(i).getX1()), 2)
+			// + Math.pow((logique.fireLineList.get(i).getY2() -
+			// logique.fireLineList.get(i).getY1()), 2));
+			// if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
+			// if (logique.heros.getArme() instanceof ShootGun) {
+			//
+			// // Alpha = 10°
+			// double alpha = Math.PI / 18;
+			//
+			// for (int j = -2; j < 3; j++) {
+			// System.out.println(longueurligne);
+			// g2d.drawImage(img, null, w / 2, h / 2);
+			// // g2d.drawImage(img, null, (int) (w / 2 +
+			// // Math.sin(alpha * j) * h / 2),
+			// // (int) (h - Math.cos(alpha * j) * h / 2));
+			// }
+			//
+			// } else {
+			// System.out.println(longueurligne);
+			// g2d.drawImage(img, null, w / 2, h / 2);
+			// }
+			//
+			// }
+			// }
+			// }
+			//
+			// if (logique.isFiring && !(logique.heros.getArme() instanceof
+			// Chainsaw) && logique.toucheEnnemi) {
+			// BufferedImage img =
+			// scale(logique.heros.getArme().getSpriteImpactEnnemi(),
+			// scaleWidth, scaleHeight);
+			// // BufferedImage img =
+			// // logique.heros.getArme().getSpriteImpactMur();
+			//
+			// for (int i = 0; i < logique.fireLineList.size(); i++) {
+			// double longueurligne = Math.sqrt(Math
+			// .pow((logique.fireLineList.get(i).getX2() -
+			// logique.fireLineList.get(i).getX1()), 2)
+			// + Math.pow((logique.fireLineList.get(i).getY2() -
+			// logique.fireLineList.get(i).getY1()), 2));
+			// if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
+			// if (logique.heros.getArme() instanceof ShootGun) {
+			//
+			// // Alpha = 10°
+			// double alpha = Math.PI / 18;
+			//
+			// for (int j = -2; j < 3; j++) {
+			// g2d.drawImage(img, null, w / 2, h / 2);
+			// // g2d.drawImage(img, null, (int) (w / 2 +
+			// // Math.sin(alpha * j) * h / 2),
+			// // (int) (h - Math.cos(alpha * j) * h / 2));
+			// }
+			//
+			// } else {
+			// System.out.println("test2");
+			// g2d.drawImage(img, null, w / 2, h / 2);
+			// }
+			//
+			// }
+			// }
+			// }
 
 			if (logique.heros.getMort()) {
 				String strMort = new String("Vous êtes mort!");
@@ -497,10 +474,7 @@ public class Camera extends Renderer {
 				int nbSecteurs = current.getNbSecteurs();
 				// l'angle de vue choisi selon l'angle
 				int secteur = (int) (((nbSecteurs * angle / (2 * Math.PI)) + 0.5) % nbSecteurs);
-				/*
-				 * secteurs : 6 5 7 4 ennemi-> 0 3 1 2 l'image 1 de l'ennemi
-				 * sera chargée si le joueur est en 1 etc...
-				 */
+
 				currentSprite = current.getSprite(secteur);
 			} else {
 				currentSprite = current.getSprite();
@@ -539,13 +513,8 @@ public class Camera extends Renderer {
 				int texX = (256 * (j - (-spriteWidth / 2 + spriteScreenX)) * imageWidth / spriteWidth) / 256;
 				if (transformY > 0 && j > 0 && j < w && transformY < tabDistStripes[j]) {
 					for (int y = drawStartY; y < drawEndY; y++) {
-						int d = (y) * 256 - h * 128 + spriteHeight * 128; // 256
-																			// and
-																			// 128
-																			// factors
-																			// to
-																			// avoid
-																			// floats
+						// 256 and 128 factors to avoid floats
+						int d = (y) * 256 - h * 128 + spriteHeight * 128;
 						int texY = ((d * imageHeight) / spriteHeight) / 256;
 
 						// texY passe dans les négatifs (min atteint = -4)
@@ -556,7 +525,6 @@ public class Camera extends Renderer {
 							texX = 0;
 						}
 
-						// System.out.println(currentSprite.getRGB(0, 0));
 						// pixel invisible: 16777215
 						int rgb = currentSprite.getRGB(texX, texY);
 						if (rgb != 16777215) {
@@ -584,18 +552,16 @@ public class Camera extends Renderer {
 	// public static int customHeight = 360;
 	// public static int customWidth = 640;
 
-	public static int customHeight = 720;
-	public static int customWidth = 1280;
+	// public static int customHeight = 360;
+	// public static int customWidth = 640;
 
-	/*
-	 * public static int customHeight = 1080; public static int customWidth
-	 * =1920;
-	 */
+	public static final int customHeight = 720;
+	public static final int customWidth = 1280;
 
-	public static boolean customSize = true;
+	public static final boolean customSize = true;
 
-	private static double scaleWidth;
-	private static double scaleHeight;
+	private static final double scaleWidth = (double) customWidth / InitialcustomWidth;
+	private static final double scaleHeight = (double) customHeight / InitialcustomHeight;
 
 	private ArrayList<Thing> listThings;
 	private TreeMap<Double, Thing> listAfficher;
