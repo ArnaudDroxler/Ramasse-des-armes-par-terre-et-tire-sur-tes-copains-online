@@ -22,13 +22,14 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.Vector;
 
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
 import multi.thing.weapon.PrecisionRifle;
 import multi.thing.weapon.Chainsaw;
-
+import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
 public class Camera extends Renderer {
@@ -132,14 +133,20 @@ public class Camera extends Renderer {
 				}
 				tabDistStripes = new double[w];
 
-				GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-				GraphicsConfiguration gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
-				bufferThings = gc.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
-				bufferThings.setAccelerationPriority(1);
+				/*
+				 * GraphicsEnvironment ge =
+				 * GraphicsEnvironment.getLocalGraphicsEnvironment();
+				 * GraphicsConfiguration gc =
+				 * ge.getDefaultScreenDevice().getDefaultConfiguration();
+				 * bufferThings = gc.createCompatibleImage(w, h,
+				 * Transparency.TRANSLUCENT);
+				 * bufferThings.setAccelerationPriority(1);
+				 * 
+				 * System.out.println(bufferThings.getCapabilities(gc).
+				 * isAccelerated());
+				 */
+				bufferThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 
-				System.out.println(bufferThings.getCapabilities(gc).isAccelerated());
-				// bufferThings = new BufferedImage(w, h,
-				// BufferedImage.TYPE_INT_ARGB);
 				clearRect = new Rectangle2D.Double(0, 0, w, h);
 				g2dBuff = bufferThings.createGraphics();
 			}
@@ -309,6 +316,12 @@ public class Camera extends Renderer {
 
 	private void algoRaycasting(Graphics2D g2d) {
 
+		int texWidth = 256;
+		int texHeight = 256;
+		BufferedImage buff = new BufferedImage(w, h,  BufferedImage.TYPE_INT_ARGB);
+		
+		Vector<Integer> texture = new Vector<Integer>(1);
+
 		g2d.translate(-w / 2, -h / 2);
 		for (int x = 0; x < w; x++) {
 			double cameraX = 2 * x / (double) w - 1;
@@ -372,18 +385,107 @@ public class Camera extends Renderer {
 			int lineHeight = (int) (h / perpWallDist);
 			tabDistStripes[x] = perpWallDist;
 
-			if (side == 1) {
-				g2d.setColor(Color.LIGHT_GRAY);
-			} else {
-				g2d.setColor(Color.GRAY);
-			}
 			int middle = h / 2;
+			
+//			 if (side == 1) { g2d.setColor(Color.LIGHT_GRAY); } 
+//			 else { g2d.setColor(Color.GRAY); }
+			 
+			
+			int drawStart = -lineHeight / 2 + h / 2;
+			if (drawStart < 0)
+				drawStart = 0;
+			int drawEnd = lineHeight / 2 + h / 2;
+			if (drawEnd >= h)
+				drawEnd = h - 1;
 
+			double wallX; // where exactly the wall was hit
+			if (side == 0)
+				wallX = rayPosY + perpWallDist * rayDirY;
+			else
+				wallX = rayPosX + perpWallDist * rayDirX;
+			wallX -= Math.floor((wallX));
+
+			int texX = (int) (wallX * texWidth);
+			if (side == 0 && rayDirX > 0)
+				texX = texWidth - texX - 1;
+			if (side == 1 && rayDirY < 0)
+				texX = texWidth - texX - 1;
+
+			for (int y = drawStart; y < drawEnd; y++) {
+				int d = y * 256 - h * 128 + lineHeight * 128;
+				int texY = ((d * texHeight) / lineHeight) / 256;
+				Color c = new Color(MagasinImage.buffTextMur0.getRGB(texX, texY));
+				 if(side == 1) 
+					 c = c.darker();
+				 buff.setRGB(x, y, c.getRGB());
+			}
+			
 			// le -15 permet d'augmenter la hauteur des murs.
-			g2d.drawLine(x, (middle - lineHeight / 2 - 15), x, (middle + lineHeight / 2));
+			//g2d.drawLine(x, (middle - lineHeight / 2), x, (middle + lineHeight / 2));
+			
+			//FLOOR CASTING
+		      double floorXWall; 
+		      double floorYWall; //x, y position of the floor texel at the bottom of the wall
+
+		      //4 different wall directions possible
+		      if(side == 0 && rayDirX > 0)
+		      {
+		        floorXWall = mapX;
+		        floorYWall = mapY + wallX;
+		      }
+		      else if(side == 0 && rayDirX < 0)
+		      {
+		        floorXWall = mapX + 1.0;
+		        floorYWall = mapY + wallX;
+		      }
+		      else if(side == 1 && rayDirY > 0)
+		      {
+		        floorXWall = mapX + wallX;
+		        floorYWall = mapY;
+		      }
+		      else
+		      {
+		        floorXWall = mapX + wallX;
+		        floorYWall = mapY + 1.0;
+		      }
+
+		      double distWall, distPlayer, currentDist;
+
+		      distWall = perpWallDist;
+		      distPlayer = 0.0;
+
+		      if (drawEnd < 0) drawEnd = h; //becomes < 0 when the integer overflows
+
+		      //draw the floor from drawEnd to the bottom of the screen
+		      for(int y = drawEnd + 1; y < h; y++)
+		      {
+		        currentDist = h / (2.0 * y - h); //you could make a small lookup table for this instead
+
+		        double weight = (currentDist - distPlayer) / (distWall - distPlayer);
+
+		        double currentFloorX = weight * floorXWall + (1.0 - weight) * pos.getdX();
+		        double currentFloorY = weight * floorYWall + (1.0 - weight) * pos.getdY();
+
+		        int floorTexX = (int) (currentFloorX * texWidth) % texWidth;
+		        int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
+
+		        //floor
+		        Color c = new Color(MagasinImage.buffTextMur1.getRGB(floorTexY, floorTexX));
+//				 if(side == 1) 
+//					 c = c.darker();
+				 buff.setRGB(x, y, c.getRGB());
+				 
+			    c = new Color(MagasinImage.buffTextMur1.getRGB(floorTexY, floorTexX));
+			    buff.setRGB(x, h-y, c.getRGB());
+		        //ceiling (symmetrical!)
+		        //buffer[h - y][x] = texture[6][texWidth * floorTexY + floorTexX];
+		      }
+		    }
+		g2d.drawImage(buff,null,0,0);
+		
+		g2d.translate(w/2,h/2);
 		}
-		g2d.translate(w / 2, h / 2);
-	}
+
 
 	// On part ici du principe qu'elles sont ordonnées
 	private void renderThings() {
@@ -508,16 +610,19 @@ public class Camera extends Renderer {
 	public static final int InitialcustomHeight = 288;
 	public static final int InitialcustomWidth = 512;
 
-	// public static int customHeight = 360;
-	// public static int customWidth = 640;
+	public int customHeight = 360;
+	public int customWidth = 640;
 
-	public static final int customHeight = 720;
-	public static final int customWidth = 1280;
+	//public int customHeight = 720;
+	//public int customWidth = 1280;
 
-	public static final boolean customSize = true;
+	//public int customHeight = 1080;
+	//public int customWidth = 1920;
 
-	private static final double scaleWidth = (double) customWidth / InitialcustomWidth;
-	private static final double scaleHeight = (double) customHeight / InitialcustomHeight;
+	public final boolean customSize = true;
+
+	private final double scaleWidth = (double) customWidth / InitialcustomWidth;
+	private final double scaleHeight = (double) customHeight / InitialcustomHeight;
 
 	private ArrayList<Thing> listThings;
 	private TreeMap<Double, Thing> listAfficher;
