@@ -131,14 +131,15 @@ public class Camera extends Renderer {
 					w = getWidth();
 				}
 				tabDistStripes = new double[w];
-				
+
 				GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 				GraphicsConfiguration gc = ge.getDefaultScreenDevice().getDefaultConfiguration();
 				bufferThings = gc.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
 				bufferThings.setAccelerationPriority(1);
 
 				System.out.println(bufferThings.getCapabilities(gc).isAccelerated());
-				//bufferThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+				// bufferThings = new BufferedImage(w, h,
+				// BufferedImage.TYPE_INT_ARGB);
 				clearRect = new Rectangle2D.Double(0, 0, w, h);
 				g2dBuff = bufferThings.createGraphics();
 			}
@@ -165,7 +166,7 @@ public class Camera extends Renderer {
 			setPosition(logique.heros.getPosition());
 			setDirection(logique.heros.getDirection());
 
-			//g2d.setBackground(Color.BLACK);
+			// g2d.setBackground(Color.BLACK);
 
 			g2d.translate(w / 2, h / 2);
 			try {
@@ -184,35 +185,39 @@ public class Camera extends Renderer {
 
 			drawWeapon(g2d);
 
-			/*if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheMur) {
-				// BufferedImage img =
-				// scale(logique.heros.getArme().getSpriteImpactMur());
-				BufferedImage img = logique.heros.getArme().getSpriteImpactMur();
-
-				double longueurligne = Math.sqrt(Math.pow((logique.fireLine.getX2() - logique.fireLine.getX1()), 2)
-						+ Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()), 2));
-
-				if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
-					g2d.drawImage(img, null, w / 2, h / 2);
-					// g2d.drawImage(img, null, w / 2, (int) (h / 2 -
-					// longueurligne));
-				}
-
-			}
-			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheEnnemi) {
-				// BufferedImage img =
-				// scale(logique.heros.getArme().getSpriteImpactEnnemi());
-				BufferedImage img = logique.heros.getArme().getSpriteImpactEnnemi();
-
-				double longueurligne = Math.sqrt(Math.pow((logique.fireLine.getX2() - logique.fireLine.getX1()), 2)
-						+ Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()), 2));
-				if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
-					g2d.drawImage(img, null, w / 2, h / 2);
-					// g2d.drawImage(img, null, w / 2, (int) (h / 2 -
-					// longueurligne));
-				}
-
-			}*/
+			/*
+			 * if (logique.isFiring && !(logique.heros.getArme() instanceof
+			 * Chainsaw) && logique.toucheMur) { // BufferedImage img = //
+			 * scale(logique.heros.getArme().getSpriteImpactMur());
+			 * BufferedImage img = logique.heros.getArme().getSpriteImpactMur();
+			 * 
+			 * double longueurligne =
+			 * Math.sqrt(Math.pow((logique.fireLine.getX2() -
+			 * logique.fireLine.getX1()), 2) +
+			 * Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()),
+			 * 2));
+			 * 
+			 * if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
+			 * g2d.drawImage(img, null, w / 2, h / 2); // g2d.drawImage(img,
+			 * null, w / 2, (int) (h / 2 - // longueurligne)); }
+			 * 
+			 * } if (logique.isFiring && !(logique.heros.getArme() instanceof
+			 * Chainsaw) && logique.toucheEnnemi) { // BufferedImage img = //
+			 * scale(logique.heros.getArme().getSpriteImpactEnnemi());
+			 * BufferedImage img =
+			 * logique.heros.getArme().getSpriteImpactEnnemi();
+			 * 
+			 * double longueurligne =
+			 * Math.sqrt(Math.pow((logique.fireLine.getX2() -
+			 * logique.fireLine.getX1()), 2) +
+			 * Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()),
+			 * 2)); if (logique.heros.getArme().computeDamage(longueurligne) >
+			 * 0) { g2d.drawImage(img, null, w / 2, h / 2); //
+			 * g2d.drawImage(img, null, w / 2, (int) (h / 2 - //
+			 * longueurligne)); }
+			 * 
+			 * }
+			 */
 
 			if (logique.heros.getMort()) {
 				String strMort = new String("Vous êtes mort!");
@@ -258,7 +263,7 @@ public class Camera extends Renderer {
 		if (logique.heros.getArme() instanceof PrecisionRifle && FenetreJeu.mouseRightPressed) {
 
 			Point2D center = new Point2D.Float(0, 0);
-			float radius = w/8;
+			float radius = w / 8;
 			float[] dist = { 0.0f, 0.9f, 1.0f };
 
 			Color trans = new Color(0f, 0f, 0f, 0f);
@@ -275,7 +280,7 @@ public class Camera extends Renderer {
 			g2d.drawLine(0, -h / 2, 0, h / 2);
 		} else if (logique.heros.getArme() != null) {
 			BufferedImage img = scale(logique.heros.getArme().getSpriteHUD(), scaleWidth, scaleHeight);
-			g2d.drawImage(img, null, -img.getWidth()/2, h / 2 - img.getHeight());
+			g2d.drawImage(img, null, -img.getWidth() / 2, h / 2 - img.getHeight());
 		}
 	}
 
@@ -428,10 +433,7 @@ public class Camera extends Renderer {
 				int nbSecteurs = current.getNbSecteurs();
 				// l'angle de vue choisi selon l'angle
 				int secteur = (int) (((nbSecteurs * angle / (2 * Math.PI)) + 0.5) % nbSecteurs);
-				/*
-				 * secteurs : 6 5 7 4 ennemi-> 0 3 1 2 l'image 1 de l'ennemi
-				 * sera chargée si le joueur est en 1 etc...
-				 */
+
 				currentSprite = current.getSprite(secteur);
 			} else {
 				currentSprite = current.getSprite();
@@ -470,13 +472,8 @@ public class Camera extends Renderer {
 				int texX = (256 * (j - (-spriteWidth / 2 + spriteScreenX)) * imageWidth / spriteWidth) / 256;
 				if (transformY > 0 && j > 0 && j < w && transformY < tabDistStripes[j]) {
 					for (int y = drawStartY; y < drawEndY; y++) {
-						int d = (y) * 256 - h * 128 + spriteHeight * 128; // 256
-																			// and
-																			// 128
-																			// factors
-																			// to
-																			// avoid
-																			// floats
+						// 256 and 128 factors to avoid floats
+						int d = (y) * 256 - h * 128 + spriteHeight * 128;
 						int texY = ((d * imageHeight) / spriteHeight) / 256;
 
 						// texY passe dans les négatifs (min atteint = -4)
@@ -487,7 +484,6 @@ public class Camera extends Renderer {
 							texX = 0;
 						}
 
-						// System.out.println(currentSprite.getRGB(0, 0));
 						// pixel invisible: 16777215
 						int rgb = currentSprite.getRGB(texX, texY);
 						if (rgb != 16777215) {
@@ -512,12 +508,11 @@ public class Camera extends Renderer {
 	public static final int InitialcustomHeight = 288;
 	public static final int InitialcustomWidth = 512;
 
-	//public static int customHeight = 360;
-	//public static int customWidth = 640;
+	// public static int customHeight = 360;
+	// public static int customWidth = 640;
 
 	public static final int customHeight = 720;
 	public static final int customWidth = 1280;
-	
 
 	public static final boolean customSize = true;
 
