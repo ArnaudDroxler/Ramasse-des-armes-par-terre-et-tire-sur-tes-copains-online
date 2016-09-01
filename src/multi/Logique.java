@@ -59,6 +59,8 @@ public class Logique extends KeyAdapter {
 	public boolean toucheMur;
 	public boolean toucheEnnemi;
 
+	public boolean afficheScore;
+
 	// test vie et armure
 	protected ArrayList<Ennemi> listEnnemie;
 
@@ -87,8 +89,11 @@ public class Logique extends KeyAdapter {
 
 		toucheMur = false;
 		toucheEnnemi = false;
+		afficheScore = false;
 
 		fireLineList = new ArrayList<Line2D>(5);
+
+		// .setFocusTraversalKeysEnabled(false)
 
 		animer();
 
@@ -142,26 +147,39 @@ public class Logique extends KeyAdapter {
 		oldPosition = heros.getPosition();
 		if (touchesEnfoncees.contains(KeyEvent.VK_W)) {
 			heros.forward();
+
 		}
-		if (touchesEnfoncees.contains(KeyEvent.VK_S)) {
+		if (touchesEnfoncees.contains(KeyEvent.VK_S))
+
+		{
 			heros.backward();
 		}
-		if (touchesEnfoncees.contains(KeyEvent.VK_A)) {
+		if (touchesEnfoncees.contains(KeyEvent.VK_A))
+
+		{
 			heros.strafeLeft();
 		}
-		if (touchesEnfoncees.contains(KeyEvent.VK_D)) {
+		if (touchesEnfoncees.contains(KeyEvent.VK_D))
+
+		{
 			heros.strafeRight();
 		}
 
 		// collisison avec les murs
-		if (map.inWall(heros.getPosition()) && !heros.getMort()) {
+		if (map.inWall(heros.getPosition()) && !heros.getMort())
+
+		{
 			moveAlongWalls();
 		}
 
-		if (touchesEnfoncees.contains(KeyEvent.VK_LEFT)) {
+		if (touchesEnfoncees.contains(KeyEvent.VK_LEFT))
+
+		{
 			heros.rotateLeft();
 		}
-		if (touchesEnfoncees.contains(KeyEvent.VK_RIGHT)) {
+		if (touchesEnfoncees.contains(KeyEvent.VK_RIGHT))
+
+		{
 			heros.rotateRight();
 		}
 
@@ -170,7 +188,9 @@ public class Logique extends KeyAdapter {
 		// Utilisation d'un itérateur car on supprime un objet d'une liste qu'on
 		// parcourt
 		Iterator<Thing> iterator = listeThings.iterator();
-		while (iterator.hasNext() && !mort) {
+		while (iterator.hasNext() && !mort)
+
+		{
 			Thing thing = iterator.next();
 			if (collapse(thing.getPosition(), 1.2) && !heros.getMort()) {
 				if (thing instanceof Weapon) {
@@ -309,6 +329,11 @@ public class Logique extends KeyAdapter {
 			}
 
 		}
+
+	}
+
+	public void setAffichageScore(boolean b) {
+		afficheScore = b;
 	}
 
 	private void animationDegatsPris() {
@@ -591,6 +616,7 @@ public class Logique extends KeyAdapter {
 						System.out.println("Ennemie " + ennemi.hashCode() + ": vie restante: " + ennemi.getVie()
 								+ " / armure restante: " + ennemi.getArmure());
 						if (ennemi.getMort()) {
+							heros.setNbKill();
 							listEnnemie.remove(ennemi);
 							listeThings.remove(ennemi);
 

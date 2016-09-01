@@ -22,8 +22,8 @@ public class FenetreJeu extends JFrame {
 	public static boolean mouseRightPressed;
 	public static boolean mouseLeftPressed;
 
-	public FenetreJeu(String pngFileName) throws AWTException {	
-		
+	public FenetreJeu(String pngFileName) throws AWTException {
+
 		Logique logique = new Logique(pngFileName);
 
 		Camera camera = new Camera(logique);
@@ -75,8 +75,6 @@ public class FenetreJeu extends JFrame {
 
 		addMouseListener(new MouseAdapter() {
 
-			
-
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// place le pointeur au centre
@@ -95,17 +93,17 @@ public class FenetreJeu extends JFrame {
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					mouseLeftPressed = true;
 					logique.mousePressed();
-				}else if (e.getButton() == MouseEvent.BUTTON3) {
+				} else if (e.getButton() == MouseEvent.BUTTON3) {
 					mouseRightPressed = true;
 				}
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				
+
 				if (e.getButton() == MouseEvent.BUTTON1) {
 					mouseLeftPressed = false;
-				}else if (e.getButton() == MouseEvent.BUTTON3) {
+				} else if (e.getButton() == MouseEvent.BUTTON3) {
 					mouseRightPressed = false;
 				}
 			}
@@ -119,6 +117,26 @@ public class FenetreJeu extends JFrame {
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					robotOff = true;
 					setCursor(Cursor.getDefaultCursor());
+				}
+			}
+		});
+
+		addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_Q) {
+					logique.setAffichageScore(true);
+				}
+			}
+		});
+
+		addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_Q) {
+					logique.setAffichageScore(false);
 				}
 			}
 		});
