@@ -2,9 +2,12 @@ package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
+import multi.thing.Thing;
 import multi.tools.map.ImageParser;
 import multi.tools.map.LvlMap;
 import multi.tools.raycasting.Vector2D;
@@ -17,6 +20,7 @@ public class LogiqueClient extends KeyAdapter {
 	protected boolean fin;
 	protected LvlMap map;
 	protected HashMap<Integer, JoueurOnline> joueurs;
+	protected ArrayList<Thing> objets;
 	protected JoueurOnline joueur;
 	protected Vector2D oldPosition;
 	protected HashSet<Integer> touchesEnfoncees;
@@ -96,12 +100,6 @@ public class LogiqueClient extends KeyAdapter {
 	}
 
 	public void updatePartie(Partie partie) {
-		/*
-		 * HashMap<Integer, JoueurOnline> joueurs = partie.getJoueurs(); // to
-		 * do : avoir aussi un hashmap côté client joueur =
-		 * joueurs.remove(joueurId); listEnnemis.clear();
-		 * listEnnemis.addAll(joueurs.values());
-		 */
 		joueurs = partie.getJoueurs();
 		// mauvaise solution car très peu performante :
 		//joueur = ennemis.remove(joueurId);
