@@ -497,8 +497,8 @@ public class Camera extends Renderer {
 				texX = texWidth - texX - 1;
 			if (side == 1 && rayDirY < 0)
 				texX = texWidth - texX - 1;
-
-			int numeroTexture = logique.map.getTextureTab()[mapX][mapY];
+			
+			int numeroTexture= logique.map.getTextureTab(mapX,mapY);
 
 			for (int y = drawStart; y < drawEnd; y++) {
 				int d = y * 256 - h * 128 + lineHeight * 128;
@@ -553,8 +553,8 @@ public class Camera extends Renderer {
 				int floorTexX = (int) (currentFloorX * texWidth) % texWidth;
 				int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
 
-				int floorTexture = logique.map.getTextureTab()[(int) currentFloorX][(int) currentFloorY];
-
+				int floorTexture = logique.map.getTextureTab((int) currentFloorX,(int) currentFloorY);
+				
 				Color c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexX, floorTexY));
 				c = c.darker();
 				buff.setRGB(x, y, c.getRGB());

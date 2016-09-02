@@ -102,8 +102,14 @@ public abstract class LvlMap {
 		return listStartPosition;
 	}
 
-	public int[][] getTextureTab() {
-		return textureTab;
+	public int getTextureTab(int mapX, int mapY) {
+		if(mapX<0 || mapX>textureTab.length){
+			mapX=0;
+		}
+		if(mapY<0 || mapY>textureTab[mapX].length){
+			mapY=0;
+		}
+		return textureTab[mapX][mapY];
 	}
 
 	public void setTextureTab(int x, int y, int numeroTexture) {
