@@ -194,9 +194,7 @@ public class Camera extends Renderer {
 
 			drawWeapon(g2d);
 
-			// NON FONCTIONNEL
 			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheMur) {
-				BufferedImage img = scale(logique.heros.getArme().getSpriteImpactMur(), scaleWidth, scaleHeight);
 				// BufferedImage img =
 				// logique.heros.getArme().getSpriteImpactMur();
 
@@ -205,6 +203,8 @@ public class Camera extends Renderer {
 							.pow((logique.fireLineList.get(i).getX2() - logique.fireLineList.get(i).getX1()), 2)
 							+ Math.pow((logique.fireLineList.get(i).getY2() - logique.fireLineList.get(i).getY1()), 2));
 					if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
+						BufferedImage img = scale(logique.heros.getArme().getSpriteImpactMur(),
+								scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
 
 						if (logique.heros.getArme() instanceof ShootGun) {
 
@@ -212,14 +212,11 @@ public class Camera extends Renderer {
 							double alpha = Math.PI / 18;
 
 							for (int j = -2; j < 3; j++) {
-								System.out.println(longueurligne);
 								// g2d.drawImage(img, null, 0, 0);
-								g2d.drawImage(img, null, (int) (w / 2 + Math.sin(alpha * j) * h / 2) - w / 2,
-										(int) (h - Math.cos(alpha * j) * h / 2) - h / 2);
+								g2d.drawImage(img, null, (int) (w / 2 + Math.sin(alpha * j) * h / 2) - w / 2, 0);
 							}
 
 						} else {
-							System.out.println(longueurligne);
 							g2d.drawImage(img, null, 0, 0);
 						}
 					}
@@ -227,7 +224,7 @@ public class Camera extends Renderer {
 			}
 
 			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheEnnemi) {
-				BufferedImage img = scale(logique.heros.getArme().getSpriteImpactEnnemi(), scaleWidth, scaleHeight);
+
 				// BufferedImage img =
 				// logique.heros.getArme().getSpriteImpactMur();
 
@@ -237,6 +234,9 @@ public class Camera extends Renderer {
 							+ Math.pow((logique.fireLineList.get(i).getY2() - logique.fireLineList.get(i).getY1()), 2));
 					if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
 
+						BufferedImage img = scale(logique.heros.getArme().getSpriteImpactEnnemi(),
+								scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
+
 						if (logique.heros.getArme() instanceof ShootGun) {
 
 							// Alpha = 10°
@@ -245,8 +245,7 @@ public class Camera extends Renderer {
 							for (int j = -2; j < 3; j++) {
 								System.out.println(longueurligne);
 								// g2d.drawImage(img, null, 0, 0);
-								g2d.drawImage(img, null, (int) (w / 2 + Math.sin(alpha * j) * h / 2) - w / 2,
-										(int) (h - Math.cos(alpha * j) * h / 2) - h / 2);
+								g2d.drawImage(img, null, (int) (w / 2 + Math.sin(alpha * j) * h / 2) - w / 2, 0);
 							}
 
 						} else {
@@ -261,7 +260,7 @@ public class Camera extends Renderer {
 
 				String strScore = new String("Joueur");
 
-				Font fontTitre = new Font("Helvetica", Font.BOLD, 40);
+				Font fontTitre = new Font("Helvetica", Font.BOLD, 20);
 				int valTabX = w / 5;
 				int valTabY = -h / 3;
 				g2d.setFont(fontTitre);
@@ -273,7 +272,7 @@ public class Camera extends Renderer {
 				strScore = "Death";
 				g2d.drawString(strScore, 4 * valTabX - w / 2, valTabY);
 
-				Font fontAff = new Font("Helvetica", Font.BOLD, 30);
+				Font fontAff = new Font("Helvetica", Font.BOLD, 15);
 				g2d.setFont(fontAff);
 				// Trier la liste de joueur en fonction du score
 				// int tailleTab = joueurOnline.size();
@@ -394,8 +393,8 @@ public class Camera extends Renderer {
 
 		int texWidth = 256;
 		int texHeight = 256;
-		BufferedImage buff = new BufferedImage(w, h,  BufferedImage.TYPE_INT_ARGB);
-		
+		BufferedImage buff = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
 		Vector<Integer> texture = new Vector<Integer>(1);
 
 		g2d.translate(-w / 2, -h / 2);
@@ -462,11 +461,10 @@ public class Camera extends Renderer {
 			tabDistStripes[x] = perpWallDist;
 
 			int middle = h / 2;
-			
-//			 if (side == 1) { g2d.setColor(Color.LIGHT_GRAY); } 
-//			 else { g2d.setColor(Color.GRAY); }
-			 
-			
+
+			// if (side == 1) { g2d.setColor(Color.LIGHT_GRAY); }
+			// else { g2d.setColor(Color.GRAY); }
+
 			int drawStart = -lineHeight / 2 + h / 2;
 			if (drawStart < 0)
 				drawStart = 0;
@@ -491,77 +489,74 @@ public class Camera extends Renderer {
 				int d = y * 256 - h * 128 + lineHeight * 128;
 				int texY = ((d * texHeight) / lineHeight) / 256;
 				Color c = new Color(MagasinImage.buffTextMur0.getRGB(texX, texY));
-				 if(side == 1) 
-					 c = c.darker();
-				 buff.setRGB(x, y, c.getRGB());
+				if (side == 1)
+					c = c.darker();
+				buff.setRGB(x, y, c.getRGB());
 			}
-			
+
 			// le -15 permet d'augmenter la hauteur des murs.
-			//g2d.drawLine(x, (middle - lineHeight / 2), x, (middle + lineHeight / 2));
-			
-			//FLOOR CASTING
-		      double floorXWall; 
-		      double floorYWall; //x, y position of the floor texel at the bottom of the wall
+			// g2d.drawLine(x, (middle - lineHeight / 2), x, (middle +
+			// lineHeight / 2));
 
-		      //4 different wall directions possible
-		      if(side == 0 && rayDirX > 0)
-		      {
-		        floorXWall = mapX;
-		        floorYWall = mapY + wallX;
-		      }
-		      else if(side == 0 && rayDirX < 0)
-		      {
-		        floorXWall = mapX + 1.0;
-		        floorYWall = mapY + wallX;
-		      }
-		      else if(side == 1 && rayDirY > 0)
-		      {
-		        floorXWall = mapX + wallX;
-		        floorYWall = mapY;
-		      }
-		      else
-		      {
-		        floorXWall = mapX + wallX;
-		        floorYWall = mapY + 1.0;
-		      }
+			// FLOOR CASTING
+			double floorXWall;
+			double floorYWall; // x, y position of the floor texel at the bottom
+								// of the wall
 
-		      double distWall, distPlayer, currentDist;
+			// 4 different wall directions possible
+			if (side == 0 && rayDirX > 0) {
+				floorXWall = mapX;
+				floorYWall = mapY + wallX;
+			} else if (side == 0 && rayDirX < 0) {
+				floorXWall = mapX + 1.0;
+				floorYWall = mapY + wallX;
+			} else if (side == 1 && rayDirY > 0) {
+				floorXWall = mapX + wallX;
+				floorYWall = mapY;
+			} else {
+				floorXWall = mapX + wallX;
+				floorYWall = mapY + 1.0;
+			}
 
-		      distWall = perpWallDist;
-		      distPlayer = 0.0;
+			double distWall, distPlayer, currentDist;
 
-		      if (drawEnd < 0) drawEnd = h; //becomes < 0 when the integer overflows
+			distWall = perpWallDist;
+			distPlayer = 0.0;
 
-		      //draw the floor from drawEnd to the bottom of the screen
-		      for(int y = drawEnd + 1; y < h; y++)
-		      {
-		        currentDist = h / (2.0 * y - h); //you could make a small lookup table for this instead
+			if (drawEnd < 0)
+				drawEnd = h; // becomes < 0 when the integer overflows
 
-		        double weight = (currentDist - distPlayer) / (distWall - distPlayer);
+			// draw the floor from drawEnd to the bottom of the screen
+			for (int y = drawEnd + 1; y < h; y++) {
+				currentDist = h / (2.0 * y - h); // you could make a small
+													// lookup table for this
+													// instead
 
-		        double currentFloorX = weight * floorXWall + (1.0 - weight) * pos.getdX();
-		        double currentFloorY = weight * floorYWall + (1.0 - weight) * pos.getdY();
+				double weight = (currentDist - distPlayer) / (distWall - distPlayer);
 
-		        int floorTexX = (int) (currentFloorX * texWidth) % texWidth;
-		        int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
+				double currentFloorX = weight * floorXWall + (1.0 - weight) * pos.getdX();
+				double currentFloorY = weight * floorYWall + (1.0 - weight) * pos.getdY();
 
-		        //floor
-		        Color c = new Color(MagasinImage.buffTextMur1.getRGB(floorTexY, floorTexX));
-//				 if(side == 1) 
-//					 c = c.darker();
-				 buff.setRGB(x, y, c.getRGB());
-				 
-			    c = new Color(MagasinImage.buffTextMur1.getRGB(floorTexY, floorTexX));
-			    buff.setRGB(x, h-y, c.getRGB());
-		        //ceiling (symmetrical!)
-		        //buffer[h - y][x] = texture[6][texWidth * floorTexY + floorTexX];
-		      }
-		    }
-		g2d.drawImage(buff,null,0,0);
-		
-		g2d.translate(w/2,h/2);
+				int floorTexX = (int) (currentFloorX * texWidth) % texWidth;
+				int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
+
+				// floor
+				Color c = new Color(MagasinImage.buffTextMur1.getRGB(floorTexY, floorTexX));
+				// if(side == 1)
+				// c = c.darker();
+				buff.setRGB(x, y, c.getRGB());
+
+				c = new Color(MagasinImage.buffTextMur1.getRGB(floorTexY, floorTexX));
+				buff.setRGB(x, h - y, c.getRGB());
+				// ceiling (symmetrical!)
+				// buffer[h - y][x] = texture[6][texWidth * floorTexY +
+				// floorTexX];
+			}
 		}
+		g2d.drawImage(buff, null, 0, 0);
 
+		g2d.translate(w / 2, h / 2);
+	}
 
 	// On part ici du principe qu'elles sont ordonnées
 	private void renderThings() {
@@ -692,11 +687,11 @@ public class Camera extends Renderer {
 	public int customHeight = 360;
 	public int customWidth = 640;
 
-	//public int customHeight = 720;
-	//public int customWidth = 1280;
+	// public int customHeight = 720;
+	// public int customWidth = 1280;
 
-	//public int customHeight = 1080;
-	//public int customWidth = 1920;
+	// public int customHeight = 1080;
+	// public int customWidth = 1920;
 
 	public final boolean customSize = true;
 
