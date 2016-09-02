@@ -30,7 +30,7 @@ public class MagasinImage {
 //	
 //	public static final BufferedImage buffTextMur[] = {buffTextMur0,buffTextMur1,buffTextMur2,buffTextMur3,buffTextMur4,buffTextMur4,buffTextMur4,buffTextMur4};
 	
-	public static final BufferedImage buffTextMur[] = ImageLoader.loadImagesFromFolder("yolo");
+	public static final BufferedImage buffTextMur[] = ImageLoader.loadImagesFromFolder("texturesMaison");
 
 	
 	public static final BufferedImage buffHudLeft = ImageLoader.loadBufferedImage("hudleft.png");
