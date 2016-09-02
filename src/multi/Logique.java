@@ -61,6 +61,11 @@ public class Logique extends KeyAdapter {
 
 	public boolean afficheScore;
 
+	protected ArrayList<Line2D> impactMurLine;
+	protected ArrayList<Line2D> impactEnnemiLine;
+
+	public HashMap<Ennemi, Line2D> dictEnnemiFireLine;
+
 	// test vie et armure
 	protected ArrayList<Ennemi> listEnnemie;
 
@@ -92,6 +97,8 @@ public class Logique extends KeyAdapter {
 		afficheScore = false;
 
 		fireLineList = new ArrayList<Line2D>(5);
+		impactEnnemiLine = new ArrayList<Line2D>(0);
+		impactMurLine = new ArrayList<Line2D>(0);
 
 		// .setFocusTraversalKeysEnabled(false)
 
@@ -552,6 +559,8 @@ public class Logique extends KeyAdapter {
 
 		if (heros.getArme().getAmmo() > 0) {
 			fireLineList.clear();
+			impactEnnemiLine.clear();
+			impactMurLine.clear();
 			heros.getArme().subAmmo(1);
 			heros.getArme().setIsFiring(true);
 
@@ -565,7 +574,7 @@ public class Logique extends KeyAdapter {
 
 			// fireLineList = new ArrayList<Line2D>(5);
 
-			HashMap<Ennemi, Line2D> dictEnnemiFireLine = new HashMap<>();
+			dictEnnemiFireLine = new HashMap<>();
 
 			if (heros.getArme() instanceof ShootGun) {
 				Joueur perso = new Joueur(heros.getPosition(), heros.getDirection());
@@ -594,14 +603,14 @@ public class Logique extends KeyAdapter {
 					}
 				}
 				if (ennemiTouche != null) {
-					toucheMur = false;
-					toucheEnnemi = true;
+
 					heros.getArme().setImpactEnnemi(true);
 					dictEnnemiFireLine.put(ennemiTouche, line2d);
+					impactEnnemiLine.add(line2d);
 				} else {
-					toucheEnnemi = false;
-					toucheMur = true;
+
 					heros.getArme().setImpactMur(true);
+					impactMurLine.add(line2d);
 				}
 
 			}

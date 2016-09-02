@@ -14,6 +14,7 @@ import java.awt.Transparency;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -195,64 +196,70 @@ public class Camera extends Renderer {
 			drawWeapon(g2d);
 
 			drawHUD(g2d);
-			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheMur) {
-				// BufferedImage img =
-				// logique.heros.getArme().getSpriteImpactMur();
 
-				for (int i = 0; i < logique.fireLineList.size(); i++) {
-					double longueurligne = Math.sqrt(Math
-							.pow((logique.fireLineList.get(i).getX2() - logique.fireLineList.get(i).getX1()), 2)
-							+ Math.pow((logique.fireLineList.get(i).getY2() - logique.fireLineList.get(i).getY1()), 2));
+			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw)
+					&& !logique.impactMurLine.isEmpty()) {
+
+				Iterator<Line2D> iterator = logique.impactMurLine.iterator();
+				while (iterator.hasNext()) {
+					Line2D line = iterator.next();
+
+					double longueurligne = Math.sqrt(
+							Math.pow((line.getX2() - line.getX1()), 2) + Math.pow(line.getY2() - line.getY1(), 2));
+
 					if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
 						BufferedImage img = scale(logique.heros.getArme().getSpriteImpactMur(),
 								scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
 
 						if (logique.heros.getArme() instanceof ShootGun) {
 
-							// Alpha = 10°
-							double alpha = Math.PI / 18;
+							Vector2D vec = new Vector2D(line.getX2() - line.getX1(), line.getY2() - line.getY1());
+							double angle = Math.atan2(vec.getdY(), vec.getdX()) - Math
+									.atan2(logique.heros.getDirection().getdY(), logique.heros.getDirection().getdX());
+							angle = 180 * angle / Math.PI;
 
-							for (int j = -2; j < 3; j++) {
-								// g2d.drawImage(img, null, 0, 0);
-								g2d.drawImage(img, null, (int) (w / 2 + Math.sin(alpha * j) * h / 2) - w / 2, 0);
-							}
+							g2d.drawImage(img, null, (int) (Math.tan(angle) * longueurligne) - img.getWidth() / 2,
+									0 - img.getHeight() / 2);
 
 						} else {
-							g2d.drawImage(img, null, 0, 0);
+							g2d.drawImage(img, null, 0 - img.getWidth() / 2, 0 - img.getHeight() / 2);
 						}
+
 					}
 				}
 			}
 
-			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheEnnemi) {
+			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw)
+					&& !logique.impactEnnemiLine.isEmpty()) {
 
-				// BufferedImage img =
-				// logique.heros.getArme().getSpriteImpactMur();
+				Iterator<Line2D> iterator = logique.impactEnnemiLine.iterator();
+				System.out.println(logique.impactEnnemiLine.size());
+				while (iterator.hasNext())
 
-				for (int i = 0; i < logique.fireLineList.size(); i++) {
-					double longueurligne = Math.sqrt(Math
-							.pow((logique.fireLineList.get(i).getX2() - logique.fireLineList.get(i).getX1()), 2)
-							+ Math.pow((logique.fireLineList.get(i).getY2() - logique.fireLineList.get(i).getY1()), 2));
+				{
+					Line2D line = iterator.next();
+
+					double longueurligne = Math.sqrt(
+							Math.pow((line.getX2() - line.getX1()), 2) + Math.pow(line.getY2() - line.getY1(), 2));
+
 					if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
-
 						BufferedImage img = scale(logique.heros.getArme().getSpriteImpactEnnemi(),
 								scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
 
 						if (logique.heros.getArme() instanceof ShootGun) {
 
-							// Alpha = 10°
-							double alpha = Math.PI / 18;
+							Vector2D vec = new Vector2D(line.getX2() - line.getX1(), line.getY2() - line.getY1());
+							double angle = Math.atan2(vec.getdY(), vec.getdX()) - Math
+									.atan2(logique.heros.getDirection().getdY(), logique.heros.getDirection().getdX());
+							angle = 180 * angle / Math.PI;
 
-							for (int j = -2; j < 3; j++) {
-								System.out.println(longueurligne);
-								// g2d.drawImage(img, null, 0, 0);
-								g2d.drawImage(img, null, (int) (w / 2 + Math.sin(alpha * j) * h / 2) - w / 2, 0);
-							}
+							g2d.drawImage(img, null, (int) (Math.tan(angle) * longueurligne) - img.getWidth() / 2,
+									0 - img.getHeight() / 2);
 
 						} else {
-							System.out.println(longueurligne);
-							g2d.drawImage(img, null, 0, 0);
+							g2d.drawImage(img, null, 0 - img.getWidth() / 2, 0 - img.getHeight() / 2);
 						}
+
 					}
 				}
 			}
@@ -328,18 +335,6 @@ public class Camera extends Renderer {
 			}
 		}
 
-	}
-
-	private void drawString(Graphics g, String text, int x, int y) {
-		for (String line : text.split("\n")) {
-			drawtabString(g, line, x, y += g.getFontMetrics().getHeight());
-		}
-	}
-
-	private void drawtabString(Graphics g, String text, int x, int y) {
-		for (String line : text.split("\t")) {
-			g.drawString(line, x += g.getFontMetrics().getHeight(), y);
-		}
 	}
 
 	private void drawHUD(Graphics2D g2d) {
