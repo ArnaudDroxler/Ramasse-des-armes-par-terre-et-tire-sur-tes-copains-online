@@ -6,11 +6,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsEnvironment;
 import java.awt.RadialGradientPaint;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
@@ -18,12 +14,9 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.Vector;
-
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
@@ -32,7 +25,6 @@ import multi.thing.weapon.ShootGun;
 import multi.thing.weapon.Chainsaw;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
-import sun.java2d.HeadlessGraphicsEnvironment;
 
 public class Camera extends Renderer {
 
@@ -425,8 +417,6 @@ public class Camera extends Renderer {
 		int texHeight = 256;
 		BufferedImage buff = new BufferedImage(w, h,  BufferedImage.TYPE_INT_ARGB);
 		
-		Vector<Integer> texture = new Vector<Integer>(1);
-
 		g2d.translate(-w / 2, -h / 2);
 		for (int x = 0; x < w; x++) {
 			double cameraX = 2 * x / (double) w - 1;
@@ -439,7 +429,9 @@ public class Camera extends Renderer {
 
 			int mapX = (int) rayPosX;
 			int mapY = (int) rayPosY;
-
+			
+			
+			
 			double sideDistX;
 			double sideDistY;
 
@@ -515,11 +507,13 @@ public class Camera extends Renderer {
 				texX = texWidth - texX - 1;
 			if (side == 1 && rayDirY < 0)
 				texX = texWidth - texX - 1;
-
+			
+			int text  = logique.map.getTextureTab()[mapX][mapY];
+			
 			for (int y = drawStart; y < drawEnd; y++) {
 				int d = y * 256 - h * 128 + lineHeight * 128;
 				int texY = ((d * texHeight) / lineHeight) / 256;
-				Color c = new Color(MagasinImage.buffTextMur0.getRGB(texX, texY));
+				Color c = new Color(MagasinImage.buffTextMur[text].getRGB(texY, texX));
 				 if(side == 1) 
 					 c = c.darker();
 				 buff.setRGB(x, y, c.getRGB());
@@ -575,12 +569,13 @@ public class Camera extends Renderer {
 		        int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
 
 		        //floor
-		        Color c = new Color(MagasinImage.buffTextMur1.getRGB(floorTexY, floorTexX));
-//				 if(side == 1) 
-//					 c = c.darker();
+		     
+		        Color c = new Color(MagasinImage.buffTextMur[0].getRGB(floorTexY, floorTexX)); 
+		        c = c.darker();
 				 buff.setRGB(x, y, c.getRGB());
 				 
-			    c = new Color(MagasinImage.buffTextMur1.getRGB(floorTexY, floorTexX));
+				 
+				c = new Color(MagasinImage.buffTextMur[0].getRGB(floorTexY, floorTexX));
 			    buff.setRGB(x, h-y, c.getRGB());
 		        //ceiling (symmetrical!)
 		        //buffer[h - y][x] = texture[6][texWidth * floorTexY + floorTexX];

@@ -31,28 +31,51 @@ import multi.tools.raycasting.Vector2D;
 public class ImageParser {
 
 	public static LvlMap getMap(String imageName) {
+
 		try {
-			return getMap(ImageIO.read(new File(imageName)));
+			return getMap(ImageIO.read(new File(imageName + ".png")),
+					ImageIO.read(new File(imageName + "texture.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	public static LvlMap getMap(BufferedImage imgToParse) {
+	public static LvlMap getMap(BufferedImage imgToParse, BufferedImage imgTextureToParse) {
 
-		ImageLvlMap map = new ImageLvlMap();
-
-		map.width = imgToParse.getWidth();
-		map.height = imgToParse.getHeight();
+		ImageLvlMap map = new ImageLvlMap(imgToParse.getWidth(),imgToParse.getHeight());
 
 		parse(map, imgToParse);
+
+		parseTexture(map, imgTextureToParse);
 
 		// map.setMapBackgroung(imgToParse);
 
 		map.setMapBackground(imgToParse);
 
 		return map;
+
+	}
+
+	private static void parseTexture(ImageLvlMap map, BufferedImage imgTextureToParse) {
+		for (int y = 0; y < imgTextureToParse.getHeight(); y++) {
+			for (int x = 0; x < imgTextureToParse.getWidth(); x++) {
+				int rgb = imgTextureToParse.getRGB(x, y);
+				if (rgb == Color.BLACK.getRGB()) {
+					map.getTextureTab()[x][y] = 0;
+				} 
+				else if (rgb == Color.RED.getRGB()) {
+					map.getTextureTab()[x][y] = 1;
+				} 
+				else if (rgb == Color.GREEN.getRGB()) {
+					map.getTextureTab()[x][y] = 2;
+				} 
+				else if (rgb == Color.BLUE.getRGB()) {
+					map.getTextureTab()[x][y] = 3;
+				} 
+			}
+
+		}
 
 	}
 
@@ -73,51 +96,39 @@ public class ImageParser {
 						map.getListThing().add(new Armure(new Vector2D(x, y)));
 					} // point de spawn
 					else if (Integer.toHexString(rgb).equals("ffffff00")) {
-						//map.setStartPosition(new Vector2D(x, y));
+						// map.setStartPosition(new Vector2D(x, y));
 						map.getListStartPosition().add(new Vector2D(x, y));
 					} // PNJ
 					else if (Integer.toHexString(rgb).equals("ffffffaa")) {
 						Ennemi joueur = new Ennemi(new Vector2D(x, y), new Vector2D(1, 0));
 						map.getListEnnemie().add(joueur);
 						map.getListThing().add(joueur);
-					} 
-					else if (Integer.toHexString(rgb).equals("ff00ff00")) {
+					} else if (Integer.toHexString(rgb).equals("ff00ff00")) {
 						map.getListThing().add(new HandGun(new Vector2D(x, y)));
-					}
-					else if (Integer.toHexString(rgb).equals("ff00ff50")) {
+					} else if (Integer.toHexString(rgb).equals("ff00ff50")) {
 						map.getListThing().add(new AmmoPackHG(new Vector2D(x, y)));
-					} 
-					else if (Integer.toHexString(rgb).equals("ff00ee00")) {
+					} else if (Integer.toHexString(rgb).equals("ff00ee00")) {
 						map.getListThing().add(new SubmachineGun(new Vector2D(x, y)));
-					}
-					else if (Integer.toHexString(rgb).equals("ff00ee50")) {
+					} else if (Integer.toHexString(rgb).equals("ff00ee50")) {
 						map.getListThing().add(new AmmoPackSmG(new Vector2D(x, y)));
-					}
-					else if (Integer.toHexString(rgb).equals("ff00dd00")) {
+					} else if (Integer.toHexString(rgb).equals("ff00dd00")) {
 						map.getListThing().add(new ShootGun(new Vector2D(x, y)));
-					}
-					else if (Integer.toHexString(rgb).equals("ff00dd50")) {
+					} else if (Integer.toHexString(rgb).equals("ff00dd50")) {
 						map.getListThing().add(new AmmoPackSG(new Vector2D(x, y)));
-					}
-					else if (Integer.toHexString(rgb).equals("ff00cc00")) {
+					} else if (Integer.toHexString(rgb).equals("ff00cc00")) {
 						map.getListThing().add(new PrecisionRifle(new Vector2D(x, y)));
-					}
-					else if (Integer.toHexString(rgb).equals("ff00cc50")) {
+					} else if (Integer.toHexString(rgb).equals("ff00cc50")) {
 						map.getListThing().add(new AmmoPackPR(new Vector2D(x, y)));
-					}
-					else if (Integer.toHexString(rgb).equals("ff00bb00")) {
+					} else if (Integer.toHexString(rgb).equals("ff00bb00")) {
 						map.getListThing().add(new Chainsaw(new Vector2D(x, y)));
-					}
-					else if (Integer.toHexString(rgb).equals("ff00bb50")) {
+					} else if (Integer.toHexString(rgb).equals("ff00bb50")) {
 						map.getListThing().add(new AmmoPackCS(new Vector2D(x, y)));
-					}
-					else if (Integer.toHexString(rgb).equals("ff00aa00")) {
+					} else if (Integer.toHexString(rgb).equals("ff00aa00")) {
 						map.getListThing().add(new AssaultRifle(new Vector2D(x, y)));
-					} 
-					else if (Integer.toHexString(rgb).equals("ff00aa50")) {
+					} else if (Integer.toHexString(rgb).equals("ff00aa50")) {
 						map.getListThing().add(new AmmoPackAR(new Vector2D(x, y)));
 					}
-					
+
 					imgToParse.setRGB(x, y, Color.white.getRGB());
 				} else {
 					// rien
