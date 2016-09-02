@@ -485,9 +485,6 @@ public class Camera extends Renderer {
 
 			int middle = h / 2;
 
-			// if (side == 1) { g2d.setColor(Color.LIGHT_GRAY); }
-			// else { g2d.setColor(Color.GRAY); }
-
 			int drawStart = -lineHeight / 2 + h / 2;
 			if (drawStart < 0)
 				drawStart = 0;
@@ -521,11 +518,6 @@ public class Camera extends Renderer {
 
 			}
 
-			// le -15 permet d'augmenter la hauteur des murs.
-
-			//g2d.drawLine(x, (middle - lineHeight / 2), x, (middle + lineHeight / 2));
-			
-			//FLOOR CASTING
 		      double floorXWall; 
 		      double floorYWall; //x, y position of the floor texel at the bottom of the wall
 
@@ -571,23 +563,16 @@ public class Camera extends Renderer {
 		        int floorTexX = (int) (currentFloorX * texWidth) % texWidth;
 		        int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
 		        
-		        int checkerBoardPattern = (int)((currentFloorX) + (int)(currentFloorY)) % 2;
-		        int floorTexture;
-		        if(checkerBoardPattern == 0) floorTexture = 3;
-		        else floorTexture = 4;
-
-		 
-		        //floor
+		        int floorTexture =  logique.map.getTextureTab()[(int) currentFloorX][(int) currentFloorY];
 		     
 		        Color c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexX, floorTexY)); 
 		        c = c.darker();
 				 buff.setRGB(x, y, c.getRGB());
 				 
 				 
-				c = new Color(MagasinImage.buffTextMur[floorTexture-2].getRGB(floorTexY, floorTexX));
+				c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexY, floorTexX));
 			    buff.setRGB(x, h-y, c.getRGB());
-		        //ceiling (symmetrical!)
-		        //buffer[h - y][x] = texture[6][texWidth * floorTexY + floorTexX];
+		       
 		      }
 		    }
 
@@ -722,11 +707,11 @@ public class Camera extends Renderer {
 	// public int customHeight = 288;
 	// public int customWidth = 512;
 
-	//public int customHeight = 360;
-	//public int customWidth = 640;
+	public int customHeight = 360;
+	public int customWidth = 640;
 
-	 public int customHeight = 720;
-	public int customWidth = 1280;
+	// public int customHeight = 720;
+	//public int customWidth = 1280;
 
 	// public int customHeight = 1080;
 	// public int customWidth = 1920;
