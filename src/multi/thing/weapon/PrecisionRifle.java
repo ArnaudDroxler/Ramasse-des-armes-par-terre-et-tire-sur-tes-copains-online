@@ -14,6 +14,7 @@ public class PrecisionRifle extends Weapon {
 	public PrecisionRifle(Vector2D pos) {
 		super(pos);
 		ammo = 8;
+		maxAmmo = 40;
 		RoF = 0.5;
 		DpS = 100;
 		RaoF = 60;

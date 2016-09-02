@@ -17,6 +17,7 @@ public class Chainsaw extends Weapon {
 	public Chainsaw(Vector2D pos) {
 		super(pos);
 		ammo = 200;
+		maxAmmo = 1000;
 		RoF = 5;
 		DpS = 50;
 		RaoF = 2;
