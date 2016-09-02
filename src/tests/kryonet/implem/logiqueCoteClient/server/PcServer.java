@@ -44,7 +44,7 @@ public class PcServer {
 					ClientConnexionMessage ccm = (ClientConnexionMessage) object;
 					connection.setName(ccm.getPseudo() + ":" + connection.getID());
 					System.out.println("nouveau joueur : " + ccm.getPseudo());
-					JoueurOnline nouveaujoueur = new JoueurOnline(ccm.getPseudo());
+					JoueurOnline nouveaujoueur = new JoueurOnline(ccm.getPseudo(), connection.getID());
 					partie.addJoueur(connection.getID(), nouveaujoueur);
 					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID());
 					connection.sendTCP(acm);
