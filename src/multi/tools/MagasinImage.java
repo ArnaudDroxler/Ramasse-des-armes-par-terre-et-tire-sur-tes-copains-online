@@ -28,8 +28,10 @@ public class MagasinImage {
 	public static final BufferedImage buffTextMur2 = ImageLoader.loadBufferedImage("texturemur2.png");
 	public static final BufferedImage buffTextMur3 = ImageLoader.loadBufferedImage("texturemur3.png");
 	public static final BufferedImage buffTextMur4 = ImageLoader.loadBufferedImage("texturemur4.png");
+	public static final BufferedImage buffTextMur5 = ImageLoader.loadBufferedImage("papier_peint_pour_enfant.png");
 	
-	public static final BufferedImage buffTextMur[] = {buffTextMur0,buffTextMur1,buffTextMur2,buffTextMur3,buffTextMur4};
+	
+	public static final BufferedImage buffTextMur[] = {buffTextMur5,buffTextMur1,buffTextMur2,buffTextMur3,buffTextMur4};
 	
 	public static final BufferedImage buffHudLeft = ImageLoader.loadBufferedImage("hudleft.png");
 	public static final BufferedImage buffHudRight = ImageLoader.loadBufferedImage("hudright.png");

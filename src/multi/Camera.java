@@ -514,7 +514,7 @@ public class Camera extends Renderer {
 				int d = y * 256 - h * 128 + lineHeight * 128;
 				int texY = ((d * texHeight) / lineHeight) / 256;
 
-				Color c = new Color(MagasinImage.buffTextMur[text].getRGB(texY, texX));
+				Color c = new Color(MagasinImage.buffTextMur[text].getRGB(texX, texY));
 				 if(side == 1) 
 					 c = c.darker();
 				 buff.setRGB(x, y, c.getRGB());
@@ -573,7 +573,7 @@ public class Camera extends Renderer {
 
 		        //floor
 		     
-		        Color c = new Color(MagasinImage.buffTextMur[0].getRGB(floorTexY, floorTexX)); 
+		        Color c = new Color(MagasinImage.buffTextMur[0].getRGB(floorTexX, floorTexY)); 
 		        c = c.darker();
 				 buff.setRGB(x, y, c.getRGB());
 				 
@@ -713,17 +713,14 @@ public class Camera extends Renderer {
 	public static int InitialcustomHeight = 288;
 	public static int InitialcustomWidth = 512;
 
-	// public static int customHeight = 360;
-	// public static int customWidth = 640;
-
 	// public int customHeight = 288;
 	// public int customWidth = 512;
 
-	public int customHeight = 360;
-	public int customWidth = 640;
+	//public int customHeight = 360;
+	//public int customWidth = 640;
 
-	// public int customHeight = 720;
-	// public int customWidth = 1280;
+	 public int customHeight = 720;
+	public int customWidth = 1280;
 
 	// public int customHeight = 1080;
 	// public int customWidth = 1920;
