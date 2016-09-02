@@ -21,8 +21,17 @@ public class MagasinImage {
 	public static final BufferedImage buffPorte = ImageLoader.loadBufferedImage("porte.png");
 	public static final BufferedImage buffMedipack = ImageLoader.loadBufferedImage("medipack.png");
 	public static final BufferedImage buffArmure = ImageLoader.loadBufferedImage("armure.png");
+	
+	
 	public static final BufferedImage buffTextMur0 = ImageLoader.loadBufferedImage("texturemur0.png");
-	public static final BufferedImage buffTextMur1 = ImageLoader.loadBufferedImage("texturemur1.png");
+	public static final BufferedImage buffTextMur1 = ImageLoader.loadBufferedImage("le-bonheur.png");
+	public static final BufferedImage buffTextMur2 = ImageLoader.loadBufferedImage("texturemur2.png");
+	public static final BufferedImage buffTextMur3 = ImageLoader.loadBufferedImage("texturemur2.png");
+	public static final BufferedImage buffTextMur4 = ImageLoader.loadBufferedImage("jolie-texture.png");
+	public static final BufferedImage buffTextMur5 = ImageLoader.loadBufferedImage("papier_peint_pour_enfant.png");
+	
+	
+	public static final BufferedImage buffTextMur[] = {buffTextMur5,buffTextMur1,buffTextMur2,buffTextMur3,buffTextMur4};
 	
 	public static final BufferedImage buffHudLeft = ImageLoader.loadBufferedImage("hudleft.png");
 	public static final BufferedImage buffHudRight = ImageLoader.loadBufferedImage("hudright.png");

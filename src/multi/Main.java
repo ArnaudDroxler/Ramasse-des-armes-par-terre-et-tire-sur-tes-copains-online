@@ -8,7 +8,7 @@ public class Main {
 
 	public static void main(String[] args) {
 		try {
-			new FenetreJeu("StandDeTire.png");
+			new FenetreJeu("StandDeTire");
 		} catch (AWTException e) {
 			e.printStackTrace();
 		}
