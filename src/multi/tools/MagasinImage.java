@@ -22,7 +22,6 @@ public class MagasinImage {
 	public static final BufferedImage buffMedipack = ImageLoader.loadBufferedImage("medipack.png");
 	public static final BufferedImage buffArmure = ImageLoader.loadBufferedImage("armure.png");
 	
-	
 //	public static final BufferedImage buffTextMur0 = ImageLoader.loadBufferedImage("texturemur0.png");
 //	public static final BufferedImage buffTextMur1 = ImageLoader.loadBufferedImage("texturemur1.png");
 //	public static final BufferedImage buffTextMur2 = ImageLoader.loadBufferedImage("texturemur2.png");
@@ -32,6 +31,7 @@ public class MagasinImage {
 //	public static final BufferedImage buffTextMur[] = {buffTextMur0,buffTextMur1,buffTextMur2,buffTextMur3,buffTextMur4,buffTextMur4,buffTextMur4,buffTextMur4};
 	
 	public static final BufferedImage buffTextMur[] = ImageLoader.loadImagesFromFolder("yolo");
+
 	
 	public static final BufferedImage buffHudLeft = ImageLoader.loadBufferedImage("hudleft.png");
 	public static final BufferedImage buffHudRight = ImageLoader.loadBufferedImage("hudright.png");
