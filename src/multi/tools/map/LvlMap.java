@@ -106,5 +106,9 @@ public abstract class LvlMap {
 		return textureTab;
 	}
 
+	public void setTextureTab(int x, int y, int numeroTexture) {
+		textureTab[x][y] = numeroTexture;
+	}
+
 
 }

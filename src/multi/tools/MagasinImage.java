@@ -23,13 +23,15 @@ public class MagasinImage {
 	public static final BufferedImage buffArmure = ImageLoader.loadBufferedImage("armure.png");
 	
 	
-	public static final BufferedImage buffTextMur0 = ImageLoader.loadBufferedImage("texturemur0.png");
-	public static final BufferedImage buffTextMur1 = ImageLoader.loadBufferedImage("texturemur1.png");
-	public static final BufferedImage buffTextMur2 = ImageLoader.loadBufferedImage("texturemur2.png");
-	public static final BufferedImage buffTextMur3 = ImageLoader.loadBufferedImage("texturemur3.png");
-	public static final BufferedImage buffTextMur4 = ImageLoader.loadBufferedImage("texturemur4.png");
+//	public static final BufferedImage buffTextMur0 = ImageLoader.loadBufferedImage("texturemur0.png");
+//	public static final BufferedImage buffTextMur1 = ImageLoader.loadBufferedImage("texturemur1.png");
+//	public static final BufferedImage buffTextMur2 = ImageLoader.loadBufferedImage("texturemur2.png");
+//	public static final BufferedImage buffTextMur3 = ImageLoader.loadBufferedImage("texturemur3.png");
+//	public static final BufferedImage buffTextMur4 = ImageLoader.loadBufferedImage("texturemur4.png");
+//	
+//	public static final BufferedImage buffTextMur[] = {buffTextMur0,buffTextMur1,buffTextMur2,buffTextMur3,buffTextMur4,buffTextMur4,buffTextMur4,buffTextMur4};
 	
-	public static final BufferedImage buffTextMur[] = {buffTextMur0,buffTextMur1,buffTextMur2,buffTextMur3,buffTextMur4};
+	public static final BufferedImage buffTextMur[] = ImageLoader.loadImagesFromFolder("yolo");
 	
 	public static final BufferedImage buffHudLeft = ImageLoader.loadBufferedImage("hudleft.png");
 	public static final BufferedImage buffHudRight = ImageLoader.loadBufferedImage("hudright.png");

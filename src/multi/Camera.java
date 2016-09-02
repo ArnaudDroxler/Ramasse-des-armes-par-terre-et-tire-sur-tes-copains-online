@@ -416,8 +416,8 @@ public class Camera extends Renderer {
 		int texWidth = 256;
 		int texHeight = 256;
 
-		BufferedImage buff = new BufferedImage(w, h,  BufferedImage.TYPE_INT_ARGB);
-		
+		BufferedImage buff = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+
 		g2d.translate(-w / 2, -h / 2);
 		for (int x = 0; x < w; x++) {
 			double cameraX = 2 * x / (double) w - 1;
@@ -430,9 +430,7 @@ public class Camera extends Renderer {
 
 			int mapX = (int) rayPosX;
 			int mapY = (int) rayPosY;
-			
-			
-			
+
 			double sideDistX;
 			double sideDistY;
 
@@ -507,83 +505,82 @@ public class Camera extends Renderer {
 				texX = texWidth - texX - 1;
 			if (side == 1 && rayDirY < 0)
 				texX = texWidth - texX - 1;
-			
-			int text  = logique.map.getTextureTab()[mapX][mapY];
-			
+
+			int numeroTexture = logique.map.getTextureTab()[mapX][mapY];
+
 			for (int y = drawStart; y < drawEnd; y++) {
 				int d = y * 256 - h * 128 + lineHeight * 128;
 				int texY = ((d * texHeight) / lineHeight) / 256;
 
-				Color c = new Color(MagasinImage.buffTextMur[text].getRGB(texY, texX));
-				 if(side == 1) 
-					 c = c.darker();
-				 buff.setRGB(x, y, c.getRGB());
+				if (numeroTexture > MagasinImage.buffTextMur.length)
+					numeroTexture = 0;
+				Color c = new Color(MagasinImage.buffTextMur[numeroTexture].getRGB(texY, texX));
+				if (side == 1)
+					c = c.darker();
+				buff.setRGB(x, y, c.getRGB());
 
 			}
 
 			// le -15 permet d'augmenter la hauteur des murs.
 
-			//g2d.drawLine(x, (middle - lineHeight / 2), x, (middle + lineHeight / 2));
-			
-			//FLOOR CASTING
-		      double floorXWall; 
-		      double floorYWall; //x, y position of the floor texel at the bottom of the wall
+			// g2d.drawLine(x, (middle - lineHeight / 2), x, (middle +
+			// lineHeight / 2));
 
-		      //4 different wall directions possible
-		      if(side == 0 && rayDirX > 0)
-		      {
-		        floorXWall = mapX;
-		        floorYWall = mapY + wallX;
-		      }
-		      else if(side == 0 && rayDirX < 0)
-		      {
-		        floorXWall = mapX + 1.0;
-		        floorYWall = mapY + wallX;
-		      }
-		      else if(side == 1 && rayDirY > 0)
-		      {
-		        floorXWall = mapX + wallX;
-		        floorYWall = mapY;
-		      }
-		      else
-		      {
-		        floorXWall = mapX + wallX;
-		        floorYWall = mapY + 1.0;
-		      }
+			// FLOOR CASTING
+			double floorXWall;
+			double floorYWall; // x, y position of the floor texel at the bottom
+								// of the wall
 
-		      double distWall, distPlayer, currentDist;
+			// 4 different wall directions possible
+			if (side == 0 && rayDirX > 0) {
+				floorXWall = mapX;
+				floorYWall = mapY + wallX;
+			} else if (side == 0 && rayDirX < 0) {
+				floorXWall = mapX + 1.0;
+				floorYWall = mapY + wallX;
+			} else if (side == 1 && rayDirY > 0) {
+				floorXWall = mapX + wallX;
+				floorYWall = mapY;
+			} else {
+				floorXWall = mapX + wallX;
+				floorYWall = mapY + 1.0;
+			}
 
-		      distWall = perpWallDist;
-		      distPlayer = 0.0;
+			double distWall, distPlayer, currentDist;
 
-		      if (drawEnd < 0) drawEnd = h; //becomes < 0 when the integer overflows
+			distWall = perpWallDist;
+			distPlayer = 0.0;
 
-		      //draw the floor from drawEnd to the bottom of the screen
-		      for(int y = drawEnd + 1; y < h; y++)
-		      {
-		        currentDist = h / (2.0 * y - h); //you could make a small lookup table for this instead
+			if (drawEnd < 0)
+				drawEnd = h; // becomes < 0 when the integer overflows
 
-		        double weight = (currentDist - distPlayer) / (distWall - distPlayer);
+			// draw the floor from drawEnd to the bottom of the screen
+			for (int y = drawEnd + 1; y < h; y++) {
+				currentDist = h / (2.0 * y - h); // you could make a small
+													// lookup table for this
+													// instead
 
-		        double currentFloorX = weight * floorXWall + (1.0 - weight) * pos.getdX();
-		        double currentFloorY = weight * floorYWall + (1.0 - weight) * pos.getdY();
+				double weight = (currentDist - distPlayer) / (distWall - distPlayer);
 
-		        int floorTexX = (int) (currentFloorX * texWidth) % texWidth;
-		        int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
+				double currentFloorX = weight * floorXWall + (1.0 - weight) * pos.getdX();
+				double currentFloorY = weight * floorYWall + (1.0 - weight) * pos.getdY();
 
-		        //floor
-		     
-		        Color c = new Color(MagasinImage.buffTextMur[0].getRGB(floorTexY, floorTexX)); 
-		        c = c.darker();
-				 buff.setRGB(x, y, c.getRGB());
-				 
-				 
+				int floorTexX = (int) (currentFloorX * texWidth) % texWidth;
+				int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
+
+				// floor
+
+				Color c = new Color(MagasinImage.buffTextMur[0].getRGB(floorTexY, floorTexX));
+				c = c.darker();
+				buff.setRGB(x, y, c.getRGB());
+
 				c = new Color(MagasinImage.buffTextMur[0].getRGB(floorTexY, floorTexX));
-			    buff.setRGB(x, h-y, c.getRGB());
-		        //ceiling (symmetrical!)
-		        //buffer[h - y][x] = texture[6][texWidth * floorTexY + floorTexX];
-		      }
-		    }
+				buff.setRGB(x, h - y, c.getRGB());
+				// ceiling (symmetrical!)
+				// buffer[h - y][x] = texture[6][texWidth * floorTexY +
+				// floorTexX];
+			}
+		}
 
 		g2d.drawImage(buff, null, 0, 0);
 

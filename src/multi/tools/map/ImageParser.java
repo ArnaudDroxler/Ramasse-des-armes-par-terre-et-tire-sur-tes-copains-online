@@ -61,18 +61,23 @@ public class ImageParser {
 		for (int y = 0; y < imgTextureToParse.getHeight(); y++) {
 			for (int x = 0; x < imgTextureToParse.getWidth(); x++) {
 				int rgb = imgTextureToParse.getRGB(x, y);
-				if (rgb == Color.BLACK.getRGB()) {
-					map.getTextureTab()[x][y] = 0;
-				} 
-				else if (rgb == Color.RED.getRGB()) {
-					map.getTextureTab()[x][y] = 1;
-				} 
-				else if (rgb == Color.GREEN.getRGB()) {
-					map.getTextureTab()[x][y] = 2;
-				} 
-				else if (rgb == Color.BLUE.getRGB()) {
-					map.getTextureTab()[x][y] = 3;
-				} 
+				int blue = (rgb) & 0x000000FF;
+				
+//				if (rgb == Color.BLACK.getRGB()) {
+//					map.getTextureTab()[x][y] = 0;
+//				} 
+//				else if (rgb == Color.RED.getRGB()) {
+//					map.getTextureTab()[x][y] = 1;
+//				} 
+//				else if (rgb == Color.GREEN.getRGB()) {
+//					map.getTextureTab()[x][y] = 2;
+//				} 
+//				else if (rgb == Color.BLUE.getRGB()) {
+//					map.getTextureTab()[x][y] = 3;
+//				} 
+				
+				map.setTextureTab(x,y,blue);
+				
 			}
 
 		}
