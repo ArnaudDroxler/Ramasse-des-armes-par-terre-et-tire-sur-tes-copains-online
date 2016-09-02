@@ -13,7 +13,8 @@ public class SubmachineGun extends Weapon {
 
 	public SubmachineGun(Vector2D pos) {
 		super(pos);
-		ammo = 30;
+		ammo = 40;
+		maxAmmo = 200;
 		RoF = 8;
 		DpS = 30;
 		RaoF = 20;

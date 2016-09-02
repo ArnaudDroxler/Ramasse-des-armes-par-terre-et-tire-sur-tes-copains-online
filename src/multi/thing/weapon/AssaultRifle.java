@@ -14,7 +14,8 @@ public class AssaultRifle extends Weapon {
 	public AssaultRifle(Vector2D pos) {
 		super(pos);
 		ammo = 30;
-		RoF = 3;
+		maxAmmo = 150;
+		RoF = 4;
 		DpS = 60;
 		RaoF = 40;
 		cpt = 0;

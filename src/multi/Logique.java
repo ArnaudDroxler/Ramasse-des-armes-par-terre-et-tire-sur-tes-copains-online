@@ -200,7 +200,7 @@ public class Logique extends KeyAdapter {
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						} else if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
-							heros.getArme().sumAmmo(10);
+							heros.getArme().sumAmmo(AmmoPackHG.getAmmo());
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						}
@@ -211,7 +211,7 @@ public class Logique extends KeyAdapter {
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						} else if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
-							heros.getArme().sumAmmo(30);
+							heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						}
@@ -222,7 +222,7 @@ public class Logique extends KeyAdapter {
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						} else if (heros.getArme() != null && heros.getArme() instanceof AssaultRifle) {
-							heros.getArme().sumAmmo(10);
+							heros.getArme().sumAmmo(AmmoPackAR.getAmmo());
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						}
@@ -233,7 +233,7 @@ public class Logique extends KeyAdapter {
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						} else if (heros.getArme() != null && heros.getArme() instanceof ShootGun) {
-							heros.getArme().sumAmmo(30);
+							heros.getArme().sumAmmo(AmmoPackSG.getAmmo());
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						}
@@ -244,7 +244,7 @@ public class Logique extends KeyAdapter {
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						} else if (heros.getArme() != null && heros.getArme() instanceof PrecisionRifle) {
-							heros.getArme().sumAmmo(30);
+							heros.getArme().sumAmmo(AmmoPackPR.getAmmo());
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						}
@@ -255,7 +255,7 @@ public class Logique extends KeyAdapter {
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						} else if (heros.getArme() != null && heros.getArme() instanceof Chainsaw) {
-							heros.getArme().sumAmmo(30);
+							heros.getArme().sumAmmo(AmmoPackCS.getAmmo());
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						}
@@ -284,8 +284,7 @@ public class Logique extends KeyAdapter {
 				if (thing instanceof AmmoPack) {
 					if (thing instanceof AmmoPackHG) {
 						if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
-
-							heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
+							heros.getArme().sumAmmo(AmmoPackHG.getAmmo());
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						}
@@ -313,14 +312,14 @@ public class Logique extends KeyAdapter {
 					}
 					if (thing instanceof AmmoPackAR) {
 						if (heros.getArme() != null && heros.getArme() instanceof AssaultRifle) {
-							heros.getArme().sumAmmo(AmmoPackPR.getAmmo());
+							heros.getArme().sumAmmo(AmmoPackAR.getAmmo());
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						}
 					}
 					if (thing instanceof AmmoPackCS) {
 						if (heros.getArme() != null && heros.getArme() instanceof Chainsaw) {
-							heros.getArme().sumAmmo(AmmoPackPR.getAmmo());
+							heros.getArme().sumAmmo(AmmoPackCS.getAmmo());
 							repopObjet(thing.getPosition(), thing);
 							iterator.remove();
 						}

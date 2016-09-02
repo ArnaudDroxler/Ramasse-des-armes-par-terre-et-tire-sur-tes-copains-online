@@ -194,6 +194,7 @@ public class Camera extends Renderer {
 
 			drawWeapon(g2d);
 
+			drawHUD(g2d);
 			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheMur) {
 				// BufferedImage img =
 				// logique.heros.getArme().getSpriteImpactMur();
@@ -341,6 +342,34 @@ public class Camera extends Renderer {
 		}
 	}
 
+	private void drawHUD(Graphics2D g2d) {
+
+		g2d.drawImage(scale(MagasinImage.buffHudLeft, scaleWidth, scaleHeight), null, -w / 2, h / 4);
+		// g2d.drawImage(MagasinImage.buffHudLeft, null, -w/2,h/4);
+		g2d.setColor(new Color(0, 97, 255));
+		g2d.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
+		g2d.drawString("" + logique.heros.getArmure(), -w / 2 + w / 10, h / 4 + h / 9);
+		g2d.setColor(Color.RED);
+		g2d.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
+		g2d.drawString("" + logique.heros.getVie(), -w / 2 + w / 10, h / 4 + h / 5 + h / 35);
+
+		String str;
+		if (logique.heros.getArme() != null) {
+			str = new String(logique.heros.getArme().getAmmo() + "/" + logique.heros.getArme().getMaxAmmo());
+		} else {
+			str = new String("0/0");
+		}
+		// g2d.drawImage(scale(MagasinImage.buffHudRight, scaleWidth,
+		// scaleHeight), null, w/4,h/4);
+		g2d.drawImage(scale(MagasinImage.buffHudRight, scaleWidth, scaleHeight), null, w / 4, h / 4);
+		g2d.setColor(new Color(38, 38, 38));
+		g2d.setFont(new Font("Arial", Font.PLAIN, (int) (25 * scaleHeight)));
+		int strLen = (int) g2d.getFontMetrics().getStringBounds(str, g2d).getWidth();
+
+		g2d.drawString(str, w / 4 + w / 6 - strLen, h / 4 + w / 10 + w / 50);
+
+	}
+
 	private void drawWeapon(Graphics2D g2d) {
 		if (logique.heros.getArme() instanceof PrecisionRifle && FenetreJeu.mouseRightPressed) {
 
@@ -369,12 +398,13 @@ public class Camera extends Renderer {
 	public static BufferedImage scale(BufferedImage bi, double scaleWidth2, double scaleHeight2) {
 		int width = (int) (bi.getWidth() * scaleWidth2);
 		int height = (int) (bi.getHeight() * scaleHeight2);
-		BufferedImage biNew = new BufferedImage(width, height, bi.getType());
+		BufferedImage biNew = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = biNew.createGraphics();
-		graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		// graphics.setRenderingHint(RenderingHints.KEY_RENDERING,
+		// RenderingHints.VALUE_RENDER_QUALITY);
+		// graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+		// RenderingHints.VALUE_ANTIALIAS_ON);
+		// graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 		graphics.drawImage(bi, 0, 0, width, height, null);
 		graphics.dispose();
 		return biNew;
@@ -683,6 +713,9 @@ public class Camera extends Renderer {
 
 	// public static int customHeight = 360;
 	// public static int customWidth = 640;
+
+	// public int customHeight = 288;
+	// public int customWidth = 512;
 
 	public int customHeight = 360;
 	public int customWidth = 640;

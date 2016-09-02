@@ -13,6 +13,9 @@ public abstract class Weapon extends Thing {
 	protected double RoF;
 	protected double RaoF;
 	protected int ammo;
+	protected int maxAmmo;
+	
+
 	protected boolean isFiring;
 	protected boolean impactMur;
 	protected boolean impactEnnemi;
@@ -41,15 +44,20 @@ public abstract class Weapon extends Thing {
 	public int getAmmo() {
 		return ammo;
 	}
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
 
 	public void sumAmmo(int a) {
-		ammo += a;
-		System.out.println("Ammo : " + ammo);
+		System.out.println(a+" " + ammo);
+		if (ammo < maxAmmo) {
+			ammo += a;
+			System.out.println(a+" " + ammo);
+		}
 	}
 
 	public void subAmmo(int a) {
 		ammo -= a;
-		System.out.println("Ammo : " + ammo);
 	}
 
 	public Weapon(Vector2D pos) {

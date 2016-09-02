@@ -13,7 +13,8 @@ public class ShootGun extends Weapon {
 
 	public ShootGun(Vector2D pos) {
 		super(pos);
-		ammo = 15;
+		ammo = 16;
+		maxAmmo = 80;
 		RoF = 1;
 		DpS = 80;
 		RaoF = 8;

@@ -12,7 +12,8 @@ public class HandGun extends Weapon {
 
 	public HandGun(Vector2D pos) {
 		super(pos);
-		ammo = 10;
+		ammo = 12;
+		maxAmmo = 60;
 		RoF = 2;
 		DpS = 50;
 		RaoF = 10;
