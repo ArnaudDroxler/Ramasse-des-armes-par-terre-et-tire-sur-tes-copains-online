@@ -21,6 +21,7 @@ public abstract class LvlMap {
 	private Vector2D goalPosition;
 	private Vector2D keyPosition;
 	private Key key;
+	private int[][] textureTab;
 
 	private ArrayList<Vector2D> listStartPosition;
 
@@ -28,10 +29,13 @@ public abstract class LvlMap {
 
 	public abstract boolean inWall(double newx, double newy);
 
-	public LvlMap() {
+	public LvlMap(int i, int j) {
+		width = i;
+		height = j;
 		listThing = new ArrayList<Thing>();
 		listEnnemie = new ArrayList<Ennemi>();
 		listStartPosition = new ArrayList<Vector2D>();
+		textureTab = new int[width][height];
 	}
 
 	public BufferedImage getMapBackground() {
@@ -97,5 +101,10 @@ public abstract class LvlMap {
 	public ArrayList<Vector2D> getListStartPosition() {
 		return listStartPosition;
 	}
+
+	public int[][] getTextureTab() {
+		return textureTab;
+	}
+
 
 }
