@@ -9,13 +9,15 @@ import multi.tools.raycasting.Vector2D;
 public class JoueurOnline extends Joueur{
 
 	public String pseudo;
+	public int id;
 	
 	public JoueurOnline() {
 	}
 
-	public JoueurOnline(String pseudo) {
+	public JoueurOnline(String pseudo, int id) {
 		super(new Vector2D(),new Vector2D(1,0));
 		this.pseudo=pseudo;
+		this.id = id;
 	}
 
 	public String getPseudo() {

@@ -2,12 +2,15 @@ package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.font.TextAttribute;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.text.AttributedString;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
@@ -191,17 +194,17 @@ public class VueCamera extends Renderer {
 		g2dThings.fill(clearRect);
 
 		// TODO : ajouter les objets aussi dans la liste de choses a afficher
-		for (Thing thing : lc.joueurs.values()) {
+		for (JoueurOnline j : lc.joueurs.values()) {
 			
-			Vector2D deltaPos = thing.getPosition().sub(pos);
+			Vector2D deltaPos = j.getPosition().sub(pos);
 
 			// On veut les trier dans l'ordre décroissant, on les ajoute donc
 			// dans un TreeMap selon
 			// leur distance à la caméra. On veut que les plus loin soit les
 			// derniers, d'où le -length()
 			
-			if(deltaPos.length()>1)
-				chosesAAfficher.put(-deltaPos.length(), thing);
+			if(j.id != lc.joueur.id && deltaPos.length()>0.75)
+				chosesAAfficher.put(-deltaPos.length(), j);
 		}
 		
 		Set<Double> keys = chosesAAfficher.keySet();
