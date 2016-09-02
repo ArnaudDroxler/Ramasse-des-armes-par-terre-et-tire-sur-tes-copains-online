@@ -349,7 +349,7 @@ public class Camera extends Renderer {
 		// g2d.drawImage(scale(MagasinImage.buffHudRight, scaleWidth,
 		// scaleHeight), null, w/4,h/4);
 		g2d.drawImage(scale(MagasinImage.buffHud[1], scaleWidth, scaleHeight), null, w / 4, h / 4);
-		g2d.setColor(new Color(38, 38, 38));
+		g2d.setColor(new Color(175, 175, 175));
 		g2d.setFont(new Font("Arial", Font.PLAIN, (int) (25 * scaleHeight)));
 		int strLen = (int) g2d.getFontMetrics().getStringBounds(str, g2d).getWidth();
 
@@ -696,14 +696,14 @@ public class Camera extends Renderer {
 	// public int customHeight = 288;
 	// public int customWidth = 512;
 
-	public int customHeight = 360;
-	public int customWidth = 640;
+	//public int customHeight = 360;
+	//public int customWidth = 640;
 
-	// public int customHeight = 720;
-	// public int customWidth = 1280;
+	//public int customHeight = 720;
+	//public int customWidth = 1280;
 
-	// public int customHeight = 1080;
-	// public int customWidth = 1920;
+	public int customHeight = 1080;
+	public int customWidth = 1920;
 
 	public final boolean customSize = true;
 
