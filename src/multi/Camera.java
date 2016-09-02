@@ -28,9 +28,11 @@ import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
 import multi.thing.weapon.PrecisionRifle;
+import multi.thing.weapon.ShootGun;
 import multi.thing.weapon.Chainsaw;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
+import sun.java2d.HeadlessGraphicsEnvironment;
 
 public class Camera extends Renderer {
 
@@ -193,40 +195,103 @@ public class Camera extends Renderer {
 			drawWeapon(g2d);
 			
 			drawHUD(g2d);
-			/*
-			 * if (logique.isFiring && !(logique.heros.getArme() instanceof
-			 * Chainsaw) && logique.toucheMur) { // BufferedImage img = //
-			 * scale(logique.heros.getArme().getSpriteImpactMur());
-			 * BufferedImage img = logique.heros.getArme().getSpriteImpactMur();
-			 * 
-			 * double longueurligne =
-			 * Math.sqrt(Math.pow((logique.fireLine.getX2() -
-			 * logique.fireLine.getX1()), 2) +
-			 * Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()),
-			 * 2));
-			 * 
-			 * if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
-			 * g2d.drawImage(img, null, w / 2, h / 2); // g2d.drawImage(img,
-			 * null, w / 2, (int) (h / 2 - // longueurligne)); }
-			 * 
-			 * } if (logique.isFiring && !(logique.heros.getArme() instanceof
-			 * Chainsaw) && logique.toucheEnnemi) { // BufferedImage img = //
-			 * scale(logique.heros.getArme().getSpriteImpactEnnemi());
-			 * BufferedImage img =
-			 * logique.heros.getArme().getSpriteImpactEnnemi();
-			 * 
-			 * double longueurligne =
-			 * Math.sqrt(Math.pow((logique.fireLine.getX2() -
-			 * logique.fireLine.getX1()), 2) +
-			 * Math.pow((logique.fireLine.getY2() - logique.fireLine.getY1()),
-			 * 2)); if (logique.heros.getArme().computeDamage(longueurligne) >
-			 * 0) { g2d.drawImage(img, null, w / 2, h / 2); //
-			 * g2d.drawImage(img, null, w / 2, (int) (h / 2 - //
-			 * longueurligne)); }
-			 * 
-			 * }
-			 */
+			// NON FONCTIONNEL
+			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheMur) {
+				BufferedImage img = scale(logique.heros.getArme().getSpriteImpactMur(), scaleWidth, scaleHeight);
+				// BufferedImage img =
+				// logique.heros.getArme().getSpriteImpactMur();
 
+				for (int i = 0; i < logique.fireLineList.size(); i++) {
+					double longueurligne = Math.sqrt(Math
+							.pow((logique.fireLineList.get(i).getX2() - logique.fireLineList.get(i).getX1()), 2)
+							+ Math.pow((logique.fireLineList.get(i).getY2() - logique.fireLineList.get(i).getY1()), 2));
+					if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
+
+						if (logique.heros.getArme() instanceof ShootGun) {
+
+							// Alpha = 10°
+							double alpha = Math.PI / 18;
+
+							for (int j = -2; j < 3; j++) {
+								System.out.println(longueurligne);
+								// g2d.drawImage(img, null, 0, 0);
+								g2d.drawImage(img, null, (int) (w / 2 + Math.sin(alpha * j) * h / 2) - w / 2,
+										(int) (h - Math.cos(alpha * j) * h / 2) - h / 2);
+							}
+
+						} else {
+							System.out.println(longueurligne);
+							g2d.drawImage(img, null, 0, 0);
+						}
+					}
+				}
+			}
+
+			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw) && logique.toucheEnnemi) {
+				BufferedImage img = scale(logique.heros.getArme().getSpriteImpactEnnemi(), scaleWidth, scaleHeight);
+				// BufferedImage img =
+				// logique.heros.getArme().getSpriteImpactMur();
+
+				for (int i = 0; i < logique.fireLineList.size(); i++) {
+					double longueurligne = Math.sqrt(Math
+							.pow((logique.fireLineList.get(i).getX2() - logique.fireLineList.get(i).getX1()), 2)
+							+ Math.pow((logique.fireLineList.get(i).getY2() - logique.fireLineList.get(i).getY1()), 2));
+					if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
+
+						if (logique.heros.getArme() instanceof ShootGun) {
+
+							// Alpha = 10°
+							double alpha = Math.PI / 18;
+
+							for (int j = -2; j < 3; j++) {
+								System.out.println(longueurligne);
+								// g2d.drawImage(img, null, 0, 0);
+								g2d.drawImage(img, null, (int) (w / 2 + Math.sin(alpha * j) * h / 2) - w / 2,
+										(int) (h - Math.cos(alpha * j) * h / 2) - h / 2);
+							}
+
+						} else {
+							System.out.println(longueurligne);
+							g2d.drawImage(img, null, 0, 0);
+						}
+					}
+				}
+			}
+
+			if (logique.afficheScore) {
+
+				String strScore = new String("Joueur");
+
+				Font fontTitre = new Font("Helvetica", Font.BOLD, 40);
+				int valTabX = w / 5;
+				int valTabY = -h / 3;
+				g2d.setFont(fontTitre);
+				g2d.setColor(new Color(1f, 0f, 0f, .5f));
+				int stringHei = (int) g2d.getFontMetrics().getStringBounds(strScore, g2d).getHeight();
+				g2d.drawString(strScore, valTabX - w / 2, valTabY);
+				strScore = "Kill";
+				g2d.drawString(strScore, 3 * valTabX - w / 2, valTabY);
+				strScore = "Death";
+				g2d.drawString(strScore, 4 * valTabX - w / 2, valTabY);
+
+				Font fontAff = new Font("Helvetica", Font.BOLD, 30);
+				g2d.setFont(fontAff);
+				// Trier la liste de joueur en fonction du score
+				// int tailleTab = joueurOnline.size();
+				int tailleTab = 3;
+
+				// Pour chaque élément de la liste:
+				for (int i = 0; i < tailleTab; i++) {
+					// On récupère le pseudo
+					strScore = logique.heros.getPseudo();
+					g2d.drawString(strScore, valTabX - w / 2, stringHei * (i + 1) + valTabY);
+					strScore = logique.heros.getNbKill() + "";
+					g2d.drawString(strScore, 3 * valTabX - w / 2, stringHei * (i + 1) + valTabY);
+					strScore = logique.heros.getNbDeath() + "";
+					g2d.drawString(strScore, 4 * valTabX - w / 2, stringHei * (i + 1) + valTabY);
+				}
+
+			}
 			if (logique.heros.getMort()) {
 				String strMort = new String("Vous êtes mort!");
 				Font font = new Font("Helvetica", Font.BOLD, 60);
@@ -261,9 +326,20 @@ public class Camera extends Renderer {
 				Rectangle2D rectangle = new Rectangle2D.Double(-w / 2, -h / 2, w, h);
 				g2d.setPaint(gradient);
 				g2d.fill(rectangle);
-
 			}
+		}
 
+	}
+
+	private void drawString(Graphics g, String text, int x, int y) {
+		for (String line : text.split("\n")) {
+			drawtabString(g, line, x, y += g.getFontMetrics().getHeight());
+		}
+	}
+
+	private void drawtabString(Graphics g, String text, int x, int y) {
+		for (String line : text.split("\t")) {
+			g.drawString(line, x += g.getFontMetrics().getHeight(), y);
 		}
 	}
 
@@ -636,8 +712,11 @@ public class Camera extends Renderer {
 	// Tools
 	private int h, w;
 
-	public static final int InitialcustomHeight = 288;
-	public static final int InitialcustomWidth = 512;
+	public static int InitialcustomHeight = 288;
+	public static int InitialcustomWidth = 512;
+
+	// public static int customHeight = 360;
+	// public static int customWidth = 640;
 
 	//public int customHeight = 288;
 	//public int customWidth = 512;

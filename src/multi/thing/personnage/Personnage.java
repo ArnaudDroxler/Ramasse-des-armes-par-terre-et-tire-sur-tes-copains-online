@@ -11,14 +11,21 @@ public abstract class Personnage extends Thing {
 	protected Weapon arme;
 	protected boolean estMort;
 	protected boolean prendDegats;
+	protected int nbKill;
+	protected int nbDeath;
+	protected String pseudo;
 
 	public Personnage(Vector2D pos, Vector2D dir) {
 		super(pos, dir);
 		estMort = false;
 		prendDegats = false;
+		nbKill = 0;
+		nbDeath = 0;
+		pseudo = "Player 1";
 	}
-	
-	public Personnage(){}
+
+	public Personnage() {
+	}
 
 	public void perdVie(int pv) {
 		prendDegats = true;
@@ -36,9 +43,9 @@ public abstract class Personnage extends Thing {
 		}
 		// Si la vie passe en dessous de 0, on meurt
 		if (vie <= 0) {
-			// TODO Mort
 			estMort = true;
-			System.out.println("Mort!!!");
+			setNbDeath();
+
 		}
 	}
 
@@ -57,9 +64,30 @@ public abstract class Personnage extends Thing {
 	public boolean prendDegats() {
 		return prendDegats;
 	}
-	
-	public void resetPrendDegats(){
+
+	public void resetPrendDegats() {
 		prendDegats = false;
+	}
+
+	public int getNbKill() {
+		return nbKill;
+	}
+
+	public int getNbDeath() {
+		return nbDeath;
+	}
+
+	public void setNbKill() {
+		nbKill += 1;
+
+	}
+
+	public void setNbDeath() {
+		nbDeath += 1;
+	}
+
+	public String getPseudo() {
+		return pseudo;
 	}
 
 }
