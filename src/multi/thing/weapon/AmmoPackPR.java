@@ -22,7 +22,7 @@ public class AmmoPackPR extends AmmoPack {
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffAmmoPackHG;
+		return MagasinImage.buffPrecisionRifle[1];
 	}
 
 }

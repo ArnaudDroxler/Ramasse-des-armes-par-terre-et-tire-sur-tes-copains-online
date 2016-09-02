@@ -14,7 +14,7 @@ public class Medipack extends Thing {
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffMedipack;
+		return MagasinImage.buffMedipack[0];
 	}
 
 }

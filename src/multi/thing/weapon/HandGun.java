@@ -17,7 +17,7 @@ public class HandGun extends Weapon {
 		RoF = 2;
 		DpS = 50;
 		RaoF = 10;
-		cpt = 0;
+		cpt = 2;
 	}
 
 	@Override
@@ -42,10 +42,10 @@ public class HandGun extends Weapon {
 			public void run() {
 				try {
 
-					for (cpt = 1; cpt < 4; cpt++) {
+					for (cpt = 2; cpt < 6; cpt++) {
 						Thread.sleep(100);
 					}
-					cpt = 0;
+					cpt = 2;
 
 				} catch (InterruptedException e) {
 
@@ -59,12 +59,12 @@ public class HandGun extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return MagasinImage.buffShootgunHUD[cpt];
+		return MagasinImage.buffHandGun[cpt];
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffHandGun;
+		return MagasinImage.buffHandGun[0];
 	}
 
 }

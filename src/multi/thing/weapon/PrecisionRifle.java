@@ -18,7 +18,7 @@ public class PrecisionRifle extends Weapon {
 		RoF = 0.5;
 		DpS = 100;
 		RaoF = 60;
-		cpt = 0;
+		cpt = 2;
 	}
 
 	@Override
@@ -43,10 +43,10 @@ public class PrecisionRifle extends Weapon {
 			public void run() {
 				try {
 
-					for (cpt = 1; cpt < 6; cpt++) {
+					for (cpt = 2; cpt < 8; cpt++) {
 						Thread.sleep(120);
 					}
-					cpt = 0;
+					cpt = 2;
 
 				} catch (InterruptedException e) {
 
@@ -60,12 +60,12 @@ public class PrecisionRifle extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return MagasinImage.buffPrecisionRifleHUD[cpt];
+		return MagasinImage.buffPrecisionRifle[cpt];
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffPrecisionRifle;
+		return MagasinImage.buffPrecisionRifle[0];
 	}
 
 }

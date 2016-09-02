@@ -22,7 +22,7 @@ public class AmmoPackSmG extends AmmoPack {
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffAmmoPackHG;
+		return MagasinImage.buffSubMachinGun[1];
 	}
 
 }

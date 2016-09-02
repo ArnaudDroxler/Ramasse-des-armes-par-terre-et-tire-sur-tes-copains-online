@@ -20,12 +20,6 @@ public abstract class Weapon extends Thing {
 	protected boolean impactMur;
 	protected boolean impactEnnemi;
 
-	public final BufferedImage[] spritesImpactEnnemi = { MagasinImage.buffImpactEnnemi0, MagasinImage.buffImpactEnnemi1,
-			MagasinImage.buffImpactEnnemi2, MagasinImage.buffImpactEnnemi3 };
-
-	public final BufferedImage[] spritesImpactMur = { MagasinImage.buffImpactMur0, MagasinImage.buffImpactMur1,
-			MagasinImage.buffImpactMur2, MagasinImage.buffImpactMur3, MagasinImage.buffImpactMur4 };
-
 	private int cptennemi;
 	private int cptmur;
 
@@ -118,7 +112,7 @@ public abstract class Weapon extends Thing {
 			impactEnnemi = false;
 			threadImpactEnnemi.start();
 		}
-		return spritesImpactEnnemi[cptennemi];
+		return MagasinImage.buffImpactEnnemi[cptennemi];
 	}
 
 	public BufferedImage getSpriteImpactMur() {
@@ -148,7 +142,7 @@ public abstract class Weapon extends Thing {
 			threadImpactMur.start();
 		}
 
-		return spritesImpactMur[cptmur];
+		return  MagasinImage.buffImpactMur[cptmur];
 	}
 
 }

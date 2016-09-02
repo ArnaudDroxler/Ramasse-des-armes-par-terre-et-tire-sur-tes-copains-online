@@ -18,7 +18,7 @@ public class SubmachineGun extends Weapon {
 		RoF = 8;
 		DpS = 30;
 		RaoF = 20;
-		cpt = 0;
+		cpt = 2;
 	}
 
 	@Override
@@ -43,10 +43,10 @@ public class SubmachineGun extends Weapon {
 			public void run() {
 				try {
 
-					for (cpt = 1; cpt < 2; cpt++) {
+					for (cpt = 2; cpt < 4; cpt++) {
 						Thread.sleep(100);
 					}
-					cpt = 0;
+					cpt = 2;
 					
 				} catch (InterruptedException e) {
 
@@ -60,12 +60,12 @@ public class SubmachineGun extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return MagasinImage.buffSubmachingunHUD[cpt];
+		return MagasinImage.buffSubMachinGun[cpt];
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffSubMachinGun;
+		return MagasinImage.buffSubMachinGun[0];
 	}
 
 }

@@ -331,7 +331,7 @@ public class Camera extends Renderer {
 
 	private void drawHUD(Graphics2D g2d) {
 
-		g2d.drawImage(scale(MagasinImage.buffHudLeft, scaleWidth, scaleHeight), null, -w / 2, h / 4);
+		g2d.drawImage(scale(MagasinImage.buffHud[0], scaleWidth, scaleHeight), null, -w / 2, h / 4);
 		// g2d.drawImage(MagasinImage.buffHudLeft, null, -w/2,h/4);
 		g2d.setColor(new Color(0, 97, 255));
 		g2d.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
@@ -348,7 +348,7 @@ public class Camera extends Renderer {
 		}
 		// g2d.drawImage(scale(MagasinImage.buffHudRight, scaleWidth,
 		// scaleHeight), null, w/4,h/4);
-		g2d.drawImage(scale(MagasinImage.buffHudRight, scaleWidth, scaleHeight), null, w / 4, h / 4);
+		g2d.drawImage(scale(MagasinImage.buffHud[1], scaleWidth, scaleHeight), null, w / 4, h / 4);
 		g2d.setColor(new Color(38, 38, 38));
 		g2d.setFont(new Font("Arial", Font.PLAIN, (int) (25 * scaleHeight)));
 		int strLen = (int) g2d.getFontMetrics().getStringBounds(str, g2d).getWidth();

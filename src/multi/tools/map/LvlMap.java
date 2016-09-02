@@ -3,7 +3,6 @@ package multi.tools.map;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import multi.thing.Key;
 import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
@@ -20,7 +19,6 @@ public abstract class LvlMap {
 	protected Vector2D startDirection;
 	private Vector2D goalPosition;
 	private Vector2D keyPosition;
-	private Key key;
 	private int[][] textureTab;
 
 	private ArrayList<Vector2D> listStartPosition;
@@ -84,14 +82,6 @@ public abstract class LvlMap {
 
 	public Vector2D getKeyPosition() {
 		return keyPosition;
-	}
-
-	public void setKey(Key cle) {
-		key = cle;
-	}
-
-	public Key getKey() {
-		return key;
 	}
 
 	public void setListStartPosition(ArrayList<Vector2D> listPos) {

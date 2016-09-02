@@ -22,7 +22,7 @@ public class AmmoPackCS extends AmmoPack {
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffAmmoPackCS;
+		return MagasinImage.buffChainsaw[1];
 	}
 
 }
