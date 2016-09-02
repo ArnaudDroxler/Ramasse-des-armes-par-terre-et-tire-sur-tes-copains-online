@@ -26,8 +26,8 @@ public class MagasinImage {
 	public static final BufferedImage buffTextMur0 = ImageLoader.loadBufferedImage("texturemur0.png");
 	public static final BufferedImage buffTextMur1 = ImageLoader.loadBufferedImage("texturemur1.png");
 	public static final BufferedImage buffTextMur2 = ImageLoader.loadBufferedImage("texturemur2.png");
-	public static final BufferedImage buffTextMur3 = ImageLoader.loadBufferedImage("texturemur3.png");
-	public static final BufferedImage buffTextMur4 = ImageLoader.loadBufferedImage("texturemur4.png");
+	public static final BufferedImage buffTextMur3 = ImageLoader.loadBufferedImage("texturemur2.png");
+	public static final BufferedImage buffTextMur4 = ImageLoader.loadBufferedImage("jolie-texture.png");
 	public static final BufferedImage buffTextMur5 = ImageLoader.loadBufferedImage("papier_peint_pour_enfant.png");
 	
 	

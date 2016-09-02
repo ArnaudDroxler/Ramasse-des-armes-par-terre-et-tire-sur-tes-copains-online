@@ -570,15 +570,21 @@ public class Camera extends Renderer {
 
 		        int floorTexX = (int) (currentFloorX * texWidth) % texWidth;
 		        int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
+		        
+		        int checkerBoardPattern = (int)((currentFloorX) + (int)(currentFloorY)) % 2;
+		        int floorTexture;
+		        if(checkerBoardPattern == 0) floorTexture = 3;
+		        else floorTexture = 4;
 
+		 
 		        //floor
 		     
-		        Color c = new Color(MagasinImage.buffTextMur[0].getRGB(floorTexX, floorTexY)); 
+		        Color c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexX, floorTexY)); 
 		        c = c.darker();
 				 buff.setRGB(x, y, c.getRGB());
 				 
 				 
-				c = new Color(MagasinImage.buffTextMur[0].getRGB(floorTexY, floorTexX));
+				c = new Color(MagasinImage.buffTextMur[floorTexture-2].getRGB(floorTexY, floorTexX));
 			    buff.setRGB(x, h-y, c.getRGB());
 		        //ceiling (symmetrical!)
 		        //buffer[h - y][x] = texture[6][texWidth * floorTexY + floorTexX];
