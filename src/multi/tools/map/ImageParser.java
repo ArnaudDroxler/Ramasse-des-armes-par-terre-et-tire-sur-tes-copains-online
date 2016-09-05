@@ -23,11 +23,11 @@ import multi.tools.raycasting.Vector2D;
 
 public class ImageParser {
 
-	public static LvlMap getMap(String imageName) {
+	public static LvlMap getMap(String imagePath) {
 
 		try {
-			return getMap(ImageIO.read(new File(imageName + ".png")),
-					ImageIO.read(new File(imageName + "texture.png")));
+			return getMap(ImageIO.read(new File(imagePath + ".png")),
+					ImageIO.read(new File(imagePath + "texture.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

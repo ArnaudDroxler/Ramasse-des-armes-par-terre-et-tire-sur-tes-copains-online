@@ -7,13 +7,13 @@ import tests.kryonet.implem.logiqueCoteClient.messages.PlayerUpdateMessage;
 public class Partie{
 
 	private HashMap<Integer,JoueurOnline> joueurs;
-	private String nomMap;
 	private long tempsSecondes;
 	
-	public Partie(){
+	public Partie(String nomMap){
 		joueurs = new HashMap<Integer,JoueurOnline>();
-		nomMap="StandDeTire.png";
 	}
+	
+	public Partie(){}
 
 	public void updateJoueur(int id, PlayerUpdateMessage cum) {
 		joueurs.put(id, cum.getJoueur());
@@ -30,18 +30,12 @@ public class Partie{
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("map : ");
-		sb.append(nomMap+"\n");
 		sb.append("Temps : " + tempsSecondes/60 + " min " + tempsSecondes%60 + " s");
 		sb.append("\nJoueurs :");
 		for (JoueurOnline j : joueurs.values()) {
 			sb.append("\n\t" + j);
 		}
 		return sb.toString();
-	}
-	
-	public String getNomMap(){
-		return nomMap;
 	}
 
 	public HashMap<Integer,JoueurOnline> getJoueurs() {

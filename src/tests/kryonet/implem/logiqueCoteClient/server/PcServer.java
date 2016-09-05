@@ -30,7 +30,9 @@ public class PcServer {
 			// e.printStackTrace();
 		}
 
-		Partie partie = new Partie();
+		String mapPath = "sprite/map/maison";
+		Partie partie = new Partie(mapPath);
+		LogiqueServer ls = new LogiqueServer(mapPath);
 		if(modeGraphique){
 			new JFramePartie(partie);
 		}
@@ -46,7 +48,8 @@ public class PcServer {
 					System.out.println("nouveau joueur : " + ccm.getPseudo());
 					JoueurOnline nouveaujoueur = new JoueurOnline(ccm.getPseudo(), connection.getID());
 					partie.addJoueur(connection.getID(), nouveaujoueur);
-					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID());
+					
+					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID(), mapPath);
 					connection.sendTCP(acm);
 				} else if (object instanceof PlayerUpdateMessage) {
 					PlayerUpdateMessage pum = (PlayerUpdateMessage) object;

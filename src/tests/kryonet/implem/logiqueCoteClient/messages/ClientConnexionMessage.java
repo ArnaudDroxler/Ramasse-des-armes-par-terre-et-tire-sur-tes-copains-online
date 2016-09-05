@@ -4,9 +4,7 @@ public class ClientConnexionMessage {
 
 	private String pseudo;
 
-	public ClientConnexionMessage(){
-		
-	}
+	public ClientConnexionMessage(){}
 	
 	public ClientConnexionMessage(String pseudo){
 		this.pseudo=pseudo;
