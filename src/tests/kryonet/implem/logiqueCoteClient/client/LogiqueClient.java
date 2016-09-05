@@ -117,7 +117,8 @@ public class LogiqueClient/* extends KeyAdapter */ {
 				if (thing instanceof Weapon) {
 					String thingType = thing.getThingType();
 					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-						joueur.setArme((Weapon) thing);
+						// alors ça ça fait tout planter je sais pas pourquoi
+						//joueur.setArme((Weapon) thing);
 						hide(thing);
 					} else if (joueur.getArme() != null && joueur.getArme().getThingType().equals(thingType)) {
 						String str = thingType.substring(19, thingType.length());
@@ -135,17 +136,6 @@ public class LogiqueClient/* extends KeyAdapter */ {
 				}
 			}
 		}
-	}
-
-	private void hide(Thing thing) {
-		thing.hideForAWhile();
-		pcClient.sendPickUpMessage(objets.indexOf(thing));
-	}
-
-	public void updatePartie(Partie partie) {
-		joueurs = partie.getJoueurs();
-		// mauvaise solution car très peu performante :
-		// joueur = ennemis.remove(joueurId);
 	}
 
 	private void moveAlongWalls() {
@@ -189,6 +179,24 @@ public class LogiqueClient/* extends KeyAdapter */ {
 		}
 	}
 
+	// envoie au serveur l'info que j'ai ramassé qqch
+	private void hide(Thing thing) {
+		thing.hideForAWhile();
+		pcClient.sendPickUpMessage(objets.indexOf(thing));
+	}
+
+	// methode appelée par le serveur parce que qqn a ramassé qqch et il faut le cacher
+	public void hideThing(int indexOfThing) {
+		objets.get(indexOfThing).hideForAWhile();
+	}
+
+
+	public void updatePartie(Partie partie) {
+		joueurs = partie.getJoueurs();
+		// mauvaise solution car très peu performante :
+		// joueur = ennemis.remove(joueurId);
+	}
+
 	public void mouseLeftPressed() {
 		// TODO Auto-generated method stub
 
@@ -208,10 +216,4 @@ public class LogiqueClient/* extends KeyAdapter */ {
 		// mieux
 		return (point.sub(joueur.getPosition()).length() < r);
 	}
-
-	// methode appelée par le serveur parce que qqn a ramassé qqch et il faut le cacher
-	public void hideThing(int indexOfThing) {
-		objets.get(indexOfThing).hideForAWhile();
-	}
-
 }
