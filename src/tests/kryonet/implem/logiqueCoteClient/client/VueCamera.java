@@ -2,8 +2,10 @@ package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.font.TextAttribute;
@@ -23,9 +25,9 @@ import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;
 public class VueCamera extends Renderer {
 
 	private Vector2D pos, dir, plane;
-	private int h, w;
-	public static int customW = 1280;
-	public static int customH = 720;
+	private int frameH, frameW, h, w;
+	public static int customW = 640;
+	public static int customH = 360;
 	public static int InitialcustomHeight = 288;
 	public static int InitialcustomWidth = 512;
 	private final double scaleWidth = (double) customW / InitialcustomWidth;
@@ -40,11 +42,15 @@ public class VueCamera extends Renderer {
 	protected Graphics2D g2dThings;
 	private Graphics2D g2dMurs;
 	private BufferedImage buffImgMurs;
+	private Graphics2D g2dHUD;
+	private BufferedImage buffImgHUD;
 	private Graphics2D g2d;
 	private boolean readyToDraw;
 	private BufferedImage currentSprite;
 	
 	private TreeMap<Double, Thing> chosesAAfficher;
+	
+
 
 	public VueCamera(LogiqueClient _logique) {
 		super(_logique);
@@ -77,6 +83,7 @@ public class VueCamera extends Renderer {
 
 		drawMurs();
 		drawThings();
+		drawHUD();
 	}
 
 	private void control() {
@@ -92,6 +99,9 @@ public class VueCamera extends Renderer {
 
 	private void init() {
 		
+		frameH = getHeight();
+		frameW = getWidth();
+		
 		h = customH;
 		w = customW;
 		
@@ -103,6 +113,9 @@ public class VueCamera extends Renderer {
 
 		buffImgThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dThings = buffImgThings.createGraphics();
+		
+		buffImgHUD = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		g2dHUD = buffImgHUD.createGraphics();
 		
 		readyToDraw=true;
 	}
@@ -116,6 +129,36 @@ public class VueCamera extends Renderer {
 		Vector2D vec = direction.rotate(Math.PI / 2.0);
 		plane.setdX(vec.getdX());
 		plane.setdY(vec.getdY());
+	}
+	
+	private void drawHUD() {
+		g2dHUD.translate(w / 2, h / 2);
+		g2dHUD.drawImage(scale(MagasinImage.buffHud[0], scaleWidth, scaleHeight), null, -w / 2, h / 4);
+		g2dHUD.setColor(new Color(0, 97, 255));
+		g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
+		g2dHUD.drawString("" + lc.joueur.getArmure(), -w / 2 + w / 10, h / 4 + h / 9);
+		g2dHUD.setColor(Color.RED);
+		g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
+		g2dHUD.drawString("" + lc.joueur.getVie(), -w / 2 + w / 10, h / 4 + h / 5 + h / 35);
+
+		String str;
+		if (lc.joueur.getArme() != null) {
+			str = new String(lc.joueur.getArme().getAmmo() + "/" + lc.joueur.getArme().getMaxAmmo());
+		} else {
+			str = new String("0/0");
+		}
+	
+		g2dHUD.drawImage(scale(MagasinImage.buffHud[1], scaleWidth, scaleHeight), null, w / 4, h / 4);
+		g2dHUD.setColor(new Color(175, 175, 175));
+		g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (25 * scaleHeight)));
+		int strLen = (int) g2dHUD.getFontMetrics().getStringBounds(str, g2dHUD).getWidth();
+
+		g2dHUD.drawString(str, w / 4 + w / 6 - strLen, h / 4 + w / 10 + w / 50);
+
+		g2dHUD.translate(-w / 2, -h / 2);
+		
+		g2d.drawImage(buffImgHUD,0,0,frameW,frameH,null);
+		
 	}
 	
 	private void drawMurs() {
@@ -269,7 +312,7 @@ public class VueCamera extends Renderer {
 			}
 		}
 		
-		g2d.drawImage(buffImgMurs,0,0,w,h,null);
+		g2d.drawImage(buffImgMurs,0,0,frameW,frameH,null);
 		
 	}
 	
@@ -373,7 +416,19 @@ public class VueCamera extends Renderer {
 			}
 		}
 		chosesAAfficher.clear();
-		g2d.drawImage(buffImgThings,0,0,w,h,null);		
+		g2d.drawImage(buffImgThings,0,0,frameW,frameH,null);		
 	}
-
+	
+	public static BufferedImage scale(BufferedImage bi, double scaleWidth2, double scaleHeight2) {
+		int width = (int) (bi.getWidth() * scaleWidth2);
+		int height = (int) (bi.getHeight() * scaleHeight2);
+		BufferedImage biNew = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = biNew.createGraphics();
+		graphics.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		graphics.drawImage(bi, 0, 0, width, height, null);
+		graphics.dispose();
+		return biNew;
+	}
 }
