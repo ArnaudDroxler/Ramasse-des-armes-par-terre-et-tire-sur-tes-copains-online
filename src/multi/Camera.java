@@ -181,7 +181,7 @@ public class Camera extends Renderer {
 				e.printStackTrace();
 			}
 
-			//renderThings();
+			renderThings();
 
 			g2d.drawImage(bufferThings, null, -w / 2, -h / 2);
 
@@ -713,14 +713,14 @@ public class Camera extends Renderer {
 	public static int InitialcustomHeight = 288;
 	public static int InitialcustomWidth = 512;
 
-	// public int customHeight = 288;
-	// public int customWidth = 512;
+	 public int customHeight = 288;
+	 public int customWidth = 512;
 
 	//public int customHeight = 360;
 	//public int customWidth = 640;
 
-	public int customHeight = 720;
-	public int customWidth = 1280;
+//	public int customHeight = 720;
+//	public int customWidth = 1280;
 
 
 	//public int customHeight = 1080;

@@ -5,10 +5,8 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
 
 import java.awt.geom.Rectangle2D;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -19,15 +17,9 @@ import multi.thing.Medipack;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
-import multi.thing.weapon.AssaultRifle;
-import multi.thing.weapon.Chainsaw;
 import multi.thing.weapon.AmmoPack;
-import multi.thing.weapon.HandGun;
-import multi.thing.weapon.PrecisionRifle;
 import multi.thing.weapon.ShootGun;
-import multi.thing.weapon.SubmachineGun;
 import multi.thing.weapon.Weapon;
-import multi.tools.GeometricTools;
 import multi.tools.map.ImageParser;
 import multi.tools.map.LvlMap;
 import multi.tools.raycasting.Vector2D;
@@ -209,7 +201,8 @@ public class Logique extends KeyAdapter {
 					String thingType = thing.getThingType();
 					Class<?> cls = Class.forName(thingType);
 					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-						heros.setArme((Weapon) cls.getConstructor(Vector2D.class).newInstance(heros.getPosition()));
+						//heros.setArme((Weapon) cls.getConstructor(Vector2D.class).newInstance(heros.getPosition()));
+						heros.setArme((Weapon)thing);
 						repopObjet(thing.getPosition(), thing.getThingType());
 						iterator.remove();
 					} else if (heros.getArme() != null && heros.getArme().getThingType().equals(thingType)) {
