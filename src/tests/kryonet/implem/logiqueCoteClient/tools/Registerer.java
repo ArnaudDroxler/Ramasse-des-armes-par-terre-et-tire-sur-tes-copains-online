@@ -41,6 +41,7 @@ public class Registerer {
 
 		kryo.register(HashMap.class);
 
+		// Armes (seulement parce que l'arme est un attribut de la classe Personnage)
 		kryo.register(Weapon.class);
 		kryo.register(HandGun.class);
 		kryo.register(AssaultRifle.class);

@@ -332,13 +332,14 @@ public class VueCamera extends Renderer {
 			// leur distance à la caméra. On veut que les plus loin soit les
 			// derniers, d'où le -length()
 			
-			if(j.id != lc.joueur.id && deltaPos.length()>0.75)
+			if(j.id != lc.joueur.id && deltaPos.length()>0.75 && !j.getMort())
 				chosesAAfficher.put(-deltaPos.length(), j);
 		}
 		// pareil avec les things
 		for(Thing o : lc.objets){
 			deltaPos = o.getPosition().sub(pos);
-			chosesAAfficher.put(-deltaPos.length(), o);
+			if(o.exists())
+				chosesAAfficher.put(-deltaPos.length(), o);
 		}
 		
 		Set<Double> keys = chosesAAfficher.keySet();
