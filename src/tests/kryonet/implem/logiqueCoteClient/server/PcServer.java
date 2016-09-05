@@ -10,6 +10,7 @@ import com.esotericsoftware.kryonet.Server;
 
 import tests.kryonet.implem.logiqueCoteClient.messages.AcceptClientMessage;
 import tests.kryonet.implem.logiqueCoteClient.messages.ClientConnexionMessage;
+import tests.kryonet.implem.logiqueCoteClient.messages.PickUpMessage;
 import tests.kryonet.implem.logiqueCoteClient.messages.PlayerUpdateMessage;
 import tests.kryonet.implem.logiqueCoteClient.tools.Registerer;
 
@@ -56,6 +57,8 @@ public class PcServer {
 					PlayerUpdateMessage pum = (PlayerUpdateMessage) object;
 					partie.updateJoueur(connection.getID(), pum);
 					connection.sendUDP(partie);
+				} else if(object instanceof PickUpMessage){
+					server.sendToAllExceptUDP(connection.getID(), (PickUpMessage)object);
 				}
 			}
 			public void disconnected(Connection connection) {

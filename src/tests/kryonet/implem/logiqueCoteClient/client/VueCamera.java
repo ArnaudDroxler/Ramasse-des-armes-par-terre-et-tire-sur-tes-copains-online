@@ -8,16 +8,13 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.awt.font.TextAttribute;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.text.AttributedString;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 
 import multi.thing.Thing;
-import multi.thing.personnage.Ennemi;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;

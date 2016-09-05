@@ -18,6 +18,7 @@ import multi.thing.weapon.Weapon;
 import multi.tools.raycasting.Vector2D;
 import tests.kryonet.implem.logiqueCoteClient.messages.AcceptClientMessage;
 import tests.kryonet.implem.logiqueCoteClient.messages.ClientConnexionMessage;
+import tests.kryonet.implem.logiqueCoteClient.messages.PickUpMessage;
 import tests.kryonet.implem.logiqueCoteClient.messages.PlayerUpdateMessage;
 import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;
 import tests.kryonet.implem.logiqueCoteClient.server.Partie;
@@ -30,6 +31,7 @@ public class Registerer {
 		kryo.register(ClientConnexionMessage.class);
 		kryo.register(PlayerUpdateMessage.class);
 		kryo.register(AcceptClientMessage.class);
+		kryo.register(PickUpMessage.class);
 		kryo.register(Partie.class);
 		
 		// Joueur

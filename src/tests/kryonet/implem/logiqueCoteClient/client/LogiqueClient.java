@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import com.esotericsoftware.kryonet.Listener;
+
 import multi.thing.Armure;
 import multi.thing.Medipack;
 import multi.thing.Thing;
@@ -31,12 +33,15 @@ public class LogiqueClient/* extends KeyAdapter */ {
 	protected HashSet<Integer> touchesEnfoncees;
 	protected int joueurId;
 	private boolean mort;
+	private PcClient pcClient;
 
-	public LogiqueClient(String nomMap, Partie partie, int i) {
+	public LogiqueClient(String nomMap, Partie partie, int i, PcClient pcClient) {
 		touchesEnfoncees = new HashSet<Integer>(6);
 		fin = false;
 		map = ImageParser.getMap(nomMap);
 		objets = map.getListThing();
+		
+		this.pcClient=pcClient;
 
 		joueurs = partie.getJoueurs();
 
@@ -113,11 +118,11 @@ public class LogiqueClient/* extends KeyAdapter */ {
 					String thingType = thing.getThingType();
 					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
 						joueur.setArme((Weapon) thing);
-						thing.hideForAWhile();
+						hide(thing);
 					} else if (joueur.getArme() != null && joueur.getArme().getThingType().equals(thingType)) {
 						String str = thingType.substring(19, thingType.length());
 						joueur.getArme().sumAmmo(AmmoPack.getAmmo(str));
-						thing.hideForAWhile();
+						hide(thing);
 					}
 				} else {
 					if (thing instanceof Armure)
@@ -126,10 +131,15 @@ public class LogiqueClient/* extends KeyAdapter */ {
 						joueur.ajoutVie(10);
 					else if(thing instanceof AmmoPack)
 						joueur.getArme().sumAmmo(10);
-					thing.hideForAWhile();
+					hide(thing);
 				}
 			}
 		}
+	}
+
+	private void hide(Thing thing) {
+		thing.hideForAWhile();
+		pcClient.sendPickUpMessage(objets.indexOf(thing));
 	}
 
 	public void updatePartie(Partie partie) {
@@ -197,6 +207,11 @@ public class LogiqueClient/* extends KeyAdapter */ {
 
 		// mieux
 		return (point.sub(joueur.getPosition()).length() < r);
+	}
+
+	// methode appelée par le serveur parce que qqn a ramassé qqch et il faut le cacher
+	public void hideThing(int indexOfThing) {
+		objets.get(indexOfThing).hideForAWhile();
 	}
 
 }
