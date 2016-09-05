@@ -27,8 +27,6 @@ public class FenetreJeu extends JFrame {
 
 	public FenetreJeu(String pngFileName) throws AWTException {
 			
-		new MagasinImage();
-		
 		Logique logique = new Logique(pngFileName);
 
 		Camera camera = new Camera(logique);

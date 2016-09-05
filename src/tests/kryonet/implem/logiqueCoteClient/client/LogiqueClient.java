@@ -14,7 +14,7 @@ import multi.tools.raycasting.Vector2D;
 import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;
 import tests.kryonet.implem.logiqueCoteClient.server.Partie;
 
-public class LogiqueClient extends KeyAdapter {
+public class LogiqueClient/* extends KeyAdapter */{
 
 	protected static final long delay = 20;
 	protected boolean fin;
@@ -59,7 +59,7 @@ public class LogiqueClient extends KeyAdapter {
 		});
 		thread.start();
 	}
-
+/*
 	@Override
 	public void keyPressed(KeyEvent e) {
 		touchesEnfoncees.add(e.getKeyCode());
@@ -69,7 +69,7 @@ public class LogiqueClient extends KeyAdapter {
 	public void keyReleased(KeyEvent e) {
 		touchesEnfoncees.remove(e.getKeyCode());
 	}
-	
+	*/
 	protected void updateDeplacement() {
 		oldPosition = joueur.getPosition();
 		if (touchesEnfoncees.contains(KeyEvent.VK_W)) {
@@ -144,6 +144,16 @@ public class LogiqueClient extends KeyAdapter {
 			// on ne bouge plus, on se met dans le coin
 			joueur.setPosition(lockX, lockY);
 		}
+	}
+
+	public void mouseLeftPressed() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setAffichageScore(boolean b) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

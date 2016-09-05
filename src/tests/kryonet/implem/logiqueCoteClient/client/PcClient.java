@@ -22,6 +22,7 @@ public class PcClient {
 	private LogiqueClient lc;
 	public JSlider slider;
 	private VueMap vueMap;
+	private final int networkDelay = 20;
 
 	public PcClient(String ip, String pseudo) throws IOException {
 
@@ -44,20 +45,20 @@ public class PcClient {
 					AcceptClientMessage acm = (AcceptClientMessage) object;
 					System.out.println(acm.getMsg());
 
-					lc = new LogiqueClient("StandDeTire.png", acm.getPartie(), acm.getId());
+					lc = new LogiqueClient(acm.getMapPath(), acm.getPartie(), acm.getId());
 					VueMap vueMap = new VueMap(lc);
 					VueCamera vueCamera = new VueCamera(lc);
-					jfcMap = new JFrameClient(vueMap);
-					new JFrameClient(vueCamera);
-					jfcMap.setLocation(0, 720);
-					jfcMap.setSize(400, 280);
+					//jfcMap = new JFrameClient(vueMap);
+					JFrameClient jfcCamera = new JFrameClient(vueCamera);
+					//jfcMap.setLocation(0, 720);
+					//jfcMap.setSize(400, 280);
 
-					jfcMap.addWindowListener(new WindowAdapter() {
-						@Override
-						public void windowClosing(WindowEvent e) {
-							client.close();
-						}
-					});
+//					jfcMap.addWindowListener(new WindowAdapter() {
+//						@Override
+//						public void windowClosing(WindowEvent e) {
+//							client.close();
+//						}
+//					});
 
 					Thread t = new Thread(new Runnable() {
 
@@ -68,7 +69,7 @@ public class PcClient {
 								pum.setJoueur(lc.joueur);
 								client.sendUDP(pum);
 								try {
-									Thread.sleep((int) jfcMap.spinner.getValue());
+									Thread.sleep(networkDelay);
 								} catch (InterruptedException e) {
 									e.printStackTrace();
 								}

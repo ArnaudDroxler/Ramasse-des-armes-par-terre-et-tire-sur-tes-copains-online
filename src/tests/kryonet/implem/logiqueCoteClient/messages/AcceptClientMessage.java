@@ -6,12 +6,14 @@ public class AcceptClientMessage {
 
 	private String msg;
 	private Partie partie;
-	private int id;
+	private int clientId;
+	private String mapPath;
 
-	public AcceptClientMessage(String pseudo, Partie partie, int id) {
-		msg = "Bienvenue " + pseudo + ", vous avez l'ID "+id+"\nInfos partie : " + partie.toString();
+	public AcceptClientMessage(String pseudo, Partie partie, int clientId, String mapPath) {
+		this.msg = "Bienvenue " + pseudo + ", vous avez l'ID "+clientId+"\nInfos partie : " + partie.toString();
 		this.partie = partie;
-		this.id=id;
+		this.clientId=clientId;
+		this.mapPath=mapPath;
 	}
 
 	public AcceptClientMessage() {
@@ -26,7 +28,11 @@ public class AcceptClientMessage {
 	}
 
 	public int getId() {
-		return id;
+		return clientId;
+	}
+
+	public String getMapPath() {
+		return mapPath;
 	}
 
 }
