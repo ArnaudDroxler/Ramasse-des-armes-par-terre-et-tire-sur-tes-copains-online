@@ -321,10 +321,11 @@ public class VueCamera extends Renderer {
 		g2dThings.setComposite(alphacomp);
 		g2dThings.fill(clearRect);
 
+		Vector2D deltaPos;
 		// TODO : ajouter les objets aussi dans la liste de choses a afficher
 		for (JoueurOnline j : lc.joueurs.values()) {
 			
-			Vector2D deltaPos = j.getPosition().sub(pos);
+			deltaPos = j.getPosition().sub(pos);
 
 			// On veut les trier dans l'ordre décroissant, on les ajoute donc
 			// dans un TreeMap selon
@@ -334,6 +335,11 @@ public class VueCamera extends Renderer {
 			if(j.id != lc.joueur.id && deltaPos.length()>0.75)
 				chosesAAfficher.put(-deltaPos.length(), j);
 		}
+		// pareil avec les things
+		for(Thing o : lc.objets){
+			deltaPos = o.getPosition().sub(pos);
+			chosesAAfficher.put(-deltaPos.length(), o);
+		}
 		
 		Set<Double> keys = chosesAAfficher.keySet();
 		Iterator<Double> i = keys.iterator();
@@ -342,7 +348,7 @@ public class VueCamera extends Renderer {
 		while (i.hasNext()) {
 			current = chosesAAfficher.get(i.next());
 
-			Vector2D deltaPos = current.getPosition().sub(pos);
+			deltaPos = current.getPosition().sub(pos);
 		
 			double l = plane.getdX() * dir.getdY() -  dir.getdX() * plane.getdY();
 			double[][] matrix = { { dir.getdY() / l, -dir.getdX() / l }, { -plane.getdY() / l, plane.getdX() / l } };
