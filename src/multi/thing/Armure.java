@@ -16,4 +16,9 @@ public class Armure extends Thing {
 		return MagasinImage.buffArmure[0];
 	}
 
+	@Override
+	public String getThingType() {
+		return "multi.thing.Armure";
+	}
+
 }

@@ -67,4 +67,10 @@ public class HandGun extends Weapon {
 		return MagasinImage.buffHandGun[0];
 	}
 
+	@Override
+	public String getThingType() {
+		return "multi.thing.weapon.HandGun";
+	}
+	
+
 }

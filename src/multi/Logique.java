@@ -5,6 +5,8 @@ import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
 
 import java.awt.geom.Rectangle2D;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,19 +16,12 @@ import java.util.function.BiConsumer;
 
 import multi.thing.Armure;
 import multi.thing.Medipack;
-import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
-import multi.thing.weapon.AmmoPackHG;
-import multi.thing.weapon.AmmoPackPR;
-import multi.thing.weapon.AmmoPackSG;
-import multi.thing.weapon.AmmoPackSmG;
 import multi.thing.weapon.AssaultRifle;
 import multi.thing.weapon.Chainsaw;
 import multi.thing.weapon.AmmoPack;
-import multi.thing.weapon.AmmoPackAR;
-import multi.thing.weapon.AmmoPackCS;
 import multi.thing.weapon.HandGun;
 import multi.thing.weapon.PrecisionRifle;
 import multi.thing.weapon.ShootGun;
@@ -72,7 +67,7 @@ public class Logique extends KeyAdapter {
 		delay = 10;
 		tempsRepop = 15000;
 		tempsRespawn = 5000;
-		
+
 		map = ImageParser.getMap(nomMap);
 
 		oldPosition = map.getStartPosition();
@@ -113,7 +108,18 @@ public class Logique extends KeyAdapter {
 				try {
 					while (!fin) {
 						if (!touchesEnfoncees.isEmpty()) {
-							updateDeplacement();
+							try {
+								try {
+									updateDeplacement();
+								} catch (NoSuchMethodException | SecurityException | IllegalArgumentException
+										| InvocationTargetException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+							} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
 						}
 
 						// updateEnnemis();
@@ -147,7 +153,9 @@ public class Logique extends KeyAdapter {
 		}
 	}
 
-	synchronized protected void updateDeplacement() {
+	synchronized protected void updateDeplacement()
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException,
+			SecurityException, IllegalArgumentException, InvocationTargetException {
 		mort = false;
 
 		oldPosition = heros.getPosition();
@@ -194,79 +202,24 @@ public class Logique extends KeyAdapter {
 		// Utilisation d'un itérateur car on supprime un objet d'une liste qu'on
 		// parcourt
 		Iterator<Thing> iterator = listeThings.iterator();
-		while (iterator.hasNext() && !mort)
-
-		{
+		while (iterator.hasNext() && !mort) {
 			Thing thing = iterator.next();
 			if (collapse(thing.getPosition(), 1.2) && !heros.getMort()) {
 				if (thing instanceof Weapon) {
-					if (thing instanceof HandGun) {
-						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-							heros.setArme(new HandGun(heros.getPosition()));
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						} else if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
-							heros.getArme().sumAmmo(AmmoPackHG.getAmmo());
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						}
-					}
-					if (thing instanceof SubmachineGun) {
-						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-							heros.setArme(new SubmachineGun(heros.getPosition()));
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						} else if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
-							heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						}
-					}
-					if (thing instanceof AssaultRifle) {
-						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-							heros.setArme(new AssaultRifle(heros.getPosition()));
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						} else if (heros.getArme() != null && heros.getArme() instanceof AssaultRifle) {
-							heros.getArme().sumAmmo(AmmoPackAR.getAmmo());
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						}
-					}
-					if (thing instanceof ShootGun) {
-						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-							heros.setArme(new ShootGun(heros.getPosition()));
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						} else if (heros.getArme() != null && heros.getArme() instanceof ShootGun) {
-							heros.getArme().sumAmmo(AmmoPackSG.getAmmo());
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						}
-					}
-					if (thing instanceof PrecisionRifle) {
-						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-							heros.setArme(new PrecisionRifle(heros.getPosition()));
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						} else if (heros.getArme() != null && heros.getArme() instanceof PrecisionRifle) {
-							heros.getArme().sumAmmo(AmmoPackPR.getAmmo());
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						}
-					}
-					if (thing instanceof Chainsaw) {
-						if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-							heros.setArme(new Chainsaw(heros.getPosition()));
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						} else if (heros.getArme() != null && heros.getArme() instanceof Chainsaw) {
-							heros.getArme().sumAmmo(AmmoPackCS.getAmmo());
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						}
+					String thingType = thing.getThingType();
+					Class<?> cls = Class.forName(thingType);
+					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+						heros.setArme((Weapon) cls.getConstructor(Vector2D.class).newInstance(heros.getPosition()));
+						repopObjet(thing.getPosition(), thing.getThingType());
+						iterator.remove();
+					} else if (heros.getArme() != null && heros.getArme().getThingType().equals(thingType)) {
+						String str = thingType.substring(19, thingType.length());
+						heros.getArme().sumAmmo(AmmoPack.getAmmo(str));
+						repopObjet(thing.getPosition(), thing.getThingType());
+						iterator.remove();
 					}
 				}
+
 			}
 			if (collapse(thing.getPosition(), .8) && !heros.getMort()) {
 				if (thing instanceof Ennemi) {
@@ -279,61 +232,69 @@ public class Logique extends KeyAdapter {
 				}
 				if (thing instanceof Armure) {
 					heros.ajoutArmure(10);
-					repopObjet(thing.getPosition(), thing);
+					repopObjet(thing.getPosition(), thing.getThingType());
 					iterator.remove();
 				}
 				if (thing instanceof Medipack) {
 					heros.ajoutVie(10);
-					repopObjet(thing.getPosition(), thing);
+					repopObjet(thing.getPosition(), thing.getThingType());
 					iterator.remove();
 				}
 				if (thing instanceof AmmoPack) {
-					if (thing instanceof AmmoPackHG) {
-						if (heros.getArme() != null && heros.getArme() instanceof HandGun) {
-							heros.getArme().sumAmmo(AmmoPackHG.getAmmo());
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						}
-					}
-					if (thing instanceof AmmoPackSmG) {
-						if (heros.getArme() != null && heros.getArme() instanceof SubmachineGun) {
-							heros.getArme().sumAmmo(AmmoPackSmG.getAmmo());
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						}
-					}
-					if (thing instanceof AmmoPackSG) {
-						if (heros.getArme() != null && heros.getArme() instanceof ShootGun) {
-							heros.getArme().sumAmmo(AmmoPackSG.getAmmo());
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						}
-					}
-					if (thing instanceof AmmoPackPR) {
-						if (heros.getArme() != null && heros.getArme() instanceof PrecisionRifle) {
-							heros.getArme().sumAmmo(AmmoPackPR.getAmmo());
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						}
-					}
-					if (thing instanceof AmmoPackAR) {
-						if (heros.getArme() != null && heros.getArme() instanceof AssaultRifle) {
-							heros.getArme().sumAmmo(AmmoPackAR.getAmmo());
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						}
-					}
-					if (thing instanceof AmmoPackCS) {
-						if (heros.getArme() != null && heros.getArme() instanceof Chainsaw) {
-							heros.getArme().sumAmmo(AmmoPackCS.getAmmo());
-							repopObjet(thing.getPosition(), thing);
-							iterator.remove();
-						}
+					String str = ((AmmoPack) thing).getAmmoType();
+					if (heros.getArme() != null && heros.getArme().getThingType().equals("multi.thing.weapon." + str)) {
+						heros.getArme().sumAmmo(AmmoPack.getAmmo(str));
+						repopObjet(thing.getPosition(), thing.getThingType(), ((AmmoPack) thing).getAmmoType());
+						iterator.remove();
 					}
 				}
 			}
 
 		}
+
+	}
+
+	private void repopObjet(Vector2D position, String string) {
+		Thread threadrepop = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(tempsRepop);
+					Class<?> cls = Class.forName(string);
+					listeThings.add((Thing) cls.getConstructor(Vector2D.class).newInstance(position));
+				} catch (InterruptedException | ClassNotFoundException | InstantiationException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+						| SecurityException e) {
+
+					e.printStackTrace();
+				}
+
+			}
+		});
+		threadrepop.start();
+
+	}
+
+	private void repopObjet(Vector2D position, String string, String weaponSlected) {
+		Thread threadrepop = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(tempsRepop);
+					Class<?> cls = Class.forName(string);
+					listeThings.add((Thing) cls.getConstructor(Vector2D.class, String.class).newInstance(position,
+							weaponSlected));
+				} catch (InterruptedException | ClassNotFoundException | InstantiationException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+						| SecurityException e) {
+
+					e.printStackTrace();
+				}
+			}
+		});
+		threadrepop.start();
 
 	}
 
@@ -410,67 +371,6 @@ public class Logique extends KeyAdapter {
 			}
 		});
 		threadTimerRespawn.start();
-	}
-
-	private void repopObjet(Vector2D position, Thing type) {
-		Thread threadrepop = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					Thread.sleep(tempsRepop);
-					if (type instanceof Armure) {
-						listeThings.add(new Armure(position));
-					}
-					if (type instanceof Medipack) {
-						listeThings.add(new Medipack(position));
-					}
-					if (type instanceof AmmoPackHG) {
-						listeThings.add(new AmmoPackHG(position));
-					}
-					if (type instanceof AmmoPackSmG) {
-						listeThings.add(new AmmoPackSmG(position));
-					}
-					if (type instanceof AmmoPackSG) {
-						listeThings.add(new AmmoPackSG(position));
-					}
-					if (type instanceof AmmoPackPR) {
-						listeThings.add(new AmmoPackPR(position));
-					}
-					if (type instanceof AmmoPackAR) {
-						listeThings.add(new AmmoPackAR(position));
-					}
-					if (type instanceof AmmoPackCS) {
-						listeThings.add(new AmmoPackCS(position));
-					}
-					if (type instanceof HandGun) {
-						listeThings.add(new HandGun(position));
-					}
-					if (type instanceof SubmachineGun) {
-						listeThings.add(new SubmachineGun(position));
-					}
-					if (type instanceof ShootGun) {
-						listeThings.add(new ShootGun(position));
-					}
-					if (type instanceof PrecisionRifle) {
-						listeThings.add(new PrecisionRifle(position));
-					}
-					if (type instanceof Chainsaw) {
-						listeThings.add(new Chainsaw(position));
-					}
-					if (type instanceof AssaultRifle) {
-						listeThings.add(new AssaultRifle(position));
-					}
-
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-		});
-		threadrepop.start();
-
 	}
 
 	private void moveAlongWalls() {

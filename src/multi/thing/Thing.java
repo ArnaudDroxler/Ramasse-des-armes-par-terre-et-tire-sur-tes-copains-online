@@ -147,5 +147,5 @@ public abstract class Thing {
 	public int getNbSecteurs(){
 		return 1;
 	}
-
+	public abstract String getThingType();
 }

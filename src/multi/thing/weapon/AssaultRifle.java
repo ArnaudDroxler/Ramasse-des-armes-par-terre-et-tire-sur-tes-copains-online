@@ -18,7 +18,7 @@ public class AssaultRifle extends Weapon {
 		RoF = 4;
 		DpS = 60;
 		RaoF = 40;
-		cpt = 0;
+		cpt = 2;
 	}
 
 	@Override
@@ -43,10 +43,10 @@ public class AssaultRifle extends Weapon {
 			public void run() {
 				try {
 
-					for (cpt = 2; cpt < 4; cpt++) {
+					for (cpt = 2; cpt < 5; cpt++) {
 						Thread.sleep(100);
 					}
-					cpt = 0;
+					cpt = 2;
 
 				} catch (InterruptedException e) {
 
@@ -66,6 +66,11 @@ public class AssaultRifle extends Weapon {
 	@Override
 	public BufferedImage getSprite() {
 		return MagasinImage.buffAssaltRifle[0];
+	}
+
+	@Override
+	public String getThingType() {
+		return "multi.thing.weapon.AssaultRifle";
 	}
 
 }

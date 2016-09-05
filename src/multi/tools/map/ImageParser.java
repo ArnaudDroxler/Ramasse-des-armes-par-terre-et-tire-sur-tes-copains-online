@@ -10,15 +10,9 @@ import javax.imageio.ImageIO;
 import multi.thing.Armure;
 
 import multi.thing.Medipack;
-import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
-import multi.thing.weapon.AmmoPackAR;
-import multi.thing.weapon.AmmoPackCS;
-import multi.thing.weapon.AmmoPackHG;
-import multi.thing.weapon.AmmoPackPR;
-import multi.thing.weapon.AmmoPackSG;
-import multi.thing.weapon.AmmoPackSmG;
+import multi.thing.weapon.AmmoPack;
 import multi.thing.weapon.AssaultRifle;
 import multi.thing.weapon.Chainsaw;
 import multi.thing.weapon.HandGun;
@@ -110,27 +104,27 @@ public class ImageParser {
 					} else if (Integer.toHexString(rgb).equals("ff00ff00")) {
 						map.getListThing().add(new HandGun(new Vector2D(x, y)));
 					} else if (Integer.toHexString(rgb).equals("ff00ff50")) {
-						map.getListThing().add(new AmmoPackHG(new Vector2D(x, y)));
+						map.getListThing().add(new AmmoPack(new Vector2D(x, y),"HandGun"));
 					} else if (Integer.toHexString(rgb).equals("ff00ee00")) {
 						map.getListThing().add(new SubmachineGun(new Vector2D(x, y)));
 					} else if (Integer.toHexString(rgb).equals("ff00ee50")) {
-						map.getListThing().add(new AmmoPackSmG(new Vector2D(x, y)));
+						map.getListThing().add(new AmmoPack(new Vector2D(x, y),"SubmachineGun"));
 					} else if (Integer.toHexString(rgb).equals("ff00dd00")) {
 						map.getListThing().add(new ShootGun(new Vector2D(x, y)));
 					} else if (Integer.toHexString(rgb).equals("ff00dd50")) {
-						map.getListThing().add(new AmmoPackSG(new Vector2D(x, y)));
+						map.getListThing().add(new AmmoPack(new Vector2D(x, y),"ShootGun"));
 					} else if (Integer.toHexString(rgb).equals("ff00cc00")) {
 						map.getListThing().add(new PrecisionRifle(new Vector2D(x, y)));
 					} else if (Integer.toHexString(rgb).equals("ff00cc50")) {
-						map.getListThing().add(new AmmoPackPR(new Vector2D(x, y)));
+						map.getListThing().add(new AmmoPack(new Vector2D(x, y),"PrecisionRifle"));
 					} else if (Integer.toHexString(rgb).equals("ff00bb00")) {
 						map.getListThing().add(new Chainsaw(new Vector2D(x, y)));
 					} else if (Integer.toHexString(rgb).equals("ff00bb50")) {
-						map.getListThing().add(new AmmoPackCS(new Vector2D(x, y)));
+						map.getListThing().add(new AmmoPack(new Vector2D(x, y),"Chainsaw"));
 					} else if (Integer.toHexString(rgb).equals("ff00aa00")) {
 						map.getListThing().add(new AssaultRifle(new Vector2D(x, y)));
 					} else if (Integer.toHexString(rgb).equals("ff00aa50")) {
-						map.getListThing().add(new AmmoPackAR(new Vector2D(x, y)));
+						map.getListThing().add(new AmmoPack(new Vector2D(x, y),"AssaultRifle"));
 					}
 
 					imgToParse.setRGB(x, y, Color.white.getRGB());

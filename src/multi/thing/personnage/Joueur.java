@@ -49,4 +49,9 @@ public class Joueur extends Personnage {
 		armure = 50;
 	}
 
+	@Override
+	public String getThingType() {
+		return "multi.thing.personnage.Joueur";
+	}
+
 }

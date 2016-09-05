@@ -181,7 +181,7 @@ public class Camera extends Renderer {
 				e.printStackTrace();
 			}
 
-			renderThings();
+			//renderThings();
 
 			g2d.drawImage(bufferThings, null, -w / 2, -h / 2);
 
@@ -332,7 +332,6 @@ public class Camera extends Renderer {
 	private void drawHUD(Graphics2D g2d) {
 
 		g2d.drawImage(scale(MagasinImage.buffHud[0], scaleWidth, scaleHeight), null, -w / 2, h / 4);
-		// g2d.drawImage(MagasinImage.buffHudLeft, null, -w/2,h/4);
 		g2d.setColor(new Color(0, 97, 255));
 		g2d.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
 		g2d.drawString("" + logique.heros.getArmure(), -w / 2 + w / 10, h / 4 + h / 9);
@@ -346,8 +345,7 @@ public class Camera extends Renderer {
 		} else {
 			str = new String("0/0");
 		}
-		// g2d.drawImage(scale(MagasinImage.buffHudRight, scaleWidth,
-		// scaleHeight), null, w/4,h/4);
+	
 		g2d.drawImage(scale(MagasinImage.buffHud[1], scaleWidth, scaleHeight), null, w / 4, h / 4);
 		g2d.setColor(new Color(175, 175, 175));
 		g2d.setFont(new Font("Arial", Font.PLAIN, (int) (25 * scaleHeight)));
@@ -408,166 +406,188 @@ public class Camera extends Renderer {
 
 	private void algoRaycasting(Graphics2D g2d) {
 
-		int texWidth = 256;
-		int texHeight = 256;
-
+		
+		
+		int nbrThread = 10;
 		BufferedImage buff = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-
+		
+		int offset =  w/nbrThread;
 		g2d.translate(-w / 2, -h / 2);
-		for (int x = 0; x < w; x++) {
-			double cameraX = 2 * x / (double) w - 1;
-			Vector2D pos = posCamera.getPosition();
-			double rayPosX = pos.getdX();
-			double rayPosY = pos.getdY();
-			Vector2D dir = posCamera.getDirection();
-			double rayDirX = dir.getdX() + plane.getdX() * cameraX;
-			double rayDirY = dir.getdY() + plane.getdY() * cameraX;
-
-			int mapX = (int) rayPosX;
-			int mapY = (int) rayPosY;
-
-			double sideDistX;
-			double sideDistY;
-
-			double deltaDistX = Math.sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
-			double deltaDistY = Math.sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
-			double perpWallDist;
-
-			int stepX;
-			int stepY;
-
-			int hit = 0;
-			int side = 0;
-
-			if (rayDirX < 0) {
-				stepX = -1;
-				sideDistX = (rayPosX - mapX) * deltaDistX;
-			} else {
-				stepX = 1;
-				sideDistX = (mapX + 1.0 - rayPosX) * deltaDistX;
-			}
-			if (rayDirY < 0) {
-				stepY = -1;
-				sideDistY = (rayPosY - mapY) * deltaDistY;
-			} else {
-				stepY = 1;
-				sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY;
-			}
-			int step = 0;
-			while (hit == 0 && ++step < 1000) {
-				if (sideDistX < sideDistY) {
-					sideDistX += deltaDistX;
-					mapX += stepX;
-					side = 0;
-				} else {
-					sideDistY += deltaDistY;
-					mapY += stepY;
-					side = 1;
-				}
-				if (logique.getMap().inWall(mapX, mapY)) {
-					hit = 1;
-				}
-			}
-			if (side == 0) {
-				perpWallDist = (mapX - rayPosX + (1 - stepX) / 2) / rayDirX;
-			} else {
-				perpWallDist = (mapY - rayPosY + (1 - stepY) / 2) / rayDirY;
-			}
-			int lineHeight = (int) (h / perpWallDist);
-			tabDistStripes[x] = perpWallDist;
-
-			int middle = h / 2;
-
-			int drawStart = -lineHeight / 2 + h / 2;
-			if (drawStart < 0)
-				drawStart = 0;
-			int drawEnd = lineHeight / 2 + h / 2;
-			if (drawEnd >= h)
-				drawEnd = h - 1;
-
-			double wallX; // where exactly the wall was hit
-			if (side == 0)
-				wallX = rayPosY + perpWallDist * rayDirY;
-			else
-				wallX = rayPosX + perpWallDist * rayDirX;
-			wallX -= Math.floor((wallX));
-
-			int texX = (int) (wallX * texWidth);
-			if (side == 0 && rayDirX > 0)
-				texX = texWidth - texX - 1;
-			if (side == 1 && rayDirY < 0)
-				texX = texWidth - texX - 1;
-			
-			int numeroTexture= logique.map.getTextureTab(mapX,mapY);
-
-			for (int y = drawStart; y < drawEnd; y++) {
-				int d = y * 256 - h * 128 + lineHeight * 128;
-				int texY = ((d * texHeight) / lineHeight) / 256;
-				if (numeroTexture > MagasinImage.buffTextMur.length)
-					numeroTexture = 0;
-				Color c = new Color(MagasinImage.buffTextMur[numeroTexture].getRGB(texX, texY));
-				if (side == 1)
-					c = c.darker();
-				buff.setRGB(x, y, c.getRGB());
-
-			}
-
-			double floorXWall;
-			double floorYWall; // x, y position of the floor texel at the bottom
-								// of the wall
-
-			// 4 different wall directions possible
-			if (side == 0 && rayDirX > 0) {
-				floorXWall = mapX;
-				floorYWall = mapY + wallX;
-			} else if (side == 0 && rayDirX < 0) {
-				floorXWall = mapX + 1.0;
-				floorYWall = mapY + wallX;
-			} else if (side == 1 && rayDirY > 0) {
-				floorXWall = mapX + wallX;
-				floorYWall = mapY;
-			} else {
-				floorXWall = mapX + wallX;
-				floorYWall = mapY + 1.0;
-			}
-
-			double distWall, distPlayer, currentDist;
-
-			distWall = perpWallDist;
-			distPlayer = 0.0;
-
-			if (drawEnd < 0)
-				drawEnd = h; // becomes < 0 when the integer overflows
-
-			// draw the floor from drawEnd to the bottom of the screen
-			for (int y = drawEnd + 1; y < h; y++) {
-				currentDist = h / (2.0 * y - h); // you could make a small
-													// lookup table for this
-													// instead
-
-				double weight = (currentDist - distPlayer) / (distWall - distPlayer);
-
-				double currentFloorX = weight * floorXWall + (1.0 - weight) * pos.getdX();
-				double currentFloorY = weight * floorYWall + (1.0 - weight) * pos.getdY();
-
-				int floorTexX = (int) (currentFloorX * texWidth) % texWidth;
-				int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
-
-				int floorTexture = logique.map.getTextureTab((int) currentFloorX,(int) currentFloorY);
-				
-				Color c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexX, floorTexY));
-				c = c.darker();
-				buff.setRGB(x, y, c.getRGB());
-
-				c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexY, floorTexX));
-				buff.setRGB(x, h - y, c.getRGB());
-
-			}
+		for (int i = 0; i < nbrThread; i++) {
+			render(g2d,buff, offset*i,offset*i+offset);
 		}
-
+	
 		g2d.drawImage(buff, null, 0, 0);
 
 		g2d.translate(w / 2, h / 2);
+	}
+
+	private void render(Graphics2D g2d, BufferedImage buff, int i, int j) {
+		Thread th = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				for (int x = i; x < j ; x++) {
+					double cameraX = 2 * x / (double) w - 1;
+					Vector2D pos = posCamera.getPosition();
+					double rayPosX = pos.getdX();
+					double rayPosY = pos.getdY();
+					Vector2D dir = posCamera.getDirection();
+					double rayDirX = dir.getdX() + plane.getdX() * cameraX;
+					double rayDirY = dir.getdY() + plane.getdY() * cameraX;
+
+					int mapX = (int) rayPosX;
+					int mapY = (int) rayPosY;
+
+					double sideDistX;
+					double sideDistY;
+
+					double deltaDistX = Math.sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
+					double deltaDistY = Math.sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
+					double perpWallDist;
+
+					int stepX;
+					int stepY;
+
+					int hit = 0;
+					int side = 0;
+
+					if (rayDirX < 0) {
+						stepX = -1;
+						sideDistX = (rayPosX - mapX) * deltaDistX;
+					} else {
+						stepX = 1;
+						sideDistX = (mapX + 1.0 - rayPosX) * deltaDistX;
+					}
+					if (rayDirY < 0) {
+						stepY = -1;
+						sideDistY = (rayPosY - mapY) * deltaDistY;
+					} else {
+						stepY = 1;
+						sideDistY = (mapY + 1.0 - rayPosY) * deltaDistY;
+					}
+					int step = 0;
+					while (hit == 0 && ++step < 1000) {
+						if (sideDistX < sideDistY) {
+							sideDistX += deltaDistX;
+							mapX += stepX;
+							side = 0;
+						} else {
+							sideDistY += deltaDistY;
+							mapY += stepY;
+							side = 1;
+						}
+						if (logique.getMap().inWall(mapX, mapY)) {
+							hit = 1;
+						}
+					}
+					if (side == 0) {
+						perpWallDist = (mapX - rayPosX + (1 - stepX) / 2) / rayDirX;
+					} else {
+						perpWallDist = (mapY - rayPosY + (1 - stepY) / 2) / rayDirY;
+					}
+					int lineHeight = (int) (h / perpWallDist);
+					tabDistStripes[x] = perpWallDist;
+
+					int middle = h / 2;
+
+					int drawStart = -lineHeight / 2 + h / 2;
+					if (drawStart < 0)
+						drawStart = 0;
+					int drawEnd = lineHeight / 2 + h / 2;
+					if (drawEnd >= h)
+						drawEnd = h - 1;
+
+					double wallX; // where exactly the wall was hit
+					if (side == 0)
+						wallX = rayPosY + perpWallDist * rayDirY;
+					else
+						wallX = rayPosX + perpWallDist * rayDirX;
+					wallX -= Math.floor((wallX));
+
+					int texX = (int) (wallX * texWidth);
+					if (side == 0 && rayDirX > 0)
+						texX = texWidth - texX - 1;
+					if (side == 1 && rayDirY < 0)
+						texX = texWidth - texX - 1;
+					
+					int numeroTexture= logique.map.getTextureTab(mapX,mapY);
+
+					for (int y = drawStart; y < drawEnd; y++) {
+						int d = y * 256 - h * 128 + lineHeight * 128;
+						int texY = ((d * texHeight) / lineHeight) / 256;
+						if (numeroTexture > MagasinImage.buffTextMur.length)
+							numeroTexture = 0;
+						Color c = new Color(MagasinImage.buffTextMur[numeroTexture].getRGB(texX, texY));
+						if (side == 1)
+							c = c.darker();
+						buff.setRGB(x, y, c.getRGB());
+
+					}
+
+					double floorXWall;
+					double floorYWall; // x, y position of the floor texel at the bottom
+										// of the wall
+
+					// 4 different wall directions possible
+					if (side == 0 && rayDirX > 0) {
+						floorXWall = mapX;
+						floorYWall = mapY + wallX;
+					} else if (side == 0 && rayDirX < 0) {
+						floorXWall = mapX + 1.0;
+						floorYWall = mapY + wallX;
+					} else if (side == 1 && rayDirY > 0) {
+						floorXWall = mapX + wallX;
+						floorYWall = mapY;
+					} else {
+						floorXWall = mapX + wallX;
+						floorYWall = mapY + 1.0;
+					}
+
+					double distWall, distPlayer, currentDist;
+
+					distWall = perpWallDist;
+					distPlayer = 0.0;
+
+					if (drawEnd < 0)
+						drawEnd = h; // becomes < 0 when the integer overflows
+
+					// draw the floor from drawEnd to the bottom of the screen
+					for (int y = drawEnd + 1; y < h; y++) {
+						currentDist = h / (2.0 * y - h); // you could make a small
+															// lookup table for this
+															// instead
+
+						double weight = (currentDist - distPlayer) / (distWall - distPlayer);
+
+						double currentFloorX = weight * floorXWall + (1.0 - weight) * pos.getdX();
+						double currentFloorY = weight * floorYWall + (1.0 - weight) * pos.getdY();
+
+						int floorTexX = (int) (currentFloorX * texWidth) % texWidth;
+						int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
+
+						int floorTexture = logique.map.getTextureTab((int) currentFloorX,(int) currentFloorY);
+						
+						Color c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexX, floorTexY));
+						c = c.darker();
+						buff.setRGB(x, y, c.getRGB());
+
+						c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexY, floorTexX));
+						buff.setRGB(x, h - y, c.getRGB());
+
+					}
+				}
+				
+			}
+		});
+		th.start();
+		try {
+			th.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// On part ici du principe qu'elles sont ordonnées
@@ -699,11 +719,11 @@ public class Camera extends Renderer {
 	//public int customHeight = 360;
 	//public int customWidth = 640;
 
-	//public int customHeight = 720;
-	//public int customWidth = 1280;
+	public int customHeight = 720;
+	public int customWidth = 1280;
 
-	public int customHeight = 1080;
-	public int customWidth = 1920;
+	//public int customHeight = 1080;
+	//public int customWidth = 1920;
 
 	public final boolean customSize = true;
 
@@ -729,6 +749,9 @@ public class Camera extends Renderer {
 	private Vector2D oldPos;
 	private Vector2D oldDir;
 	private Vector2D oldPlane;
+	
+	private int texWidth = 256;
+	private int texHeight = 256;
 
 	protected boolean zoom;
 

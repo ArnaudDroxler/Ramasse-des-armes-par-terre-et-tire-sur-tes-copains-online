@@ -3,7 +3,6 @@ package multi.thing.weapon;
 import java.awt.image.BufferedImage;
 
 import multi.thing.Thing;
-import multi.tools.ImageLoader;
 import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
@@ -43,10 +42,8 @@ public abstract class Weapon extends Thing {
 	}
 
 	public void sumAmmo(int a) {
-		System.out.println(a+" " + ammo);
 		if (ammo < maxAmmo) {
 			ammo += a;
-			System.out.println(a+" " + ammo);
 		}
 	}
 

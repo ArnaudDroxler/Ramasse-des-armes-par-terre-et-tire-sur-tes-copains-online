@@ -21,7 +21,7 @@ public class Chainsaw extends Weapon {
 		RoF = 5;
 		DpS = 50;
 		RaoF = 2;
-		cpt = 2;
+		cpt = 0;
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class Chainsaw extends Weapon {
 						cpt = i++%2+2;
 						Thread.sleep(100);
 					}
-					cpt=2;
+					cpt=0;
 					
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -56,12 +56,17 @@ public class Chainsaw extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return MagasinImage.buffChainsaw[cpt];
+		return MagasinImage.buffChainsawAnimation[cpt];
 	}
 
 	@Override
 	public BufferedImage getSprite() {
 		return MagasinImage.buffChainsaw[0];
+	}
+
+	@Override
+	public String getThingType() {
+		return "multi.thing.weapon.Chainsaw";
 	}
 
 }

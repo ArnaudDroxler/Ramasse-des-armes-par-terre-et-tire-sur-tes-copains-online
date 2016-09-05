@@ -3,7 +3,6 @@ package multi.tools.map;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import multi.thing.Monstre;
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.tools.raycasting.Vector2D;

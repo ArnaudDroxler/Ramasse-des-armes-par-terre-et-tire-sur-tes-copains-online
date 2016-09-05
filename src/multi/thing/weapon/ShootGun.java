@@ -18,7 +18,7 @@ public class ShootGun extends Weapon {
 		RoF = 1;
 		DpS = 80;
 		RaoF = 8;
-		cpt = 2;
+		cpt = 0;
 	}
 
 	@Override
@@ -43,10 +43,10 @@ public class ShootGun extends Weapon {
 			public void run() {
 				try {
 
-					for (cpt = 2; cpt < 8; cpt++) {
+					for (cpt = 0; cpt < 8; cpt++) {
 						Thread.sleep(80+cpt*5);
 					}
-					cpt = 2;
+					cpt = 0;
 
 				} catch (InterruptedException e) {
 					e.printStackTrace();
@@ -58,12 +58,17 @@ public class ShootGun extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return  MagasinImage.buffShootGun[cpt];
+		return  MagasinImage.buffShootGunAnimation[cpt];
 	}
 
 	@Override
 	public BufferedImage getSprite() {
 		return MagasinImage.buffShootGun[0];
+	}
+
+	@Override
+	public String getThingType() {
+		return "multi.thing.weapon.ShootGun";
 	}
 
 }

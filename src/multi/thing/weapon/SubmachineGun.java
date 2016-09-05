@@ -68,4 +68,9 @@ public class SubmachineGun extends Weapon {
 		return MagasinImage.buffSubMachinGun[0];
 	}
 
+	@Override
+	public String getThingType() {
+		return "multi.thing.weapon.SubmachineGun";
+	}
+
 }

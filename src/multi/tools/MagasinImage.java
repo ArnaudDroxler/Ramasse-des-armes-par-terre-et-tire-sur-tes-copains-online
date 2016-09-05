@@ -22,7 +22,7 @@ public class MagasinImage {
 	public static final BufferedImage[] buffHud = ImageLoader.loadImagesFromFolder("sprite/hud");
 	
 	//WALL TEXT
-	public static final BufferedImage[] buffTextMur = ImageLoader.loadImagesFromFolder("sprite/wall/texturesMaison");
+	public static final BufferedImage[] buffTextMur = ImageLoader.loadImagesFromFolder("sprite/wall/yolo");
 	
 	//THING
 	public static final BufferedImage[] buffMedipack = ImageLoader.loadImagesFromFolder("sprite/thing/medipack");
@@ -38,6 +38,10 @@ public class MagasinImage {
 	public static final BufferedImage[] buffAssaltRifle = ImageLoader.loadImagesFromFolder("sprite/thing/weapon/assaltrifle");
 	public static final BufferedImage[] buffPrecisionRifle = ImageLoader.loadImagesFromFolder("sprite/thing/weapon/precisionrifle");
 	public static final BufferedImage[] buffChainsaw = ImageLoader.loadImagesFromFolder("sprite/thing/weapon/chainsaw");
+	
+	public static final BufferedImage[] buffChainsawAnimation = {buffChainsaw[2],buffChainsaw[3],buffChainsaw[4],buffChainsaw[5]};
+	public static final BufferedImage[] buffPrecisionRifleAnimation  = {buffPrecisionRifle[2],buffPrecisionRifle[3],buffPrecisionRifle[4],buffPrecisionRifle[5],buffPrecisionRifle[4]};
+	public static final BufferedImage[] buffShootGunAnimation  = {buffShootGun[2],buffShootGun[3],buffShootGun[4],buffShootGun[5],buffShootGun[6],buffShootGun[7],buffShootGun[6],buffShootGun[5]};
 	
 	//IMPACT
 	public static final BufferedImage[] buffImpactEnnemi = ImageLoader.loadImagesFromFolder("sprite/impact/ennemie");
