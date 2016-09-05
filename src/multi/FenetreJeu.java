@@ -14,8 +14,11 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
-public class FenetreJeu extends JFrame {
+import multi.tools.MagasinImage;
 
+
+public class FenetreJeu extends JFrame {
+	
 	private static final long serialVersionUID = 1L;
 	private Robot robot;
 	private boolean robotOff;
@@ -23,7 +26,9 @@ public class FenetreJeu extends JFrame {
 	public static boolean mouseLeftPressed;
 
 	public FenetreJeu(String pngFileName) throws AWTException {
-
+			
+		new MagasinImage();
+		
 		Logique logique = new Logique(pngFileName);
 
 		Camera camera = new Camera(logique);

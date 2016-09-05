@@ -13,7 +13,7 @@ public class Armure extends Thing {
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffArmure;
+		return MagasinImage.buffArmure[0];
 	}
 
 }

@@ -8,8 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import multi.thing.Armure;
-import multi.thing.Goal;
-import multi.thing.Key;
+
 import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
@@ -43,7 +42,7 @@ public class ImageParser {
 
 	public static LvlMap getMap(BufferedImage imgToParse, BufferedImage imgTextureToParse) {
 
-		ImageLvlMap map = new ImageLvlMap(imgToParse.getWidth(),imgToParse.getHeight());
+		ImageLvlMap map = new ImageLvlMap(imgToParse.getWidth(), imgToParse.getHeight());
 
 		parse(map, imgToParse);
 
@@ -62,22 +61,22 @@ public class ImageParser {
 			for (int x = 0; x < imgTextureToParse.getWidth(); x++) {
 				int rgb = imgTextureToParse.getRGB(x, y);
 				int blue = (rgb) & 0x000000FF;
-				
-//				if (rgb == Color.BLACK.getRGB()) {
-//					map.getTextureTab()[x][y] = 0;
-//				} 
-//				else if (rgb == Color.RED.getRGB()) {
-//					map.getTextureTab()[x][y] = 1;
-//				} 
-//				else if (rgb == Color.GREEN.getRGB()) {
-//					map.getTextureTab()[x][y] = 2;
-//				} 
-//				else if (rgb == Color.BLUE.getRGB()) {
-//					map.getTextureTab()[x][y] = 3;
-//				} 
-				
-				map.setTextureTab(x,y,blue);
-				
+
+				// if (rgb == Color.BLACK.getRGB()) {
+				// map.getTextureTab()[x][y] = 0;
+				// }
+				// else if (rgb == Color.RED.getRGB()) {
+				// map.getTextureTab()[x][y] = 1;
+				// }
+				// else if (rgb == Color.GREEN.getRGB()) {
+				// map.getTextureTab()[x][y] = 2;
+				// }
+				// else if (rgb == Color.BLUE.getRGB()) {
+				// map.getTextureTab()[x][y] = 3;
+				// }
+
+				map.setTextureTab(x, y, blue);
+
 			}
 
 		}

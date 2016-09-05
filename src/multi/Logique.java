@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.function.BiConsumer;
 
 import multi.thing.Armure;
-import multi.thing.Key;
 import multi.thing.Medipack;
 import multi.thing.Monstre;
 import multi.thing.Thing;
@@ -73,7 +72,7 @@ public class Logique extends KeyAdapter {
 		delay = 10;
 		tempsRepop = 15000;
 		tempsRespawn = 5000;
-
+		
 		map = ImageParser.getMap(nomMap);
 
 		oldPosition = map.getStartPosition();

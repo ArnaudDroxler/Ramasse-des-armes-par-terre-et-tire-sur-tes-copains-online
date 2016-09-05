@@ -43,7 +43,7 @@ public class AssaultRifle extends Weapon {
 			public void run() {
 				try {
 
-					for (cpt = 1; cpt < 3; cpt++) {
+					for (cpt = 2; cpt < 4; cpt++) {
 						Thread.sleep(100);
 					}
 					cpt = 0;
@@ -60,12 +60,12 @@ public class AssaultRifle extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return MagasinImage.buffAssaltRifleHUD[cpt];
+		return MagasinImage.buffAssaltRifle[cpt];
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffAssaltRifle;
+		return MagasinImage.buffAssaltRifle[0];
 	}
 
 }

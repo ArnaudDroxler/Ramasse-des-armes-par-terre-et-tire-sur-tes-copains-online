@@ -3,7 +3,6 @@ package multi.tools.map;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
-import multi.thing.Key;
 import multi.tools.raycasting.Vector2D;
 
 public class ImageLvlMap extends LvlMap {
