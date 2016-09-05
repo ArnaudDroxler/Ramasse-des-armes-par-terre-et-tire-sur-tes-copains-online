@@ -16,7 +16,7 @@ public class Mover {
 		lc = logiqueClient;
 	}
 
-	public static void movePlayer() {
+	public static void updateDeplacement() {
 		lc.oldPosition = lc.joueur.getPosition();
 		if (lc.touchesEnfoncees.contains(KeyEvent.VK_W)) {
 			lc.joueur.forward();

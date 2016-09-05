@@ -50,7 +50,7 @@ public class Camera extends Renderer {
 		listThings = logique.map.getListThing();
 		listAfficher = new TreeMap<Double, Thing>();
 
-		posCamera = new Joueur(logique.getMap().getStartPosition(), new Vector2D(1, 0));
+		posCamera = new Joueur(logique.map.getStartPosition(), new Vector2D(1, 0));
 
 		// Le plan représentant la vision
 		plane = new Vector2D(0, 0);
@@ -177,7 +177,7 @@ public class Camera extends Renderer {
 				}
 				algoRaycasting(g2d);
 			} catch (Exception e) {
-				System.out.println("coucou y a probleme");
+				System.out.println("coucou y  probleme");
 				e.printStackTrace();
 			}
 
@@ -478,7 +478,7 @@ public class Camera extends Renderer {
 							mapY += stepY;
 							side = 1;
 						}
-						if (logique.getMap().inWall(mapX, mapY)) {
+						if (logique.map.inWall(mapX, mapY)) {
 							hit = 1;
 						}
 					}
