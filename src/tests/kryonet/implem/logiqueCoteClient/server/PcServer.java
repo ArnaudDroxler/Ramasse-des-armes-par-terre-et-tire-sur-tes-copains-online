@@ -32,7 +32,7 @@ public class PcServer {
 
 		String mapPath = "sprite/map/maison";
 		Partie partie = new Partie(mapPath);
-		LogiqueServer ls = new LogiqueServer(mapPath);
+		LogiqueServer ls = new LogiqueServer(mapPath, partie);
 		if(modeGraphique){
 			new JFramePartie(partie);
 		}
@@ -46,6 +46,7 @@ public class PcServer {
 					ClientConnexionMessage ccm = (ClientConnexionMessage) object;
 					connection.setName(ccm.getPseudo() + ":" + connection.getID());
 					System.out.println("nouveau joueur : " + ccm.getPseudo());
+					
 					JoueurOnline nouveaujoueur = new JoueurOnline(ccm.getPseudo(), connection.getID());
 					partie.addJoueur(connection.getID(), nouveaujoueur);
 					

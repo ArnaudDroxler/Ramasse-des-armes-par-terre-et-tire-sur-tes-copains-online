@@ -20,7 +20,6 @@ public class PcClient {
 
 	private JFrameClient jfcMap;
 	private LogiqueClient lc;
-	public JSlider slider;
 	private VueMap vueMap;
 	private final int networkDelay = 20;
 
@@ -46,12 +45,12 @@ public class PcClient {
 					System.out.println(acm.getMsg());
 
 					lc = new LogiqueClient(acm.getMapPath(), acm.getPartie(), acm.getId());
-					VueMap vueMap = new VueMap(lc);
+//					VueMap vueMap = new VueMap(lc);
 					VueCamera vueCamera = new VueCamera(lc);
-					//jfcMap = new JFrameClient(vueMap);
+//					jfcMap = new JFrameClient(vueMap);
 					JFrameClient jfcCamera = new JFrameClient(vueCamera);
-					//jfcMap.setLocation(0, 720);
-					//jfcMap.setSize(400, 280);
+//					jfcMap.setLocation(0, 720);
+//					jfcMap.setSize(400, 280);
 
 //					jfcMap.addWindowListener(new WindowAdapter() {
 //						@Override
