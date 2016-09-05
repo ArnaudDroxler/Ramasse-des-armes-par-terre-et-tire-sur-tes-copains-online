@@ -51,7 +51,7 @@ public class LogiqueClient/* extends KeyAdapter */{
 				try {
 					while (!fin) {
 						if (!touchesEnfoncees.isEmpty()) {
-							updateDeplacement();
+							movePlayer();
 						}
 						// updateEnnemis();
 						Thread.sleep(delay);
@@ -63,47 +63,6 @@ public class LogiqueClient/* extends KeyAdapter */{
 		});
 		thread.start();
 	}
-/*
-	@Override
-	public void keyPressed(KeyEvent e) {
-		touchesEnfoncees.add(e.getKeyCode());
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		touchesEnfoncees.remove(e.getKeyCode());
-	}
-	*/
-	protected void updateDeplacement() {
-		Mover.updateDeplacement();
-		
-//		oldPosition = joueur.getPosition();
-//		if (touchesEnfoncees.contains(KeyEvent.VK_W)) {
-//			joueur.forward();
-//		}
-//		if (touchesEnfoncees.contains(KeyEvent.VK_S)) {
-//			joueur.backward();
-//		}
-//		if (touchesEnfoncees.contains(KeyEvent.VK_A)) {
-//			joueur.strafeLeft();
-//		}
-//		if (touchesEnfoncees.contains(KeyEvent.VK_D)) {
-//			joueur.strafeRight();
-//		}
-//
-//		// collisison avec les murs
-//		if (map.inWall(joueur.getPosition()) && !joueur.getMort()) {
-//			moveAlongWalls();
-//		}
-//
-//		if (touchesEnfoncees.contains(KeyEvent.VK_LEFT)) {
-//			joueur.rotateLeft();
-//		}
-//		if (touchesEnfoncees.contains(KeyEvent.VK_RIGHT)) {
-//			joueur.rotateRight();
-//		}
-
-	}
 
 	public void updatePartie(Partie partie) {
 		joueurs = partie.getJoueurs();
@@ -111,46 +70,6 @@ public class LogiqueClient/* extends KeyAdapter */{
 		//joueur = ennemis.remove(joueurId);
 	}
 	
-	private void moveAlongWalls() {
-//		double newx = joueur.getPosition().getdX();
-//		double newy = joueur.getPosition().getdY();
-//		double oldx = oldPosition.getdX();
-//		double oldy = oldPosition.getdY();
-//
-//		int caseX = (int) oldx;
-//		int caseY = (int) oldy;
-//
-//		if (oldx <= newx) {
-//			if (oldy <= newy)
-//				// bas droite
-//				testAndMove(newx, newy, caseX + .99, caseY + .99);
-//			else
-//				// haut droite
-//				testAndMove(newx, newy, caseX + .99, caseY);
-//		} else {
-//			if (oldy <= newy)
-//				// bas gauche
-//				testAndMove(newx, newy, caseX, caseY + .99);
-//			else
-//				// haut gauche
-//				testAndMove(newx, newy, caseX, caseY);
-//		}
-	}
-
-	private void testAndMove(double newx, double newy, double lockX, double lockY) {
-//		// on essaye de glisser horizontalement
-//		if (!map.inWall(newx, lockY)) {
-//			// on déplace si on est pas dans un mur
-//			joueur.setPosition(newx, lockY);
-//		} else if (!map.inWall(lockX, newy)) {
-//			// sinon, on essaye de glisser verticalement
-//			joueur.setPosition(lockX, newy);
-//		} else {
-//			// on est dans un mur dans les deux cas
-//			// on ne bouge plus, on se met dans le coin
-//			joueur.setPosition(lockX, lockY);
-//		}
-	}
 
 	public void mouseLeftPressed() {
 		// TODO Auto-generated method stub
@@ -160,6 +79,76 @@ public class LogiqueClient/* extends KeyAdapter */{
 	public void setAffichageScore(boolean b) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	
+	protected void movePlayer() {
+		oldPosition = joueur.getPosition();
+		if (touchesEnfoncees.contains(KeyEvent.VK_W)) {
+			joueur.forward();
+		}
+		if (touchesEnfoncees.contains(KeyEvent.VK_S)) {
+			joueur.backward();
+		}
+		if (touchesEnfoncees.contains(KeyEvent.VK_A)) {
+			joueur.strafeLeft();
+		}
+		if (touchesEnfoncees.contains(KeyEvent.VK_D)) {
+			joueur.strafeRight();
+		}
+
+		// collisison avec les murs
+		if (map.inWall(joueur.getPosition()) && !joueur.getMort()) {
+			moveAlongWalls();
+		}
+
+		if (touchesEnfoncees.contains(KeyEvent.VK_LEFT)) {
+			joueur.rotateLeft();
+		}
+		if (touchesEnfoncees.contains(KeyEvent.VK_RIGHT)) {
+			joueur.rotateRight();
+		}
+	}
+
+	private void moveAlongWalls() {
+		double newx = joueur.getPosition().getdX();
+		double newy = joueur.getPosition().getdY();
+		double oldx = oldPosition.getdX();
+		double oldy = oldPosition.getdY();
+
+		int caseX = (int) oldx;
+		int caseY = (int) oldy;
+
+		if (oldx <= newx) {
+			if (oldy <= newy)
+				// bas droite
+				testAndMove(newx, newy, caseX + .99, caseY + .99);
+			else
+				// haut droite
+				testAndMove(newx, newy, caseX + .99, caseY);
+		} else {
+			if (oldy <= newy)
+				// bas gauche
+				testAndMove(newx, newy, caseX, caseY + .99);
+			else
+				// haut gauche
+				testAndMove(newx, newy, caseX, caseY);
+		}
+	}
+
+	private void testAndMove(double newx, double newy, double lockX, double lockY) {
+		// on essaye de glisser horizontalement
+		if (!map.inWall(newx, lockY)) {
+			// on déplace si on est pas dans un mur
+			joueur.setPosition(newx, lockY);
+		} else if (!map.inWall(lockX, newy)) {
+			// sinon, on essaye de glisser verticalement
+			joueur.setPosition(lockX, newy);
+		} else {
+			// on est dans un mur dans les deux cas
+			// on ne bouge plus, on se met dans le coin
+			joueur.setPosition(lockX, lockY);
+		}
 	}
 
 }
