@@ -2,7 +2,6 @@ package tests.kryonet.implem.logiqueCoteClient.client;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ComponentAdapter;
@@ -17,15 +16,23 @@ import java.util.TreeMap;
 
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
+import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;
 
 public class VueCamera extends Renderer {
 
 	private Vector2D pos, dir, plane;
-	private int frameW, frameH;
+	private int h, w;
 	public static int customW = 1280;
 	public static int customH = 720;
+	public static int InitialcustomHeight = 288;
+	public static int InitialcustomWidth = 512;
+	private final double scaleWidth = (double) customW / InitialcustomWidth;
+	private final double scaleHeight = (double) customH / InitialcustomHeight;
+	
+	private int texWidth = 256;
+	private int texHeight = 256;
 	
 	protected double[] tabDistStripes;
 	protected BufferedImage buffImgThings;
@@ -84,16 +91,17 @@ public class VueCamera extends Renderer {
 	}
 
 	private void init() {
-		frameW = getWidth();
-		frameH = getHeight();
+		
+		h = customH;
+		w = customW;
+		
+		clearRect = new Rectangle2D.Double(0, 0, w, h);
 
-		clearRect = new Rectangle2D.Double(0, 0, frameW, frameH);
-
-		tabDistStripes = new double[frameW];
-		buffImgMurs = new BufferedImage(frameW, frameH, BufferedImage.TYPE_INT_ARGB);
+		tabDistStripes = new double[w];
+		buffImgMurs = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dMurs = buffImgMurs.createGraphics();
 
-		buffImgThings = new BufferedImage(frameW, frameH, BufferedImage.TYPE_INT_ARGB);
+		buffImgThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dThings = buffImgThings.createGraphics();
 		
 		readyToDraw=true;
@@ -111,14 +119,8 @@ public class VueCamera extends Renderer {
 	}
 	
 	private void drawMurs() {
-		
-		g2dMurs.setColor(Color.black);
-		g2dMurs.fill(clearRect);
-
-		int w=buffImgMurs.getWidth();
-		int h=buffImgMurs.getHeight();
-		
-		for (int x = 0; x < w; x++) {
+			
+		for (int x = 0;x < w ; x++) {
 			double cameraX = 2 * x / (double) w - 1;
 			double rayPosX = pos.getdX();
 			double rayPosY = pos.getdY();
@@ -128,12 +130,18 @@ public class VueCamera extends Renderer {
 			int mapX = (int) rayPosX;
 			int mapY = (int) rayPosY;
 
-			double sideDistX, sideDistY, perpWallDist;
+			double sideDistX;
+			double sideDistY;
 
 			double deltaDistX = Math.sqrt(1 + (rayDirY * rayDirY) / (rayDirX * rayDirX));
 			double deltaDistY = Math.sqrt(1 + (rayDirX * rayDirX) / (rayDirY * rayDirY));
+			double perpWallDist;
 
-			int stepX, stepY, hit = 0, side = 0;
+			int stepX;
+			int stepY;
+
+			int hit = 0;
+			int side = 0;
 
 			if (rayDirX < 0) {
 				stepX = -1;
@@ -172,18 +180,96 @@ public class VueCamera extends Renderer {
 			int lineHeight = (int) (h / perpWallDist);
 			tabDistStripes[x] = perpWallDist;
 
-			if (side == 1) {
-				g2dMurs.setColor(Color.LIGHT_GRAY);
-			} else {
-				g2dMurs.setColor(Color.GRAY);
-			}
 			int middle = h / 2;
+
+			int drawStart = -lineHeight / 2 + h / 2;
+			if (drawStart < 0)
+				drawStart = 0;
+			int drawEnd = lineHeight / 2 + h / 2;
+			if (drawEnd >= h)
+				drawEnd = h - 1;
+
+			double wallX; // where exactly the wall was hit
+			if (side == 0)
+				wallX = rayPosY + perpWallDist * rayDirY;
+			else
+				wallX = rayPosX + perpWallDist * rayDirX;
+			wallX -= Math.floor((wallX));
+
+			int texX = (int) (wallX * texWidth);
+			if (side == 0 && rayDirX > 0)
+				texX = texWidth - texX - 1;
+			if (side == 1 && rayDirY < 0)
+				texX = texWidth - texX - 1;
 			
-			g2dMurs.drawLine(x, middle - lineHeight, x, (middle + lineHeight / 2));
-			
+			int numeroTexture= lc.map.getTextureTab(mapX,mapY);
+
+			for (int y = drawStart; y < drawEnd; y++) {
+				int d = y * 256 - h * 128 + lineHeight * 128;
+				int texY = ((d * texHeight) / lineHeight) / 256;
+				if (numeroTexture > MagasinImage.buffTextMur.length)
+					numeroTexture = 0;
+				Color c = new Color(MagasinImage.buffTextMur[numeroTexture].getRGB(texX, texY));
+				if (side == 1)
+					c = c.darker();
+				buffImgMurs.setRGB(x, y, c.getRGB());
+
+			}
+
+			double floorXWall;
+			double floorYWall; // x, y position of the floor texel at the bottom
+								// of the wall
+
+			// 4 different wall directions possible
+			if (side == 0 && rayDirX > 0) {
+				floorXWall = mapX;
+				floorYWall = mapY + wallX;
+			} else if (side == 0 && rayDirX < 0) {
+				floorXWall = mapX + 1.0;
+				floorYWall = mapY + wallX;
+			} else if (side == 1 && rayDirY > 0) {
+				floorXWall = mapX + wallX;
+				floorYWall = mapY;
+			} else {
+				floorXWall = mapX + wallX;
+				floorYWall = mapY + 1.0;
+			}
+
+			double distWall, distPlayer, currentDist;
+
+			distWall = perpWallDist;
+			distPlayer = 0.0;
+
+			if (drawEnd < 0)
+				drawEnd = h; // becomes < 0 when the integer overflows
+
+			// draw the floor from drawEnd to the bottom of the screen
+			for (int y = drawEnd + 1; y < h; y++) {
+				currentDist = h / (2.0 * y - h); // you could make a small
+													// lookup table for this
+													// instead
+
+				double weight = (currentDist - distPlayer) / (distWall - distPlayer);
+
+				double currentFloorX = weight * floorXWall + (1.0 - weight) * pos.getdX();
+				double currentFloorY = weight * floorYWall + (1.0 - weight) * pos.getdY();
+
+				int floorTexX = (int) (currentFloorX * texWidth) % texWidth;
+				int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
+
+				int floorTexture = lc.map.getTextureTab((int) currentFloorX,(int) currentFloorY);
+				
+				Color c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexX, floorTexY));
+				c = c.darker();
+				buffImgMurs.setRGB(x, y, c.getRGB());
+
+				c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexY, floorTexX));
+				buffImgMurs.setRGB(x, h - y, c.getRGB());
+
+			}
 		}
 		
-		g2d.drawImage(buffImgMurs,0,0,frameW,frameH,null);
+		g2d.drawImage(buffImgMurs,0,0,w,h,null);
 		
 	}
 	
@@ -210,15 +296,12 @@ public class VueCamera extends Renderer {
 		Set<Double> keys = chosesAAfficher.keySet();
 		Iterator<Double> i = keys.iterator();
 		Thing current;
-
-		int w=buffImgThings.getWidth();
-		int h=buffImgThings.getHeight();
 		
 		while (i.hasNext()) {
 			current = chosesAAfficher.get(i.next());
 
 			Vector2D deltaPos = current.getPosition().sub(pos);
-			// Ici on fait un tricks mathématique magique
+		
 			double l = plane.getdX() * dir.getdY() -  dir.getdX() * plane.getdY();
 			double[][] matrix = { { dir.getdY() / l, -dir.getdX() / l }, { -plane.getdY() / l, plane.getdX() / l } };
 			Vector2D projected = deltaPos.multiplyByMatrice(matrix);
@@ -226,21 +309,14 @@ public class VueCamera extends Renderer {
 			double transformY = projected.getdY();
 
 			if (current instanceof JoueurOnline) {
-				// Calcul de l'angle
-				// v2 est le vecteur inverse à la direction de l'ennemi
 				Vector2D v2 = current.getDirection().mult(-1);
-				// v1 est le vecteur qui relie la camera à l'ennemi
 				double dx = current.getPosition().getdX() - pos.getdX();
 				double dy = current.getPosition().getdY() - pos.getdY();
 				Vector2D v1 = new Vector2D(dx, dy);
-				// l'angle dirigé de v2 et v1, merci à
-				// http://stackoverflow.com/questions/21483999/using-atan2-to-find-angle-between-two-vectors
 				double angle = Math.atan2(v2.getdY(), v2.getdX()) - Math.atan2(v1.getdY(), v1.getdX());
 				if (angle < 0)
 					angle += 2 * Math.PI;
-				// le nombre d'angles de vue possibles pour cet ennemi
 				int nbSecteurs = current.getNbSecteurs();
-				// l'angle de vue choisi selon l'angle
 				int secteur = (int) (((nbSecteurs * angle / (2 * Math.PI)) + 0.5) % nbSecteurs);
 
 				currentSprite = current.getSprite(secteur);
@@ -252,8 +328,7 @@ public class VueCamera extends Renderer {
 			int imageHeight = currentSprite.getHeight();
 
 			int spriteScreenX = (int) (w / 2 * (1 + transformX / transformY));
-
-			// Calculer la hauteur du sprite en cours de dessin
+			
 			int spriteHeight = Math.abs((int) (h / transformY));
 			int drawStartY = -spriteHeight / 2 + h / 2;
 			if (drawStartY < 0) {
@@ -264,7 +339,6 @@ public class VueCamera extends Renderer {
 				drawEndY = h - 1;
 			}
 
-			// calculer la largeur du sprite.
 			int spriteWidth = Math.abs((int) (w / transformY));
 			int drawStartX = -spriteWidth / 2 + spriteScreenX;
 			if (drawStartX < 0) {
@@ -274,18 +348,14 @@ public class VueCamera extends Renderer {
 			if (drawEndX >= w) {
 				drawEndX = w - 1;
 			}
-
-			// Pour chaque tranche de notre image, on vérifie si il n'y a pas un
-			// mur plus proche
+			
 			for (int j = drawStartX; j < drawEndX; j++) {
 				int texX = (256 * (j - (-spriteWidth / 2 + spriteScreenX)) * imageWidth / spriteWidth) / 256;
 				if (transformY > 0 && j > 0 && j < w && transformY < tabDistStripes[j]) {
 					for (int y = drawStartY; y < drawEndY; y++) {
-						// 256 and 128 factors to avoid floats
 						int d = (y) * 256 - h * 128 + spriteHeight * 128;
 						int texY = ((d * imageHeight) / spriteHeight) / 256;
 
-						// texY passe dans les négatifs (min atteint = -4)
 						if (texY < 0) {
 							texY = 0;
 						}
@@ -302,10 +372,8 @@ public class VueCamera extends Renderer {
 				}
 			}
 		}
-		// A la fin de l'affichage, on clear la liste
 		chosesAAfficher.clear();
-		
-		g2d.drawImage(buffImgThings,0,0,frameW,frameH,null);		
+		g2d.drawImage(buffImgThings,0,0,w,h,null);		
 	}
 
 }

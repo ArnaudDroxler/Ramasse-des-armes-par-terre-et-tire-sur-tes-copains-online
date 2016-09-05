@@ -541,8 +541,6 @@ public class Logique extends KeyAdapter {
 		touchesEnfoncees.remove(e.getKeyCode());
 	}
 
-	public LvlMap getMap() {
-		return map;
-	}
+
 
 }
