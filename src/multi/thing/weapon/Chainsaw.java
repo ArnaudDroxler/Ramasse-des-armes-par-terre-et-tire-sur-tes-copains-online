@@ -13,6 +13,8 @@ import multi.tools.raycasting.Vector2D;
 public class Chainsaw extends Weapon {
 
 	private int cpt;
+	
+	public Chainsaw(){}
 
 	public Chainsaw(Vector2D pos) {
 		super(pos);

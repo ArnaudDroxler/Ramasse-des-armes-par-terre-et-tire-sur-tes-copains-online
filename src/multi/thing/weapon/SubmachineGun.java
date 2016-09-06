@@ -10,6 +10,8 @@ public class SubmachineGun extends Weapon {
 
 	
 	private int cpt;
+	
+	public SubmachineGun(){}
 
 	public SubmachineGun(Vector2D pos) {
 		super(pos);

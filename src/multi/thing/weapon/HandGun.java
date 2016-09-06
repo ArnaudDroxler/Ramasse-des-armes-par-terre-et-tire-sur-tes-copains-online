@@ -9,6 +9,8 @@ import multi.tools.raycasting.Vector2D;
 public class HandGun extends Weapon {
 
 	private int cpt;
+	
+	public HandGun(){}
 
 	public HandGun(Vector2D pos) {
 		super(pos);

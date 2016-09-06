@@ -10,6 +10,8 @@ import multi.tools.raycasting.Vector2D;
 public class PrecisionRifle extends Weapon {
 
 	private int cpt;
+	
+	public PrecisionRifle(){}
 
 	public PrecisionRifle(Vector2D pos) {
 		super(pos);

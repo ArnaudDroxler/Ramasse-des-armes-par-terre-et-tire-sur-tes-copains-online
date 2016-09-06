@@ -21,6 +21,8 @@ public abstract class Weapon extends Thing {
 
 	private int cptennemi;
 	private int cptmur;
+	
+	public Weapon(){}
 
 	public abstract int computeDamage(double d);
 

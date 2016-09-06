@@ -10,6 +10,8 @@ import multi.tools.raycasting.Vector2D;
 public class AssaultRifle extends Weapon {
 
 	private int cpt;
+	
+	public AssaultRifle(){}
 
 	public AssaultRifle(Vector2D pos) {
 		super(pos);

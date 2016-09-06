@@ -118,7 +118,7 @@ public class LogiqueClient/* extends KeyAdapter */ {
 					String thingType = thing.getThingType();
 					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
 						// alors ça ça fait tout planter je sais pas pourquoi
-						//joueur.setArme((Weapon) thing);
+						joueur.setArme((Weapon) thing);
 						hide(thing);
 					} else if (joueur.getArme() != null && joueur.getArme().getThingType().equals(thingType)) {
 						String str = thingType.substring(19, thingType.length());
