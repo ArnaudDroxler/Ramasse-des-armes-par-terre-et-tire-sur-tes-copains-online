@@ -22,7 +22,7 @@ public class MagasinImage {
 	public static final BufferedImage[] buffHud = ImageLoader.loadImagesFromFolder("sprite/hud");
 	
 	//WALL TEXT
-	public static final BufferedImage[] buffTextMur = ImageLoader.loadImagesFromFolder("sprite/wall/yolo");
+	public static final BufferedImage[] buffTextMur = ImageLoader.loadImagesFromFolder("sprite/wall/texturesMaison");
 	
 	//THING
 	public static final BufferedImage[] buffMedipack = ImageLoader.loadImagesFromFolder("sprite/thing/medipack");
@@ -35,7 +35,7 @@ public class MagasinImage {
 	public static final BufferedImage[] buffHandGun = ImageLoader.loadImagesFromFolder("sprite/thing/weapon/handgun");
 	public static final BufferedImage[] buffShootGun = ImageLoader.loadImagesFromFolder("sprite/thing/weapon/shootgun");
 	public static final BufferedImage[] buffSubMachinGun = ImageLoader.loadImagesFromFolder("sprite/thing/weapon/submachingun");
-	public static final BufferedImage[] buffAssaltRifle = ImageLoader.loadImagesFromFolder("sprite/thing/weapon/assaltrifle");
+	public static final BufferedImage[] buffAssaultRifle = ImageLoader.loadImagesFromFolder("sprite/thing/weapon/assaultrifle");
 	public static final BufferedImage[] buffPrecisionRifle = ImageLoader.loadImagesFromFolder("sprite/thing/weapon/precisionrifle");
 	public static final BufferedImage[] buffChainsaw = ImageLoader.loadImagesFromFolder("sprite/thing/weapon/chainsaw");
 	

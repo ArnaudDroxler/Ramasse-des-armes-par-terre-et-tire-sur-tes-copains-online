@@ -13,7 +13,7 @@ public class AmmoPack extends Thing {
 	
 	private static final TreeMap<String, BufferedImage> buffsSprite = new TreeMap<String, BufferedImage>();
 	static {
-		buffsSprite.put("AssaultRifle", MagasinImage.buffAssaltRifle[1]);
+		buffsSprite.put("AssaultRifle", MagasinImage.buffAssaultRifle[1]);
 		buffsSprite.put("Chainsaw", MagasinImage.buffChainsaw[1]);
 		buffsSprite.put("HandGun", MagasinImage.buffHandGun[1]);
 		buffsSprite.put("PrecisionRifle", MagasinImage.buffPrecisionRifle[1]);

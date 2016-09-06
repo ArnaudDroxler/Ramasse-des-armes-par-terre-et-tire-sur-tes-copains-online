@@ -63,12 +63,12 @@ public class AssaultRifle extends Weapon {
 			isFiring = false;
 			threadAnimation.start();
 		}
-		return MagasinImage.buffAssaltRifle[cpt];
+		return MagasinImage.buffAssaultRifle[cpt];
 	}
 
 	@Override
 	public BufferedImage getSprite() {
-		return MagasinImage.buffAssaltRifle[0];
+		return MagasinImage.buffAssaultRifle[0];
 	}
 
 	@Override

@@ -4,13 +4,16 @@ package toutdansunpackage.thing;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEPhongLighting_DISTANTPeer;
+
 import toutdansunpackage.tools.MagasinImage;
 import toutdansunpackage.tools.raycasting.Vector2D;
 
 public abstract class Thing {
 
 	protected static final Random random = new Random();
-
+	protected static final float v = 0.1f;
+	
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
@@ -111,9 +114,6 @@ public abstract class Thing {
 		direction.setdY(dirY);
 	}
 
-	public void setVitesse(double vitesse) {
-		v = (float)vitesse;
-	}
 
 	/*------------------------------*\
 	|*				Get				*|
@@ -137,7 +137,6 @@ public abstract class Thing {
 
 	private Vector2D position;
 	private Vector2D direction;
-	protected float v;
 	private float dAlpha;
 
 	public abstract BufferedImage getSprite();

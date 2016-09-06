@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 import toutdansunpackage.thing.Armure;
 
 import toutdansunpackage.thing.Medipack;
-import toutdansunpackage.thing.Thing;
 import toutdansunpackage.thing.personnage.Ennemi;
 import toutdansunpackage.thing.weapon.AmmoPack;
 import toutdansunpackage.thing.weapon.AssaultRifle;

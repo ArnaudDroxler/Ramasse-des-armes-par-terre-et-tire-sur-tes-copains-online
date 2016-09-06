@@ -11,6 +11,7 @@ public class JoueurOnline extends Joueur{
 	public String pseudo;
 	public int id;
 	
+	
 	public JoueurOnline() {
 	}
 

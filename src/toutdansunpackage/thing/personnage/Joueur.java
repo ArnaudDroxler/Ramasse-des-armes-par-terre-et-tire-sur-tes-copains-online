@@ -11,7 +11,6 @@ public class Joueur extends Personnage {
 		super(startPosition, startDirection);
 		vie = 100;
 		armure = 50;
-		v=(float) 0.05;
 	}		
 	
 	public Joueur() {}	
