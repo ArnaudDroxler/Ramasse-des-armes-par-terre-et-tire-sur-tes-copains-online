@@ -32,9 +32,7 @@ public class JFrameConfiguration extends JFrame {
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
-	public JFrameConfiguration(String[] args) {
-		this.args = args;
-
+	public JFrameConfiguration() {
 		fc.setDialogTitle("Choisissez une carte, cliquez sur \"Annuler\" pour charger la map par défaut");
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Map images", "png", "jpg", "gif");
 		fc.setFileFilter(filter);
@@ -90,6 +88,9 @@ public class JFrameConfiguration extends JFrame {
 		panel.add(formPanel);
 
 		setContentPane(new JPanelDecorator(panel, 10));
+
+		mapPath = new String("sprite/map/maison");
+		args = new String[3];
 	}
 
 	private void control() {
@@ -109,7 +110,10 @@ public class JFrameConfiguration extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				savePreferences();
-				new PcServer(args.length == 0);
+				args[0] = mapPath;
+				args[1] = spinNbJoueur.getValue() + "";
+				args[2] = panChoixTemps.getTimeMillis();
+				new PcServer(args);
 				dispose();
 
 			}
@@ -123,10 +127,8 @@ public class JFrameConfiguration extends JFrame {
 				int returnVal = fc.showOpenDialog(JFrameConfiguration.this);
 
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					// new
-					// FenetreJeu(fc.getSelectedFile().getAbsolutePath());
-				} else {
-					// new FenetreJeu("faqfinouWorld.png");
+					mapPath = fc.getSelectedFile().getAbsolutePath();
+					System.out.println(mapPath);
 				}
 			}
 
@@ -175,15 +177,11 @@ public class JFrameConfiguration extends JFrame {
 
 	// Tools
 
-	// private JTextField tfIp;
-	// private JTextField tfPseudo;
-
-	int tempsSecondes;
-	int tempsMinutes;
-
 	private JSpinner spinNbJoueur;
 	private JPanelTemps panChoixTemps;
 	private JButton btnChoixMap;
+
+	private String mapPath;
 
 	private JButton btnLancer;
 	private JButton btnAnnuler;
