@@ -15,6 +15,7 @@ public class AssaultRifle extends Weapon {
 	protected static final double RoF=4;
 	protected static final double RaoF=40;
 	protected static final int maxAmmo=150;
+	protected static final int ammoRecharge=30;
 	
 	public AssaultRifle(){}
 
@@ -89,6 +90,11 @@ public class AssaultRifle extends Weapon {
 	@Override
 	public int getMaxAmmo() {
 		return maxAmmo;
+	}
+
+	@Override
+	public int getAmmoRecharge() {
+		return ammoRecharge;
 	}
 
 }

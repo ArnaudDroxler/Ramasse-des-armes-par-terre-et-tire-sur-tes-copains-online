@@ -121,9 +121,8 @@ public class LogiqueClient/* extends KeyAdapter */ {
 						// alors ça ça fait tout planter je sais pas pourquoi
 						joueur.setArme((Weapon) thing);
 						hide(thing);
-					} else if (joueur.getArme() != null && joueur.getArme().getClass().getName().equals(thing.getClass().getName())) {
-						System.out.println("recharge");
-						joueur.getArme().sumAmmo(10);
+					} else if (joueur.weaponIs(thing)) {
+						joueur.getArme().sumAmmo();
 						hide(thing);
 					}
 				} else {

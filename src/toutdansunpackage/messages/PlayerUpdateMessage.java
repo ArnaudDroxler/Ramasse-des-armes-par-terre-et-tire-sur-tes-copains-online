@@ -14,8 +14,6 @@ public class PlayerUpdateMessage{
 		this.joueur = joueur;
 	}
 
-
-
 	public JoueurOnline getJoueur() {
 		return joueur;
 	}

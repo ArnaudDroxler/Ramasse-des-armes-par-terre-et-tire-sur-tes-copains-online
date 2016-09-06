@@ -25,6 +25,7 @@ public class LogiqueServer {
 	private Line2D fireLine;
 	private Rectangle2D rect;
 	private static final double r=0.8;
+	private JoueurOnline shooter;
 	
 	public LogiqueServer(String nomMap, Partie partie) {
 		this.partie = partie;
@@ -34,7 +35,7 @@ public class LogiqueServer {
 	}
 
 	public void fireFromPlayer(int clientId) {
-		JoueurOnline shooter = partie.getJoueurs().get(clientId);
+		shooter = partie.getJoueurs().get(clientId);
 
 		Vector2D pos = shooter.getPosition();
 		Vector2D dir = shooter.getDirection();
@@ -65,17 +66,21 @@ public class LogiqueServer {
 		Iterator<JoueurOnline> iterator = partie.getJoueurs().values().iterator();
 		while (iterator.hasNext()) {
 			JoueurOnline ennemi = iterator.next();
-			rect.setRect(ennemi.getPosition().getdX() - r / 2, ennemi.getPosition().getdY() - r / 2, r, r);
-			
-			if (fireLine.intersects(rect)) {
-				fireLine.setLine(x1, y1, ennemi.getPosition().getdX(), ennemi.getPosition().getdY());
-				ennemiTouche = ennemi;
+			if(ennemi != shooter){
+				rect.setRect(ennemi.getPosition().getdX() - r / 2, ennemi.getPosition().getdY() - r / 2, r, r);
+				
+				if (fireLine.intersects(rect)) {
+					fireLine.setLine(x1, y1, ennemi.getPosition().getdX(), ennemi.getPosition().getdY());
+					ennemiTouche = ennemi;
+				}
 			}
 		}
-		int dommages = arme.computeDamage(fireLine.getP1().distance(fireLine.getP2()));
-		ennemiTouche.perdVie(dommages);
-		System.out.println("Ennemi " + ennemiTouche.pseudo + " perd " + dommages + " : vie restante: " + ennemiTouche.getVie()
-		+ " / armure restante: " + ennemiTouche.getArmure());
+		if(ennemiTouche!=null){
+			int dommages = arme.computeDamage(fireLine.getP1().distance(fireLine.getP2()));
+			ennemiTouche.perdVie(dommages);
+			System.out.println("Ennemi " + ennemiTouche.pseudo + " perd " + dommages + " : vie restante: " + ennemiTouche.getVie()
+			+ " / armure restante: " + ennemiTouche.getArmure());
+		}
 		
 		
 	}
