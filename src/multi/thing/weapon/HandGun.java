@@ -10,15 +10,16 @@ public class HandGun extends Weapon {
 
 	private int cpt;
 	
+	protected static final double DpS=50;
+	protected static final double RoF=2;
+	protected static final double RaoF=10;
+	protected static final int maxAmmo=60;
+	
 	public HandGun(){}
 
 	public HandGun(Vector2D pos) {
 		super(pos);
 		ammo = 12;
-		maxAmmo = 60;
-		RoF = 2;
-		DpS = 50;
-		RaoF = 10;
 		cpt = 2;
 	}
 

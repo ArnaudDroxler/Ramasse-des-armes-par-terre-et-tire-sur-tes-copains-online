@@ -56,7 +56,7 @@ public class PcServer {
 				} else if (object instanceof PlayerUpdateMessage) {
 					PlayerUpdateMessage pum = (PlayerUpdateMessage) object;
 					partie.updateJoueur(connection.getID(), pum);
-					connection.sendUDP(partie);
+					partie.nbBytesSent = connection.sendUDP(partie);
 				} else if(object instanceof PickUpMessage){
 					server.sendToAllExceptUDP(connection.getID(), (PickUpMessage)object);
 				}

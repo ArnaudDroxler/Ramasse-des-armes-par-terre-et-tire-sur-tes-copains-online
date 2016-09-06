@@ -100,4 +100,8 @@ public class PcClient {
 		client.sendTCP(pum);
 	}
 
+	public void sendFireMessage(int indexOfPlayer) {
+		
+	}
+
 }

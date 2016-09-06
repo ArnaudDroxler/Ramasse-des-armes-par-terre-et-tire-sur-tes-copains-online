@@ -7,20 +7,19 @@ import multi.tools.MagasinImage;
 import multi.tools.raycasting.Vector2D;
 
 public class SubmachineGun extends Weapon {
-
 	
-	private int cpt;
+	protected static final double DpS=30;
+	protected static final double RoF=8;
+	protected static final double RaoF=20;
+	protected static final int maxAmmo=200;
+	
+	private int cpt = 2;
 	
 	public SubmachineGun(){}
 
 	public SubmachineGun(Vector2D pos) {
 		super(pos);
 		ammo = 40;
-		maxAmmo = 200;
-		RoF = 8;
-		DpS = 30;
-		RaoF = 20;
-		cpt = 2;
 	}
 
 	@Override

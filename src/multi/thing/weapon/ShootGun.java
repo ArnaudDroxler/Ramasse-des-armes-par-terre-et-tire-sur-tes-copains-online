@@ -11,15 +11,16 @@ public class ShootGun extends Weapon {
 
 	private int cpt;
 	
+	protected static final double DpS=80;
+	protected static final double RoF=1;
+	protected static final double RaoF=8;
+	protected static final int maxAmmo=80;
+	
 	public ShootGun(){}
 
 	public ShootGun(Vector2D pos) {
 		super(pos);
 		ammo = 16;
-		maxAmmo = 80;
-		RoF = 1;
-		DpS = 80;
-		RaoF = 8;
 		cpt = 0;
 	}
 
