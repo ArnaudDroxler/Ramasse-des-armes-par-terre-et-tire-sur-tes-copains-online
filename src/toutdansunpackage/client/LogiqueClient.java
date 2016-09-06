@@ -10,7 +10,6 @@ import java.util.List;
 
 import com.esotericsoftware.kryonet.Listener;
 
-import multi.FenetreJeu;
 import toutdansunpackage.thing.Armure;
 import toutdansunpackage.thing.Medipack;
 import toutdansunpackage.thing.Thing;
@@ -21,6 +20,7 @@ import toutdansunpackage.tools.map.LvlMap;
 import toutdansunpackage.tools.raycasting.Vector2D;
 import toutdansunpackage.server.JoueurOnline;
 import toutdansunpackage.server.Partie;
+import toutdansunpackage.server.PcServer;
 
 public class LogiqueClient/* extends KeyAdapter */ {
 
@@ -231,6 +231,7 @@ public class LogiqueClient/* extends KeyAdapter */ {
 			
 		}
 		// informer le serveur
+		pcClient.sendFireMessage(joueurId);
 	}
 
 	public void setAffichageScore(boolean b) {

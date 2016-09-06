@@ -76,4 +76,19 @@ public class AssaultRifle extends Weapon {
 		return "toutdansunpackage.thing.weapon.AssaultRifle";
 	}
 
+	@Override
+	public double getDpS() {
+		return DpS;
+	}
+
+	@Override
+	public double getRoF() {
+		return RoF;
+	}
+
+	@Override
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
+
 }

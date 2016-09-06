@@ -10,7 +10,6 @@ public abstract class Weapon extends Thing {
 
 	protected static final double DpS=0;
 	protected static final double RoF=0;
-	protected static final double RaoF=0;
 	protected static final int maxAmmo=0;
 	
 	protected int ammo;
@@ -28,20 +27,11 @@ public abstract class Weapon extends Thing {
 
 	public abstract BufferedImage getSpriteHUD();
 
-	public double getDpS() {
-		return DpS;
-	}
-
-	public double getRoF() {
-		return RoF;
-	}
-
-	public int getAmmo() {
-		return ammo;
-	}
-	public int getMaxAmmo() {
-		return maxAmmo;
-	}
+	public int getAmmo(){return ammo;}
+	
+	public abstract double getDpS();
+	public abstract double getRoF();
+	public abstract int getMaxAmmo();
 
 	public void sumAmmo(int a) {
 		if (ammo < maxAmmo) {
