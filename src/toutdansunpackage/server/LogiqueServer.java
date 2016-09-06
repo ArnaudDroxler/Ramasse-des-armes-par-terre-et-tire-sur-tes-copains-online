@@ -35,7 +35,6 @@ public class LogiqueServer {
 
 	public void fireFromPlayer(int clientId) {
 		JoueurOnline shooter = partie.getJoueurs().get(clientId);
-		System.out.println(shooter.pseudo + " a fait feu\n" + partie);
 
 		Vector2D pos = shooter.getPosition();
 		Vector2D dir = shooter.getDirection();
@@ -73,10 +72,12 @@ public class LogiqueServer {
 				ennemiTouche = ennemi;
 			}
 		}
-		ennemiTouche.perdVie(arme.computeDamage(fireLine.getP1().distance(fireLine.getP2())));
-		System.out.println("Ennemi " + ennemiTouche.pseudo + ": vie restante: " + ennemiTouche.getVie()
+		int dommages = arme.computeDamage(fireLine.getP1().distance(fireLine.getP2()));
+		ennemiTouche.perdVie(dommages);
+		System.out.println("Ennemi " + ennemiTouche.pseudo + " perd " + dommages + " : vie restante: " + ennemiTouche.getVie()
 		+ " / armure restante: " + ennemiTouche.getArmure());
-
+		
+		
 	}
 
 }
