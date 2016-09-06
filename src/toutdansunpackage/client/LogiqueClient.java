@@ -206,14 +206,13 @@ public class LogiqueClient/* extends KeyAdapter */ {
 			public void run() {
 				try {
 					isFiring = true;
-					while (JFrameClient.mouseLeftPressed && !joueur.getMort()) {
+					while (JFrameClient.mouseLeftPressed && !joueur.getMort() && joueur.getArme().getAmmo()>0) {
 						fire();
 						Thread.sleep((long) (1000 / joueur.getArme().getRoF()));
 					}
 					isFiring = false;
 				} catch (InterruptedException e) {
 					e.printStackTrace();
-
 				}
 			}
 		});
@@ -224,6 +223,9 @@ public class LogiqueClient/* extends KeyAdapter */ {
 	}
 
 	protected void fire() {
+		// dépenser une munition
+		joueur.getArme().subAmmo(1);
+		
 		// lancer l'animation
 		if (joueur.getArme().getAmmo() > 0) {
 			joueur.getArme().subAmmo(1);
