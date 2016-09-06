@@ -227,7 +227,11 @@ public class LogiqueClient/* extends KeyAdapter */ {
 		joueur.getArme().subAmmo(1);
 		
 		// lancer l'animation
-		
+		if (joueur.getArme().getAmmo() > 0) {
+			joueur.getArme().subAmmo(1);
+			joueur.getArme().setIsFiring(true);
+			
+		}
 		// informer le serveur
 		pcClient.sendFireMessage(joueurId);
 	}

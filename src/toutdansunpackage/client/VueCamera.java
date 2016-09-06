@@ -5,9 +5,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Iterator;
@@ -15,6 +17,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import toutdansunpackage.thing.Thing;
+import toutdansunpackage.thing.weapon.PrecisionRifle;
 import toutdansunpackage.tools.MagasinImage;
 import toutdansunpackage.tools.raycasting.Vector2D;
 import toutdansunpackage.server.JoueurOnline;
@@ -42,6 +45,8 @@ public class VueCamera extends Renderer {
 	private BufferedImage currentSprite;
 	
 	private TreeMap<Double, Thing> chosesAAfficher;
+	private BufferedImage buffImgWeapon;
+	private Graphics2D g2dWeapon;
 	
 
 
@@ -73,10 +78,31 @@ public class VueCamera extends Renderer {
 	private void draw() {		
 		setPosition(lc.joueur.getPosition());
 		setDirection(lc.joueur.getDirection());
-
+		
+		g2d.translate(w/2 , h/2);
+		
+		if (JFrameClient.mouseRightPressed /*&& lc.joueur.getArme() instanceof PrecisionRifle*/) {
+			
+			g2d.scale(2, 2);
+	
+		}
+		
 		drawMurs();
 		drawThings();
 		drawHUD();
+		drawWeapon();
+		
+		
+			g2d.drawImage(buffImgMurs,-w / 2, -h / 2,frameW,frameH,null);
+			g2d.drawImage(buffImgThings,-w / 2, -h / 2,frameW,frameH,null);
+			g2d.drawImage(buffImgHUD,-w / 2, -h / 2,frameW,frameH,null);
+			g2d.drawImage(buffImgWeapon,-w / 2, -h / 2,frameW,frameH,null);
+			
+		
+			
+
+	
+		
 	}
 
 	private void control() {
@@ -108,6 +134,9 @@ public class VueCamera extends Renderer {
 		buffImgHUD = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dHUD = buffImgHUD.createGraphics();
 		
+		buffImgWeapon= new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		g2dWeapon = buffImgWeapon.createGraphics();
+		
 		readyToDraw=true;
 	}
 	
@@ -122,9 +151,41 @@ public class VueCamera extends Renderer {
 		plane.setdY(vec.getdY());
 	}
 	
+	private void drawWeapon() {
+		
+		g2dWeapon.setBackground(new Color(255, 255, 255, 0));
+		g2dWeapon.clearRect(0, 0, w, h);
+				
+		if (/*lc.joueur.getArme() instanceof PrecisionRifle &&*/ JFrameClient.mouseRightPressed) {
+
+			Point2D center = new Point2D.Float(w/2, h/2);
+			float radius = w / 8;
+			float[] dist = { 0.0f, 0.9f, 1.0f };
+
+			Color trans = new Color(0f, 0f, 0f, 0f);
+
+			Color[] colors = { trans, trans, Color.black };
+			RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
+
+			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
+			g2dWeapon.setPaint(gradient);
+			g2dWeapon.fill(rectangle);
+
+			g2dWeapon.setColor(Color.black);
+			g2dWeapon.drawLine(w/2,0, w/2,h);
+			g2dWeapon.drawLine(0,h/2,w,h/2);
+			
+		} else if (lc.joueur.getArme() != null) {
+			BufferedImage img = scale(lc.joueur.getArme().getSpriteHUD(), scaleWidth, scaleHeight);
+			g2dWeapon.drawImage(img, null, w/2-img.getWidth()/2,h-img.getHeight() );
+			
+		}
+
+	}
+	
 	private void drawHUD() {
 		g2dHUD.setBackground(new Color(255, 255, 255, 0));
-		g2dHUD.clearRect(0, 0, frameW, frameH);
+		g2dHUD.clearRect(0, 0, w, h);
 		
 		g2dHUD.translate(w / 2, h / 2);
 		g2dHUD.drawImage(scale(MagasinImage.buffHud[0], scaleWidth, scaleHeight), null, -w / 2, h / 4);
@@ -151,12 +212,14 @@ public class VueCamera extends Renderer {
 
 		g2dHUD.translate(-w / 2, -h / 2);
 		
-		g2d.drawImage(buffImgHUD,0,0,frameW,frameH,null);
+	
 		
 	}
 	
 	private void drawMurs() {
-			
+		g2dMurs.setBackground(new Color(255, 255, 255, 0));
+		g2dMurs.clearRect(0, 0,w,h);
+		
 		for (int x = 0;x < w ; x++) {
 			double cameraX = 2 * x / (double) w - 1;
 			double rayPosX = pos.getdX();
@@ -306,14 +369,14 @@ public class VueCamera extends Renderer {
 			}
 		}
 		
-		g2d.drawImage(buffImgMurs,0,0,frameW,frameH,null);
+
 		
 	}
 	
 	private void drawThings() {
 		// Ici ça permet de clear rapidement une bufferedImage
 		g2dThings.setBackground(new Color(255, 255, 255, 0));
-		g2dThings.clearRect(0, 0, frameW, frameH);
+		g2dThings.clearRect(0, 0,w,h);
 
 		Vector2D deltaPos;
 		// TODO : ajouter les objets aussi dans la liste de choses a afficher
@@ -416,7 +479,7 @@ public class VueCamera extends Renderer {
 			}
 		}
 		chosesAAfficher.clear();
-		g2d.drawImage(buffImgThings,0,0,frameW,frameH,null);		
+	
 	}
 	
 	public static BufferedImage scale(BufferedImage bi, double scaleWidth2, double scaleHeight2) {
