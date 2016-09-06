@@ -128,6 +128,8 @@ public class JFrameConfiguration extends JFrame {
 
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
 					mapPath = fc.getSelectedFile().getAbsolutePath();
+					// Suppression du .png à la fin du chemin
+					mapPath = mapPath.substring(0, mapPath.length() - 4);
 					System.out.println(mapPath);
 				}
 			}
