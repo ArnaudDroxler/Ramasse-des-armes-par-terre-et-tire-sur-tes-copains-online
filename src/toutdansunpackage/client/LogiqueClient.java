@@ -131,7 +131,7 @@ public class LogiqueClient/* extends KeyAdapter */ {
 					}else if (thing instanceof Medipack){
 						joueur.ajoutVie(10);
 						hide(thing);
-					}else if(joueur.getArme().isAmmoPack(thing)){
+					}else if(joueur.getArme()!= null && joueur.getArme().isAmmoPack(thing)){
 						joueur.getArme().sumAmmo();
 						hide(thing);
 					}

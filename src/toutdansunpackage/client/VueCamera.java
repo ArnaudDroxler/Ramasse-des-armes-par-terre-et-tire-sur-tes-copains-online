@@ -307,7 +307,7 @@ public class VueCamera extends Renderer {
 			for (int y = drawStart; y < drawEnd; y++) {
 				int d = y * 256 - h * 128 + lineHeight * 128;
 				int texY = ((d * texHeight) / lineHeight) / 256;
-				if (numeroTexture > MagasinImage.buffTextMur.length)
+				if (numeroTexture >= MagasinImage.buffTextMur.length)
 					numeroTexture = 0;
 				Color c = new Color(MagasinImage.buffTextMur[numeroTexture].getRGB(texX, texY));
 				if (side == 1)
