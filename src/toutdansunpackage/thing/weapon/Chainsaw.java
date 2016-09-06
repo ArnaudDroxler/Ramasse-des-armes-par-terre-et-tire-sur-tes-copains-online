@@ -68,11 +68,6 @@ public class Chainsaw extends Weapon {
 	}
 
 	@Override
-	public String getThingType() {
-		return "toutdansunpackage.thing.weapon.Chainsaw";
-	}
-
-	@Override
 	public double getDpS() {
 		return DpS;
 	}

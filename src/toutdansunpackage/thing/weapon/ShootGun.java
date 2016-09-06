@@ -71,11 +71,6 @@ public class ShootGun extends Weapon {
 	}
 
 	@Override
-	public String getThingType() {
-		return "toutdansunpackage.thing.weapon.ShootGun";
-	}
-
-	@Override
 	public double getDpS() {
 		return DpS;
 	}

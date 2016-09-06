@@ -71,11 +71,6 @@ public class SubmachineGun extends Weapon {
 	}
 
 	@Override
-	public String getThingType() {
-		return "toutdansunpackage.thing.weapon.SubmachineGun";
-	}
-
-	@Override
 	public double getDpS() {
 		return DpS;
 	}

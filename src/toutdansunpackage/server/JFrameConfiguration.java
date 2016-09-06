@@ -89,7 +89,7 @@ public class JFrameConfiguration extends JFrame {
 
 		setContentPane(new JPanelDecorator(panel, 10));
 
-		mapPath = new String("sprite/map/maison");
+		mapPath = new String("sprite/map/StandDeTire");
 		args = new String[3];
 	}
 

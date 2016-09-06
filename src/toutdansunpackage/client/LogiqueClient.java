@@ -118,7 +118,6 @@ public class LogiqueClient/* extends KeyAdapter */ {
 			if (thing.exists() && collapse(thing.getPosition(), 1.2)) {
 				if (thing instanceof Weapon) {
 					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
-						// alors ça ça fait tout planter je sais pas pourquoi
 						joueur.setArme((Weapon) thing);
 						hide(thing);
 					} else if (joueur.weaponIs(thing)) {
@@ -126,13 +125,16 @@ public class LogiqueClient/* extends KeyAdapter */ {
 						hide(thing);
 					}
 				} else {
-					if (thing instanceof Armure)
+					if (thing instanceof Armure){
 						joueur.ajoutArmure(10);
-					else if (thing instanceof Medipack)
+						hide(thing);
+					}else if (thing instanceof Medipack){
 						joueur.ajoutVie(10);
-					else if(thing instanceof AmmoPack)
-						joueur.getArme().sumAmmo(10);
-					hide(thing);
+						hide(thing);
+					}else if(joueur.getArme().isAmmoPack(thing)){
+						joueur.getArme().sumAmmo();
+						hide(thing);
+					}
 				}
 			}
 		}

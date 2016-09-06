@@ -31,8 +31,9 @@ public abstract class Weapon extends Thing {
 	public abstract int getAmmoRecharge();
 
 	public void sumAmmo(int a) {
-		if (ammo < getMaxAmmo()) {
-			ammo += a;
+		ammo += a;
+		if (ammo > getMaxAmmo()) {
+			ammo=getMaxAmmo();
 		}
 	}
 	
@@ -133,6 +134,13 @@ public abstract class Weapon extends Thing {
 		}
 
 		return  MagasinImage.buffImpactMur[cptmur];
+	}
+
+	public boolean isAmmoPack(Thing thing) {
+		if(thing instanceof AmmoPack){
+			return ((AmmoPack)thing).getAmmoType().equals(this.getClass().getSimpleName());
+		}
+		return false;
 	}
 
 }

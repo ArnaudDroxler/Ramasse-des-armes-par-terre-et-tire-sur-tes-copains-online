@@ -17,9 +17,4 @@ public class Medipack extends Thing {
 		return MagasinImage.buffMedipack[0];
 	}
 
-	@Override
-	public String getThingType() {
-		return "toutdansunpackage.thing.Medipack";
-	}
-
 }
