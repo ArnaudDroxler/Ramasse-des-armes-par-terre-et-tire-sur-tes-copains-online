@@ -103,6 +103,8 @@ public class PcClient {
 
 	public void sendFireMessage(int idOfPlayer) {
 		FireMessage fm = new FireMessage(idOfPlayer);
+		client.sendUDP(fm);
+		System.out.println("fire");
 	}
 
 }
