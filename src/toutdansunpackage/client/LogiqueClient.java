@@ -206,7 +206,7 @@ public class LogiqueClient/* extends KeyAdapter */ {
 			public void run() {
 				try {
 					isFiring = true;
-					while (FenetreJeu.mouseLeftPressed && !joueur.getMort()) {
+					while (JFrameClient.mouseLeftPressed && !joueur.getMort()) {
 						fire();
 						Thread.sleep((long) (1000 / joueur.getArme().getRoF()));
 					}
@@ -225,7 +225,11 @@ public class LogiqueClient/* extends KeyAdapter */ {
 
 	protected void fire() {
 		// lancer l'animation
-		
+		if (joueur.getArme().getAmmo() > 0) {
+			joueur.getArme().subAmmo(1);
+			joueur.getArme().setIsFiring(true);
+			
+		}
 		// informer le serveur
 	}
 

@@ -19,7 +19,7 @@ public class JFrameClient extends JFrame {
 
 	public JFrameClient(Renderer renderer) {
 		super();
-		setSize(900, 600);
+		setSize(1280, 720);
 		setTitle("Client");
 		add(renderer);
 		setVisible(true);
@@ -30,7 +30,7 @@ public class JFrameClient extends JFrame {
 
 	private Robot robot;
 	private boolean robotActive;
-	private static boolean mouseRightPressed;
+	public static boolean mouseRightPressed;
 	public static boolean mouseLeftPressed;
 	
 

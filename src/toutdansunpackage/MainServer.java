@@ -1,6 +1,5 @@
 package toutdansunpackage;
 
-import toutdansunpackage.server.JFrameConfiguration;
 import toutdansunpackage.server.PcServer;
 
 public class MainServer {
