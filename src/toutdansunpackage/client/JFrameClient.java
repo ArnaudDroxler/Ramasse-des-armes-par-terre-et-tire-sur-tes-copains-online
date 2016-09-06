@@ -19,7 +19,7 @@ public class JFrameClient extends JFrame {
 
 	public JFrameClient(Renderer renderer) {
 		super();
-		setSize(1280, 720);
+		setSize(640, 360);
 		setTitle("Client");
 		add(renderer);
 		setVisible(true);
