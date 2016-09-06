@@ -117,14 +117,12 @@ public class LogiqueClient/* extends KeyAdapter */ {
 			thing = objets.get(i);
 			if (thing.exists() && collapse(thing.getPosition(), 1.2)) {
 				if (thing instanceof Weapon) {
-					String thingType = thing.getThingType();
 					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
 						// alors ça ça fait tout planter je sais pas pourquoi
 						joueur.setArme((Weapon) thing);
 						hide(thing);
-					} else if (joueur.getArme() != null && joueur.getArme().getThingType().equals(thingType)) {
-						String str = thingType.substring(19, thingType.length());
-						joueur.getArme().sumAmmo(AmmoPack.getAmmo(str));
+					} else if (joueur.weaponIs(thing)) {
+						joueur.getArme().sumAmmo();
 						hide(thing);
 					}
 				} else {
@@ -227,11 +225,8 @@ public class LogiqueClient/* extends KeyAdapter */ {
 		joueur.getArme().subAmmo(1);
 		
 		// lancer l'animation
-		if (joueur.getArme().getAmmo() > 0) {
-			joueur.getArme().subAmmo(1);
-			joueur.getArme().setIsFiring(true);
-			
-		}
+		joueur.getArme().setIsFiring(true);
+		
 		// informer le serveur
 		pcClient.sendFireMessage(joueurId);
 	}

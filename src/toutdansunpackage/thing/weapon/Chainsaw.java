@@ -17,6 +17,7 @@ public class Chainsaw extends Weapon {
 	protected static final double RoF=5;
 	protected static final double RaoF=2;
 	protected static final int maxAmmo=1000;
+	protected static final int ammoRecharge=200;
 	
 	public Chainsaw(){}
 
@@ -84,6 +85,11 @@ public class Chainsaw extends Weapon {
 	@Override
 	public int getMaxAmmo() {
 		return maxAmmo;
+	}
+
+	@Override
+	public int getAmmoRecharge() {
+		return ammoRecharge;
 	}
 
 }

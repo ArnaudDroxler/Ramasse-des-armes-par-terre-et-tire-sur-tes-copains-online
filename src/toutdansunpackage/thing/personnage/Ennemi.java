@@ -13,7 +13,6 @@ public class Ennemi extends Personnage {
 		vie = 100;
 		armure = 0;
 		t=0;
-		v = (float) (random.nextDouble() * .03 + 0.01) ;
 	}
 	
 	@Override

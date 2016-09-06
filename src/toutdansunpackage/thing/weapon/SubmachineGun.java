@@ -12,6 +12,7 @@ public class SubmachineGun extends Weapon {
 	protected static final double RoF=8;
 	protected static final double RaoF=20;
 	protected static final int maxAmmo=200;
+	protected static final int ammoRecharge=40;
 	
 	private int cpt = 2;
 	
@@ -87,6 +88,11 @@ public class SubmachineGun extends Weapon {
 	@Override
 	public int getMaxAmmo() {
 		return maxAmmo;
+	}
+
+	@Override
+	public int getAmmoRecharge() {
+		return ammoRecharge;
 	}
 
 }

@@ -14,6 +14,7 @@ public class HandGun extends Weapon {
 	protected static final double RoF=2;
 	protected static final double RaoF=10;
 	protected static final int maxAmmo=60;
+	protected static final int ammoRecharge=12;
 	
 	public HandGun(){}
 
@@ -88,6 +89,11 @@ public class HandGun extends Weapon {
 	@Override
 	public int getMaxAmmo() {
 		return maxAmmo;
+	}
+
+	@Override
+	public int getAmmoRecharge() {
+		return ammoRecharge;
 	}
 	
 

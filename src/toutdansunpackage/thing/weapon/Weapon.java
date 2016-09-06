@@ -7,10 +7,6 @@ import toutdansunpackage.tools.MagasinImage;
 import toutdansunpackage.tools.raycasting.Vector2D;
 
 public abstract class Weapon extends Thing {
-
-	protected static final double DpS=0;
-	protected static final double RoF=0;
-	protected static final int maxAmmo=0;
 	
 	protected int ammo;
 
@@ -32,11 +28,16 @@ public abstract class Weapon extends Thing {
 	public abstract double getDpS();
 	public abstract double getRoF();
 	public abstract int getMaxAmmo();
+	public abstract int getAmmoRecharge();
 
 	public void sumAmmo(int a) {
-		if (ammo < maxAmmo) {
+		if (ammo < getMaxAmmo()) {
 			ammo += a;
 		}
+	}
+	
+	public void sumAmmo() {
+		sumAmmo(getAmmoRecharge());
 	}
 
 	public void subAmmo(int a) {
