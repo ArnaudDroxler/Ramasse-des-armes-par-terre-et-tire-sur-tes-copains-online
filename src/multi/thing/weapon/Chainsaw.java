@@ -13,14 +13,17 @@ import multi.tools.raycasting.Vector2D;
 public class Chainsaw extends Weapon {
 
 	private int cpt;
+	
+	protected static final double DpS=50;
+	protected static final double RoF=5;
+	protected static final double RaoF=2;
+	protected static final int maxAmmo=1000;
+	
+	public Chainsaw(){}
 
 	public Chainsaw(Vector2D pos) {
 		super(pos);
 		ammo = 200;
-		maxAmmo = 1000;
-		RoF = 5;
-		DpS = 50;
-		RaoF = 2;
 		cpt = 0;
 	}
 

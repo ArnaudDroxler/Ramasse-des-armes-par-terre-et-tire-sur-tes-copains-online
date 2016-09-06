@@ -12,6 +12,7 @@ import com.esotericsoftware.kryonet.Listener;
 
 import tests.kryonet.implem.logiqueCoteClient.messages.AcceptClientMessage;
 import tests.kryonet.implem.logiqueCoteClient.messages.ClientConnexionMessage;
+import tests.kryonet.implem.logiqueCoteClient.messages.PickUpMessage;
 import tests.kryonet.implem.logiqueCoteClient.messages.PlayerUpdateMessage;
 import tests.kryonet.implem.logiqueCoteClient.server.Partie;
 import tests.kryonet.implem.logiqueCoteClient.tools.Registerer;
@@ -20,16 +21,18 @@ public class PcClient {
 
 	private JFrameClient jfcMap;
 	private LogiqueClient lc;
-	public JSlider slider;
 	private VueMap vueMap;
 	private final int networkDelay = 20;
+	private Client client;
 
 	public PcClient(String ip, String pseudo) throws IOException {
 
-		Client client = new Client();
+		client = new Client();
 		Registerer.registerFor(client);
 
 		client.start();
+		
+		PcClient moiMeme = this;
 
 		// lance une IOException si ça se passe mal
 		client.connect(5000, ip, 54555, 54777);
@@ -45,13 +48,13 @@ public class PcClient {
 					AcceptClientMessage acm = (AcceptClientMessage) object;
 					System.out.println(acm.getMsg());
 
-					lc = new LogiqueClient(acm.getMapPath(), acm.getPartie(), acm.getId());
-					VueMap vueMap = new VueMap(lc);
+					lc = new LogiqueClient(acm.getMapPath(), acm.getPartie(), acm.getId(), moiMeme);
+//					VueMap vueMap = new VueMap(lc);
 					VueCamera vueCamera = new VueCamera(lc);
-					//jfcMap = new JFrameClient(vueMap);
+//					jfcMap = new JFrameClient(vueMap);
 					JFrameClient jfcCamera = new JFrameClient(vueCamera);
-					//jfcMap.setLocation(0, 720);
-					//jfcMap.setSize(400, 280);
+//					jfcMap.setLocation(0, 720);
+//					jfcMap.setSize(400, 280);
 
 //					jfcMap.addWindowListener(new WindowAdapter() {
 //						@Override
@@ -82,12 +85,23 @@ public class PcClient {
 				} else if (object instanceof Partie) {
 					// jfc.debug(object.toString());
 					lc.updatePartie((Partie) object);
+				} else if (object instanceof PickUpMessage) {
+					lc.hideThing(((PickUpMessage)object).getIndexOfThing());
 				} else if (object instanceof String) {
 					System.out.println((String)object);
 				}
 			}
 		});
 
+	}
+
+	public void sendPickUpMessage(int indexOfThing) {
+		PickUpMessage pum = new PickUpMessage(indexOfThing);
+		client.sendTCP(pum);
+	}
+
+	public void sendFireMessage(int indexOfPlayer) {
+		
 	}
 
 }

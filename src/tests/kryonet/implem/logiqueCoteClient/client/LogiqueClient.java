@@ -5,16 +5,23 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
+import com.esotericsoftware.kryonet.Listener;
+
+import multi.thing.Armure;
+import multi.thing.Medipack;
 import multi.thing.Thing;
+import multi.thing.weapon.AmmoPack;
+import multi.thing.weapon.Weapon;
 import multi.tools.map.ImageParser;
 import multi.tools.map.LvlMap;
 import multi.tools.raycasting.Vector2D;
 import tests.kryonet.implem.logiqueCoteClient.server.JoueurOnline;
 import tests.kryonet.implem.logiqueCoteClient.server.Partie;
 
-public class LogiqueClient/* extends KeyAdapter */{
+public class LogiqueClient/* extends KeyAdapter */ {
 
 	protected static final long delay = 20;
 	protected boolean fin;
@@ -25,16 +32,24 @@ public class LogiqueClient/* extends KeyAdapter */{
 	protected Vector2D oldPosition;
 	protected HashSet<Integer> touchesEnfoncees;
 	protected int joueurId;
+	private boolean mort;
+	private PcClient pcClient;
 
-	public LogiqueClient(String nomMap, Partie partie, int i) {
+	public LogiqueClient(String nomMap, Partie partie, int i, PcClient pcClient) {
 		touchesEnfoncees = new HashSet<Integer>(6);
 		fin = false;
 		map = ImageParser.getMap(nomMap);
-		oldPosition = map.getStartPosition();
+		objets = map.getListThing();
 		
-		joueurId=i;
+		this.pcClient=pcClient;
+
 		joueurs = partie.getJoueurs();
-		joueur=joueurs.get(i);
+
+		// TODO: remplacer ceci par la position calculée par Vincent
+		oldPosition = map.getStartPosition();
+
+		joueurId = i;
+		joueur = joueurs.get(i);
 		joueur.setPosition(oldPosition);
 		animer();
 	}
@@ -59,18 +74,9 @@ public class LogiqueClient/* extends KeyAdapter */{
 		});
 		thread.start();
 	}
-/*
-	@Override
-	public void keyPressed(KeyEvent e) {
-		touchesEnfoncees.add(e.getKeyCode());
-	}
 
-	@Override
-	public void keyReleased(KeyEvent e) {
-		touchesEnfoncees.remove(e.getKeyCode());
-	}
-	*/
 	protected void updateDeplacement() {
+
 		oldPosition = joueur.getPosition();
 		if (touchesEnfoncees.contains(KeyEvent.VK_W)) {
 			joueur.forward();
@@ -97,14 +103,41 @@ public class LogiqueClient/* extends KeyAdapter */{
 			joueur.rotateRight();
 		}
 
+		if (!mort)
+			collectItems();
+
+
 	}
 
-	public void updatePartie(Partie partie) {
-		joueurs = partie.getJoueurs();
-		// mauvaise solution car très peu performante :
-		//joueur = ennemis.remove(joueurId);
+	private void collectItems() {
+		Thing thing;
+		for (int i = 0; i < objets.size(); i++) {
+			thing = objets.get(i);
+			if (thing.exists() && collapse(thing.getPosition(), 1.2)) {
+				if (thing instanceof Weapon) {
+					String thingType = thing.getThingType();
+					if (touchesEnfoncees.contains(KeyEvent.VK_E)) {
+						// alors ça ça fait tout planter je sais pas pourquoi
+						joueur.setArme((Weapon) thing);
+						hide(thing);
+					} else if (joueur.getArme() != null && joueur.getArme().getThingType().equals(thingType)) {
+						String str = thingType.substring(19, thingType.length());
+						joueur.getArme().sumAmmo(AmmoPack.getAmmo(str));
+						hide(thing);
+					}
+				} else {
+					if (thing instanceof Armure)
+						joueur.ajoutArmure(10);
+					else if (thing instanceof Medipack)
+						joueur.ajoutVie(10);
+					else if(thing instanceof AmmoPack)
+						joueur.getArme().sumAmmo(10);
+					hide(thing);
+				}
+			}
+		}
 	}
-	
+
 	private void moveAlongWalls() {
 		double newx = joueur.getPosition().getdX();
 		double newy = joueur.getPosition().getdY();
@@ -146,14 +179,41 @@ public class LogiqueClient/* extends KeyAdapter */{
 		}
 	}
 
+	// envoie au serveur l'info que j'ai ramassé qqch
+	private void hide(Thing thing) {
+		thing.hideForAWhile();
+		pcClient.sendPickUpMessage(objets.indexOf(thing));
+	}
+
+	// methode appelée par le serveur parce que qqn a ramassé qqch et il faut le cacher
+	public void hideThing(int indexOfThing) {
+		objets.get(indexOfThing).hideForAWhile();
+	}
+
+
+	public void updatePartie(Partie partie) {
+		joueurs = partie.getJoueurs();
+		// mauvaise solution car très peu performante :
+		// joueur = ennemis.remove(joueurId);
+	}
+
 	public void mouseLeftPressed() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void setAffichageScore(boolean b) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
+	private boolean collapse(Vector2D point, double r) {
+		// pas top
+		// double x = joueur.getPosition().getdX();
+		// double y = joueur.getPosition().getdY();
+		// return (x >= point.getdX() - r && x <= point.getdX() + r && y >=
+
+		// mieux
+		return (point.sub(joueur.getPosition()).length() < r);
+	}
 }

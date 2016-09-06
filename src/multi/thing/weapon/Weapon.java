@@ -8,12 +8,12 @@ import multi.tools.raycasting.Vector2D;
 
 public abstract class Weapon extends Thing {
 
-	protected double DpS;
-	protected double RoF;
-	protected double RaoF;
-	protected int ammo;
-	protected int maxAmmo;
+	protected static final double DpS=0;
+	protected static final double RoF=0;
+	protected static final double RaoF=0;
+	protected static final int maxAmmo=0;
 	
+	protected int ammo;
 
 	protected boolean isFiring;
 	protected boolean impactMur;
@@ -21,6 +21,8 @@ public abstract class Weapon extends Thing {
 
 	private int cptennemi;
 	private int cptmur;
+	
+	public Weapon(){}
 
 	public abstract int computeDamage(double d);
 

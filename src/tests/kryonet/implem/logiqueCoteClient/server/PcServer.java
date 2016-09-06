@@ -10,6 +10,7 @@ import com.esotericsoftware.kryonet.Server;
 
 import tests.kryonet.implem.logiqueCoteClient.messages.AcceptClientMessage;
 import tests.kryonet.implem.logiqueCoteClient.messages.ClientConnexionMessage;
+import tests.kryonet.implem.logiqueCoteClient.messages.PickUpMessage;
 import tests.kryonet.implem.logiqueCoteClient.messages.PlayerUpdateMessage;
 import tests.kryonet.implem.logiqueCoteClient.tools.Registerer;
 
@@ -32,7 +33,7 @@ public class PcServer {
 
 		String mapPath = "sprite/map/maison";
 		Partie partie = new Partie(mapPath);
-		LogiqueServer ls = new LogiqueServer(mapPath);
+		LogiqueServer ls = new LogiqueServer(mapPath, partie);
 		if(modeGraphique){
 			new JFramePartie(partie);
 		}
@@ -46,6 +47,7 @@ public class PcServer {
 					ClientConnexionMessage ccm = (ClientConnexionMessage) object;
 					connection.setName(ccm.getPseudo() + ":" + connection.getID());
 					System.out.println("nouveau joueur : " + ccm.getPseudo());
+					
 					JoueurOnline nouveaujoueur = new JoueurOnline(ccm.getPseudo(), connection.getID());
 					partie.addJoueur(connection.getID(), nouveaujoueur);
 					
@@ -54,7 +56,9 @@ public class PcServer {
 				} else if (object instanceof PlayerUpdateMessage) {
 					PlayerUpdateMessage pum = (PlayerUpdateMessage) object;
 					partie.updateJoueur(connection.getID(), pum);
-					connection.sendUDP(partie);
+					partie.nbBytesSent = connection.sendUDP(partie);
+				} else if(object instanceof PickUpMessage){
+					server.sendToAllExceptUDP(connection.getID(), (PickUpMessage)object);
 				}
 			}
 			public void disconnected(Connection connection) {

@@ -8,6 +8,7 @@ public class Partie{
 
 	private HashMap<Integer,JoueurOnline> joueurs;
 	private long tempsSecondes;
+	protected int nbBytesSent;
 	
 	public Partie(String nomMap){
 		joueurs = new HashMap<Integer,JoueurOnline>();
@@ -35,6 +36,7 @@ public class Partie{
 		for (JoueurOnline j : joueurs.values()) {
 			sb.append("\n\t" + j);
 		}
+		sb.append("\nNb Octets envoyés : " + nbBytesSent);
 		return sb.toString();
 	}
 

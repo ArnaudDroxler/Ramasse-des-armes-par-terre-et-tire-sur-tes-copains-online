@@ -6,15 +6,24 @@ import java.util.ArrayList;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
 
+import multi.thing.Thing;
+import multi.thing.weapon.HandGun;
+import multi.thing.weapon.Weapon;
+import multi.tools.raycasting.Vector2D;
+
 public class ClientSide {
 	
 	public static void main(String[] args) {
 	    Client client = new Client();
 	    
 	    Kryo kryo = client.getKryo();
-	    kryo.register(Joueur.class);
-	    kryo.register(Infos.class);
-	    kryo.register(ArrayList.class);
+//	    kryo.register(Joueur.class);
+//	    kryo.register(Infos.class);
+//	    kryo.register(ArrayList.class);
+	    kryo.register(Weapon.class);
+	    kryo.register(HandGun.class);
+	    kryo.register(Vector2D.class);
+	    kryo.register(Thing.class);
 	    
 	    client.start();
 	    try {
@@ -23,13 +32,15 @@ public class ClientSide {
 			e.printStackTrace();
 		}
 
-	    Infos infos = new Infos("coucou");
+//	    Infos infos = new Infos("coucou");
+//	    
+//	    Joueur j= new Joueur("aicha", 12, 2);
+//	    infos.addJoueur(j);
+//	    infos.addJoueur(new Joueur("yoan", 4, 4));
 	    
-	    Joueur j= new Joueur("aicha", 12, 2);
-	    infos.addJoueur(j);
-	    infos.addJoueur(new Joueur("yoan", 4, 4));
+	    HandGun w = new HandGun(new Vector2D(12, 12));
 	    
-	    int nbBSent = client.sendUDP(infos);
+	    int nbBSent = client.sendUDP(w);
 	    System.out.println(nbBSent + " bytes envoyés");
 	}
 
