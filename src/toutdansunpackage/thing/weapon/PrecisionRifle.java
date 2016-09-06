@@ -76,4 +76,19 @@ public class PrecisionRifle extends Weapon {
 		return "toutdansunpackage.thing.weapon.PrecisionRifle";
 	}
 
+	@Override
+	public double getDpS() {
+		return DpS;
+	}
+
+	@Override
+	public double getRoF() {
+		return RoF;
+	}
+
+	@Override
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
+
 }

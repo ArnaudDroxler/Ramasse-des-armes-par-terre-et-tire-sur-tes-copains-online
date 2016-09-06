@@ -12,6 +12,7 @@ import com.esotericsoftware.kryonet.Listener;
 
 import toutdansunpackage.messages.AcceptClientMessage;
 import toutdansunpackage.messages.ClientConnexionMessage;
+import toutdansunpackage.messages.FireMessage;
 import toutdansunpackage.messages.PickUpMessage;
 import toutdansunpackage.messages.PlayerUpdateMessage;
 import toutdansunpackage.server.Partie;
@@ -97,11 +98,11 @@ public class PcClient {
 
 	public void sendPickUpMessage(int indexOfThing) {
 		PickUpMessage pum = new PickUpMessage(indexOfThing);
-		client.sendTCP(pum);
+		client.sendUDP(pum);
 	}
 
-	public void sendFireMessage(int indexOfPlayer) {
-		
+	public void sendFireMessage(int idOfPlayer) {
+		FireMessage fm = new FireMessage(idOfPlayer);
 	}
 
 }

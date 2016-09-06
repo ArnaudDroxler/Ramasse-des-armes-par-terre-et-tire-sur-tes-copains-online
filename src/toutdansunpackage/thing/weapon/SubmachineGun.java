@@ -74,4 +74,19 @@ public class SubmachineGun extends Weapon {
 		return "toutdansunpackage.thing.weapon.SubmachineGun";
 	}
 
+	@Override
+	public double getDpS() {
+		return DpS;
+	}
+
+	@Override
+	public double getRoF() {
+		return RoF;
+	}
+
+	@Override
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
+
 }

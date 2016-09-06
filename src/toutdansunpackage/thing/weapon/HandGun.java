@@ -74,6 +74,21 @@ public class HandGun extends Weapon {
 	public String getThingType() {
 		return "toutdansunpackage.thing.weapon.HandGun";
 	}
+
+	@Override
+	public double getDpS() {
+		return DpS;
+	}
+
+	@Override
+	public double getRoF() {
+		return RoF;
+	}
+
+	@Override
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
 	
 
 }

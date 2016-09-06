@@ -10,6 +10,7 @@ import com.esotericsoftware.kryonet.Server;
 
 import toutdansunpackage.messages.AcceptClientMessage;
 import toutdansunpackage.messages.ClientConnexionMessage;
+import toutdansunpackage.messages.FireMessage;
 import toutdansunpackage.messages.PickUpMessage;
 import toutdansunpackage.messages.PlayerUpdateMessage;
 import toutdansunpackage.tools.Registerer;
@@ -21,6 +22,7 @@ public class PcServer {
 	private String nombreJoueursMax;
 	private Partie partie;
 	private Server server;
+	private LogiqueServer ls;
 
 	public PcServer(String[] args) {
 		server = new Server();
@@ -36,7 +38,7 @@ public class PcServer {
 
 			Registerer.registerFor(server);
 
-			LogiqueServer ls = new LogiqueServer(mapPath, partie);
+			ls = new LogiqueServer(mapPath, partie);
 
 			server.start();
 
@@ -78,6 +80,8 @@ public class PcServer {
 					partie.nbBytesSent = connection.sendUDP(partie);
 				} else if (object instanceof PickUpMessage) {
 					server.sendToAllExceptUDP(connection.getID(), (PickUpMessage) object);
+				} else if (object instanceof FireMessage) {
+					ls.fireFromPlayer(((FireMessage)object).getClientId());
 				}
 			}
 

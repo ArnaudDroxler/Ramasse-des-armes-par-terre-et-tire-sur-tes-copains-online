@@ -18,6 +18,7 @@ import toutdansunpackage.thing.weapon.Weapon;
 import toutdansunpackage.tools.raycasting.Vector2D;
 import toutdansunpackage.messages.AcceptClientMessage;
 import toutdansunpackage.messages.ClientConnexionMessage;
+import toutdansunpackage.messages.FireMessage;
 import toutdansunpackage.messages.PickUpMessage;
 import toutdansunpackage.messages.PlayerUpdateMessage;
 import toutdansunpackage.server.JoueurOnline;
@@ -32,6 +33,7 @@ public class Registerer {
 		kryo.register(PlayerUpdateMessage.class);
 		kryo.register(AcceptClientMessage.class);
 		kryo.register(PickUpMessage.class);
+		kryo.register(FireMessage.class);
 		kryo.register(Partie.class);
 		
 		// Joueur

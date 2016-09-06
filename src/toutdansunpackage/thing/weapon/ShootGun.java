@@ -74,4 +74,19 @@ public class ShootGun extends Weapon {
 		return "toutdansunpackage.thing.weapon.ShootGun";
 	}
 
+	@Override
+	public double getDpS() {
+		return DpS;
+	}
+
+	@Override
+	public double getRoF() {
+		return RoF;
+	}
+
+	@Override
+	public int getMaxAmmo() {
+		return maxAmmo;
+	}
+
 }
