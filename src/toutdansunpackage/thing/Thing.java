@@ -147,7 +147,7 @@ public abstract class Thing {
 	public int getNbSecteurs(){
 		return 1;
 	}
-	public abstract String getThingType();
+
 	private boolean exists;
 	
 	public boolean exists() {

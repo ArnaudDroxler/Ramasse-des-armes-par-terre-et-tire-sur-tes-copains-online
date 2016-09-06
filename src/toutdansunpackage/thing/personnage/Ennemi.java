@@ -44,9 +44,5 @@ public class Ennemi extends Personnage {
 	
 	private int t;
 	private static double alphaMax = Math.PI/3;
-	@Override
-	public String getThingType() {
-		return "toutdansunpackage.thing.personnage.Ennemi";
-	}
 
 }

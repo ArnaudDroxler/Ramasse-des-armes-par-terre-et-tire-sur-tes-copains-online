@@ -50,9 +50,4 @@ public class AmmoPack extends Thing {
 	public BufferedImage getSprite() {
 		return buffsSprite.get(WeaponSelected);
 	}
-
-	@Override
-	public String getThingType() {
-		return "toutdansunpackage.thing.weapon.AmmoPack";
-	}
 }

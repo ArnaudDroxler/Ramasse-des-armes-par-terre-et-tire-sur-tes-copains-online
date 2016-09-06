@@ -73,11 +73,6 @@ public class AssaultRifle extends Weapon {
 	}
 
 	@Override
-	public String getThingType() {
-		return "toutdansunpackage.thing.weapon.AssaultRifle";
-	}
-
-	@Override
 	public double getDpS() {
 		return DpS;
 	}

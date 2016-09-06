@@ -46,9 +46,4 @@ public class Joueur extends Personnage {
 		armure = 50;
 	}
 
-	@Override
-	public String getThingType() {
-		return "toutdansunpackage.thing.personnage.Joueur";
-	}
-
 }
