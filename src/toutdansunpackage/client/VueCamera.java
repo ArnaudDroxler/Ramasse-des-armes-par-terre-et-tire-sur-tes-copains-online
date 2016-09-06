@@ -33,13 +33,10 @@ public class VueCamera extends Renderer {
 	private int texHeight = 256;
 	
 	protected double[] tabDistStripes;
-	protected BufferedImage buffImgThings;
-	protected java.awt.geom.Rectangle2D.Double clearRect;
 	protected Graphics2D g2dThings;
 	private Graphics2D g2dMurs;
-	private BufferedImage buffImgMurs;
+	private BufferedImage buffImgMurs, buffImgHUD, buffImgThings;
 	private Graphics2D g2dHUD;
-	private BufferedImage buffImgHUD;
 	private Graphics2D g2d;
 	private boolean readyToDraw;
 	private BufferedImage currentSprite;
@@ -100,8 +97,6 @@ public class VueCamera extends Renderer {
 		
 		h = customH;
 		w = customW;
-		
-		clearRect = new Rectangle2D.Double(0, 0, w, h);
 
 		tabDistStripes = new double[w];
 		buffImgMurs = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -128,6 +123,9 @@ public class VueCamera extends Renderer {
 	}
 	
 	private void drawHUD() {
+		g2dHUD.setBackground(new Color(255, 255, 255, 0));
+		g2dHUD.clearRect(0, 0, frameW, frameH);
+		
 		g2dHUD.translate(w / 2, h / 2);
 		g2dHUD.drawImage(scale(MagasinImage.buffHud[0], scaleWidth, scaleHeight), null, -w / 2, h / 4);
 		g2dHUD.setColor(new Color(0, 97, 255));
@@ -314,9 +312,8 @@ public class VueCamera extends Renderer {
 	
 	private void drawThings() {
 		// Ici ça permet de clear rapidement une bufferedImage
-		AlphaComposite alphacomp = AlphaComposite.getInstance(AlphaComposite.CLEAR, 0.0f);
-		g2dThings.setComposite(alphacomp);
-		g2dThings.fill(clearRect);
+		g2dThings.setBackground(new Color(255, 255, 255, 0));
+		g2dThings.clearRect(0, 0, frameW, frameH);
 
 		Vector2D deltaPos;
 		// TODO : ajouter les objets aussi dans la liste de choses a afficher

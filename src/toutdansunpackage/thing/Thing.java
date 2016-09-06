@@ -112,7 +112,7 @@ public abstract class Thing {
 	}
 
 	public void setVitesse(double vitesse) {
-		v = vitesse;
+		v = (float)vitesse;
 	}
 
 	/*------------------------------*\
@@ -137,8 +137,8 @@ public abstract class Thing {
 
 	private Vector2D position;
 	private Vector2D direction;
-	protected double v;
-	private double dAlpha;
+	protected float v;
+	private float dAlpha;
 
 	public abstract BufferedImage getSprite();
 

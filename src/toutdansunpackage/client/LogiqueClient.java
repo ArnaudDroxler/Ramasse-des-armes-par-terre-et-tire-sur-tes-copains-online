@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.esotericsoftware.kryonet.Listener;
 
+import multi.FenetreJeu;
 import toutdansunpackage.thing.Armure;
 import toutdansunpackage.thing.Medipack;
 import toutdansunpackage.thing.Thing;
@@ -34,6 +35,7 @@ public class LogiqueClient/* extends KeyAdapter */ {
 	protected int joueurId;
 	private boolean mort;
 	private PcClient pcClient;
+	protected boolean isFiring;
 
 	public LogiqueClient(String nomMap, Partie partie, int i, PcClient pcClient) {
 		touchesEnfoncees = new HashSet<Integer>(6);
@@ -198,8 +200,33 @@ public class LogiqueClient/* extends KeyAdapter */ {
 	}
 
 	public void mouseLeftPressed() {
-		// TODO Auto-generated method stub
+		Thread threadFire = new Thread(new Runnable() {
 
+			@Override
+			public void run() {
+				try {
+					isFiring = true;
+					while (FenetreJeu.mouseLeftPressed && !joueur.getMort()) {
+						fire();
+						Thread.sleep((long) (1000 / joueur.getArme().getRoF()));
+					}
+					isFiring = false;
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+
+				}
+			}
+		});
+
+		if (joueur.getArme() != null && !isFiring) {
+			threadFire.start();
+		}
+	}
+
+	protected void fire() {
+		// lancer l'animation
+		
+		// informer le serveur
 	}
 
 	public void setAffichageScore(boolean b) {

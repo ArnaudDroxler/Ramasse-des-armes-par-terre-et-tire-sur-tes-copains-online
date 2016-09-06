@@ -15,12 +15,12 @@ public class Vector2D {
 	\*------------------------------------------------------------------*/
 
 	public Vector2D() {
-		dX = dY = 0.0;
+		dX = dY = (float) 0.0;
 	}
 
 	public Vector2D(double dX, double dY) {
-		this.dX = dX;
-		this.dY = dY;
+		this.dX = (float) dX;
+		this.dY = (float) dY;
 	}
 
 	/*------------------------------------------------------------------*\
@@ -67,8 +67,8 @@ public class Vector2D {
 
 		double length = norm();
 		if (length != 0) {
-			v2.dX = this.dX / length;
-			v2.dY = this.dY / length;
+			v2.dX = (float) (this.dX / length);
+			v2.dY = (float) (this.dY / length);
 		}
 
 		return v2;
@@ -102,8 +102,8 @@ public class Vector2D {
 	 */
 	public Vector2D rotate(double alpha) {
 		Vector2D v2 = new Vector2D();
-		v2.dX = (this.dX * Math.cos(alpha)) - (dY * Math.sin(alpha));
-		v2.dY = (this.dX * Math.sin(alpha)) + (dY * Math.cos(alpha));
+		v2.dX = (float) ((this.dX * Math.cos(alpha)) - (dY * Math.sin(alpha)));
+		v2.dY = (float) ((this.dX * Math.sin(alpha)) + (dY * Math.cos(alpha)));
 
 		return v2;
 	}
@@ -116,8 +116,8 @@ public class Vector2D {
 	 */
 	public Vector2D toutdansunpackageplyByMatrice(double[][] matrice) {
 		Vector2D v2 = new Vector2D();
-		v2.dX = (this.dX * matrice[0][0]) + (dY * matrice[0][1]);
-		v2.dY = (this.dX * matrice[1][0]) + (dY * matrice[1][1]);
+		v2.dX = (float) ((this.dX * matrice[0][0]) + (dY * matrice[0][1]));
+		v2.dY = (float) ((this.dX * matrice[1][0]) + (dY * matrice[1][1]));
 
 		return v2;
 	}
@@ -180,11 +180,11 @@ public class Vector2D {
 	\*------------------------------*/
 
 	public void setdX(double x) {
-		dX = x;
+		dX = (float) x;
 	}
 
 	public void setdY(double y) {
-		dY = y;
+		dY = (float) y;
 	}
 
 	/*------------------------------*\
@@ -208,7 +208,7 @@ public class Vector2D {
 	\*------------------------------------------------------------------*/
 
 	// Inputs
-	protected double dX;
-	protected double dY;
+	protected float dX;
+	protected float dY;
 
 }
