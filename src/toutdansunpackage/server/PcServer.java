@@ -3,6 +3,7 @@ package toutdansunpackage.server;
 import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -11,6 +12,7 @@ import com.esotericsoftware.kryonet.Server;
 import toutdansunpackage.messages.AcceptClientMessage;
 import toutdansunpackage.messages.ClientConnexionMessage;
 import toutdansunpackage.messages.DamageMessage;
+import toutdansunpackage.messages.FinPartieMessage;
 import toutdansunpackage.messages.FireMessage;
 import toutdansunpackage.messages.KillMessage;
 import toutdansunpackage.messages.PickUpMessage;
@@ -27,6 +29,8 @@ public class PcServer {
 	private Server server;
 	private LogiqueServer ls;
 
+	private ArrayList<String> listeMap;
+
 	public PcServer(String[] args) {
 		server = new Server();
 
@@ -34,12 +38,16 @@ public class PcServer {
 			new JFrameConfiguration();
 		} else {
 			// String mapPath = "sprite/map/maison";
-			
+
 			mapName = args[0];
 			nombreJoueursMax = Integer.parseInt(args[1]);
 			tempsPartie = Integer.parseInt(args[2]);
 
-			// partie = new Partie(mapPath);
+			listeMap = new ArrayList<String>();
+			listeMap.add("maison");
+			listeMap.add("yolo");
+			listeMap.add("StandDeTire");
+
 			partie = new Partie();
 
 			Registerer.registerFor(server);
@@ -53,15 +61,12 @@ public class PcServer {
 
 				String str = "le serveur est ouvert\nPorts : TCP 54555, UDP 54777";
 				System.out.println(str);
-				System.out.println("map : " + mapName);
-				System.out.println("nombre de joueurs: " + nombreJoueursMax);
-				System.out.println("temps en millisecondes: " + tempsPartie);
-				// new JFramePartie(partie);
 
-				Thread tpartie = new Thread(new Runnable() {
+				Thread tpartieEnCours = new Thread(new Runnable() {
 
 					@Override
 					public void run() {
+
 						long t1 = System.currentTimeMillis(), t2;
 						while ((tempsPartie / 1000) != partie.tempsSecondes) {
 							t2 = System.currentTimeMillis();
@@ -72,11 +77,14 @@ public class PcServer {
 								e.printStackTrace();
 							}
 						}
-						System.out.println("Partie terminée!");
+						creerNouvellePartie();
+						sendFinPartie(mapName, partie);
+
+						this.run();
 
 					}
 				});
-				tpartie.start();
+				tpartieEnCours.start();
 
 			} catch (IOException e) {
 				System.err.println("Les ports TCP 54555 et UDP 54777 ne sont pas accessibles");
@@ -99,7 +107,8 @@ public class PcServer {
 					JoueurOnline nouveaujoueur = new JoueurOnline(ccm.getPseudo(), connection.getID());
 					partie.addJoueur(connection.getID(), nouveaujoueur);
 
-					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID(),mapName);
+					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID(),
+							mapName);
 					connection.sendTCP(acm);
 				} else if (object instanceof PlayerUpdateMessage) {
 					PlayerUpdateMessage pum = (PlayerUpdateMessage) object;
@@ -128,5 +137,17 @@ public class PcServer {
 	public void sendDamageMessage(JoueurOnline ennemiTouche, int degats) {
 		DamageMessage dm = new DamageMessage(degats);
 		server.sendToUDP(ennemiTouche.id, dm);
+	}
+
+	public void sendFinPartie(String map, Partie part) {
+		FinPartieMessage fpm = new FinPartieMessage(map, part);
+		server.sendToAllTCP(fpm);
+	}
+
+	public void creerNouvellePartie() {
+		mapName = "maison";
+		partie = new Partie();
+		ls = new LogiqueServer(mapName, partie, this);
+
 	}
 }

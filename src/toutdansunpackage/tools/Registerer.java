@@ -20,6 +20,7 @@ import toutdansunpackage.tools.raycasting.Vector2D;
 import toutdansunpackage.messages.AcceptClientMessage;
 import toutdansunpackage.messages.ClientConnexionMessage;
 import toutdansunpackage.messages.DamageMessage;
+import toutdansunpackage.messages.FinPartieMessage;
 import toutdansunpackage.messages.FireMessage;
 import toutdansunpackage.messages.KillMessage;
 import toutdansunpackage.messages.PickUpMessage;
@@ -40,7 +41,8 @@ public class Registerer {
 		kryo.register(KillMessage.class);
 		kryo.register(DamageMessage.class);
 		kryo.register(Partie.class);
-		
+		kryo.register(FinPartieMessage.class);
+
 		// Joueur
 		kryo.register(JoueurOnline.class);
 		kryo.register(Joueur.class);
@@ -50,7 +52,8 @@ public class Registerer {
 
 		kryo.register(HashMap.class);
 
-		// Armes (seulement parce que l'arme est un attribut de la classe Personnage)
+		// Armes (seulement parce que l'arme est un attribut de la classe
+		// Personnage)
 		kryo.register(Weapon.class);
 		kryo.register(HandGun.class);
 		kryo.register(AssaultRifle.class);
@@ -59,7 +62,7 @@ public class Registerer {
 		kryo.register(ShootGun.class);
 		kryo.register(SubmachineGun.class);
 		kryo.register(Axe.class);
-		
+
 	}
 
 }
