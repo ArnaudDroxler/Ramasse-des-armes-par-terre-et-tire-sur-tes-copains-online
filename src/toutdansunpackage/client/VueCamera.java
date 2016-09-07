@@ -225,7 +225,6 @@ public class VueCamera extends Renderer {
 		
 		if (lc.isFiring && !(lc.joueur.getArme() instanceof Chainsaw) && !lc.impactMurLine.isEmpty()) {
 			Iterator<Line2D> iterator = lc.impactMurLine.iterator();
-			System.out.println("coucou");
 			while (iterator.hasNext()){
 				Line2D line = iterator.next();
 
@@ -256,7 +255,6 @@ public class VueCamera extends Renderer {
 		
 		if (lc.isFiring && !(lc.joueur.getArme() instanceof Chainsaw) && !lc.impactEnnemiLine.isEmpty()) {
 			Iterator<Line2D> iterator = lc.impactEnnemiLine.iterator();
-			System.out.println("coucou");
 			while (iterator.hasNext()){
 				Line2D line = iterator.next();
 
