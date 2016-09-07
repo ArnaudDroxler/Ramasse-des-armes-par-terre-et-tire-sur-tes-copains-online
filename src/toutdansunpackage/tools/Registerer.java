@@ -9,6 +9,7 @@ import toutdansunpackage.thing.Thing;
 import toutdansunpackage.thing.personnage.Joueur;
 import toutdansunpackage.thing.personnage.Personnage;
 import toutdansunpackage.thing.weapon.AssaultRifle;
+import toutdansunpackage.thing.weapon.Axe;
 import toutdansunpackage.thing.weapon.Chainsaw;
 import toutdansunpackage.thing.weapon.HandGun;
 import toutdansunpackage.thing.weapon.PrecisionRifle;
@@ -53,6 +54,7 @@ public class Registerer {
 		kryo.register(PrecisionRifle.class);
 		kryo.register(ShootGun.class);
 		kryo.register(SubmachineGun.class);
+		kryo.register(Axe.class);
 		
 	}
 
