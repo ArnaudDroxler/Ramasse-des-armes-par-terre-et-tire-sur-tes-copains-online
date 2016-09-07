@@ -464,10 +464,13 @@ public class VueCamera extends Renderer {
 				int texY = ((d * texHeight) / lineHeight) / 256;
 				if (numeroTexture >= MagasinImage.buffTextMur.length)
 					numeroTexture = 0;
-				Color c = new Color(MagasinImage.buffTextMur[numeroTexture].getRGB(texX, texY));
+				BufferedImage img = MagasinImage.buffTextMur[numeroTexture];
+				// l'operateur ternaire c'est pour éviter les ArrayIndexOutOfBound
+				Color c = new Color(img.getRGB(texX, texY>0?texY:0));
 				if (side == 1)
 					c = c.darker();
 				buffImgMurs.setRGB(x, y, c.getRGB());
+			
 
 			}
 
