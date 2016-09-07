@@ -35,8 +35,10 @@ public class JFrameConfiguration extends JFrame {
 
 	public JFrameConfiguration() {
 		fc.setDialogTitle("Choisissez une carte, cliquez sur \"Annuler\" pour charger la map par défaut");
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Map images", "png");
-		fc.setFileFilter(filter);
+		//FileNameExtensionFilter filter = new FileNameExtensionFilter("Map images", "png");
+		//fc.setFileFilter(filter);
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
 
 		geometry();
 		control();
@@ -90,7 +92,7 @@ public class JFrameConfiguration extends JFrame {
 
 		setContentPane(new JPanelDecorator(panel, 10));
 
-		mapName = new String("StandDeTire");
+		mapName = new String("maps/maison");
 		args = new String[3];
 	}
 

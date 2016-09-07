@@ -31,7 +31,8 @@ public class LogiqueServer {
 	
 	public LogiqueServer(String nomMap, Partie partie, PcServer pcServer) {
 		this.partie = partie;
-		map = ImageParser.getMap(nomMap);
+//		map = ImageParser.getMap(nomMap);
+		map = ImageParser.getMapFromFolder(nomMap);
 		
 		this.pcServer = pcServer;
 		

@@ -56,7 +56,9 @@ public class LogiqueClient{
 	public LogiqueClient(String nomMap, Partie partie, int playerId, PcClient pcClient) {
 		touchesEnfoncees = new HashSet<Integer>(6);
 		fin = false;
-		map = ImageParser.getMap(nomMap);
+//		map = ImageParser.getMap(nomMap);
+//		map = ImageParser.getMapFromFolder("maps/dust");
+		map = ImageParser.getMapFromFolder(nomMap);
 		objets = map.getListThing();
 		
 		this.pcClient=pcClient;
