@@ -109,6 +109,7 @@ public class VueCamera extends Renderer {
 
 		buffImgThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dThings = buffImgThings.createGraphics();
+		g2dThings.setFont(new Font("Helvetica", Font.PLAIN, 20));
 		
 		buffImgHUD = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dHUD = buffImgHUD.createGraphics();
