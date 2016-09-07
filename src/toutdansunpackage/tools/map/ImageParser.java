@@ -22,11 +22,11 @@ import toutdansunpackage.tools.raycasting.Vector2D;
 
 public class ImageParser {
 
-	public static LvlMap getMap(String imagePath) {
+	public static LvlMap getMap(String mapName) {
 
 		try {
-			return getMap(ImageIO.read(new File(imagePath + ".png")),
-					ImageIO.read(new File(imagePath + "texture.png")));
+			return getMap(ImageIO.read(new File("sprite/map/" + mapName + ".png")),
+					ImageIO.read(new File("sprite/map/" + mapName + "texture.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;

@@ -21,7 +21,7 @@ public class VueJeu extends Renderer {
 	public VueJeu(Logique _logique) {
 		super(_logique);
 
-		addComponentListener(new ComponentAdapter() {
+		addComponentListener(new ComponentAdapter(){
 			@Override
 			public void componentResized(ComponentEvent e) {
 				double zoomx = getWidth() / (double) logique.map.getMapBackground().getWidth();

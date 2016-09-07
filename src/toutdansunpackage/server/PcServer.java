@@ -20,7 +20,7 @@ import toutdansunpackage.tools.Registerer;
 
 public class PcServer {
 
-	private String mapPath;
+	private String mapName;
 	private String tempsPartie;
 	private String nombreJoueursMax;
 	private Partie partie;
@@ -34,14 +34,14 @@ public class PcServer {
 			new JFrameConfiguration();
 		} else {
 			// String mapPath = "sprite/map/maison";
-			mapPath = args[0];
+			mapName = args[0];
 			nombreJoueursMax = args[1];
 			tempsPartie = args[2];
-			partie = new Partie(mapPath);
+			partie = new Partie(mapName);
 
 			Registerer.registerFor(server);
 
-			ls = new LogiqueServer(mapPath, partie, this);
+			ls = new LogiqueServer(mapName, partie, this);
 
 			server.start();
 
@@ -50,7 +50,7 @@ public class PcServer {
 
 				String str = "le serveur est ouvert\nPorts : TCP 54555, UDP 54777";
 				System.out.println(str);
-				System.out.println("map : " + mapPath);
+				System.out.println("map : " + mapName);
 				System.out.println("nombre de joueurs: " + nombreJoueursMax);
 				System.out.println("temps en millisecondes: " + tempsPartie);
 			} catch (IOException e) {
@@ -74,7 +74,7 @@ public class PcServer {
 					JoueurOnline nouveaujoueur = new JoueurOnline(ccm.getPseudo(), connection.getID());
 					partie.addJoueur(connection.getID(), nouveaujoueur);
 
-					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID(),mapPath);
+					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID(),mapName);
 					connection.sendTCP(acm);
 				} else if (object instanceof PlayerUpdateMessage) {
 					PlayerUpdateMessage pum = (PlayerUpdateMessage) object;

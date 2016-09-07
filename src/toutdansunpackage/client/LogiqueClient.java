@@ -35,7 +35,6 @@ public class LogiqueClient/* extends KeyAdapter */ {
 	protected JoueurOnline joueur;
 	protected Vector2D oldPosition;
 	protected HashSet<Integer> touchesEnfoncees;
-	private boolean mort;
 	private PcClient pcClient;
 	protected boolean isFiring;
 
@@ -107,8 +106,7 @@ public class LogiqueClient/* extends KeyAdapter */ {
 			joueur.rotateRight();
 		}
 
-		if (!mort)
-			collectItems();
+		collectItems();
 
 
 	}

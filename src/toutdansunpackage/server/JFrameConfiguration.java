@@ -3,6 +3,7 @@ package toutdansunpackage.server;
 import java.awt.AWTException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Time;
 import java.util.prefs.Preferences;
@@ -89,7 +90,7 @@ public class JFrameConfiguration extends JFrame {
 
 		setContentPane(new JPanelDecorator(panel, 10));
 
-		mapPath = new String("sprite/map/StandDeTire");
+		mapName = new String("StandDeTire");
 		args = new String[3];
 	}
 
@@ -110,7 +111,7 @@ public class JFrameConfiguration extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				savePreferences();
-				args[0] = mapPath;
+				args[0] = mapName;
 				args[1] = spinNbJoueur.getValue() + "";
 				args[2] = panChoixTemps.getTimeMillis();
 				new PcServer(args);
@@ -127,10 +128,10 @@ public class JFrameConfiguration extends JFrame {
 				int returnVal = fc.showOpenDialog(JFrameConfiguration.this);
 
 				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					mapPath = fc.getSelectedFile().getAbsolutePath();
+					mapName = fc.getSelectedFile().getName();
+					System.out.println(mapName);
 					// Suppression du .png à la fin du chemin
-					mapPath = mapPath.substring(0, mapPath.length() - 4);
-					System.out.println(mapPath);
+					mapName = mapName.substring(0, mapName.length() - 4);
 				}
 			}
 
@@ -183,7 +184,7 @@ public class JFrameConfiguration extends JFrame {
 	private JPanelTemps panChoixTemps;
 	private JButton btnChoixMap;
 
-	private String mapPath;
+	private String mapName;
 
 	private JButton btnLancer;
 	private JButton btnAnnuler;
