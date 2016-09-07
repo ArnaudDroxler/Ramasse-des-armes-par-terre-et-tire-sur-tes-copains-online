@@ -79,7 +79,7 @@ public class VueCamera extends Renderer {
 		setPosition(lc.joueur.getPosition());
 		setDirection(lc.joueur.getDirection());
 		
-		g2d.translate(w/2 , h/2);
+		g2d.translate(frameW/2 , frameH/2);
 		
 		if (JFrameClient.mouseRightPressed /*&& lc.joueur.getArme() instanceof PrecisionRifle*/) {
 			
@@ -93,10 +93,10 @@ public class VueCamera extends Renderer {
 		drawWeapon();
 		
 		
-			g2d.drawImage(buffImgMurs,-w / 2, -h / 2,frameW,frameH,null);
-			g2d.drawImage(buffImgThings,-w / 2, -h / 2,frameW,frameH,null);
-			g2d.drawImage(buffImgHUD,-w / 2, -h / 2,frameW,frameH,null);
-			g2d.drawImage(buffImgWeapon,-w / 2, -h / 2,frameW,frameH,null);
+			g2d.drawImage(buffImgMurs,-frameW / 2, -frameH / 2,frameW,frameH,null);
+			g2d.drawImage(buffImgThings,-frameW / 2, -frameH / 2,frameW,frameH,null);
+			g2d.drawImage(buffImgHUD,-frameW / 2, -frameH / 2,frameW,frameH,null);
+			g2d.drawImage(buffImgWeapon,-frameW / 2, -frameH / 2,frameW,frameH,null);
 			
 		
 			
