@@ -35,7 +35,7 @@ public class JFrameConfiguration extends JFrame {
 
 	public JFrameConfiguration() {
 		fc.setDialogTitle("Choisissez une carte, cliquez sur \"Annuler\" pour charger la map par défaut");
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Map images", "png", "jpg", "gif");
+		FileNameExtensionFilter filter = new FileNameExtensionFilter("Map images", "png");
 		fc.setFileFilter(filter);
 
 		geometry();

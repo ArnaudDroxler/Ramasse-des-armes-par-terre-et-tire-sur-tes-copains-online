@@ -53,6 +53,6 @@ public class MagasinImage {
 	public static final BufferedImage[] buffImpactMur = ImageLoader.loadImagesFromFolder("sprite/impact/mur");
 
 	// DECOR
-	public static final BufferedImage buffFond = ImageLoader.loadBufferedImage("sprite/nuages.png");
+	public static final BufferedImage buffFond = null;//ImageLoader.loadBufferedImage("sprite/nuages.png");
 
 }

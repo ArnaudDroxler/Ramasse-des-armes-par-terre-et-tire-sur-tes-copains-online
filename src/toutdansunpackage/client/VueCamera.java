@@ -142,7 +142,8 @@ public class VueCamera extends Renderer {
 		//long t1 = System.currentTimeMillis();
 		
 //		prepareImgs();
-		prepareFondImg();
+		if(MagasinImage.buffFond!=null)
+			prepareFondImg();
 		prepareWallsImg();
 		prepareThingsImg();
 		if(!lc.joueur.getMort()){
