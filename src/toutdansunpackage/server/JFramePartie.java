@@ -28,7 +28,7 @@ public class JFramePartie extends JFrame implements Runnable {
 	public void run() {
 
 		long t1 = System.currentTimeMillis(), t2;
-		while (!partie.isTempsFini()) {
+		while (true) {
 			t2 = System.currentTimeMillis();
 			partie.setTempsSecondes((t2 - t1) / 1000);
 			debug(partie.toString());
@@ -38,7 +38,6 @@ public class JFramePartie extends JFrame implements Runnable {
 				e.printStackTrace();
 			}
 		}
-		System.out.println("Partie terminée!");
 	}
 
 	public void debug(String str) {

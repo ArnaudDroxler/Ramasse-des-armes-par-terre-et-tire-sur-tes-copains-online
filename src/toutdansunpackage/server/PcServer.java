@@ -38,8 +38,7 @@ public class PcServer {
 			nombreJoueursMax = Integer.parseInt(args[1]);
 			tempsPartie = Integer.parseInt(args[2]);
 
-			// partie = new Partie(mapPath);
-			partie = new Partie(mapPath, nombreJoueursMax, tempsPartie / 1000, this);
+			partie = new Partie(mapPath);
 
 			Registerer.registerFor(server);
 
@@ -62,7 +61,7 @@ public class PcServer {
 					@Override
 					public void run() {
 						long t1 = System.currentTimeMillis(), t2;
-						while (!partie.isTempsFini()) {
+						while ((tempsPartie / 1000) != partie.tempsSecondes) {
 							t2 = System.currentTimeMillis();
 							partie.setTempsSecondes((t2 - t1) / 1000);
 							try {
