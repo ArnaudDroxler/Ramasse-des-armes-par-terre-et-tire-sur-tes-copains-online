@@ -25,9 +25,10 @@ import toutdansunpackage.server.JoueurOnline;
 import toutdansunpackage.server.Partie;
 import toutdansunpackage.server.PcServer;
 
-public class LogiqueClient/* extends KeyAdapter */ {
+public class LogiqueClient{
 
 	protected static final long delay = 20;
+	protected static final long tempsRespawn = 5000;
 	protected boolean fin;
 	protected LvlMap map;
 	protected HashMap<Integer, JoueurOnline> joueurs;
@@ -67,7 +68,6 @@ public class LogiqueClient/* extends KeyAdapter */ {
 						if (!touchesEnfoncees.isEmpty()) {
 							updateDeplacement();
 						}
-						// updateEnnemis();
 						Thread.sleep(delay);
 					}
 				} catch (InterruptedException e) {
@@ -245,7 +245,7 @@ public class LogiqueClient/* extends KeyAdapter */ {
 		// double y = joueur.getPosition().getdY();
 		// return (x >= point.getdX() - r && x <= point.getdX() + r && y >=
 
-		// mieux
+		// mieux : distance entre le point et le joueur < r ?
 		return (point.sub(joueur.getPosition()).length() < r);
 	}
 
@@ -259,6 +259,7 @@ public class LogiqueClient/* extends KeyAdapter */ {
 		}else if(joueur.id == victim.id){
 			System.out.println(joueur.pseudo + ", vous êtes une victime");
 			joueur.tuer();
+			respawn();
 		}else{
 			System.out.println(killer.pseudo + " a tué " + victim.pseudo);
 		}
@@ -267,5 +268,54 @@ public class LogiqueClient/* extends KeyAdapter */ {
 	public void sufferDamages(DamageMessage dm) {
 		joueur.perdVie(dm.getDamages());
 		System.out.println(joueur.pseudo + " perd " + dm.getDamages() + ", vie : " + joueur.getVie());
+	}
+	
+	private void respawn() {
+
+		joueur.setArme(null);
+		Thread threadTimerRespawn = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(tempsRespawn);
+					// Récupérer position de tous les ennemis et calculer point central
+					Vector2D vecPointCentral = new Vector2D();
+
+					for (JoueurOnline j : joueurs.values()) {
+						vecPointCentral = vecPointCentral.add(j.getPosition());
+					}
+
+					vecPointCentral = vecPointCentral.div(joueurs.size());
+
+					Vector2D pointRespawn = new Vector2D();
+
+					// Calculer point le plus loin de la liste des
+					// positions de départ
+					double normCentre = vecPointCentral.norm();
+					double normMax = 0;
+
+					for (int i = 0; i < map.getListStartPosition().size(); i++) {
+
+						if (Math.abs(normCentre - map.getListStartPosition().get(i).norm()) > normMax) {
+							normMax = Math.abs(normCentre - map.getListStartPosition().get(i).norm());
+
+							pointRespawn.setdX(map.getListStartPosition().get(i).getdX());
+							pointRespawn.setdY(map.getListStartPosition().get(i).getdY());
+
+						}
+
+					}
+					joueur.respawn();
+					joueur.setPosition(pointRespawn);
+
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
+		threadTimerRespawn.start();
 	}
 }

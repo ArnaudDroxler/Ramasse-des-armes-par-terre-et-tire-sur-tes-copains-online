@@ -51,8 +51,6 @@ public class VueCamera extends Renderer {
 	
 	public static final Color TRANSPARENT = new Color(0,0,0,0);
 	
-
-
 	public VueCamera(LogiqueClient _logique) {
 		super(_logique);
 
@@ -190,11 +188,11 @@ public class VueCamera extends Renderer {
 		//g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
 		g2dHUD.drawString("" + lc.joueur.getVie(), -w / 2 + w / 10, h / 4 + h / 5 + h / 35);
 
-		String str = null;
+		String str = "";
 
 		if (lc.joueur.getArme() instanceof Axe) {
 			str = new String("0/0");
-		}else {
+		}else if (lc.joueur.getArme()!=null){
 			str = new String(lc.joueur.getArme().getAmmo() + "/" + lc.joueur.getArme().getMaxAmmo());
 		}
 	

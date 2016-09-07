@@ -8,10 +8,10 @@ import multi.tools.raycasting.Vector2D;
 
 public abstract class Weapon extends Thing {
 
-	protected static final double DpS=0;
-	protected static final double RoF=0;
-	protected static final double RaoF=0;
-	protected static final int maxAmmo=0;
+	protected static final double DpS=80;
+	protected static final double RoF=1;
+	protected static final double RaoF=8;
+	protected static final int maxAmmo=80;
 	
 	protected int ammo;
 
