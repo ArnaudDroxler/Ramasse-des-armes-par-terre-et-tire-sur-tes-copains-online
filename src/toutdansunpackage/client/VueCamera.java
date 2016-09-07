@@ -114,7 +114,6 @@ public class VueCamera extends Renderer {
 		
 		buffImgWeapon = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dWeapon = buffImgWeapon.createGraphics();
-		
 
 		buffImgImpact = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dImpact = buffImgImpact.createGraphics();
@@ -146,6 +145,8 @@ public class VueCamera extends Renderer {
 		if(!lc.joueur.getMort()){
 			prepareHUDImg();
 			prepareWeaponImg();
+			drawImpacteMur();
+			drawImpacteEnnemi();
 		}
 		
 		//System.out.println("temps de preparation : " + (System.currentTimeMillis()-t1));
@@ -185,8 +186,9 @@ public class VueCamera extends Renderer {
 		if(!lc.joueur.getMort()){
 			prepareHUDImg();
 			prepareWeaponImg();
-			drawImpacteEnnemi();
 			drawImpacteMur();
+			drawImpacteEnnemi();
+			
 		}
 		
 		try {
