@@ -74,8 +74,7 @@ public class PcServer {
 					JoueurOnline nouveaujoueur = new JoueurOnline(ccm.getPseudo(), connection.getID());
 					partie.addJoueur(connection.getID(), nouveaujoueur);
 
-					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID(),
-							mapPath);
+					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID(),mapPath);
 					connection.sendTCP(acm);
 				} else if (object instanceof PlayerUpdateMessage) {
 					PlayerUpdateMessage pum = (PlayerUpdateMessage) object;
@@ -104,6 +103,5 @@ public class PcServer {
 	public void sendDamageMessage(JoueurOnline ennemiTouche, int degats) {
 		DamageMessage dm = new DamageMessage(degats);
 		server.sendToUDP(ennemiTouche.id, dm);
-		
 	}
 }

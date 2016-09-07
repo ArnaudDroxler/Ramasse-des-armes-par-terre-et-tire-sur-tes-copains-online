@@ -19,6 +19,8 @@ import toutdansunpackage.thing.weapon.Weapon;
 import toutdansunpackage.tools.map.ImageParser;
 import toutdansunpackage.tools.map.LvlMap;
 import toutdansunpackage.tools.raycasting.Vector2D;
+import toutdansunpackage.messages.DamageMessage;
+import toutdansunpackage.messages.KillMessage;
 import toutdansunpackage.server.JoueurOnline;
 import toutdansunpackage.server.Partie;
 import toutdansunpackage.server.PcServer;
@@ -33,12 +35,11 @@ public class LogiqueClient/* extends KeyAdapter */ {
 	protected JoueurOnline joueur;
 	protected Vector2D oldPosition;
 	protected HashSet<Integer> touchesEnfoncees;
-	protected int joueurId;
 	private boolean mort;
 	private PcClient pcClient;
 	protected boolean isFiring;
 
-	public LogiqueClient(String nomMap, Partie partie, int i, PcClient pcClient) {
+	public LogiqueClient(String nomMap, Partie partie, int playerId, PcClient pcClient) {
 		touchesEnfoncees = new HashSet<Integer>(6);
 		fin = false;
 		map = ImageParser.getMap(nomMap);
@@ -51,8 +52,7 @@ public class LogiqueClient/* extends KeyAdapter */ {
 		// TODO: remplacer ceci par la position calculée par Vincent
 		oldPosition = map.getStartPosition();
 
-		joueurId = i;
-		joueur = joueurs.get(i);
+		joueur = joueurs.get(playerId);
 		joueur.setPosition(oldPosition);
 		joueur.setArme(new Axe(joueur.getPosition()));
 		animer();
@@ -232,7 +232,7 @@ public class LogiqueClient/* extends KeyAdapter */ {
 		joueur.getArme().setIsFiring(true);
 		
 		// informer le serveur
-		pcClient.sendFireMessage(joueurId);
+		pcClient.sendFireMessage(joueur.id);
 	}
 
 	public void setAffichageScore(boolean b) {
@@ -248,5 +248,25 @@ public class LogiqueClient/* extends KeyAdapter */ {
 
 		// mieux
 		return (point.sub(joueur.getPosition()).length() < r);
+	}
+
+	public void murderHappened(KillMessage km) {
+		JoueurOnline killer = joueurs.get(km.getKillerId());
+		JoueurOnline victim = joueurs.get(km.getVictimId());
+		
+		if(joueur.id == killer.id){
+			System.out.println(joueur.pseudo + ", vous êtes un tueur");
+			joueur.setNbKill();
+		}else if(joueur.id == victim.id){
+			System.out.println(joueur.pseudo + ", vous êtes une victime");
+			joueur.tuer();
+		}else{
+			System.out.println(killer.pseudo + " a tué " + victim.pseudo);
+		}
+	}
+
+	public void sufferDamages(DamageMessage dm) {
+		joueur.perdVie(dm.getDamages());
+		System.out.println(joueur.pseudo + " perd " + dm.getDamages() + ", vie : " + joueur.getVie());
 	}
 }

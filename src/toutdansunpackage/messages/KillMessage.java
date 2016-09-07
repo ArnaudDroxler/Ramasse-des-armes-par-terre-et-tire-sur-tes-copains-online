@@ -17,7 +17,7 @@ public class KillMessage {
 		return killerId;
 	}
 
-	public int getVictimeId() {
+	public int getVictimId() {
 		return victimeId;
 	}
 
