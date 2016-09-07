@@ -63,7 +63,7 @@ public class PcServer {
 					@Override
 					public void run() {
 						long t1 = System.currentTimeMillis(), t2;
-						while (!partie.isTempsFini()) {
+						while ((tempsPartie / 1000) != partie.tempsSecondes) {
 							t2 = System.currentTimeMillis();
 							partie.setTempsSecondes((t2 - t1) / 1000);
 							try {
