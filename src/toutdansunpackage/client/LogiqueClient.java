@@ -93,7 +93,7 @@ public class LogiqueClient{
 		}
 
 		// collisison avec les murs
-		if (map.inWall(joueur.getPosition()) && !joueur.getMort()) {
+		if (map.inWall(joueur.getPosition())) {
 			moveAlongWalls();
 		}
 
@@ -258,9 +258,9 @@ public class LogiqueClient{
 			System.out.println(joueur.pseudo + ", vous êtes une victime");
 			joueur.tuer();
 			respawn();
-		}else{
-			System.out.println(killer.pseudo + " a tué " + victim.pseudo);
 		}
+		System.out.println(killer.pseudo + " a tué " + victim.pseudo);
+		
 	}
 
 	public void sufferDamages(DamageMessage dm) {
@@ -269,7 +269,6 @@ public class LogiqueClient{
 	}
 	
 	private void respawn() {
-
 		joueur.setArme(null);
 		Thread threadTimerRespawn = new Thread(new Runnable() {
 
@@ -277,10 +276,8 @@ public class LogiqueClient{
 			public void run() {
 				try {
 					Thread.sleep(tempsRespawn);
-					Vector2D pointRespawn = getPointRespawn();
-					
+					joueur.setPosition(getPointRespawn());
 					joueur.respawn();
-					joueur.setPosition(pointRespawn);
 
 				} catch (InterruptedException e) {
 					e.printStackTrace();
