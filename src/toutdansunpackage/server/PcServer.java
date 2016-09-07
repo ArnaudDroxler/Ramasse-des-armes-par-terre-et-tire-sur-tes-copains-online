@@ -55,7 +55,28 @@ public class PcServer {
 				System.out.println("map : " + mapPath);
 				System.out.println("nombre de joueurs: " + nombreJoueursMax);
 				System.out.println("temps en millisecondes: " + tempsPartie);
-				new JFramePartie(partie);
+				// new JFramePartie(partie);
+
+				Thread tpartie = new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						long t1 = System.currentTimeMillis(), t2;
+						while (!partie.isTempsFini()) {
+							t2 = System.currentTimeMillis();
+							partie.setTempsSecondes((t2 - t1) / 1000);
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+						System.out.println("Partie terminée!");
+
+					}
+				});
+				tpartie.start();
+
 			} catch (IOException e) {
 				System.err.println("Les ports TCP 54555 et UDP 54777 ne sont pas accessibles");
 				System.exit(-1);
