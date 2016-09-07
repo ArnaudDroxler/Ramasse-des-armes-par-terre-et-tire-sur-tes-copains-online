@@ -464,7 +464,6 @@ public class Logique extends KeyAdapter {
 
 			double d = algoPiergiovanni.algoRaycasting(heros.getPosition(), heros.getDirection(), map);
 
-			// fireLineList = new ArrayList<Line2D>(5);
 
 			dictEnnemiFireLine = new HashMap<>();
 

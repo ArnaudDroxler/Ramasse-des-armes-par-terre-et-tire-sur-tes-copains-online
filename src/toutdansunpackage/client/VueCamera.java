@@ -9,17 +9,21 @@ import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.concurrent.Executor;
 
+import toutdansunpackage.thing.weapon.Chainsaw;
 import toutdansunpackage.thing.Thing;
 import toutdansunpackage.thing.weapon.Axe;
 import toutdansunpackage.thing.weapon.PrecisionRifle;
+import toutdansunpackage.thing.weapon.ShootGun;
 import toutdansunpackage.tools.MagasinImage;
 import toutdansunpackage.tools.raycasting.Vector2D;
 import toutdansunpackage.server.JoueurOnline;
@@ -47,7 +51,11 @@ public class VueCamera extends Renderer {
 	private BufferedImage currentSprite;
 	
 	private TreeMap<Double, Thing> chosesAAfficher;
-	
+
+	private BufferedImage buffImgImpact;
+	private Graphics2D g2dImpact;
+
+
 	public VueCamera(LogiqueClient _logique) {
 		super(_logique);
 		
@@ -61,6 +69,17 @@ public class VueCamera extends Renderer {
 		setBackground(Color.black);
 		
 		addResizeListener();
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		
+		super.paintComponent(g);
+		g2d = (Graphics2D) g;
+		if(readyToDraw){
+			draw();
+		}
+		
 	}
 
 	private void addResizeListener() {
@@ -96,6 +115,10 @@ public class VueCamera extends Renderer {
 		buffImgWeapon = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dWeapon = buffImgWeapon.createGraphics();
 		
+
+		buffImgImpact = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		g2dImpact = buffImgImpact.createGraphics();
+
 		buffDeathScreen = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dDeathScreen = buffDeathScreen.createGraphics();
 		g2dDeathScreen.setFont(new Font("Helvetica", Font.BOLD, 60));
@@ -105,16 +128,6 @@ public class VueCamera extends Renderer {
 		readyToDraw=true;
 	}
 	
-	@Override
-	protected void paintComponent(Graphics g) {
-		
-		super.paintComponent(g);
-		g2d = (Graphics2D) g;
-		if(readyToDraw){
-			draw();
-		}
-		
-	}
 
 	private void draw() {
 		setPosition(lc.joueur.getPosition());
@@ -140,6 +153,7 @@ public class VueCamera extends Renderer {
 		drawImage(buffImgMurs);
 		drawImage(buffImgThings);
 		if(! lc.joueur.getMort()){
+			drawImage(buffImgImpact);
 			drawImage(buffImgHUD);
 			drawImage(buffImgWeapon);
 		}else{
@@ -171,6 +185,8 @@ public class VueCamera extends Renderer {
 		if(!lc.joueur.getMort()){
 			prepareHUDImg();
 			prepareWeaponImg();
+			drawImpacteEnnemi();
+			drawImpacteMur();
 		}
 		
 		try {
@@ -208,7 +224,69 @@ public class VueCamera extends Renderer {
 		plane.setdX(vec.getdX());
 		plane.setdY(vec.getdY());
 	}
+
+	public void drawImpacteMur() {
+		g2dImpact.setBackground(TRANSPARENT);
+		g2dImpact.clearRect(0, 0, w, h);
+		
+		if (lc.isFiring && !(lc.joueur.getArme() instanceof Chainsaw) && !lc.impactMurLine.isEmpty()) {
+			Iterator<Line2D> iterator = lc.impactMurLine.iterator();
+			while (iterator.hasNext()){
+				Line2D line = iterator.next();
+
+				double longueurligne = Math.sqrt(Math.pow((line.getX2() - line.getX1()), 2) + Math.pow(line.getY2() - line.getY1(), 2));
+
+				if (lc.joueur.getArme().computeDamage(longueurligne) > 0) {
+					BufferedImage img = scale(lc.joueur.getArme().getSpriteImpactMur(),scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
+					System.out.println(img.getHeight());
+					if (lc.joueur.getArme() instanceof ShootGun) {
+						Vector2D vec = new Vector2D(line.getX2() - line.getX1(), line.getY2() - line.getY1());
+						double angle = Math.atan2(vec.getdY(), vec.getdX())
+								- Math.atan2(lc.joueur.getDirection().getdY(), lc.joueur.getDirection().getdX());
+						angle = 180 * angle / Math.PI;
+
+						g2dImpact.drawImage(img, null, w/2 - (int) (Math.tan(angle) * longueurligne) - img.getWidth() / 2, h / 2 - img.getHeight() / 2);
+
+					} else {
+						g2dImpact.drawImage(img, null, w / 2 - img.getWidth() / 2, h / 2 - img.getHeight()/2);
+					}
+
+				}
+
+			}
+		}
+	}
+		
+	public void drawImpacteEnnemi() {
+		
+		if (lc.isFiring && !(lc.joueur.getArme() instanceof Chainsaw) && !lc.impactEnnemiLine.isEmpty()) {
+			Iterator<Line2D> iterator = lc.impactEnnemiLine.iterator();
+			while (iterator.hasNext()){
+				Line2D line = iterator.next();
+
+				double longueurligne = Math.sqrt(Math.pow((line.getX2() - line.getX1()), 2) + Math.pow(line.getY2() - line.getY1(), 2));
+
+				if (lc.joueur.getArme().computeDamage(longueurligne) > 0) {
+					BufferedImage img = scale(lc.joueur.getArme().getSpriteImpactMur(),scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
+					
+					if (lc.joueur.getArme() instanceof ShootGun) {
+						Vector2D vec = new Vector2D(line.getX2() - line.getX1(), line.getY2() - line.getY1());
+						double angle = Math.atan2(vec.getdY(), vec.getdX())- Math.atan2(lc.joueur.getDirection().getdY(), lc.joueur.getDirection().getdX());
+						angle = 180 * angle / Math.PI;
+
+						g2dImpact.drawImage(img, null, w/2 - (int) (Math.tan(angle) * longueurligne) - img.getWidth() / 2, h / 2 - img.getHeight() / 2);
+
+					} else {
+						g2dImpact.drawImage(img, null, w / 2 - img.getWidth() / 2, h / 2 - img.getHeight()/2);
+					}
+
+				}
+
+			}
+		}
+	}
 	
+
 	private void prepareWeaponImg() {
 		
 		g2dWeapon.setBackground(TRANSPARENT);
