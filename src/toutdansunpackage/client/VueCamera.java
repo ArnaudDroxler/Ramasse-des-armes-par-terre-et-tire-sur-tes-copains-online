@@ -232,7 +232,6 @@ public class VueCamera extends Renderer {
 
 				if (lc.joueur.getArme().computeDamage(longueurligne) > 0) {
 					BufferedImage img = scale(lc.joueur.getArme().getSpriteImpactMur(),scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
-					System.out.println(img.getHeight());
 					if (lc.joueur.getArme() instanceof ShootGun) {
 						Vector2D vec = new Vector2D(line.getX2() - line.getX1(), line.getY2() - line.getY1());
 						double angle = Math.atan2(vec.getdY(), vec.getdX())
