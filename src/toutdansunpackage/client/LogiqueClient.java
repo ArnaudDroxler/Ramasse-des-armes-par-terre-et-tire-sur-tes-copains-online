@@ -49,11 +49,9 @@ public class LogiqueClient{
 
 		joueurs = partie.getJoueurs();
 
-		// TODO: remplacer ceci par la position calculée par Vincent
-		oldPosition = map.getStartPosition();
-
 		joueur = joueurs.get(playerId);
-		joueur.setPosition(oldPosition);
+		joueur.setPosition(getPointRespawn());
+		
 		joueur.setArme(new Axe(joueur.getPosition()));
 		animer();
 	}
@@ -279,43 +277,47 @@ public class LogiqueClient{
 			public void run() {
 				try {
 					Thread.sleep(tempsRespawn);
-					// Récupérer position de tous les ennemis et calculer point central
-					Vector2D vecPointCentral = new Vector2D();
-
-					for (JoueurOnline j : joueurs.values()) {
-						vecPointCentral = vecPointCentral.add(j.getPosition());
-					}
-
-					vecPointCentral = vecPointCentral.div(joueurs.size());
-
-					Vector2D pointRespawn = new Vector2D();
-
-					// Calculer point le plus loin de la liste des
-					// positions de départ
-					double normCentre = vecPointCentral.norm();
-					double normMax = 0;
-
-					for (int i = 0; i < map.getListStartPosition().size(); i++) {
-
-						if (Math.abs(normCentre - map.getListStartPosition().get(i).norm()) > normMax) {
-							normMax = Math.abs(normCentre - map.getListStartPosition().get(i).norm());
-
-							pointRespawn.setdX(map.getListStartPosition().get(i).getdX());
-							pointRespawn.setdY(map.getListStartPosition().get(i).getdY());
-
-						}
-
-					}
+					Vector2D pointRespawn = getPointRespawn();
+					
 					joueur.respawn();
 					joueur.setPosition(pointRespawn);
 
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
 			}
 		});
 		threadTimerRespawn.start();
+	}
+
+	protected Vector2D getPointRespawn() {
+
+		// Récupérer position de tous les ennemis et calculer point central
+		Vector2D vecPointCentral = new Vector2D();
+		for (JoueurOnline j : joueurs.values()) {
+			vecPointCentral = vecPointCentral.add(j.getPosition());
+		}
+		vecPointCentral = vecPointCentral.div(joueurs.size());
+
+		Vector2D pointRespawn = new Vector2D();
+
+		// Calculer point le plus loin de la liste des
+		// positions de départ
+		double normCentre = vecPointCentral.norm();
+		double normMax = 0;
+
+		for (int i = 0; i < map.getListStartPosition().size(); i++) {
+
+			if (Math.abs(normCentre - map.getListStartPosition().get(i).norm()) > normMax) {
+				normMax = Math.abs(normCentre - map.getListStartPosition().get(i).norm());
+
+				pointRespawn.setdX(map.getListStartPosition().get(i).getdX());
+				pointRespawn.setdY(map.getListStartPosition().get(i).getdY());
+
+			}
+
+		}
+		return pointRespawn;
 	}
 }
