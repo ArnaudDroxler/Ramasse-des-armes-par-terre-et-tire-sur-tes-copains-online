@@ -49,6 +49,8 @@ public class VueCamera extends Renderer {
 	private BufferedImage buffImgWeapon;
 	private Graphics2D g2dWeapon;
 	
+	public static final Color TRANSPARENT = new Color(0,0,0,0);
+	
 
 
 	public VueCamera(LogiqueClient _logique) {
@@ -84,6 +86,7 @@ public class VueCamera extends Renderer {
 
 		if (JFrameClient.mouseRightPressed && lc.joueur.getArme() instanceof PrecisionRifle) {
 			g2d.scale(2, 2);
+
 		}
 
 		drawMurs();
@@ -105,7 +108,7 @@ public class VueCamera extends Renderer {
 			public void componentResized(ComponentEvent e) {
 				init();
 			}
-
+			
 		});
 	}
 
@@ -127,7 +130,7 @@ public class VueCamera extends Renderer {
 		buffImgHUD = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dHUD = buffImgHUD.createGraphics();
 		
-		buffImgWeapon= new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		buffImgWeapon = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dWeapon = buffImgWeapon.createGraphics();
 		
 		readyToDraw=true;
@@ -146,7 +149,7 @@ public class VueCamera extends Renderer {
 	
 	private void drawWeapon() {
 		
-		g2dWeapon.setBackground(new Color(255, 255, 255, 0));
+		g2dWeapon.setBackground(TRANSPARENT);
 		g2dWeapon.clearRect(0, 0, w, h);
 				
 		if (lc.joueur.getArme() instanceof PrecisionRifle && JFrameClient.mouseRightPressed) {
@@ -155,9 +158,7 @@ public class VueCamera extends Renderer {
 			float radius = w / 8;
 			float[] dist = { 0.0f, 0.9f, 1.0f };
 
-			Color trans = new Color(0f, 0f, 0f, 0f);
-
-			Color[] colors = { trans, trans, Color.black };
+			Color[] colors = {TRANSPARENT, TRANSPARENT, Color.black };
 			RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
 
 			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
@@ -177,7 +178,7 @@ public class VueCamera extends Renderer {
 	}
 	
 	private void drawHUD() {
-		g2dHUD.setBackground(new Color(255, 255, 255, 0));
+		g2dHUD.setBackground(TRANSPARENT);
 		g2dHUD.clearRect(0, 0, w, h);
 		
 		g2dHUD.translate(w / 2, h / 2);
@@ -211,7 +212,7 @@ public class VueCamera extends Renderer {
 	}
 	
 	private void drawMurs() {
-		g2dMurs.setBackground(new Color(255, 255, 255, 0));
+		g2dMurs.setBackground(TRANSPARENT);
 		g2dMurs.clearRect(0, 0,w,h);
 		
 		for (int x = 0;x < w ; x++) {
@@ -273,8 +274,6 @@ public class VueCamera extends Renderer {
 			}
 			int lineHeight = (int) (h / perpWallDist);
 			tabDistStripes[x] = perpWallDist;
-
-			int middle = h / 2;
 
 			int drawStart = -lineHeight / 2 + h / 2;
 			if (drawStart < 0)
@@ -362,14 +361,11 @@ public class VueCamera extends Renderer {
 
 			}
 		}
-		
-
-		
 	}
 	
 	private void drawThings() {
 		// Ici ça permet de clear rapidement une bufferedImage
-		g2dThings.setBackground(new Color(255, 255, 255, 0));
+		g2dThings.setBackground(TRANSPARENT);
 		g2dThings.clearRect(0, 0,w,h);
 
 		Vector2D deltaPos;

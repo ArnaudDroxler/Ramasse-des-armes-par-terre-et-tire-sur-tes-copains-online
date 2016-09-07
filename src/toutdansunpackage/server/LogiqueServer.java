@@ -27,9 +27,13 @@ public class LogiqueServer {
 	private static final double r=0.8;
 	private JoueurOnline shooter;
 	
-	public LogiqueServer(String nomMap, Partie partie) {
+	private PcServer pcServer;
+	
+	public LogiqueServer(String nomMap, Partie partie, PcServer pcServer) {
 		this.partie = partie;
 		map = ImageParser.getMap(nomMap);
+		
+		this.pcServer = pcServer;
 		
 		rect = new Rectangle2D.Double();
 	}
@@ -76,10 +80,13 @@ public class LogiqueServer {
 			}
 		}
 		if(ennemiTouche!=null){
-			int dommages = arme.computeDamage(fireLine.getP1().distance(fireLine.getP2()));
-			ennemiTouche.perdVie(dommages);
-			System.out.println("Ennemi " + ennemiTouche.pseudo + " perd " + dommages + " : vie restante: " + ennemiTouche.getVie()
-			+ " / armure restante: " + ennemiTouche.getArmure());
+			int degats = arme.computeDamage(fireLine.getP1().distance(fireLine.getP2()));
+			ennemiTouche.perdVie(degats);
+			if(ennemiTouche.getMort()){
+				pcServer.sendKillMessage(shooter,ennemiTouche);
+			}else{
+				pcServer.sendDamageMessage(ennemiTouche, degats);
+			}
 		}
 		
 		

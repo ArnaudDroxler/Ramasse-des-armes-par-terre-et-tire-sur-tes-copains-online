@@ -43,10 +43,13 @@ public abstract class Personnage extends Thing {
 		}
 		// Si la vie passe en dessous de 0, on meurt
 		if (vie <= 0) {
-			estMort = true;
-			setNbDeath();
-
+			tuer();
 		}
+	}
+
+	public void tuer() {
+		estMort = true;
+		setNbDeath();
 	}
 
 	public int getVie() {

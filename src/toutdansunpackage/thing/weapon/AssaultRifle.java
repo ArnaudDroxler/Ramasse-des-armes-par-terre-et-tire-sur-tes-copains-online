@@ -21,7 +21,7 @@ public class AssaultRifle extends Weapon {
 
 	public AssaultRifle(Vector2D pos) {
 		super(pos);
-		ammo = 30;
+		ammo = ammoRecharge;
 		cpt = 2;
 	}
 

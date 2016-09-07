@@ -10,7 +10,9 @@ import com.esotericsoftware.kryonet.Server;
 
 import toutdansunpackage.messages.AcceptClientMessage;
 import toutdansunpackage.messages.ClientConnexionMessage;
+import toutdansunpackage.messages.DamageMessage;
 import toutdansunpackage.messages.FireMessage;
+import toutdansunpackage.messages.KillMessage;
 import toutdansunpackage.messages.PickUpMessage;
 import toutdansunpackage.messages.PlayerUpdateMessage;
 import toutdansunpackage.tools.MagasinImage;
@@ -39,7 +41,7 @@ public class PcServer {
 
 			Registerer.registerFor(server);
 
-			ls = new LogiqueServer(mapPath, partie);
+			ls = new LogiqueServer(mapPath, partie, this);
 
 			server.start();
 
@@ -72,8 +74,7 @@ public class PcServer {
 					JoueurOnline nouveaujoueur = new JoueurOnline(ccm.getPseudo(), connection.getID());
 					partie.addJoueur(connection.getID(), nouveaujoueur);
 
-					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID(),
-							mapPath);
+					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID(),mapPath);
 					connection.sendTCP(acm);
 				} else if (object instanceof PlayerUpdateMessage) {
 					PlayerUpdateMessage pum = (PlayerUpdateMessage) object;
@@ -92,5 +93,15 @@ public class PcServer {
 			}
 		});
 
+	}
+
+	public void sendKillMessage(JoueurOnline shooter, JoueurOnline ennemiTouche) {
+		KillMessage km = new KillMessage(shooter.id,ennemiTouche.id);
+		server.sendToAllUDP(km);
+	}
+
+	public void sendDamageMessage(JoueurOnline ennemiTouche, int degats) {
+		DamageMessage dm = new DamageMessage(degats);
+		server.sendToUDP(ennemiTouche.id, dm);
 	}
 }

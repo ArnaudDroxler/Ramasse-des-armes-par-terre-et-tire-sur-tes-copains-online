@@ -12,7 +12,9 @@ import com.esotericsoftware.kryonet.Listener;
 
 import toutdansunpackage.messages.AcceptClientMessage;
 import toutdansunpackage.messages.ClientConnexionMessage;
+import toutdansunpackage.messages.DamageMessage;
 import toutdansunpackage.messages.FireMessage;
+import toutdansunpackage.messages.KillMessage;
 import toutdansunpackage.messages.PickUpMessage;
 import toutdansunpackage.messages.PlayerUpdateMessage;
 import toutdansunpackage.server.Partie;
@@ -88,6 +90,10 @@ public class PcClient {
 					lc.updatePartie((Partie) object);
 				} else if (object instanceof PickUpMessage) {
 					lc.hideThing(((PickUpMessage)object).getIndexOfThing());
+				} else if (object instanceof KillMessage) {
+					lc.murderHappened((KillMessage)object);
+				} else if (object instanceof DamageMessage) {
+					lc.sufferDamages((DamageMessage)object);
 				} else if (object instanceof String) {
 					System.out.println((String)object);
 				}

@@ -135,6 +135,10 @@ public abstract class Weapon extends Thing {
 
 		return  MagasinImage.buffImpactMur[cptmur];
 	}
+	
+	public void init(){
+		ammo = getAmmoRecharge();
+	}
 
 	public boolean isAmmoPack(Thing thing) {
 		if(thing instanceof AmmoPack){
