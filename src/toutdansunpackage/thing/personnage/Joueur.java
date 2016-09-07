@@ -37,7 +37,8 @@ public class Joueur extends Personnage {
 	}
 
 	public void setArme(Weapon arme) {
-		arme.init();
+		if(arme!=null)
+			arme.init();
 		this.arme = arme;
 	}
 

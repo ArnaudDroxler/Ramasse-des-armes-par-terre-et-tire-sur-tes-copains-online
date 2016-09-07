@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.Executor;
 
 import toutdansunpackage.thing.weapon.Chainsaw;
 import toutdansunpackage.thing.Thing;
@@ -29,9 +30,12 @@ import toutdansunpackage.server.JoueurOnline;
 
 public class VueCamera extends Renderer {
 
+	public static final String strMort = new String("Vous êtes mort!");
+	public static final Color TRANSPARENT = new Color(0,0,0,0);
+	
 	private Vector2D pos, dir, plane;
 	private int frameH, frameW, h, w;
-	private final int customH = 360, customW = 640;
+	private final int customH = 540, customW = 960;
 	private final int InitialcustomHeight = 288, InitialcustomWidth = 512;
 	
 	private final double scaleWidth = (double) customW / InitialcustomWidth;
@@ -41,36 +45,30 @@ public class VueCamera extends Renderer {
 	private int texHeight = 256;
 	
 	protected double[] tabDistStripes;
-	protected Graphics2D g2dThings;
-	private Graphics2D g2dMurs;
-	private BufferedImage buffImgMurs, buffImgHUD, buffImgThings;
-	private Graphics2D g2dHUD;
-	private Graphics2D g2d;
+	private BufferedImage buffImgMurs, buffImgHUD, buffImgThings, buffImgWeapon, buffDeathScreen;
+	private Graphics2D g2d,g2dMurs,g2dThings, g2dHUD, g2dWeapon, g2dDeathScreen;
 	private boolean readyToDraw;
 	private BufferedImage currentSprite;
 	
 	private TreeMap<Double, Thing> chosesAAfficher;
-	private BufferedImage buffImgWeapon;
-	private Graphics2D g2dWeapon;
+
 	private BufferedImage buffImgImpact;
 	private Graphics2D g2dImpact;
-	
-	public static final Color TRANSPARENT = new Color(0,0,0,0);
-	
 
 
 	public VueCamera(LogiqueClient _logique) {
 		super(_logique);
+		
+		readyToDraw=false;
 
 		pos = lc.joueur.getPosition();
 		plane = new Vector2D(0, 0);
 		setDirection(lc.joueur.getDirection());
 		chosesAAfficher = new TreeMap<Double, Thing>();
 		
-		control();
-		setBackground(Color.decode("#111111"));
+		setBackground(Color.black);
 		
-		readyToDraw=false;
+		addResizeListener();
 	}
 	
 	@Override
@@ -84,33 +82,7 @@ public class VueCamera extends Renderer {
 		
 	}
 
-	private void draw() {
-		setPosition(lc.joueur.getPosition());
-		setDirection(lc.joueur.getDirection());
-
-		g2d.translate(frameW / 2, frameH / 2);
-
-		if (JFrameClient.mouseRightPressed && lc.joueur.getArme() instanceof PrecisionRifle) {
-			g2d.scale(2, 2);
-
-		}
-
-		drawMurs();
-		drawThings();
-		drawHUD();
-		drawWeapon();
-		drawImpacteMur();
-		drawImpacteEnnemi();
-
-		g2d.drawImage(buffImgMurs, -frameW / 2, -frameH / 2, frameW, frameH, null);
-		g2d.drawImage(buffImgThings, -frameW / 2, -frameH / 2, frameW, frameH, null);
-		g2d.drawImage(buffImgHUD, -frameW / 2, -frameH / 2, frameW, frameH, null);
-		g2d.drawImage(buffImgWeapon, -frameW / 2, -frameH / 2, frameW, frameH, null);
-		g2d.drawImage(buffImgImpact, -frameW / 2, -frameH / 2, frameW, frameH, null);
-
-	}
-
-	private void control() {
+	private void addResizeListener() {
 		addComponentListener(new ComponentAdapter() {
 
 			@Override
@@ -122,6 +94,7 @@ public class VueCamera extends Renderer {
 	}
 
 	private void init() {
+		readyToDraw=false;
 		
 		frameH = getHeight();
 		frameW = getWidth();
@@ -142,12 +115,99 @@ public class VueCamera extends Renderer {
 		buffImgWeapon = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dWeapon = buffImgWeapon.createGraphics();
 		
+
 		buffImgImpact = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dImpact = buffImgImpact.createGraphics();
+
+		buffDeathScreen = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		g2dDeathScreen = buffDeathScreen.createGraphics();
+		g2dDeathScreen.setFont(new Font("Helvetica", Font.BOLD, 60));
+		// cette image ne change pas, on la prépare qu'une fois
+		prepareDeathScreenImg();
 		
 		readyToDraw=true;
 	}
 	
+
+	private void draw() {
+		setPosition(lc.joueur.getPosition());
+		setDirection(lc.joueur.getDirection());
+
+		g2d.translate(frameW / 2, frameH / 2);
+		if (JFrameClient.mouseRightPressed && lc.joueur.getArme() instanceof PrecisionRifle) {
+			g2d.scale(2, 2);
+		}
+		
+		//long t1 = System.currentTimeMillis();
+		
+		prepareImgs();
+		
+		//System.out.println("temps de preparation : " + (System.currentTimeMillis()-t1));
+
+		drawImage(buffImgMurs);
+		drawImage(buffImgThings);
+		if(! lc.joueur.getMort()){
+			drawImage(buffImgImpact);
+			drawImage(buffImgHUD);
+			drawImage(buffImgWeapon);
+		}else{
+			drawImage(buffDeathScreen);
+		}
+
+	}
+	
+	private void prepareImgs() {
+		// la préparation des things et des murs prends bcp de temps
+		// on met donc ces 2 actions en concurrence
+		Thread tThings = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				prepareThingsImg();
+			}
+		});
+		
+		Thread tWalls = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				prepareWallsImg();
+			}
+		});
+		
+		tThings.start();
+		tWalls.start();
+		
+		if(!lc.joueur.getMort()){
+			prepareHUDImg();
+			prepareWeaponImg();
+			drawImpacteEnnemi();
+			drawImpacteMur();
+		}
+		
+		try {
+			tWalls.join();
+			tThings.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void drawImage(BufferedImage bi) {
+		g2d.drawImage(bi, -frameW / 2, -frameH / 2, frameW, frameH, null);
+	}
+
+	private void prepareDeathScreenImg() {
+		Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
+
+		g2dDeathScreen.setColor(new Color(0f, 0f, 0f, .5f));
+		g2dDeathScreen.draw(rectangle);
+		g2dDeathScreen.fill(rectangle);
+
+		g2dDeathScreen.setColor(new Color(1f, 0f, 0f, 1f));
+		// Pour centrage:
+		int stringLen = (int) g2dDeathScreen.getFontMetrics().getStringBounds(strMort, g2dDeathScreen).getWidth();
+		g2dDeathScreen.drawString(strMort, w/2 - stringLen / 2, h / 2);
+	}
+
 	public void setPosition(Vector2D position) {
 		pos = position;
 	}
@@ -158,7 +218,7 @@ public class VueCamera extends Renderer {
 		plane.setdX(vec.getdX());
 		plane.setdY(vec.getdY());
 	}
-	
+
 	public void drawImpacteMur() {
 		g2dImpact.setBackground(TRANSPARENT);
 		g2dImpact.clearRect(0, 0, w, h);
@@ -222,7 +282,8 @@ public class VueCamera extends Renderer {
 		}
 	}
 	
-	private void drawWeapon() {
+
+	private void prepareWeaponImg() {
 		
 		g2dWeapon.setBackground(TRANSPARENT);
 		g2dWeapon.clearRect(0, 0, w, h);
@@ -252,7 +313,7 @@ public class VueCamera extends Renderer {
 
 	}
 	
-	private void drawHUD() {
+	private void prepareHUDImg() {
 		g2dHUD.setBackground(TRANSPARENT);
 		g2dHUD.clearRect(0, 0, w, h);
 		
@@ -265,11 +326,11 @@ public class VueCamera extends Renderer {
 		//g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
 		g2dHUD.drawString("" + lc.joueur.getVie(), -w / 2 + w / 10, h / 4 + h / 5 + h / 35);
 
-		String str = null;
+		String str = "";
 
 		if (lc.joueur.getArme() instanceof Axe) {
 			str = new String("0/0");
-		}else {
+		}else if (lc.joueur.getArme()!=null){
 			str = new String(lc.joueur.getArme().getAmmo() + "/" + lc.joueur.getArme().getMaxAmmo());
 		}
 	
@@ -286,9 +347,9 @@ public class VueCamera extends Renderer {
 		
 	}
 	
-	private void drawMurs() {
+	private void prepareWallsImg() {
 		g2dMurs.setBackground(TRANSPARENT);
-		g2dMurs.clearRect(0, 0,w,h);
+		g2dMurs.clearRect(0, 0, w, h);
 		
 		for (int x = 0;x < w ; x++) {
 			double cameraX = 2 * x / (double) w - 1;
@@ -438,7 +499,7 @@ public class VueCamera extends Renderer {
 		}
 	}
 	
-	private void drawThings() {
+	private void prepareThingsImg() {
 		// Ici ça permet de clear rapidement une bufferedImage
 		g2dThings.setBackground(TRANSPARENT);
 		g2dThings.clearRect(0, 0,w,h);

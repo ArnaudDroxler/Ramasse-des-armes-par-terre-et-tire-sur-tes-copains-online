@@ -55,7 +55,6 @@ public class PcClient {
 //					VueMap vueMap = new VueMap(lc);
 					VueCamera vueCamera = new VueCamera(lc);
 //					jfcMap = new JFrameClient(vueMap);
-					lc.setRenderer(vueCamera);
 					JFrameClient jfcCamera = new JFrameClient(vueCamera);
 //					jfcMap.setLocation(0, 720);
 //					jfcMap.setSize(400, 280);
