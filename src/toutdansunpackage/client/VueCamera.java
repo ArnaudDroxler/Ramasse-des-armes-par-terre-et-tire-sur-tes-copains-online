@@ -45,15 +45,12 @@ public class VueCamera extends Renderer {
 	private int texHeight = 256;
 	
 	protected double[] tabDistStripes;
-	private BufferedImage buffImgMurs, buffImgHUD, buffImgThings, buffImgWeapon, buffDeathScreen;
-	private Graphics2D g2d,g2dMurs,g2dThings, g2dHUD, g2dWeapon, g2dDeathScreen;
+	private BufferedImage buffImgMurs, buffImgHUD, buffImgThings, buffImgWeapon, buffDeathScreen, buffImgFond, buffImgImpact;
+	private Graphics2D g2d,g2dMurs,g2dThings, g2dHUD, g2dWeapon, g2dDeathScreen, g2dFond, g2dImpact;
 	private boolean readyToDraw;
 	private BufferedImage currentSprite;
 	
 	private TreeMap<Double, Thing> chosesAAfficher;
-
-	private BufferedImage buffImgImpact;
-	private Graphics2D g2dImpact;
 
 
 	public VueCamera(LogiqueClient _logique) {
@@ -103,6 +100,10 @@ public class VueCamera extends Renderer {
 		w = customW;
 
 		tabDistStripes = new double[w];
+		
+		buffImgFond = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		g2dFond = buffImgFond.createGraphics();
+		
 		buffImgMurs = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dMurs = buffImgMurs.createGraphics();
 
@@ -140,6 +141,7 @@ public class VueCamera extends Renderer {
 		//long t1 = System.currentTimeMillis();
 		
 //		prepareImgs();
+		prepareFondImg();
 		prepareWallsImg();
 		prepareThingsImg();
 		if(!lc.joueur.getMort()){
@@ -151,6 +153,7 @@ public class VueCamera extends Renderer {
 		
 		//System.out.println("temps de preparation : " + (System.currentTimeMillis()-t1));
 
+		drawImage(buffImgFond);
 		drawImage(buffImgMurs);
 		drawImage(buffImgThings);
 		if(! lc.joueur.getMort()){
@@ -163,6 +166,22 @@ public class VueCamera extends Renderer {
 
 	}
 	
+	private void prepareFondImg() {
+		double theta = lc.joueur.getDirection().getTheta();
+		double xOffset = theta/(2*Math.PI);
+		//System.out.println(xOffset);
+		double rapportWH = MagasinImage.buffFond.getWidth()/MagasinImage.buffFond.getHeight();
+		double scaledHeight = h/2.0;
+		
+		double scaledWidth = scaledHeight*rapportWH;
+		double xImgOffset = scaledWidth*xOffset;
+		
+		g2dFond.drawImage(MagasinImage.buffFond, (int)-xImgOffset, 0, (int)scaledWidth, (int)scaledHeight, null);
+		
+		if(xImgOffset+w>=scaledWidth)
+			g2dFond.drawImage(MagasinImage.buffFond, (int) (scaledWidth-xImgOffset), 0, (int)scaledWidth, (int)scaledHeight, null);
+	}
+
 	private void prepareImgs() {
 		// la préparation des things et des murs prends bcp de temps
 		// on met donc ces 2 actions en concurrence
@@ -497,8 +516,10 @@ public class VueCamera extends Renderer {
 				c = c.darker();
 				buffImgMurs.setRGB(x, y, c.getRGB());
 
-				c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexY, floorTexX));
-				buffImgMurs.setRGB(x, h - y, c.getRGB());
+				if(MagasinImage.buffFond==null){
+					c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexY, floorTexX));
+					buffImgMurs.setRGB(x, h - y, c.getRGB());
+				}
 
 			}
 		}
@@ -589,6 +610,10 @@ public class VueCamera extends Renderer {
 			for (int j = drawStartX; j < drawEndX; j++) {
 				int texX = (256 * (j - (-spriteWidth / 2 + spriteScreenX)) * imageWidth / spriteWidth) / 256;
 				if (transformY > 0 && j > 0 && j < w && transformY < tabDistStripes[j]) {
+					if(current instanceof JoueurOnline){
+						// affichage du nom au dessus du joueur
+						g2dThings.drawString(((JoueurOnline)current).pseudo, spriteScreenX, drawStartY);
+					}
 					for (int y = drawStartY; y < drawEndY; y++) {
 						int d = (y) * 256 - h * 128 + spriteHeight * 128;
 						int texY = ((d * imageHeight) / spriteHeight) / 256;
