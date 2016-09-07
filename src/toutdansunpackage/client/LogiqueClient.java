@@ -14,6 +14,7 @@ import toutdansunpackage.thing.Armure;
 import toutdansunpackage.thing.Medipack;
 import toutdansunpackage.thing.Thing;
 import toutdansunpackage.thing.weapon.AmmoPack;
+import toutdansunpackage.thing.weapon.Axe;
 import toutdansunpackage.thing.weapon.Weapon;
 import toutdansunpackage.tools.map.ImageParser;
 import toutdansunpackage.tools.map.LvlMap;
@@ -53,6 +54,7 @@ public class LogiqueClient/* extends KeyAdapter */ {
 		joueurId = i;
 		joueur = joueurs.get(i);
 		joueur.setPosition(oldPosition);
+		joueur.setArme(new Axe(joueur.getPosition()));
 		animer();
 	}
 

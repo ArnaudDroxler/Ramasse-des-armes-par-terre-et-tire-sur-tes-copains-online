@@ -15,6 +15,7 @@ import toutdansunpackage.messages.FireMessage;
 import toutdansunpackage.messages.KillMessage;
 import toutdansunpackage.messages.PickUpMessage;
 import toutdansunpackage.messages.PlayerUpdateMessage;
+import toutdansunpackage.tools.MagasinImage;
 import toutdansunpackage.tools.Registerer;
 
 public class PcServer {
