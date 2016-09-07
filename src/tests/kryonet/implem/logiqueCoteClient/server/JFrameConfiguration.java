@@ -25,6 +25,7 @@ import tests.kryonet.implem.logiqueCoteClient.client.PcClient;
 import tests.kryonet.implem.logiqueCoteClient.tools.JPanelDecorator;
 import tests.kryonet.implem.logiqueCoteClient.tools.JPanelTemps;
 import tests.kryonet.implem.logiqueCoteClient.tools.SpringUtilities;
+import toutdansunpackage.server.PcServer;
 
 public class JFrameConfiguration extends JFrame {
 
@@ -82,14 +83,15 @@ public class JFrameConfiguration extends JFrame {
 		formPanel.add(btnLancer);
 		formPanel.add(btnAnnuler);
 
-		SpringUtilities.makeCompactGrid(formPanel, 4, 2, // rows, cols
+		toutdansunpackage.tools.SpringUtilities.makeCompactGrid(formPanel, 4, 2, // rows,
+																					// cols
 				6, 6, // initX, initY
 				6, 6); // xPad, yPad
 
 		JPanel panel = new JPanel();
 		panel.add(formPanel);
 
-		setContentPane(new JPanelDecorator(panel, 10));
+		setContentPane(new tests.kryonet.implem.premiere.tools.JPanelDecorator(panel, 10));
 	}
 
 	private void control() {
@@ -109,7 +111,7 @@ public class JFrameConfiguration extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				savePreferences();
-				new PcServer(args.length > 0);
+				// new PcServer(args.length > 0);
 				dispose();
 
 			}

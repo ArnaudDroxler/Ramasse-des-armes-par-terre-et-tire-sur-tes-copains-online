@@ -10,14 +10,17 @@ import multi.tools.raycasting.Vector2D;
 public class PrecisionRifle extends Weapon {
 
 	private int cpt;
+	
+	protected static final double DpS=100;
+	protected static final double RoF=0.5;
+	protected static final double RaoF=60;
+	protected static final int maxAmmo=40;
+	
+	public PrecisionRifle(){}
 
 	public PrecisionRifle(Vector2D pos) {
 		super(pos);
 		ammo = 8;
-		maxAmmo = 40;
-		RoF = 0.5;
-		DpS = 100;
-		RaoF = 60;
 		cpt = 0;
 	}
 

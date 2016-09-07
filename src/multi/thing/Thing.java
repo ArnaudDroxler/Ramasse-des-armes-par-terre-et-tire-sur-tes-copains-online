@@ -31,6 +31,7 @@ public abstract class Thing {
 		direction.setdX(dirX);
 		direction.setdY(dirY);
 		dAlpha = 1;
+		exists=true;
 	}
 
 	public Thing(Vector2D vector2d) {
@@ -148,4 +149,31 @@ public abstract class Thing {
 		return 1;
 	}
 	public abstract String getThingType();
+	private boolean exists;
+	
+	public boolean exists() {
+		return exists;
+	}
+	
+	public void hideForAWhile(int timeToHideThing){
+		exists=false;
+		Thread t = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(timeToHideThing);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				exists=true;
+			}
+		});
+		t.start();
+	}
+
+	public void hideForAWhile() {
+		hideForAWhile(5000);
+	}
 }
