@@ -20,11 +20,7 @@ import javax.swing.SpringLayout;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import base.FenetreJeu;
-import tests.kryonet.implem.logiqueCoteClient.client.JFrameConnexion;
-import tests.kryonet.implem.logiqueCoteClient.client.PcClient;
-import tests.kryonet.implem.logiqueCoteClient.tools.JPanelDecorator;
 import tests.kryonet.implem.logiqueCoteClient.tools.JPanelTemps;
-import tests.kryonet.implem.logiqueCoteClient.tools.SpringUtilities;
 import toutdansunpackage.server.PcServer;
 
 public class JFrameConfiguration extends JFrame {
