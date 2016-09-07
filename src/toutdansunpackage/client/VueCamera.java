@@ -127,7 +127,13 @@ public class VueCamera extends Renderer {
 		
 		//long t1 = System.currentTimeMillis();
 		
-		prepareImgs();
+//		prepareImgs();
+		prepareWallsImg();
+		prepareThingsImg();
+		if(!lc.joueur.getMort()){
+			prepareHUDImg();
+			prepareWeaponImg();
+		}
 		
 		//System.out.println("temps de preparation : " + (System.currentTimeMillis()-t1));
 
@@ -145,6 +151,12 @@ public class VueCamera extends Renderer {
 	private void prepareImgs() {
 		// la préparation des things et des murs prends bcp de temps
 		// on met donc ces 2 actions en concurrence
+		Thread tWalls = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				prepareWallsImg();
+			}
+		});
 		Thread tThings = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -152,15 +164,9 @@ public class VueCamera extends Renderer {
 			}
 		});
 		
-		Thread tWalls = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				prepareWallsImg();
-			}
-		});
-		
-		tThings.start();
+
 		tWalls.start();
+		tThings.start();
 		
 		if(!lc.joueur.getMort()){
 			prepareHUDImg();
