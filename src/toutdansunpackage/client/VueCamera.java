@@ -166,37 +166,37 @@ public class VueCamera extends Renderer {
 	private void prepareImgs() {
 		// la préparation des things et des murs prends bcp de temps
 		// on met donc ces 2 actions en concurrence
-		Thread tWalls = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				prepareWallsImg();
-			}
-		});
-		Thread tThings = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				prepareThingsImg();
-			}
-		});
-		
-
-		tWalls.start();
-		tThings.start();
-		
-		if(!lc.joueur.getMort()){
-			prepareHUDImg();
-			prepareWeaponImg();
-			drawImpacteMur();
-			drawImpacteEnnemi();
-			
-		}
-		
-		try {
-			tWalls.join();
-			tThings.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+//		Thread tWalls = new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				prepareWallsImg();
+//			}
+//		});
+//		Thread tThings = new Thread(new Runnable() {
+//			@Override
+//			public void run() {
+//				prepareThingsImg();
+//			}
+//		});
+//		
+//
+//		tWalls.start();
+//		tThings.start();
+//		
+//		if(!lc.joueur.getMort()){
+//			prepareHUDImg();
+//			prepareWeaponImg();
+//			drawImpacteMur();
+//			drawImpacteEnnemi();
+//			
+//		}
+//		
+//		try {
+//			tWalls.join();
+//			tThings.join();
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	private void drawImage(BufferedImage bi) {
