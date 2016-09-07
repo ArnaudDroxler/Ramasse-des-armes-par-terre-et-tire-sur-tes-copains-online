@@ -10,7 +10,9 @@ import com.esotericsoftware.kryonet.Server;
 
 import toutdansunpackage.messages.AcceptClientMessage;
 import toutdansunpackage.messages.ClientConnexionMessage;
+import toutdansunpackage.messages.DamageMessage;
 import toutdansunpackage.messages.FireMessage;
+import toutdansunpackage.messages.KillMessage;
 import toutdansunpackage.messages.PickUpMessage;
 import toutdansunpackage.messages.PlayerUpdateMessage;
 import toutdansunpackage.tools.Registerer;
@@ -38,7 +40,7 @@ public class PcServer {
 
 			Registerer.registerFor(server);
 
-			ls = new LogiqueServer(mapPath, partie);
+			ls = new LogiqueServer(mapPath, partie, this);
 
 			server.start();
 
@@ -91,5 +93,16 @@ public class PcServer {
 			}
 		});
 
+	}
+
+	public void sendKillMessage(JoueurOnline shooter, JoueurOnline ennemiTouche) {
+		KillMessage km = new KillMessage(shooter.id,ennemiTouche.id);
+		server.sendToAllUDP(km);
+	}
+
+	public void sendDamageMessage(JoueurOnline ennemiTouche, int degats) {
+		DamageMessage dm = new DamageMessage(degats);
+		server.sendToUDP(ennemiTouche.id, dm);
+		
 	}
 }
