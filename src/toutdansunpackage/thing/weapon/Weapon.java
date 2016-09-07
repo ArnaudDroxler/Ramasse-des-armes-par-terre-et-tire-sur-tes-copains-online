@@ -88,13 +88,10 @@ public abstract class Weapon extends Thing {
 
 					for (cptennemi = 0; cptennemi < 4; cptennemi++) {
 						Thread.sleep(70);
-
 					}
 					cptennemi = 0;
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
-
 				}
 
 			}
@@ -116,14 +113,11 @@ public abstract class Weapon extends Thing {
 				try {
 					for (cptmur = 0; cptmur < 5; cptmur++) {
 						Thread.sleep(90);
-
 					}
 					cptmur = 0;
 
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
-
 				}
 
 			}

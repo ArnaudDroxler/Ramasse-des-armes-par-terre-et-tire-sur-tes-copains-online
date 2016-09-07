@@ -2,6 +2,8 @@ package toutdansunpackage.client;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.geom.Line2D;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,15 +12,19 @@ import java.util.List;
 
 import com.esotericsoftware.kryonet.Listener;
 
+import toutdansunpackage.thing.personnage.Ennemi;
+import toutdansunpackage.thing.personnage.Joueur;
 import toutdansunpackage.thing.Armure;
 import toutdansunpackage.thing.Medipack;
 import toutdansunpackage.thing.Thing;
 import toutdansunpackage.thing.weapon.AmmoPack;
 import toutdansunpackage.thing.weapon.Axe;
+import toutdansunpackage.thing.weapon.ShootGun;
 import toutdansunpackage.thing.weapon.Weapon;
 import toutdansunpackage.tools.map.ImageParser;
 import toutdansunpackage.tools.map.LvlMap;
 import toutdansunpackage.tools.raycasting.Vector2D;
+import toutdansunpackage.tools.raycasting.algoPiergiovanni;
 import toutdansunpackage.messages.DamageMessage;
 import toutdansunpackage.messages.KillMessage;
 import toutdansunpackage.server.JoueurOnline;
@@ -37,6 +43,14 @@ public class LogiqueClient/* extends KeyAdapter */ {
 	protected HashSet<Integer> touchesEnfoncees;
 	private PcClient pcClient;
 	protected boolean isFiring;
+	private Line2D fireLine;
+	private Rectangle2D rect;
+	private static final double r=0.8;
+	private VueCamera renderer;
+	
+	protected ArrayList<Line2D> impactMurLine;
+	protected ArrayList<Line2D> impactEnnemiLine;
+	protected ArrayList<Line2D> fireLineList;
 
 	public LogiqueClient(String nomMap, Partie partie, int playerId, PcClient pcClient) {
 		touchesEnfoncees = new HashSet<Integer>(6);
@@ -55,6 +69,10 @@ public class LogiqueClient/* extends KeyAdapter */ {
 		joueur.setPosition(oldPosition);
 		joueur.setArme(new Axe(joueur.getPosition()));
 		animer();
+		
+		fireLineList = new ArrayList<Line2D>(5);
+		impactEnnemiLine = new ArrayList<Line2D>(0);
+		impactMurLine = new ArrayList<Line2D>(0);
 	}
 
 	private void animer() {
@@ -206,7 +224,6 @@ public class LogiqueClient/* extends KeyAdapter */ {
 			public void run() {
 				try {
 					isFiring = true;
-					
 					while (JFrameClient.mouseLeftPressed && !joueur.getMort() && joueur.getArme().getAmmo() > 0) {
 						fire();
 						Thread.sleep((long) (1000 / joueur.getArme().getRoF()));
@@ -224,6 +241,11 @@ public class LogiqueClient/* extends KeyAdapter */ {
 	}
 
 	protected void fire() {
+		
+		fireLineList.clear();
+		impactEnnemiLine.clear();
+		impactMurLine.clear();
+		
 		// dépenser une munition
 		joueur.getArme().subAmmo(1);
 		
@@ -232,8 +254,59 @@ public class LogiqueClient/* extends KeyAdapter */ {
 
 		// informer le serveur
 		pcClient.sendFireMessage(joueur.id);
-	}
+		
+		Vector2D pos = joueur.getPosition();
+		Vector2D dir = joueur.getDirection();
+		
+		Weapon arme = joueur.getArme();
+		
+		double d = algoPiergiovanni.algoRaycasting(pos, dir, map);
+		
+		double x1 = pos.getdX();
+		double y1 = pos.getdY();
+		double x2 = pos.getdX() + dir.getdX() * d;
+		double y2 = pos.getdY() + dir.getdY() * d;
 
+
+		if (arme instanceof ShootGun) {
+			Joueur perso = new Joueur(joueur.getPosition(), joueur.getDirection());
+			perso.rotate(-30);
+			for (int i = 0; i < 5; i++) {
+				perso.rotate(10);
+				fireLineList.add(new Line2D.Double(x1, y1, x2 + perso.getDirection().getdX() * d,
+						y2 + perso.getDirection().getdY() * d));
+			}
+		} else {
+			fireLineList.add(new Line2D.Double(x1,y1,x2,y2));
+		}
+
+		JoueurOnline ennemiTouche = null;
+
+		for (Line2D line2d : fireLineList) {
+			Iterator<JoueurOnline> iterator = joueurs.values().iterator();
+			while (iterator.hasNext()) {
+				JoueurOnline ennemi = iterator.next();
+				if (ennemi.id != joueur.id) {
+					Rectangle2D rect = new Rectangle2D.Double(ennemi.getPosition().getdX() - r / 2,ennemi.getPosition().getdY() - r / 2, r, r);
+					if (line2d.intersects(rect)) {
+						line2d.setLine(x1, y1, ennemi.getPosition().getdX(), ennemi.getPosition().getdY());
+						ennemiTouche = ennemi;
+					}
+				}
+				
+			}
+			if (ennemiTouche != null) {
+				arme.setImpactEnnemi(true);
+				impactEnnemiLine.add(line2d);
+			} else {
+				
+				arme.setImpactMur(true);
+				impactMurLine.add(line2d);
+			}
+
+		}
+	}
+	
 	public void setAffichageScore(boolean b) {
 		// TODO Auto-generated method stub
 
@@ -268,4 +341,9 @@ public class LogiqueClient/* extends KeyAdapter */ {
 		joueur.perdVie(dm.getDamages());
 		System.out.println(joueur.pseudo + " perd " + dm.getDamages() + ", vie : " + joueur.getVie());
 	}
+	
+	public void setRenderer(VueCamera renderer) {
+		this.renderer = renderer;
+	}
+
 }

@@ -18,6 +18,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Consumer;
+
 import multi.thing.Thing;
 import multi.thing.personnage.Ennemi;
 import multi.thing.personnage.Joueur;
@@ -188,44 +190,15 @@ public class Camera extends Renderer {
 			drawWeapon(g2d);
 
 			drawHUD(g2d);
+			
+		
 
-			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw)
-					&& !logique.impactMurLine.isEmpty()) {
-
-				Iterator<Line2D> iterator = logique.impactMurLine.iterator();
-				while (iterator.hasNext()) {
-					Line2D line = iterator.next();
-
-					double longueurligne = Math.sqrt(
-							Math.pow((line.getX2() - line.getX1()), 2) + Math.pow(line.getY2() - line.getY1(), 2));
-
-					if (logique.heros.getArme().computeDamage(longueurligne) > 0) {
-						BufferedImage img = scale(logique.heros.getArme().getSpriteImpactMur(),
-								scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
-
-						if (logique.heros.getArme() instanceof ShootGun) {
-
-							Vector2D vec = new Vector2D(line.getX2() - line.getX1(), line.getY2() - line.getY1());
-							double angle = Math.atan2(vec.getdY(), vec.getdX()) - Math
-									.atan2(logique.heros.getDirection().getdY(), logique.heros.getDirection().getdX());
-							angle = 180 * angle / Math.PI;
-
-							g2d.drawImage(img, null, (int) (Math.tan(angle) * longueurligne) - img.getWidth() / 2,
-									0 - img.getHeight() / 2);
-
-						} else {
-							g2d.drawImage(img, null, 0 - img.getWidth() / 2, 0 - img.getHeight() / 2);
-						}
-
-					}
-				}
-			}
 
 			if (logique.isFiring && !(logique.heros.getArme() instanceof Chainsaw)
 					&& !logique.impactEnnemiLine.isEmpty()) {
 
 				Iterator<Line2D> iterator = logique.impactEnnemiLine.iterator();
-				System.out.println(logique.impactEnnemiLine.size());
+			
 				while (iterator.hasNext())
 
 				{
