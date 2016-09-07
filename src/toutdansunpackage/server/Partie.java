@@ -4,17 +4,19 @@ import java.util.HashMap;
 
 import toutdansunpackage.messages.PlayerUpdateMessage;
 
-public class Partie{
+public class Partie {
 
-	private HashMap<Integer,JoueurOnline> joueurs;
-	private long tempsSecondes;
-	protected int nbBytesSent;
-	
-	public Partie(String nomMap){
-		joueurs = new HashMap<Integer,JoueurOnline>();
+	private HashMap<Integer, JoueurOnline> joueurs;
+	public long tempsSecondes;
+	protected static int nbBytesSent;
+
+	public Partie(String nomMap) {
+		joueurs = new HashMap<Integer, JoueurOnline>();
 	}
-	
-	public Partie(){}
+
+	public Partie() {
+		joueurs = new HashMap<Integer, JoueurOnline>();
+	}
 
 	public void updateJoueur(int id, PlayerUpdateMessage cum) {
 		joueurs.put(id, cum.getJoueur());
@@ -31,7 +33,7 @@ public class Partie{
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("Temps : " + tempsSecondes/60 + " min " + tempsSecondes%60 + " s");
+		sb.append("Temps : " + tempsSecondes / 60 + " min " + tempsSecondes % 60 + " s");
 		sb.append("\nJoueurs :");
 		for (JoueurOnline j : joueurs.values()) {
 			sb.append("\n\t" + j);
@@ -40,12 +42,12 @@ public class Partie{
 		return sb.toString();
 	}
 
-	public HashMap<Integer,JoueurOnline> getJoueurs() {
+	public HashMap<Integer, JoueurOnline> getJoueurs() {
 		return joueurs;
 	}
 
 	public void setTempsSecondes(long l) {
 		tempsSecondes = l;
 	}
-	
+
 }

@@ -21,8 +21,8 @@ import toutdansunpackage.tools.Registerer;
 public class PcServer {
 
 	private String mapName;
-	private String tempsPartie;
-	private String nombreJoueursMax;
+	private int tempsPartie;
+	private int nombreJoueursMax;
 	private Partie partie;
 	private Server server;
 	private LogiqueServer ls;
@@ -34,10 +34,13 @@ public class PcServer {
 			new JFrameConfiguration();
 		} else {
 			// String mapPath = "sprite/map/maison";
+			
 			mapName = args[0];
-			nombreJoueursMax = args[1];
-			tempsPartie = args[2];
-			partie = new Partie(mapName);
+			nombreJoueursMax = Integer.parseInt(args[1]);
+			tempsPartie = Integer.parseInt(args[2]);
+
+			// partie = new Partie(mapPath);
+			partie = new Partie();
 
 			Registerer.registerFor(server);
 
@@ -53,6 +56,28 @@ public class PcServer {
 				System.out.println("map : " + mapName);
 				System.out.println("nombre de joueurs: " + nombreJoueursMax);
 				System.out.println("temps en millisecondes: " + tempsPartie);
+				// new JFramePartie(partie);
+
+				Thread tpartie = new Thread(new Runnable() {
+
+					@Override
+					public void run() {
+						long t1 = System.currentTimeMillis(), t2;
+						while (!partie.isTempsFini()) {
+							t2 = System.currentTimeMillis();
+							partie.setTempsSecondes((t2 - t1) / 1000);
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						}
+						System.out.println("Partie terminée!");
+
+					}
+				});
+				tpartie.start();
+
 			} catch (IOException e) {
 				System.err.println("Les ports TCP 54555 et UDP 54777 ne sont pas accessibles");
 				System.exit(-1);
@@ -83,7 +108,7 @@ public class PcServer {
 				} else if (object instanceof PickUpMessage) {
 					server.sendToAllExceptUDP(connection.getID(), (PickUpMessage) object);
 				} else if (object instanceof FireMessage) {
-					ls.fireFromPlayer(((FireMessage)object).getClientId());
+					ls.fireFromPlayer(((FireMessage) object).getClientId());
 				}
 			}
 
@@ -96,7 +121,7 @@ public class PcServer {
 	}
 
 	public void sendKillMessage(JoueurOnline shooter, JoueurOnline ennemiTouche) {
-		KillMessage km = new KillMessage(shooter.id,ennemiTouche.id);
+		KillMessage km = new KillMessage(shooter.id, ennemiTouche.id);
 		server.sendToAllUDP(km);
 	}
 

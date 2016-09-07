@@ -3,14 +3,12 @@ package toutdansunpackage.thing.weapon;
 
 import java.awt.image.BufferedImage;
 
-import toutdansunpackage.client.JFrameClient;
-import toutdansunpackage.tools.ImageLoader;
 import toutdansunpackage.tools.MagasinImage;
 import toutdansunpackage.tools.raycasting.Vector2D;
 
 public class Axe extends Weapon {
 
-private int cpt;
+	private int cpt;
 	
 	protected static final double DpS=100;
 	protected static final double RoF=1;
@@ -20,8 +18,8 @@ private int cpt;
 
 	public Axe(Vector2D pos) {
 		super(pos);
+		ammo = 1000; 
 		cpt = 0;
-		ammo = 1000;
 	}
 
 	@Override
@@ -79,7 +77,7 @@ private int cpt;
 
 	@Override
 	public int getAmmoRecharge() {
-		return 0;
+		return 1000;
 	}
-
+	
 }
