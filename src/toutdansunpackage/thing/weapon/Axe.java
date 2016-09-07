@@ -39,8 +39,8 @@ private int cpt;
 			@Override
 			public void run() {
 				try {
-					for (cpt = 0; cpt < 12; cpt++) {
-						Thread.sleep(80);
+					for (cpt = 0; cpt < 11; cpt++) {
+						Thread.sleep(75);
 					}
 					cpt = 0;
 					

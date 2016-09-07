@@ -46,7 +46,7 @@ public class MagasinImage {
 			buffPrecisionRifle[4], buffPrecisionRifle[5], buffPrecisionRifle[4] };
 	public static final BufferedImage[] buffShootGunAnimation = { buffShootGun[2], buffShootGun[3], buffShootGun[4],
 			buffShootGun[5], buffShootGun[6], buffShootGun[7], buffShootGun[6], buffShootGun[5] };
-	public static final BufferedImage[] buffAxeAnimation = { buffAxe[0], buffAxe[1], buffAxe[2], buffAxe[3], buffAxe[4],buffAxe[5], buffAxe[6], buffAxe[7], buffAxe[8], buffAxe[9], buffAxe[10], buffAxe[9]};
+	public static final BufferedImage[] buffAxeAnimation = { buffAxe[0], buffAxe[1], buffAxe[2], buffAxe[3], buffAxe[4],buffAxe[5], buffAxe[6], buffAxe[7], buffAxe[8], buffAxe[9], buffAxe[10]};
 
 	// IMPACT
 	public static final BufferedImage[] buffImpactEnnemi = ImageLoader.loadImagesFromFolder("sprite/impact/ennemie");

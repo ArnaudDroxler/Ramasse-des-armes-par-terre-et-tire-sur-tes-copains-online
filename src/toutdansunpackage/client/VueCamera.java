@@ -17,6 +17,7 @@ import java.util.Set;
 import java.util.TreeMap;
 
 import toutdansunpackage.thing.Thing;
+import toutdansunpackage.thing.weapon.Axe;
 import toutdansunpackage.thing.weapon.PrecisionRifle;
 import toutdansunpackage.tools.MagasinImage;
 import toutdansunpackage.tools.raycasting.Vector2D;
@@ -75,34 +76,26 @@ public class VueCamera extends Renderer {
 		
 	}
 
-	private void draw() {		
+	private void draw() {
 		setPosition(lc.joueur.getPosition());
 		setDirection(lc.joueur.getDirection());
-		
-		g2d.translate(frameW/2 , frameH/2);
-		
-		if (JFrameClient.mouseRightPressed /*&& lc.joueur.getArme() instanceof PrecisionRifle*/) {
-			
+
+		g2d.translate(frameW / 2, frameH / 2);
+
+		if (JFrameClient.mouseRightPressed && lc.joueur.getArme() instanceof PrecisionRifle) {
 			g2d.scale(2, 2);
-	
 		}
-		
+
 		drawMurs();
 		drawThings();
 		drawHUD();
 		drawWeapon();
-		
-		
-			g2d.drawImage(buffImgMurs,-frameW / 2, -frameH / 2,frameW,frameH,null);
-			g2d.drawImage(buffImgThings,-frameW / 2, -frameH / 2,frameW,frameH,null);
-			g2d.drawImage(buffImgHUD,-frameW / 2, -frameH / 2,frameW,frameH,null);
-			g2d.drawImage(buffImgWeapon,-frameW / 2, -frameH / 2,frameW,frameH,null);
-			
-		
-			
 
-	
-		
+		g2d.drawImage(buffImgMurs, -frameW / 2, -frameH / 2, frameW, frameH, null);
+		g2d.drawImage(buffImgThings, -frameW / 2, -frameH / 2, frameW, frameH, null);
+		g2d.drawImage(buffImgHUD, -frameW / 2, -frameH / 2, frameW, frameH, null);
+		g2d.drawImage(buffImgWeapon, -frameW / 2, -frameH / 2, frameW, frameH, null);
+
 	}
 
 	private void control() {
@@ -156,7 +149,7 @@ public class VueCamera extends Renderer {
 		g2dWeapon.setBackground(new Color(255, 255, 255, 0));
 		g2dWeapon.clearRect(0, 0, w, h);
 				
-		if (/*lc.joueur.getArme() instanceof PrecisionRifle &&*/ JFrameClient.mouseRightPressed) {
+		if (lc.joueur.getArme() instanceof PrecisionRifle && JFrameClient.mouseRightPressed) {
 
 			Point2D center = new Point2D.Float(w/2, h/2);
 			float radius = w / 8;
@@ -196,11 +189,12 @@ public class VueCamera extends Renderer {
 		//g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
 		g2dHUD.drawString("" + lc.joueur.getVie(), -w / 2 + w / 10, h / 4 + h / 5 + h / 35);
 
-		String str;
-		if (lc.joueur.getArme() != null) {
-			str = new String(lc.joueur.getArme().getAmmo() + "/" + lc.joueur.getArme().getMaxAmmo());
-		} else {
+		String str = null;
+
+		if (lc.joueur.getArme() instanceof Axe) {
 			str = new String("0/0");
+		}else {
+			str = new String(lc.joueur.getArme().getAmmo() + "/" + lc.joueur.getArme().getMaxAmmo());
 		}
 	
 		g2dHUD.drawImage(scale(MagasinImage.buffHud[1], scaleWidth, scaleHeight), null, w / 4, h / 4);
