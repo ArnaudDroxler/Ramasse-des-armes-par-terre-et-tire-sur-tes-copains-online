@@ -1,8 +1,6 @@
 package rattco.tools.map;
 
 import java.awt.Color;
-import java.awt.image.BufferedImage;
-
 import rattco.tools.raycasting.Vector2D;
 
 public class ImageLvlMap extends LvlMap {

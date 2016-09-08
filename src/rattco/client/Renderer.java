@@ -1,16 +1,5 @@
 package rattco.client;
 
-import java.awt.AWTException;
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.Robot;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 

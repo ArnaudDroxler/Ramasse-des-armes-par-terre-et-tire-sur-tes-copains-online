@@ -2,11 +2,7 @@ package rattco.server;
 
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.function.BiConsumer;
-
 import rattco.thing.personnage.JoueurOnline;
 import rattco.thing.weapon.ShootGun;
 import rattco.thing.weapon.Weapon;

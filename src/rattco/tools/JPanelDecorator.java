@@ -14,6 +14,10 @@ public class JPanelDecorator extends JPanel
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4855672755544450844L;
 	public JPanelDecorator(JComponent jcomponentcentre, int marge)
 		{
 		this.jcomponentcentre = jcomponentcentre;

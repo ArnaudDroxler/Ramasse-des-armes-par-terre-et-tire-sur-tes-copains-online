@@ -15,6 +15,10 @@ import javax.swing.JFrame;
 
 public class JFrameClient extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8545021550002081154L;
 	private LogiqueClient lc;
 	private Renderer renderer;
 

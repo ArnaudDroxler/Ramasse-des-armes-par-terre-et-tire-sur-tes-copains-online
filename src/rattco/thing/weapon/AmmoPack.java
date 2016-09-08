@@ -1,8 +1,6 @@
 package rattco.thing.weapon;
 
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.TreeMap;
 
 import rattco.thing.Thing;

@@ -63,16 +63,7 @@ public class VueMap extends Renderer {
 		 */
 	}
 
-	private void drawTir() {
-		/*
-		 * double x = lc.fireLine.getX2() - lc.fireLine.getX1(); double y =
-		 * lc.fireLine.getY2() - lc.fireLine.getY1(); double d = Math.sqrt(x * x
-		 * + y * y); g2d.drawLine(0, 0, (int) (d * zoom), 0);
-		 */
-	}
-
 	private void drawAutresJoueurs(AffineTransform init) {
-		int a = (int) zoom;
 		// a protéger
 		for (JoueurOnline joueur : lc.joueurs.values()) {
 			drawPersonnage(joueur, init);

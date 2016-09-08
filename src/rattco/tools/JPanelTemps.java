@@ -1,16 +1,10 @@
 package rattco.tools;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
 
 public class JPanelTemps extends JPanel {
 
@@ -18,6 +12,11 @@ public class JPanelTemps extends JPanel {
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1977706852312512043L;
+	
 	public JPanelTemps() {
 
 		geometry();

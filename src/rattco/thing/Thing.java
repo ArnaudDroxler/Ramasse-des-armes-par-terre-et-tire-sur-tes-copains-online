@@ -2,11 +2,6 @@
 package rattco.thing;
 
 import java.awt.image.BufferedImage;
-import java.util.Random;
-
-import com.sun.scenario.effect.impl.sw.sse.SSEPhongLighting_DISTANTPeer;
-
-import rattco.tools.MagasinImage;
 import rattco.tools.raycasting.Vector2D;
 
 public abstract class Thing {

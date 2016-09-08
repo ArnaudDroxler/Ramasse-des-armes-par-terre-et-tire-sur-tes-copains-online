@@ -3,7 +3,6 @@ package rattco.thing.weapon;
 
 import java.awt.image.BufferedImage;
 
-import rattco.tools.ImageLoader;
 import rattco.tools.MagasinImage;
 import rattco.tools.raycasting.Vector2D;
 

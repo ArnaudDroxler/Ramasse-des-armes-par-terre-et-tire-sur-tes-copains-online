@@ -6,6 +6,10 @@ import javax.swing.JTextArea;
 
 public class JFramePartie extends JFrame implements Runnable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7456648315543477362L;
 	private JTextArea textarea;
 	private Partie partie;
 

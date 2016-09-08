@@ -5,7 +5,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RadialGradientPaint;
-import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -13,10 +12,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeMap;
@@ -32,6 +28,10 @@ import rattco.tools.raycasting.Vector2D;
 
 public class VueCamera extends Renderer {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5940938109641662048L;
 	public static final String strMort = new String("Vous êtes mort!");
 	public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 	private Vector2D pos, dir, plane;

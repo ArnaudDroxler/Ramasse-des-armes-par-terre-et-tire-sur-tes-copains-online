@@ -1,38 +1,30 @@
 package rattco.server;
 
-import java.awt.AWTException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.sql.Time;
-import java.util.Arrays;
 import java.util.prefs.Preferences;
 
-import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import rattco.client.JFrameConnexion;
-import rattco.client.PcClient;
 import rattco.tools.JPanelDecorator;
 import rattco.tools.JPanelTemps;
 import rattco.tools.SpringUtilities;
 
 public class JFrameConfiguration extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2308761730886294316L;
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
@@ -40,11 +32,6 @@ public class JFrameConfiguration extends JFrame {
 	private static final String defaultMapName = "maps/maison";
 
 	public JFrameConfiguration() {
-		fc.setDialogTitle("Choisissez une carte, cliquez sur \"Annuler\" pour charger la map par défaut");
-		// FileNameExtensionFilter filter = new FileNameExtensionFilter("Map
-		// images", "png");
-		// fc.setFileFilter(filter);
-		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
 		geometry();
 		control();
@@ -67,9 +54,9 @@ public class JFrameConfiguration extends JFrame {
 		spinNbJoueur = new JSpinner(modelNbJoueur);
 
 		panChoixTemps = new JPanelTemps();
-		btnChoixMap = new JButton("Map");
+		new JButton("Map");
 
-		cbbMaps = new JComboBox(loadFoldersFromFolder("maps"));
+		cbbMaps = new JComboBox<String>(loadFoldersFromFolder("maps"));
 
 		btnLancer = new JButton("Démarrer");
 		btnAnnuler = new JButton("Annuler");
@@ -101,7 +88,7 @@ public class JFrameConfiguration extends JFrame {
 
 		setContentPane(new JPanelDecorator(panel, 10));
 
-		mapName = new String(defaultMapName);
+		new String(defaultMapName);
 		args = new String[3];
 	}
 
@@ -188,17 +175,11 @@ public class JFrameConfiguration extends JFrame {
 
 	private JSpinner spinNbJoueur;
 	private JPanelTemps panChoixTemps;
-	private JButton btnChoixMap;
-
-	private String mapName;
-
 	private JButton btnLancer;
 	private JButton btnAnnuler;
 
 	private static final Preferences PREFERENCES = Preferences.userNodeForPackage(JFrameConfiguration.class);
 	private String[] args;
 
-	private final JFileChooser fc = new JFileChooser();
-
-	private JComboBox cbbMaps;
+	private JComboBox<String> cbbMaps;
 }

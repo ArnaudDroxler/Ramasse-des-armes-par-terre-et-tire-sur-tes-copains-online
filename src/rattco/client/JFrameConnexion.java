@@ -6,9 +6,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
-import javax.swing.InputVerifier;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +22,11 @@ public class JFrameConnexion extends JFrame {
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7051290589750396629L;
 
 	public JFrameConnexion() {
 		geometry();
@@ -79,7 +82,6 @@ public class JFrameConnexion extends JFrame {
 		getRootPane().setDefaultButton(btnConnexion);
 
 		btnConnexion.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				savePreferences();
