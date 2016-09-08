@@ -1,6 +1,5 @@
 package rattco.client;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -9,16 +8,14 @@ import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.concurrent.Executor;
-
 import rattco.server.JoueurOnline;
 import rattco.thing.Thing;
 import rattco.thing.weapon.Axe;
@@ -35,7 +32,7 @@ public class VueCamera extends Renderer {
 
 	private Vector2D pos, dir, plane;
 	private int frameH, frameW, h, w;
-	private final int customH = 540, customW = 960;
+	private final int customH = 405, customW = 720;
 	private final int InitialcustomHeight = 288, InitialcustomWidth = 512;
 
 	private final double scaleWidth = (double) customW / InitialcustomWidth;
@@ -46,8 +43,8 @@ public class VueCamera extends Renderer {
 
 	protected double[] tabDistStripes;
 
-	private BufferedImage buffImgMurs, buffImgHUD, buffImgThings, buffImgWeapon, buffDeathScreen, buffImgFond, buffImgImpact,buffImgDamage;
-	private Graphics2D g2d,g2dMurs,g2dThings, g2dHUD, g2dWeapon, g2dDeathScreen, g2dFond, g2dImpact,g2dDamage;
+	private BufferedImage buffImgMurs, buffImgHUD, buffImgThings, buffImgWeapon, buffDeathScreen, buffImgFond, buffImgImpact,buffImgDamage,buffImgScores;
+	private Graphics2D g2d,g2dMurs,g2dThings, g2dHUD, g2dWeapon, g2dDeathScreen, g2dFond, g2dImpact,g2dDamage,g2dScores;
 
 	private boolean readyToDraw;
 	private BufferedImage currentSprite;
@@ -125,6 +122,11 @@ public class VueCamera extends Renderer {
 		buffDeathScreen = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dDeathScreen = buffDeathScreen.createGraphics();
 		g2dDeathScreen.setFont(new Font("Helvetica", Font.BOLD, 60));
+		
+		buffImgScores = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		g2dScores = buffImgScores.createGraphics();
+		g2dScores.setFont(new Font("Helvetica", Font.BOLD, 20));
+		// g2dScores.setColor(new Color(1f, 0f, 0f, 1f));
 
 		buffImgDamage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dDamage = buffImgDamage.createGraphics();
@@ -157,6 +159,8 @@ public class VueCamera extends Renderer {
 			prepareHUDImg();
 			prepareWeaponImg();
 		}
+		if(lc.touchesEnfoncees.contains(KeyEvent.VK_Q))
+			prepareScoresImg();
 
 		// System.out.println("temps de preparation : " +
 		// (System.currentTimeMillis()-t1));
@@ -170,14 +174,44 @@ public class VueCamera extends Renderer {
 			drawImage(buffImgWeapon);
 			if (lc.joueur.prendDegats()) {
 				drawImage(buffImgDamage);
-
 			}
 		} else {
 			drawImage(buffDeathScreen);
 		}
+		if(lc.touchesEnfoncees.contains(KeyEvent.VK_Q))
+			drawImage(buffImgScores);
 
 	}
 	
+	private void prepareScoresImg() {
+		g2dScores.setBackground(TRANSPARENT);
+		g2dScores.clearRect(0, 0, w, h);
+		g2dScores.setColor(new Color(1f, 0f, 0f, 1f));
+		
+		String strScore = new String("Joueur");
+		int valTabX = w / 5;
+		int valTabY = h / 3;
+		int stringHei = (int) g2dScores.getFontMetrics().getStringBounds(strScore, g2dScores).getHeight();
+		g2dScores.drawString(strScore, valTabX, valTabY);
+		strScore = "Kill";
+		g2dScores.drawString(strScore, 3 * valTabX, valTabY);
+		strScore = "Death";
+		g2dScores.drawString(strScore, 4 * valTabX, valTabY);
+
+		// Trier la liste de joueur en fonction du score
+		// int tailleTab = joueurOnline.size();
+
+
+		// Pour chaque élément de la liste:
+		int i=0;
+		for (JoueurOnline j : lc.joueurs.values()) {
+			g2dScores.drawString(j.pseudo, valTabX, stringHei * (i + 1) + valTabY);
+			g2dScores.drawString(j.getNbKill()+"", 3 * valTabX, stringHei * (i + 1) + valTabY);
+			g2dScores.drawString(j.getNbDeath()+"", 4 * valTabX, stringHei * (i + 1) + valTabY);
+			i++;
+		}
+	}
+
 	private void prepareFondImg() {
 		double theta = lc.joueur.getDirection().getTheta();
 		double xOffset = theta/(2*Math.PI);
@@ -192,42 +226,6 @@ public class VueCamera extends Renderer {
 		
 		if(xImgOffset+w>=scaledWidth)
 			g2dFond.drawImage(MagasinImage.buffFond, (int) (scaledWidth-xImgOffset), 0, (int)scaledWidth, (int)scaledHeight, null);
-	}
-
-	private void prepareImgs() {
-		// la préparation des things et des murs prends bcp de temps
-		// on met donc ces 2 actions en concurrence
-//		Thread tWalls = new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				prepareWallsImg();
-//			}
-//		});
-//		Thread tThings = new Thread(new Runnable() {
-//			@Override
-//			public void run() {
-//				prepareThingsImg();
-//			}
-//		});
-//		
-//
-//		tWalls.start();
-//		tThings.start();
-//		
-//		if(!lc.joueur.getMort()){
-//			prepareHUDImg();
-//			prepareWeaponImg();
-//			drawImpacteMur();
-//			drawImpacteEnnemi();
-//			
-//		}
-//		
-//		try {
-//			tWalls.join();
-//			tThings.join();
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 
