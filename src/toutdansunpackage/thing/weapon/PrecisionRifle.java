@@ -11,8 +11,8 @@ public class PrecisionRifle extends Weapon {
 
 	private int cpt;
 	
-	protected static final double DpS=100;
-	protected static final double RoF=0.5;
+	protected static final double DpS=200;
+	protected static final double RoF=1;
 	protected static final double RaoF=60;
 	protected static final int maxAmmo=40;
 	protected static final int ammoRecharge=8;
