@@ -43,8 +43,8 @@ public class JPanelTemps extends JPanel {
 	|*				Get				*|
 	\*------------------------------*/
 
-	public String getTimeMillis() {
-		return ((Integer.parseInt(jtfMinutes.getText()) * 60) + (Integer.parseInt(jtfSecondes.getText()))) * 1000 + "";
+	public int getTempsSecondes() {
+		return Integer.parseInt(jtfMinutes.getText()) * 60 + Integer.parseInt(jtfSecondes.getText());
 	}
 
 	public int getMinute() {

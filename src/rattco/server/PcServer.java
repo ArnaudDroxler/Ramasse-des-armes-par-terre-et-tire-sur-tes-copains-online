@@ -19,7 +19,7 @@ import rattco.tools.Registerer;
 public class PcServer {
 
 	private String mapName;
-	private int tempsPartie;
+	private int tempsPartieSecondes;
 	private Partie partie;
 	private Server server;
 	private LogiqueServer ls;
@@ -27,9 +27,11 @@ public class PcServer {
 	private String[] tabMap;
 	int cptMap;
 	private int nbJoeursMax;
+	private int nbJoueurs;
 
 	public PcServer(String[] args) {
 		server = new Server();
+		Registerer.registerFor(server);
 
 		if (args.length == 0) {
 			new JFrameConfiguration();
@@ -38,12 +40,13 @@ public class PcServer {
 
 			mapName = args[0];
 			nbJoeursMax = Integer.parseInt(args[1]);
+			nbJoueurs=0;
 
 			if (args[2] == null) {
 				// Si aucun temps entré, temps de 5mn par défaut
-				tempsPartie = 300000;
+				tempsPartieSecondes = 5*60;
 			} else {
-				tempsPartie = Integer.parseInt(args[2]) * 60000;
+				tempsPartieSecondes = Integer.parseInt(args[2]);
 			}
 
 			tabMap = JFrameConfiguration.loadFoldersFromFolder("maps");
@@ -51,58 +54,51 @@ public class PcServer {
 			for (int i = 0; i < tabMap.length; i++) {
 				String testMapChoisie = "maps/" + tabMap[i];
 				if (testMapChoisie.equals(mapName)) {
-					System.out.println("cptMap = " + i);
 					cptMap = i;
 				}
-
 			}
 
-			partie = new Partie();
-
-			Registerer.registerFor(server);
-
+			partie = new Partie(tempsPartieSecondes);
 			ls = new LogiqueServer(mapName, partie, this);
-
 			server.start();
 
 			try {
 				server.bind(54555, 54777);
-
-				String str = "le serveur est ouvert\nPorts : TCP 54555, UDP 54777";
-				System.out.println(str);
-
-				Thread tpartieEnCours = new Thread(new Runnable() {
-
-					@Override
-					public void run() {
-
-						long t1 = System.currentTimeMillis(), t2;
-						while ((tempsPartie / 1000) != partie.tempsSecondes) {
-							t2 = System.currentTimeMillis();
-							partie.setTempsSecondes((t2 - t1) / 1000);
-							try {
-								Thread.sleep(1000);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-						}
-						creerNouvellePartie();
-						sendFinPartie(mapName, partie);
-
-						this.run();
-
-					}
-				});
-				tpartieEnCours.start();
-
 			} catch (IOException e) {
 				System.err.println("Les ports TCP 54555 et UDP 54777 ne sont pas accessibles");
 				System.exit(-1);
-				// e.printStackTrace();
 			}
+
+			String str = "le serveur est ouvert\nPorts : TCP 54555, UDP 54777";
+			System.out.println(str);
+
+			Thread tpartieEnCours = new Thread(new Runnable() {
+
+				@Override
+				public void run() {
+
+					long t1 = System.currentTimeMillis(), t2;
+					while (partie.tempsSecondes > 0) {
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						t2 = System.currentTimeMillis();
+						partie.setTemps((int)(tempsPartieSecondes-(t2-t1)/1000));
+					}
+					creerNouvellePartie();
+					sendFinPartie(mapName, partie);
+
+					this.run();
+
+				}
+			});
+			tpartieEnCours.start();
 		}
 
 		server.addListener(new Listener() {
+
 			public void connected(Connection connection) {
 				System.out.println(connection + " connected");
 			}
@@ -110,12 +106,12 @@ public class PcServer {
 			public void received(Connection connection, Object object) {
 				if (object instanceof ClientConnexionMessage) {
 					ClientConnexionMessage ccm = (ClientConnexionMessage) object;
-					if (partie.getJoueurs().size() < nbJoeursMax) {
+					if (nbJoueurs < nbJoeursMax) {
 						connection.setName(ccm.getPseudo() + ":" + connection.getID());
 						System.out.println("nouveau joueur : " + ccm.getPseudo());
 
 						JoueurOnline nouveaujoueur = new JoueurOnline(ccm.getPseudo(), connection.getID());
-						
+						nbJoueurs++;
 						partie.addJoueur(connection.getID(), nouveaujoueur);
 						AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID(),
 								mapName);
@@ -137,6 +133,7 @@ public class PcServer {
 			public void disconnected(Connection connection) {
 				System.out.println(connection + " disconnected");
 				partie.removeJoueur(connection.getID());
+				nbJoueurs--;
 			}
 		});
 
@@ -162,9 +159,9 @@ public class PcServer {
 		if (cptMap >= tabMap.length) {
 			cptMap = 0;
 		}
+		nbJoueurs=0;
 		mapName = "maps/" + tabMap[cptMap];
-		partie = new Partie();
+		partie = new Partie(tempsPartieSecondes);
 		ls = new LogiqueServer(mapName, partie, this);
-
 	}
 }

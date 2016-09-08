@@ -60,30 +60,15 @@ public class PcClient {
 
 					lc = new LogiqueClient(acm.getMapPath(), acm.getPartie(), acm.getId(), moiMeme);
 
-					// VueMap vueMap = new VueMap(lc);
 					vueCamera = new VueCamera(lc, customH);
-					// jfcMap = new JFrameClient(vueMap);
 					if (existe) {
-						// //SetRenderer ne marche pas!
-						// jfcCamera.setRenderer(vueCamera);
 						jfcCamera = new JFrameClient(vueCamera);
 						jfcCamera.setLocation(pt);
 						jfcCamera.setSize(dim);
-
 					} else {
 						jfcCamera = new JFrameClient(vueCamera);
 						existe = true;
 					}
-
-					// jfcMap.setLocation(0, 720);
-					// jfcMap.setSize(400, 280);
-
-					// jfcMap.addWindowListener(new WindowAdapter() {
-					// @Override
-					// public void windowClosing(WindowEvent e) {
-					// client.close();
-					// }
-					// });
 
 					Thread t = new Thread(new Runnable() {
 

@@ -200,15 +200,14 @@ public class VueCamera extends Renderer {
 		g2dScores.clearRect(0, 0, w, h);
 		g2dScores.setColor(new Color(1f, 0f, 0f, 1f));
 		
-		String strScore = new String("Joueur");
 		int valTabX = w / 5;
 		int valTabY = h / 3;
-		int stringHei = (int) g2dScores.getFontMetrics().getStringBounds(strScore, g2dScores).getHeight();
-		g2dScores.drawString(strScore, valTabX, valTabY);
-		strScore = "Kill";
-		g2dScores.drawString(strScore, 3 * valTabX, valTabY);
-		strScore = "Death";
-		g2dScores.drawString(strScore, 4 * valTabX, valTabY);
+		int stringHei = (int) g2dScores.getFontMetrics().getStringBounds("Joueur", g2dScores).getHeight();
+		
+		g2dScores.drawString("Temps restant : "+ lc.tempsSecondes/60 + ":" + lc.tempsSecondes%60, valTabX, valTabY-2*stringHei);
+		g2dScores.drawString("Joueur", valTabX, valTabY);
+		g2dScores.drawString("Kill", 3 * valTabX, valTabY);
+		g2dScores.drawString("Death", 4 * valTabX, valTabY);
 
 		// Trier la liste de joueur en fonction du score
 		for (JoueurOnline j : lc.joueurs.values()) {

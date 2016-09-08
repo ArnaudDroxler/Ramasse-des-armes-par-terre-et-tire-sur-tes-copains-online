@@ -41,6 +41,7 @@ public class LogiqueClient {
 	protected ArrayList<Line2D> impactMurLine;
 	protected ArrayList<Line2D> impactEnnemiLine;
 	protected ArrayList<Line2D> fireLineList;
+	protected int tempsSecondes;
 
 	public LogiqueClient(String nomMap, Partie partie, int playerId, PcClient pcClient) {
 		touchesEnfoncees = new HashSet<Integer>(6);
@@ -202,6 +203,7 @@ public class LogiqueClient {
 
 	public void updatePartie(Partie partie) {
 		joueurs = partie.getJoueurs();
+		tempsSecondes = partie.getTemps();
 		// mauvaise solution car très peu performante :
 		// joueur = ennemis.remove(joueurId);
 	}

@@ -111,7 +111,7 @@ public class JFrameConfiguration extends JFrame {
 				savePreferences();
 				args[0] = "maps/" + cbbMaps.getSelectedItem().toString();
 				args[1] = spinNbJoueur.getValue() + "";
-				args[2] = panChoixTemps.getTimeMillis();
+				args[2] = panChoixTemps.getTempsSecondes()+"";
 				new PcServer(args);
 				dispose();
 

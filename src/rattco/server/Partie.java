@@ -8,17 +8,19 @@ import rattco.thing.personnage.JoueurOnline;
 public class Partie{
 
 	private HashMap<Integer, JoueurOnline> joueurs;
-	public long tempsSecondes;
+	public int tempsSecondes;
 	protected static int nbBytesSent;
 
+	public Partie(){}
 	
-	public Partie(){
+	public Partie(int tempsPartieSecondes){
 		joueurs = new HashMap<Integer,JoueurOnline>();
+		tempsSecondes = tempsPartieSecondes;
 	}
 	
 
-	public void updateJoueur(int id, PlayerUpdateMessage cum) {
-		joueurs.put(id, cum.getJoueur());
+	public void updateJoueur(int id, PlayerUpdateMessage pum) {
+		joueurs.put(id, pum.getJoueur());
 	}
 
 	public void addJoueur(int id, JoueurOnline nouveaujoueur) {
@@ -45,7 +47,16 @@ public class Partie{
 		return joueurs;
 	}
 
-	public void setTempsSecondes(long l) {
+	public void setTempsSecondes(int l) {
 		tempsSecondes = l;
+	}
+
+
+	public int getTemps() {
+		return tempsSecondes;
+	}
+	
+	public void setTemps(int t) {
+		tempsSecondes=t;
 	}
 }
