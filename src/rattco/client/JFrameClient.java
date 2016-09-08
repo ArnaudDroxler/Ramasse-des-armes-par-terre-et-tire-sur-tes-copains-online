@@ -126,8 +126,6 @@ public class JFrameClient extends JFrame {
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					robotActive = false;
 					setCursor(Cursor.getDefaultCursor());
-				}else if (e.getKeyCode() == KeyEvent.VK_Q) {
-					lc.setAffichageScore(true);
 				}else{
 					lc.touchesEnfoncees.add(e.getKeyCode());
 				}
@@ -138,11 +136,7 @@ public class JFrameClient extends JFrame {
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_Q) {
-					lc.setAffichageScore(false);
-				}else{
-					lc.touchesEnfoncees.remove(e.getKeyCode());
-				}
+				lc.touchesEnfoncees.remove(e.getKeyCode());
 			}
 		});
 	}
