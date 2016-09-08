@@ -33,6 +33,8 @@ public class JFrameConfiguration extends JFrame {
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
+	private static final String defaultMapName = "maps/dust";
+
 	public JFrameConfiguration() {
 		fc.setDialogTitle("Choisissez une carte, cliquez sur \"Annuler\" pour charger la map par défaut");
 		//FileNameExtensionFilter filter = new FileNameExtensionFilter("Map images", "png");
@@ -92,7 +94,7 @@ public class JFrameConfiguration extends JFrame {
 
 		setContentPane(new JPanelDecorator(panel, 10));
 
-		mapName = new String("maps/dust");
+		mapName = new String(defaultMapName);
 		args = new String[3];
 	}
 

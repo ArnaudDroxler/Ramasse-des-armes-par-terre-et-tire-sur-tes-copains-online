@@ -64,6 +64,7 @@ public class PcClient {
 							PlayerUpdateMessage pum = new PlayerUpdateMessage();
 							while (true) {
 								pum.setJoueur(lc.joueur);
+								client.sendUDP(pum);
 								try {
 									Thread.sleep(networkDelay);
 								} catch (InterruptedException e) {

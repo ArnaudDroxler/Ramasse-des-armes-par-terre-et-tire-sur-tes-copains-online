@@ -54,7 +54,8 @@ public class LogiqueClient{
 		joueurs = partie.getJoueurs();
 
 		joueur = joueurs.get(playerId);
-		joueur.setPosition(getPointRespawn());
+		//joueur.setPosition(getPointRespawn());
+		joueur.setPosition(map.getStartPosition());
 		
 		joueur.setArme(new Axe(joueur.getPosition()));
 		animer();

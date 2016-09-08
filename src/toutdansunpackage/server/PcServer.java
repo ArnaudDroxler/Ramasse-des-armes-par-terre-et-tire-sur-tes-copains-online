@@ -30,7 +30,7 @@ public class PcServer {
 	public PcServer(String[] args) {
 		server = new Server();
 
-		if (!(args.length > 0)) {
+		if (args.length == 0) {
 			new JFrameConfiguration();
 		} else {
 			// String mapPath = "sprite/map/maison";
@@ -56,7 +56,8 @@ public class PcServer {
 				System.out.println("map : " + mapName);
 				System.out.println("nombre de joueurs: " + nombreJoueursMax);
 				System.out.println("temps en millisecondes: " + tempsPartie);
-				// new JFramePartie(partie);
+				
+				new JFramePartie(partie);
 
 				Thread tpartie = new Thread(new Runnable() {
 
@@ -104,7 +105,7 @@ public class PcServer {
 				} else if (object instanceof PlayerUpdateMessage) {
 					PlayerUpdateMessage pum = (PlayerUpdateMessage) object;
 					partie.updateJoueur(connection.getID(), pum);
-					partie.nbBytesSent = connection.sendUDP(partie);
+					connection.sendUDP(partie);
 				} else if (object instanceof PickUpMessage) {
 					server.sendToAllExceptUDP(connection.getID(), (PickUpMessage) object);
 				} else if (object instanceof FireMessage) {
