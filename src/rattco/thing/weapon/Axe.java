@@ -10,7 +10,7 @@ public class Axe extends Weapon {
 
 	private int cpt;
 	
-	protected static final double DpS=100;
+	protected static final double DpS=200;
 	protected static final double RoF=1;
 	protected static final double RaoF=2;
 	

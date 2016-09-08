@@ -11,7 +11,7 @@ public class AssaultRifle extends Weapon {
 
 	private int cpt;
 	
-	protected static final double DpS=60;
+	protected static final double DpS=50;
 	protected static final double RoF=4;
 	protected static final double RaoF=40;
 	protected static final int maxAmmo=150;

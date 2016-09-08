@@ -10,7 +10,7 @@ public class HandGun extends Weapon {
 
 	private int cpt;
 	
-	protected static final double DpS=50;
+	protected static final double DpS=70;
 	protected static final double RoF=2;
 	protected static final double RaoF=10;
 	protected static final int maxAmmo=60;

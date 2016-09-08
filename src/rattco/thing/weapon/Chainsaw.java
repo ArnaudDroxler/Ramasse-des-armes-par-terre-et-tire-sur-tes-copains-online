@@ -13,7 +13,7 @@ public class Chainsaw extends Weapon {
 
 	private int cpt;
 	
-	protected static final double DpS=50;
+	protected static final double DpS=100;
 	protected static final double RoF=5;
 	protected static final double RaoF=2;
 	protected static final int maxAmmo=1000;
