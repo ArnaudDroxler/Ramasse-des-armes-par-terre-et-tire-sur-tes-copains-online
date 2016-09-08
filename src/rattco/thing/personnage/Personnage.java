@@ -4,7 +4,7 @@ import rattco.thing.Thing;
 import rattco.thing.weapon.Weapon;
 import rattco.tools.raycasting.Vector2D;
 
-public abstract class Personnage extends Thing {
+public abstract class Personnage extends Thing{
 
 	protected int vie;
 	protected int armure;

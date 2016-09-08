@@ -85,10 +85,10 @@ public abstract class LvlMap {
 	}
 
 	public int getTextureTab(int mapX, int mapY) {
-		if(mapX<0 || mapX>textureTab.length){
+		if(mapX<0 || mapX>=textureTab.length){
 			mapX=0;
 		}
-		if(mapY<0 || mapY>textureTab[mapX].length){
+		if(mapY<0 || mapY>=textureTab[mapX].length){
 			mapY=0;
 		}
 		return textureTab[mapX][mapY];

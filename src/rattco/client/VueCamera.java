@@ -20,8 +20,9 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeMap;
-import rattco.server.JoueurOnline;
+
 import rattco.thing.Thing;
+import rattco.thing.personnage.JoueurOnline;
 import rattco.thing.weapon.Axe;
 import rattco.thing.weapon.Chainsaw;
 import rattco.thing.weapon.PrecisionRifle;
@@ -33,13 +34,6 @@ public class VueCamera extends Renderer {
 
 	public static final String strMort = new String("Vous êtes mort!");
 	public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
-	public static final Comparator<JoueurOnline> JoueurComparator = new Comparator<JoueurOnline>(){
-		@Override
-		public int compare(JoueurOnline o1, JoueurOnline o2) {
-			return Integer.compare(o1.getNbKill(),o2.getNbKill());
-		}			
-	};
-
 	private Vector2D pos, dir, plane;
 	private int frameH, frameW, h, w;
 	private final int customH = 405, customW = 720;
@@ -73,7 +67,7 @@ public class VueCamera extends Renderer {
 		setDirection(lc.joueur.getDirection());
 		chosesAAfficher = new TreeMap<Double, Thing>();
 
-		joueursTries = new PriorityQueue<JoueurOnline>(JoueurComparator);
+		joueursTries = new PriorityQueue<JoueurOnline>(8);
 
 		setBackground(Color.black);
 
@@ -197,35 +191,35 @@ public class VueCamera extends Renderer {
 	}
 	
 	private void prepareScoresImg() {
-//		g2dScores.setBackground(TRANSPARENT);
-//		g2dScores.clearRect(0, 0, w, h);
-//		g2dScores.setColor(new Color(1f, 0f, 0f, 1f));
-//		
-//		String strScore = new String("Joueur");
-//		int valTabX = w / 5;
-//		int valTabY = h / 3;
-//		int stringHei = (int) g2dScores.getFontMetrics().getStringBounds(strScore, g2dScores).getHeight();
-//		g2dScores.drawString(strScore, valTabX, valTabY);
-//		strScore = "Kill";
-//		g2dScores.drawString(strScore, 3 * valTabX, valTabY);
-//		strScore = "Death";
-//		g2dScores.drawString(strScore, 4 * valTabX, valTabY);
-//
-//		// Trier la liste de joueur en fonction du score
-//		for (JoueurOnline j : lc.joueurs.values()) {
-//			joueursTries.add(j);
-//		}
-//
-//		// Pour chaque élément de la liste:
-//		int i=0;
-//		JoueurOnline j;
-//		while(!joueursTries.isEmpty()) {
-//			j=joueursTries.poll();
-//			g2dScores.drawString(j.pseudo, valTabX, stringHei * (i + 1) + valTabY);
-//			g2dScores.drawString(j.getNbKill()+"", 3 * valTabX, stringHei * (i + 1) + valTabY);
-//			g2dScores.drawString(j.getNbDeath()+"", 4 * valTabX, stringHei * (i + 1) + valTabY);
-//			i++;
-//		}
+		g2dScores.setBackground(TRANSPARENT);
+		g2dScores.clearRect(0, 0, w, h);
+		g2dScores.setColor(new Color(1f, 0f, 0f, 1f));
+		
+		String strScore = new String("Joueur");
+		int valTabX = w / 5;
+		int valTabY = h / 3;
+		int stringHei = (int) g2dScores.getFontMetrics().getStringBounds(strScore, g2dScores).getHeight();
+		g2dScores.drawString(strScore, valTabX, valTabY);
+		strScore = "Kill";
+		g2dScores.drawString(strScore, 3 * valTabX, valTabY);
+		strScore = "Death";
+		g2dScores.drawString(strScore, 4 * valTabX, valTabY);
+
+		// Trier la liste de joueur en fonction du score
+		for (JoueurOnline j : lc.joueurs.values()) {
+			joueursTries.add(j);
+		}
+
+		// Pour chaque élément de la liste:
+		int i=0;
+		JoueurOnline j;
+		while(!joueursTries.isEmpty()) {
+			j=joueursTries.poll();
+			g2dScores.drawString(j.pseudo, valTabX, stringHei * (i + 1) + valTabY);
+			g2dScores.drawString(j.getNbKill()+"", 3 * valTabX, stringHei * (i + 1) + valTabY);
+			g2dScores.drawString(j.getNbDeath()+"", 4 * valTabX, stringHei * (i + 1) + valTabY);
+			i++;
+		}
 	}
 
 	private void prepareFondImg() {
@@ -695,12 +689,14 @@ public class VueCamera extends Renderer {
 	public static BufferedImage scale(BufferedImage bi, double scaleWidth2, double scaleHeight2) {
 		int width = (int) (bi.getWidth() * scaleWidth2);
 		int height = (int) (bi.getHeight() * scaleHeight2);
-		BufferedImage biNew = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage biNew;
+		try{
+			biNew = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		}catch(IllegalArgumentException e){
+			biNew = new BufferedImage(10, 10, BufferedImage.TYPE_INT_ARGB);
+		}
 		Graphics2D graphics = biNew.createGraphics();
-		graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
 		graphics.drawImage(bi, 0, 0, width, height, null);
 		graphics.dispose();
 		return biNew;

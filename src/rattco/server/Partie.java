@@ -3,6 +3,7 @@ package rattco.server;
 import java.util.HashMap;
 
 import rattco.messages.PlayerUpdateMessage;
+import rattco.thing.personnage.JoueurOnline;
 
 public class Partie{
 

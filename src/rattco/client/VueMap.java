@@ -7,7 +7,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.geom.AffineTransform;
 
-import rattco.server.JoueurOnline;
+import rattco.thing.personnage.JoueurOnline;
 
 public class VueMap extends Renderer {
 

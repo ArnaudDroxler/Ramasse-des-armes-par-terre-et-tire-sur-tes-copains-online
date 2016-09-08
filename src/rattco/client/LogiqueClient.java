@@ -10,12 +10,12 @@ import java.util.Iterator;
 
 import rattco.messages.DamageMessage;
 import rattco.messages.KillMessage;
-import rattco.server.JoueurOnline;
 import rattco.server.Partie;
 import rattco.thing.Armure;
 import rattco.thing.Medipack;
 import rattco.thing.Thing;
 import rattco.thing.personnage.Joueur;
+import rattco.thing.personnage.JoueurOnline;
 import rattco.thing.weapon.Axe;
 import rattco.thing.weapon.ShootGun;
 import rattco.thing.weapon.Weapon;

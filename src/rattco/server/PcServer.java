@@ -17,6 +17,7 @@ import rattco.messages.FireMessage;
 import rattco.messages.KillMessage;
 import rattco.messages.PickUpMessage;
 import rattco.messages.PlayerUpdateMessage;
+import rattco.thing.personnage.JoueurOnline;
 import rattco.tools.MagasinImage;
 import rattco.tools.Registerer;
 

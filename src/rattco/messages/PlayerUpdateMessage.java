@@ -1,6 +1,6 @@
 package rattco.messages;
 
-import rattco.server.JoueurOnline;
+import rattco.thing.personnage.JoueurOnline;
 
 public class PlayerUpdateMessage{
 

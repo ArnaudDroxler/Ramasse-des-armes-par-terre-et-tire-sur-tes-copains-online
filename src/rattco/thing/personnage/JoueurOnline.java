@@ -1,14 +1,13 @@
-package rattco.server;
+package rattco.thing.personnage;
 
 import java.awt.image.BufferedImage;
 
 import rattco.thing.Thing;
-import rattco.thing.personnage.Joueur;
 import rattco.thing.weapon.Weapon;
 import rattco.tools.MagasinImage;
 import rattco.tools.raycasting.Vector2D;
 
-public class JoueurOnline extends Joueur{
+public class JoueurOnline extends Joueur implements Comparable<JoueurOnline> {
 
 	public String pseudo;
 	public int id;
@@ -47,6 +46,15 @@ public class JoueurOnline extends Joueur{
 			boolean wesh = thing.getClass().getSimpleName().equals(arme.getClass().getSimpleName());
 			return wesh;
 		}
+	}
+
+
+	@Override
+	public int compareTo(JoueurOnline o) {
+		if(nbKill==o.nbKill){
+			return Integer.compare(nbDeath, o.nbDeath);
+		}
+		return Integer.compare(o.nbKill, nbKill);
 	}
 	
 }

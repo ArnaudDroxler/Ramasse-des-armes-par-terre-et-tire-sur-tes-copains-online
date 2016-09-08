@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.function.BiConsumer;
 
+import rattco.thing.personnage.JoueurOnline;
 import rattco.thing.weapon.ShootGun;
 import rattco.thing.weapon.Weapon;
 import rattco.tools.map.ImageParser;
