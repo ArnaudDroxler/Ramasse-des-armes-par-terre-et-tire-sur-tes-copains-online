@@ -13,7 +13,11 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.TreeMap;
 import rattco.server.JoueurOnline;
@@ -29,6 +33,12 @@ public class VueCamera extends Renderer {
 
 	public static final String strMort = new String("Vous êtes mort!");
 	public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+	public static final Comparator<JoueurOnline> JoueurComparator = new Comparator<JoueurOnline>(){
+		@Override
+		public int compare(JoueurOnline o1, JoueurOnline o2) {
+			return Integer.compare(o1.getNbKill(),o2.getNbKill());
+		}			
+	};
 
 	private Vector2D pos, dir, plane;
 	private int frameH, frameW, h, w;
@@ -50,6 +60,7 @@ public class VueCamera extends Renderer {
 	private BufferedImage currentSprite;
 
 	private TreeMap<Double, Thing> chosesAAfficher;
+	private PriorityQueue<JoueurOnline> joueursTries;
 
 
 	public VueCamera(LogiqueClient _logique) {
@@ -61,6 +72,8 @@ public class VueCamera extends Renderer {
 		plane = new Vector2D(0, 0);
 		setDirection(lc.joueur.getDirection());
 		chosesAAfficher = new TreeMap<Double, Thing>();
+
+		joueursTries = new PriorityQueue<JoueurOnline>(JoueurComparator);
 
 		setBackground(Color.black);
 
@@ -184,32 +197,35 @@ public class VueCamera extends Renderer {
 	}
 	
 	private void prepareScoresImg() {
-		g2dScores.setBackground(TRANSPARENT);
-		g2dScores.clearRect(0, 0, w, h);
-		g2dScores.setColor(new Color(1f, 0f, 0f, 1f));
-		
-		String strScore = new String("Joueur");
-		int valTabX = w / 5;
-		int valTabY = h / 3;
-		int stringHei = (int) g2dScores.getFontMetrics().getStringBounds(strScore, g2dScores).getHeight();
-		g2dScores.drawString(strScore, valTabX, valTabY);
-		strScore = "Kill";
-		g2dScores.drawString(strScore, 3 * valTabX, valTabY);
-		strScore = "Death";
-		g2dScores.drawString(strScore, 4 * valTabX, valTabY);
-
-		// Trier la liste de joueur en fonction du score
-		// int tailleTab = joueurOnline.size();
-
-
-		// Pour chaque élément de la liste:
-		int i=0;
-		for (JoueurOnline j : lc.joueurs.values()) {
-			g2dScores.drawString(j.pseudo, valTabX, stringHei * (i + 1) + valTabY);
-			g2dScores.drawString(j.getNbKill()+"", 3 * valTabX, stringHei * (i + 1) + valTabY);
-			g2dScores.drawString(j.getNbDeath()+"", 4 * valTabX, stringHei * (i + 1) + valTabY);
-			i++;
-		}
+//		g2dScores.setBackground(TRANSPARENT);
+//		g2dScores.clearRect(0, 0, w, h);
+//		g2dScores.setColor(new Color(1f, 0f, 0f, 1f));
+//		
+//		String strScore = new String("Joueur");
+//		int valTabX = w / 5;
+//		int valTabY = h / 3;
+//		int stringHei = (int) g2dScores.getFontMetrics().getStringBounds(strScore, g2dScores).getHeight();
+//		g2dScores.drawString(strScore, valTabX, valTabY);
+//		strScore = "Kill";
+//		g2dScores.drawString(strScore, 3 * valTabX, valTabY);
+//		strScore = "Death";
+//		g2dScores.drawString(strScore, 4 * valTabX, valTabY);
+//
+//		// Trier la liste de joueur en fonction du score
+//		for (JoueurOnline j : lc.joueurs.values()) {
+//			joueursTries.add(j);
+//		}
+//
+//		// Pour chaque élément de la liste:
+//		int i=0;
+//		JoueurOnline j;
+//		while(!joueursTries.isEmpty()) {
+//			j=joueursTries.poll();
+//			g2dScores.drawString(j.pseudo, valTabX, stringHei * (i + 1) + valTabY);
+//			g2dScores.drawString(j.getNbKill()+"", 3 * valTabX, stringHei * (i + 1) + valTabY);
+//			g2dScores.drawString(j.getNbDeath()+"", 4 * valTabX, stringHei * (i + 1) + valTabY);
+//			i++;
+//		}
 	}
 
 	private void prepareFondImg() {
