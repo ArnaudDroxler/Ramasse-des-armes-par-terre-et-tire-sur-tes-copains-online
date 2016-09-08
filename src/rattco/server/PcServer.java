@@ -46,7 +46,15 @@ public class PcServer {
 			tempsPartie = Integer.parseInt(args[2]);
 
 			tabMap = JFrameConfiguration.loadFoldersFromFolder("maps");
-			cptMap = 1;
+
+			for (int i = 0; i < tabMap.length; i++) {
+				String testMapChoisie = "maps/" + tabMap[i];
+				if (testMapChoisie.equals(mapName)) {
+					System.out.println("cptMap = " + i);
+					cptMap = i;
+				}
+
+			}
 
 			partie = new Partie();
 
@@ -145,11 +153,11 @@ public class PcServer {
 	}
 
 	public void creerNouvellePartie() {
-		mapName = "maps/" + tabMap[cptMap];
 		cptMap++;
 		if (cptMap >= tabMap.length) {
 			cptMap = 0;
 		}
+		mapName = "maps/" + tabMap[cptMap];
 		partie = new Partie();
 		ls = new LogiqueServer(mapName, partie, this);
 
