@@ -16,29 +16,34 @@ import javax.swing.JFrame;
 public class JFrameClient extends JFrame {
 
 	private LogiqueClient lc;
+	private Renderer renderer;
 
-	public JFrameClient(Renderer renderer) {
+	public JFrameClient(Renderer render) {
 		super();
 		setSize(640, 360);
 		setTitle("Client");
+		renderer = render;
 		add(renderer);
 		setVisible(true);
-		
-		lc = renderer.lc;	
-		addListeners();			
+
+		lc = renderer.lc;
+		addListeners();
 	}
 
 	private Robot robot;
 	private boolean robotActive;
 	public static boolean mouseRightPressed;
 	public static boolean mouseLeftPressed;
-	
+
+	public void setRenderer(Renderer render) {
+		remove(renderer);
+		add(render);
+	}
 
 	private void addListeners() {
 		addMouseListeners();
 		addKeyListeners();
 	}
-	
 
 	private void addMouseListeners() {
 		try {
@@ -74,8 +79,7 @@ public class JFrameClient extends JFrame {
 				}
 			}
 		});
-		
-		
+
 		addMouseListener(new MouseAdapter() {
 
 			@Override
@@ -84,7 +88,8 @@ public class JFrameClient extends JFrame {
 				robot.mouseMove((int) (getLocation().getX() + getWidth() / 2),
 						(int) (getLocation().getY() + getHeight() / 2));
 				// cache le curseur
-				setCursor(getToolkit().createCustomCursor(new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB),new Point(0, 0), "null"));
+				setCursor(getToolkit().createCustomCursor(new BufferedImage(3, 3, BufferedImage.TYPE_INT_ARGB),
+						new Point(0, 0), "null"));
 				// active le robot
 				robotActive = true;
 			}
@@ -112,10 +117,6 @@ public class JFrameClient extends JFrame {
 
 		});
 	}
-	
-	
-	
-
 
 	private void addKeyListeners() {
 
@@ -126,7 +127,7 @@ public class JFrameClient extends JFrame {
 				if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					robotActive = false;
 					setCursor(Cursor.getDefaultCursor());
-				}else{
+				} else {
 					lc.touchesEnfoncees.add(e.getKeyCode());
 				}
 			}
@@ -140,5 +141,5 @@ public class JFrameClient extends JFrame {
 			}
 		});
 	}
-	
+
 }

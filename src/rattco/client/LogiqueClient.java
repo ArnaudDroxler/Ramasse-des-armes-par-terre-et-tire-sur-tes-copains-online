@@ -296,11 +296,6 @@ public class LogiqueClient {
 		}
 	}
 
-	public void setAffichageScore(boolean b) {
-		// TODO Auto-generated method stub
-
-	}
-
 	private boolean collapse(Vector2D point, double r) {
 		// pas top
 		// double x = joueur.getPosition().getdX();
