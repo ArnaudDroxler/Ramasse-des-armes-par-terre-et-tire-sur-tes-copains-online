@@ -11,8 +11,6 @@ import toutdansunpackage.tools.raycasting.Vector2D;
 
 public abstract class Thing {
 
-	protected static final Random random = new Random();
-	protected static final float v = 0.1f;
 	
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
@@ -33,7 +31,6 @@ public abstract class Thing {
 		position.setdY(posY);
 		direction.setdX(dirX);
 		direction.setdY(dirY);
-		dAlpha = 1;
 		exists=true;
 	}
 
@@ -137,7 +134,9 @@ public abstract class Thing {
 
 	private Vector2D position;
 	private Vector2D direction;
-	private float dAlpha;
+	private static final float dAlpha=2;
+	private static final float v = 0.1f;
+	private boolean exists;
 
 	public abstract BufferedImage getSprite();
 
@@ -147,8 +146,6 @@ public abstract class Thing {
 	public int getNbSecteurs(){
 		return 1;
 	}
-
-	private boolean exists;
 	
 	public boolean exists() {
 		return exists;
@@ -173,6 +170,6 @@ public abstract class Thing {
 	}
 
 	public void hideForAWhile() {
-		hideForAWhile(5000);
+		hideForAWhile(15000);
 	}
 }

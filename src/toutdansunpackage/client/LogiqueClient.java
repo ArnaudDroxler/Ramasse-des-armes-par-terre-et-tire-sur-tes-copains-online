@@ -1,6 +1,5 @@
 package toutdansunpackage.client;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -8,16 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
-
-import com.esotericsoftware.kryonet.Listener;
-
-import toutdansunpackage.thing.personnage.Ennemi;
 import toutdansunpackage.thing.personnage.Joueur;
 import toutdansunpackage.thing.Armure;
 import toutdansunpackage.thing.Medipack;
 import toutdansunpackage.thing.Thing;
-import toutdansunpackage.thing.weapon.AmmoPack;
 import toutdansunpackage.thing.weapon.Axe;
 import toutdansunpackage.thing.weapon.ShootGun;
 import toutdansunpackage.thing.weapon.Weapon;
@@ -43,11 +36,7 @@ public class LogiqueClient{
 	protected HashSet<Integer> touchesEnfoncees;
 	private PcClient pcClient;
 	protected boolean isFiring;
-	private Line2D fireLine;
-	private Rectangle2D rect;
 	private static final double r=0.8;
-	private VueCamera renderer;
-	
 	protected ArrayList<Line2D> impactMurLine;
 	protected ArrayList<Line2D> impactEnnemiLine;
 	protected ArrayList<Line2D> fireLineList;

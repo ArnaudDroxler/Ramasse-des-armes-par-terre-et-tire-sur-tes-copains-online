@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import toutdansunpackage.thing.Thing;
-import toutdansunpackage.thing.personnage.Ennemi;
 import toutdansunpackage.tools.raycasting.Vector2D;
 
 public abstract class LvlMap {
@@ -13,7 +12,6 @@ public abstract class LvlMap {
 	protected int height;
 	private BufferedImage mapBackground;
 	private ArrayList<Thing> listThing;
-	private ArrayList<Ennemi> listEnnemie;
 	private Vector2D startPosition;
 	protected Vector2D startDirection;
 	private Vector2D goalPosition;
@@ -30,7 +28,6 @@ public abstract class LvlMap {
 		width = i;
 		height = j;
 		listThing = new ArrayList<Thing>();
-		listEnnemie = new ArrayList<Ennemi>();
 		listStartPosition = new ArrayList<Vector2D>();
 		textureTab = new int[width][height];
 	}
@@ -53,10 +50,6 @@ public abstract class LvlMap {
 
 	public ArrayList<Thing> getListThing() {
 		return listThing;
-	}
-
-	public ArrayList<Ennemi> getListEnnemie() {
-		return listEnnemie;
 	}
 
 	public void setListThing(ArrayList<Thing> listThing) {

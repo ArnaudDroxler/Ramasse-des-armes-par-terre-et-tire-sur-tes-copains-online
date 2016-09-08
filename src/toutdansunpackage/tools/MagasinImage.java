@@ -22,7 +22,7 @@ public class MagasinImage {
 	public static final BufferedImage[] buffHud = ImageLoader.loadImagesFromFolder("sprite/hud");
 
 	// WALL TEXT
-	public static BufferedImage[] buffTextMur = ImageLoader.loadImagesFromFolder("sprite/wall/texturesMaison");
+	public static BufferedImage[] buffTextMur = null;
 
 	// THING
 	public static final BufferedImage[] buffMedipack = ImageLoader.loadImagesFromFolder("sprite/thing/medipack");
