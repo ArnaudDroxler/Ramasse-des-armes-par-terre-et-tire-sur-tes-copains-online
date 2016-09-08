@@ -26,7 +26,7 @@ public class PcClient {
 	private VueCamera vueCamera;
 	private int id;
 
-	public PcClient(String ip, String pseudo) throws IOException {
+	public PcClient(String ip, String pseudo, int customH) throws IOException {
 
 		client = new Client();
 		Registerer.registerFor(client);
@@ -53,7 +53,7 @@ public class PcClient {
 					lc = new LogiqueClient(acm.getMapPath(), acm.getPartie(), acm.getId(), moiMeme);
 
 					// VueMap vueMap = new VueMap(lc);
-					vueCamera = new VueCamera(lc);
+					vueCamera = new VueCamera(lc, customH);
 					// jfcMap = new JFrameClient(vueMap);
 					jfcCamera = new JFrameClient(vueCamera);
 					// jfcMap.setLocation(0, 720);

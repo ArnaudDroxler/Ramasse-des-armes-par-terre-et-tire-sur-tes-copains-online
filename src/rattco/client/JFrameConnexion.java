@@ -5,7 +5,10 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.prefs.Preferences;
 
+import javax.swing.InputVerifier;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -37,6 +40,7 @@ public class JFrameConnexion extends JFrame {
 
 		tfIp = new JTextField(12);
 		tfPseudo = new JTextField();
+		tfReso = new JFormattedTextField(400);
 		btnConnexion = new JButton("Rejoindre");
 		
 		JLabel lblAdIp = new JLabel("Adresse du serveur : ", JLabel.TRAILING);
@@ -48,9 +52,14 @@ public class JFrameConnexion extends JFrame {
 		formPanel.add(lblPseudo);
 		lblPseudo.setLabelFor(tfPseudo);
 		formPanel.add(tfPseudo);
+
+		JLabel lblReso = new JLabel("Résolution (hauteur) : ", JLabel.TRAILING);
+		formPanel.add(lblReso);
+		lblPseudo.setLabelFor(tfReso);
+		formPanel.add(tfReso);
 		
 		SpringUtilities.makeCompactGrid(formPanel,
-				2, 2, // rows, cols
+				3, 2, // rows, cols
 				6, 6, // initX, initY
 				6, 6); // xPad, yPad
 		
@@ -87,7 +96,7 @@ public class JFrameConnexion extends JFrame {
 	}
 
 	private void appearance() {
-		setSize(350, 150);
+		setSize(350, 180);
 		setResizable(false);
 		setTitle("Connexion");
 		tfIp.selectAll();
@@ -98,7 +107,7 @@ public class JFrameConnexion extends JFrame {
 
 	protected void connect(){
 		try {
-			new PcClient(tfIp.getText(), tfPseudo.getText());
+			new PcClient(tfIp.getText(), tfPseudo.getText(), Integer.valueOf(tfReso.getText()));
 			// dispose(); // close the JFrame
 		} catch (IOException e) {
 			System.err.println("Serveur inaccessible");
@@ -111,6 +120,7 @@ public class JFrameConnexion extends JFrame {
 		PREFERENCES.putInt("py", (int) this.getLocation().getY());
 		PREFERENCES.put("ip", tfIp.getText());
 		PREFERENCES.put("pseudo", tfPseudo.getText());
+		PREFERENCES.put("reso", tfReso.getText());
 	}
 
 	private void loadPreferences() {
@@ -124,10 +134,13 @@ public class JFrameConnexion extends JFrame {
 
 		String ip = PREFERENCES.get("ip", "");
 		String pseudo = PREFERENCES.get("pseudo", "");
+		String reso = PREFERENCES.get("reso", "320");
 		tfIp.setText(ip);
 		tfPseudo.setText(pseudo);
+		tfReso.setText(reso);
 		tfPseudo.selectAll();
 		tfIp.selectAll();
+		tfReso.selectAll();
 
 	}
 
@@ -139,6 +152,7 @@ public class JFrameConnexion extends JFrame {
 
 	private JTextField tfIp;
 	private JTextField tfPseudo;
+	private JFormattedTextField tfReso;
 
 	private JButton btnConnexion;
 

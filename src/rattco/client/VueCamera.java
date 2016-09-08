@@ -36,11 +36,11 @@ public class VueCamera extends Renderer {
 	public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 	private Vector2D pos, dir, plane;
 	private int frameH, frameW, h, w;
-	private final int customH = 405, customW = 720;
+	private int customH = 280, customW = 510;
 	private final int InitialcustomHeight = 288, InitialcustomWidth = 512;
 
-	private final double scaleWidth = (double) customW / InitialcustomWidth;
-	private final double scaleHeight = (double) customH / InitialcustomHeight;
+	private double scaleWidth = (double) customW / InitialcustomWidth;
+	private double scaleHeight = (double) customH / InitialcustomHeight;
 
 	private int texWidth = 256;
 	private int texHeight = 256;
@@ -57,8 +57,13 @@ public class VueCamera extends Renderer {
 	private PriorityQueue<JoueurOnline> joueursTries;
 
 
-	public VueCamera(LogiqueClient _logique) {
+	public VueCamera(LogiqueClient _logique, int customHeight) {
 		super(_logique);
+		customH=customHeight;
+		customW=customH*16/9;
+		// dla merde mais necessaire pour la fonction scale
+		scaleWidth = (double) customW / InitialcustomWidth;
+		scaleHeight = (double) customH / InitialcustomHeight;
 
 		readyToDraw = false;
 
@@ -104,6 +109,7 @@ public class VueCamera extends Renderer {
 
 		h = customH;
 		w = customW;
+		System.out.println(h + "h : w" + w);
 
 		tabDistStripes = new double[w];
 		
