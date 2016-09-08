@@ -47,7 +47,7 @@ public class Joueur extends Personnage {
 		estMort = false;
 		vie = 100;
 		armure = 50;
-		this.arme = new Axe();
+		setArme(new Axe());
 	}
 
 }
