@@ -30,11 +30,13 @@ public class PcServer {
 	private LogiqueServer ls;
 
 	private ArrayList<String> listeMap;
+	private String[] tabMap;
+	int cptMap;
 
 	public PcServer(String[] args) {
 		server = new Server();
 
-		if (!(args.length > 0)) {
+		if (args.length == 0) {
 			new JFrameConfiguration();
 		} else {
 			// String mapPath = "sprite/map/maison";
@@ -43,10 +45,8 @@ public class PcServer {
 			nombreJoueursMax = Integer.parseInt(args[1]);
 			tempsPartie = Integer.parseInt(args[2]);
 
-			listeMap = new ArrayList<String>();
-			listeMap.add("maison");
-			listeMap.add("yolo");
-			listeMap.add("StandDeTire");
+			tabMap = JFrameConfiguration.loadFoldersFromFolder("maps");
+			cptMap = 1;
 
 			partie = new Partie();
 
@@ -61,6 +61,12 @@ public class PcServer {
 
 				String str = "le serveur est ouvert\nPorts : TCP 54555, UDP 54777";
 				System.out.println(str);
+
+				// System.out.println("map : " + mapName);
+				// System.out.println("nombre de joueurs: " + nombreJoueursMax);
+				// System.out.println("temps en millisecondes: " + tempsPartie);
+				//
+				// new JFramePartie(partie);
 
 				Thread tpartieEnCours = new Thread(new Runnable() {
 
@@ -113,7 +119,7 @@ public class PcServer {
 				} else if (object instanceof PlayerUpdateMessage) {
 					PlayerUpdateMessage pum = (PlayerUpdateMessage) object;
 					partie.updateJoueur(connection.getID(), pum);
-					partie.nbBytesSent = connection.sendUDP(partie);
+					connection.sendUDP(partie);
 				} else if (object instanceof PickUpMessage) {
 					server.sendToAllExceptUDP(connection.getID(), (PickUpMessage) object);
 				} else if (object instanceof FireMessage) {
@@ -145,8 +151,11 @@ public class PcServer {
 	}
 
 	public void creerNouvellePartie() {
-		// System.out.println(listeMap.get(1));
-		mapName = "maison";
+		mapName = "maps/" + tabMap[cptMap];
+		cptMap++;
+		if (cptMap >= tabMap.length) {
+			cptMap = 0;
+		}
 		partie = new Partie();
 		ls = new LogiqueServer(mapName, partie, this);
 

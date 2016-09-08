@@ -21,25 +21,11 @@ public class AmmoPack extends Thing {
 		buffsSprite.put("SubmachineGun", MagasinImage.buffSubMachinGun[1]);
 	}
 
-	private static final TreeMap<String, Integer> ammoPack = new TreeMap<String, Integer>();
-	static {
-		ammoPack.put("AssaultRifle", 30);
-		ammoPack.put("Chainsaw", 200);
-		ammoPack.put("HandGun", 12);
-		ammoPack.put("PrecisionRifle", 8);
-		ammoPack.put("ShootGun", 16);
-		ammoPack.put("SubmachineGun", 40);
-	}
-
 	private String WeaponSelected;
 
 	public AmmoPack(Vector2D pos, String i) {
 		super(pos);
 		WeaponSelected = i;
-	}
-
-	public static int getAmmo(String WeaponType) {
-		return ammoPack.get(WeaponType);
 	}
 
 	public String getAmmoType() {

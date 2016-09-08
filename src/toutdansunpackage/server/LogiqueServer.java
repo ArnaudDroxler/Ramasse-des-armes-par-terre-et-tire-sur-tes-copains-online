@@ -31,7 +31,8 @@ public class LogiqueServer {
 	
 	public LogiqueServer(String nomMap, Partie partie, PcServer pcServer) {
 		this.partie = partie;
-		map = ImageParser.getMap(nomMap);
+//		map = ImageParser.getMap(nomMap);
+		map = ImageParser.getMapFromFolder(nomMap);
 		
 		this.pcServer = pcServer;
 		
@@ -80,6 +81,7 @@ public class LogiqueServer {
 			}
 		}
 		if(ennemiTouche!=null){
+			System.out.println(shooter.pseudo + " " + ennemiTouche.pseudo + " " + fireLine.getP1() + " " + fireLine.getP2());
 			int degats = arme.computeDamage(fireLine.getP1().distance(fireLine.getP2()));
 			ennemiTouche.perdVie(degats);
 			if(ennemiTouche.getMort()){

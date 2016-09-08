@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 import toutdansunpackage.thing.Armure;
 
 import toutdansunpackage.thing.Medipack;
-import toutdansunpackage.thing.personnage.Ennemi;
 import toutdansunpackage.thing.weapon.AmmoPack;
 import toutdansunpackage.thing.weapon.AssaultRifle;
 import toutdansunpackage.thing.weapon.Chainsaw;
@@ -18,9 +17,27 @@ import toutdansunpackage.thing.weapon.HandGun;
 import toutdansunpackage.thing.weapon.PrecisionRifle;
 import toutdansunpackage.thing.weapon.ShootGun;
 import toutdansunpackage.thing.weapon.SubmachineGun;
+import toutdansunpackage.tools.ImageLoader;
+import toutdansunpackage.tools.MagasinImage;
 import toutdansunpackage.tools.raycasting.Vector2D;
 
 public class ImageParser {
+
+	public static LvlMap getMapFromFolder(String folderName) {
+		MagasinImage.buffFond = ImageLoader.loadBufferedImage(folderName + "/fond.png");
+		try {
+			MagasinImage.buffTextMur = ImageLoader.loadImagesFromFolder(folderName + "/textures");
+		} catch (NullPointerException e) {
+			MagasinImage.buffTextMur = ImageLoader.loadImagesFromFolder("sprite/wall/texturesMaison");
+		}
+		try {
+			return getMap(ImageIO.read(new File(folderName + "/map.png")),
+					ImageIO.read(new File(folderName + "/maptexture.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public static LvlMap getMap(String mapName) {
 
@@ -95,12 +112,8 @@ public class ImageParser {
 					else if (Integer.toHexString(rgb).equals("ffffff00")) {
 						// map.setStartPosition(new Vector2D(x, y));
 						map.getListStartPosition().add(new Vector2D(x, y));
-					} // PNJ
-					else if (Integer.toHexString(rgb).equals("ffffffaa")) {
-						Ennemi joueur = new Ennemi(new Vector2D(x, y), new Vector2D(1, 0));
-						map.getListEnnemie().add(joueur);
-						// map.getListThing().add(joueur);
-					} else if (Integer.toHexString(rgb).equals("ff00ff00")) {
+					}
+					else if (Integer.toHexString(rgb).equals("ff00ff00")) {
 						map.getListThing().add(new HandGun(new Vector2D(x, y)));
 					} else if (Integer.toHexString(rgb).equals("ff00ff50")) {
 						map.getListThing().add(new AmmoPack(new Vector2D(x, y), "HandGun"));

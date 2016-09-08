@@ -1,10 +1,6 @@
 package toutdansunpackage.client;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
-
-import javax.swing.JSlider;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -23,9 +19,7 @@ import toutdansunpackage.tools.Registerer;
 
 public class PcClient {
 
-	private JFrameClient jfcMap;
 	private LogiqueClient lc;
-	private VueMap vueMap;
 	private final int networkDelay = 20;
 	private Client client;
 	private JFrameClient jfcCamera;
@@ -57,6 +51,7 @@ public class PcClient {
 					id = acm.getId();
 
 					lc = new LogiqueClient(acm.getMapPath(), acm.getPartie(), acm.getId(), moiMeme);
+
 					// VueMap vueMap = new VueMap(lc);
 					vueCamera = new VueCamera(lc);
 					// jfcMap = new JFrameClient(vueMap);
@@ -101,13 +96,9 @@ public class PcClient {
 				} else if (object instanceof String) {
 					System.out.println((String) object);
 				} else if (object instanceof FinPartieMessage) {
-					System.out.println("map suivante: " + ((FinPartieMessage) object).getMap());
-					lc = new LogiqueClient(((FinPartieMessage) object).getMap(),
-							((FinPartieMessage) object).getPartie(), id, moiMeme);
-					vueCamera = new VueCamera(lc);
 					jfcCamera.dispose();
-					jfcCamera = new JFrameClient(vueCamera);
-
+					ClientConnexionMessage ccm = new ClientConnexionMessage(pseudo);
+					client.sendTCP(ccm);
 				}
 			}
 		});

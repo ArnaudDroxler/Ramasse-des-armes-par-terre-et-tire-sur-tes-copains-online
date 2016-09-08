@@ -13,7 +13,6 @@ public abstract class Personnage extends Thing {
 	protected boolean prendDegats;
 	protected int nbKill;
 	protected int nbDeath;
-	protected String pseudo;
 
 	public Personnage(Vector2D pos, Vector2D dir) {
 		super(pos, dir);
@@ -21,7 +20,6 @@ public abstract class Personnage extends Thing {
 		prendDegats = false;
 		nbKill = 0;
 		nbDeath = 0;
-		pseudo = "Player 1";
 	}
 
 	public Personnage() {
@@ -87,10 +85,6 @@ public abstract class Personnage extends Thing {
 
 	public void setNbDeath() {
 		nbDeath += 1;
-	}
-
-	public String getPseudo() {
-		return pseudo;
 	}
 
 }

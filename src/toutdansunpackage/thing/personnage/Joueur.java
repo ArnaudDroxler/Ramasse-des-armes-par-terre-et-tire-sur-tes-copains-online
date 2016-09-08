@@ -2,6 +2,7 @@ package toutdansunpackage.thing.personnage;
 
 import java.awt.image.BufferedImage;
 
+import toutdansunpackage.thing.weapon.Axe;
 import toutdansunpackage.thing.weapon.Weapon;
 import toutdansunpackage.tools.raycasting.Vector2D;
 
@@ -46,6 +47,7 @@ public class Joueur extends Personnage {
 		estMort = false;
 		vie = 100;
 		armure = 50;
+		this.arme = new Axe();
 	}
 
 }

@@ -3,12 +3,17 @@ package toutdansunpackage.server;
 import java.awt.AWTException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.sql.Time;
+import java.util.Arrays;
 import java.util.prefs.Preferences;
 
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -33,10 +38,14 @@ public class JFrameConfiguration extends JFrame {
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
+	private static final String defaultMapName = "maps/dust";
+
 	public JFrameConfiguration() {
 		fc.setDialogTitle("Choisissez une carte, cliquez sur \"Annuler\" pour charger la map par défaut");
-		FileNameExtensionFilter filter = new FileNameExtensionFilter("Map images", "png", "jpg", "gif");
-		fc.setFileFilter(filter);
+		// FileNameExtensionFilter filter = new FileNameExtensionFilter("Map
+		// images", "png");
+		// fc.setFileFilter(filter);
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
 		geometry();
 		control();
@@ -54,19 +63,22 @@ public class JFrameConfiguration extends JFrame {
 		int valMin = 2;
 		int valMax = 12;
 
-		SpinnerModel modelNbJoueur = new SpinnerNumberModel(2, valMin, valMax, 1);
+		SpinnerModel modelNbJoueur = new SpinnerNumberModel(8, valMin, valMax, 1);
 
 		spinNbJoueur = new JSpinner(modelNbJoueur);
 
 		panChoixTemps = new JPanelTemps();
 		btnChoixMap = new JButton("Map");
+
+		cbbMaps = new JComboBox(loadFoldersFromFolder("maps"));
+
 		btnLancer = new JButton("Démarrer");
 		btnAnnuler = new JButton("Annuler");
 
 		JLabel lblChoixMap = new JLabel("Choix de la map : ", JLabel.TRAILING);
 		formPanel.add(lblChoixMap);
-		lblChoixMap.setLabelFor(btnChoixMap);
-		formPanel.add(btnChoixMap);
+		lblChoixMap.setLabelFor(cbbMaps);
+		formPanel.add(cbbMaps);
 
 		JLabel lblNbJoueur = new JLabel("Maximum de joueurs : ", JLabel.TRAILING);
 		formPanel.add(lblNbJoueur);
@@ -90,7 +102,7 @@ public class JFrameConfiguration extends JFrame {
 
 		setContentPane(new JPanelDecorator(panel, 10));
 
-		mapName = new String("StandDeTire");
+		mapName = new String(defaultMapName);
 		args = new String[3];
 	}
 
@@ -111,7 +123,7 @@ public class JFrameConfiguration extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				savePreferences();
-				args[0] = mapName;
+				args[0] = "maps/" + cbbMaps.getSelectedItem().toString();
 				args[1] = spinNbJoueur.getValue() + "";
 				args[2] = panChoixTemps.getTimeMillis();
 				new PcServer(args);
@@ -120,22 +132,6 @@ public class JFrameConfiguration extends JFrame {
 			}
 		});
 
-		btnChoixMap.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				int returnVal = fc.showOpenDialog(JFrameConfiguration.this);
-
-				if (returnVal == JFileChooser.APPROVE_OPTION) {
-					mapName = fc.getSelectedFile().getName();
-					System.out.println(mapName);
-					// Suppression du .png à la fin du chemin
-					mapName = mapName.substring(0, mapName.length() - 4);
-				}
-			}
-
-		});
 	}
 
 	private void appearance() {
@@ -174,6 +170,17 @@ public class JFrameConfiguration extends JFrame {
 
 	}
 
+	public static String[] loadFoldersFromFolder(String folderName) {
+		File file = new File(folderName);
+		String[] directories = file.list(new FilenameFilter() {
+			@Override
+			public boolean accept(File current, String name) {
+				return new File(current, name).isDirectory();
+			}
+		});
+		return directories;
+	}
+
 	/*------------------------------------------------------------------*\
 	|*							Attributs Private						*|
 	\*------------------------------------------------------------------*/
@@ -194,4 +201,5 @@ public class JFrameConfiguration extends JFrame {
 
 	private final JFileChooser fc = new JFileChooser();
 
+	private JComboBox cbbMaps;
 }
