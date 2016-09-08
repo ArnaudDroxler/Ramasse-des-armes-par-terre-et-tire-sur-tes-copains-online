@@ -56,7 +56,7 @@ public class JFrameConfiguration extends JFrame {
 		int valMin = 2;
 		int valMax = 12;
 
-		SpinnerModel modelNbJoueur = new SpinnerNumberModel(2, valMin, valMax, 1);
+		SpinnerModel modelNbJoueur = new SpinnerNumberModel(8, valMin, valMax, 1);
 
 		spinNbJoueur = new JSpinner(modelNbJoueur);
 
@@ -92,7 +92,7 @@ public class JFrameConfiguration extends JFrame {
 
 		setContentPane(new JPanelDecorator(panel, 10));
 
-		mapName = new String("maps/maison");
+		mapName = new String("maps/dust");
 		args = new String[3];
 	}
 
