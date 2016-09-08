@@ -145,6 +145,7 @@ public class PcServer {
 	}
 
 	public void creerNouvellePartie() {
+		// System.out.println(listeMap.get(1));
 		mapName = "maison";
 		partie = new Partie();
 		ls = new LogiqueServer(mapName, partie, this);
