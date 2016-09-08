@@ -1,5 +1,6 @@
 package rattco.client;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -66,6 +67,9 @@ public class JFrameConnexion extends JFrame {
 		JPanel panel = new JPanel();
 		panel.add(formPanel);
 		panel.add(btnConnexion);
+		JLabel lblExplications = new JLabel("<html><h3>Contrôles</h3>W,A,S,D pour se déplacer<br>E pour ramasser une arme<br>Q pour afficher le tableau des scores");
+		lblExplications.setPreferredSize(new Dimension(300, 90));
+		panel.add(lblExplications);
 
 		setContentPane(new JPanelDecorator(panel, 10));
 	}
@@ -96,7 +100,7 @@ public class JFrameConnexion extends JFrame {
 	}
 
 	private void appearance() {
-		setSize(350, 180);
+		setSize(350, 270);
 		setResizable(false);
 		setTitle("Connexion");
 		tfIp.selectAll();
