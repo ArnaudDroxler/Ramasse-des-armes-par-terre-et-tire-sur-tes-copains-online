@@ -31,55 +31,54 @@ import toutdansunpackage.server.JoueurOnline;
 public class VueCamera extends Renderer {
 
 	public static final String strMort = new String("Vous êtes mort!");
-	public static final Color TRANSPARENT = new Color(0,0,0,0);
-	
+	public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+
 	private Vector2D pos, dir, plane;
 	private int frameH, frameW, h, w;
 	private final int customH = 540, customW = 960;
 	private final int InitialcustomHeight = 288, InitialcustomWidth = 512;
-	
+
 	private final double scaleWidth = (double) customW / InitialcustomWidth;
 	private final double scaleHeight = (double) customH / InitialcustomHeight;
-	
+
 	private int texWidth = 256;
 	private int texHeight = 256;
-	
+
 	protected double[] tabDistStripes;
-	private BufferedImage buffImgMurs, buffImgHUD, buffImgThings, buffImgWeapon, buffDeathScreen;
-	private Graphics2D g2d,g2dMurs,g2dThings, g2dHUD, g2dWeapon, g2dDeathScreen;
+	private BufferedImage buffImgMurs, buffImgHUD, buffImgThings, buffImgWeapon, buffDeathScreen, buffImgDamage;
+	private Graphics2D g2d, g2dMurs, g2dThings, g2dHUD, g2dWeapon, g2dDeathScreen, g2dDamage;
 	private boolean readyToDraw;
 	private BufferedImage currentSprite;
-	
+
 	private TreeMap<Double, Thing> chosesAAfficher;
 
 	private BufferedImage buffImgImpact;
 	private Graphics2D g2dImpact;
 
-
 	public VueCamera(LogiqueClient _logique) {
 		super(_logique);
-		
-		readyToDraw=false;
+
+		readyToDraw = false;
 
 		pos = lc.joueur.getPosition();
 		plane = new Vector2D(0, 0);
 		setDirection(lc.joueur.getDirection());
 		chosesAAfficher = new TreeMap<Double, Thing>();
-		
+
 		setBackground(Color.black);
-		
+
 		addResizeListener();
 	}
-	
+
 	@Override
 	protected void paintComponent(Graphics g) {
-		
+
 		super.paintComponent(g);
 		g2d = (Graphics2D) g;
-		if(readyToDraw){
+		if (readyToDraw) {
 			draw();
 		}
-		
+
 	}
 
 	private void addResizeListener() {
@@ -89,16 +88,16 @@ public class VueCamera extends Renderer {
 			public void componentResized(ComponentEvent e) {
 				init();
 			}
-			
+
 		});
 	}
 
 	private void init() {
-		readyToDraw=false;
-		
+		readyToDraw = false;
+
 		frameH = getHeight();
 		frameW = getWidth();
-		
+
 		h = customH;
 		w = customW;
 
@@ -108,10 +107,10 @@ public class VueCamera extends Renderer {
 
 		buffImgThings = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dThings = buffImgThings.createGraphics();
-		
+
 		buffImgHUD = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dHUD = buffImgHUD.createGraphics();
-		
+
 		buffImgWeapon = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dWeapon = buffImgWeapon.createGraphics();
 
@@ -121,12 +120,15 @@ public class VueCamera extends Renderer {
 		buffDeathScreen = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dDeathScreen = buffDeathScreen.createGraphics();
 		g2dDeathScreen.setFont(new Font("Helvetica", Font.BOLD, 60));
+
+		buffImgDamage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		g2dDamage = buffImgDamage.createGraphics();
 		// cette image ne change pas, on la prépare qu'une fois
 		prepareDeathScreenImg();
-		
-		readyToDraw=true;
+		prepareDamageScreenIMg();
+
+		readyToDraw = true;
 	}
-	
 
 	private void draw() {
 		setPosition(lc.joueur.getPosition());
@@ -136,68 +138,58 @@ public class VueCamera extends Renderer {
 		if (JFrameClient.mouseRightPressed && lc.joueur.getArme() instanceof PrecisionRifle) {
 			g2d.scale(2, 2);
 		}
-		
-		//long t1 = System.currentTimeMillis();
-		
-//		prepareImgs();
+
+		// long t1 = System.currentTimeMillis();
+
 		prepareWallsImg();
 		prepareThingsImg();
-		if(!lc.joueur.getMort()){
+		if (!lc.joueur.getMort()) {
+			prepareImpacteMur();
+			prepareImpacteEnnemi();
 			prepareHUDImg();
 			prepareWeaponImg();
-			drawImpacteMur();
-			drawImpacteEnnemi();
 		}
-		
-		//System.out.println("temps de preparation : " + (System.currentTimeMillis()-t1));
+
+		// System.out.println("temps de preparation : " +
+		// (System.currentTimeMillis()-t1));
 
 		drawImage(buffImgMurs);
 		drawImage(buffImgThings);
-		if(! lc.joueur.getMort()){
+		if (!lc.joueur.getMort()) {
 			drawImage(buffImgImpact);
 			drawImage(buffImgHUD);
 			drawImage(buffImgWeapon);
-		}else{
+			if (lc.joueur.prendDegats()) {
+				drawImage(buffImgDamage);
+
+			}
+		} else {
 			drawImage(buffDeathScreen);
 		}
 
 	}
-	
-	private void prepareImgs() {
-		// la préparation des things et des murs prends bcp de temps
-		// on met donc ces 2 actions en concurrence
-		Thread tWalls = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				prepareWallsImg();
-			}
-		});
-		Thread tThings = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				prepareThingsImg();
-			}
-		});
-		
 
-		tWalls.start();
-		tThings.start();
-		
-		if(!lc.joueur.getMort()){
-			prepareHUDImg();
-			prepareWeaponImg();
-			drawImpacteMur();
-			drawImpacteEnnemi();
-			
-		}
-		
-		try {
-			tWalls.join();
-			tThings.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
+	/*
+	 * private void prepareImgs() { // la préparation des things et des murs
+	 * prends bcp de temps // on met donc ces 2 actions en concurrence Thread
+	 * tWalls = new Thread(new Runnable() {
+	 * 
+	 * @Override public void run() { prepareWallsImg(); } }); Thread tThings =
+	 * new Thread(new Runnable() {
+	 * 
+	 * @Override public void run() { prepareThingsImg(); } });
+	 * 
+	 * 
+	 * tWalls.start(); tThings.start();
+	 * 
+	 * if(!lc.joueur.getMort()){ prepareHUDImg(); prepareWeaponImg();
+	 * drawImpacteMur(); drawImpacteEnnemi();
+	 * 
+	 * }
+	 * 
+	 * try { tWalls.join(); tThings.join(); } catch (InterruptedException e) {
+	 * e.printStackTrace(); } }
+	 */
 
 	private void drawImage(BufferedImage bi) {
 		g2d.drawImage(bi, -frameW / 2, -frameH / 2, frameW, frameH, null);
@@ -213,7 +205,24 @@ public class VueCamera extends Renderer {
 		g2dDeathScreen.setColor(new Color(1f, 0f, 0f, 1f));
 		// Pour centrage:
 		int stringLen = (int) g2dDeathScreen.getFontMetrics().getStringBounds(strMort, g2dDeathScreen).getWidth();
-		g2dDeathScreen.drawString(strMort, w/2 - stringLen / 2, h / 2);
+		g2dDeathScreen.drawString(strMort, w / 2 - stringLen / 2, h / 2);
+	}
+
+	private void prepareDamageScreenIMg() {
+		Point2D center = new Point2D.Float(w / 2, h / 2);
+		float radius = w / 2;
+		float[] dist = { 0.0f, 0.9f };
+
+		Color trans = new Color(1f, 1f, 1f, 0f);
+		Color rouge = new Color(1f, 0f, 0f, .5f);
+
+		Color[] colors = { trans, rouge };
+		RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
+
+		Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
+		g2dDamage.setPaint(gradient);
+		g2dDamage.fill(rectangle);
+
 	}
 
 	public void setPosition(Vector2D position) {
@@ -227,29 +236,33 @@ public class VueCamera extends Renderer {
 		plane.setdY(vec.getdY());
 	}
 
-	public void drawImpacteMur() {
+	public void prepareImpacteMur() {
 		g2dImpact.setBackground(TRANSPARENT);
 		g2dImpact.clearRect(0, 0, w, h);
-		
+
 		if (lc.isFiring && !(lc.joueur.getArme() instanceof Chainsaw) && !lc.impactMurLine.isEmpty()) {
 			Iterator<Line2D> iterator = lc.impactMurLine.iterator();
-			while (iterator.hasNext()){
+			while (iterator.hasNext()) {
 				Line2D line = iterator.next();
 
-				double longueurligne = Math.sqrt(Math.pow((line.getX2() - line.getX1()), 2) + Math.pow(line.getY2() - line.getY1(), 2));
+				double longueurligne = Math
+						.sqrt(Math.pow((line.getX2() - line.getX1()), 2) + Math.pow(line.getY2() - line.getY1(), 2));
 
 				if (lc.joueur.getArme().computeDamage(longueurligne) > 0) {
-					BufferedImage img = scale(lc.joueur.getArme().getSpriteImpactMur(),scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
+					BufferedImage img = scale(lc.joueur.getArme().getSpriteImpactMur(),
+							scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
 					if (lc.joueur.getArme() instanceof ShootGun) {
 						Vector2D vec = new Vector2D(line.getX2() - line.getX1(), line.getY2() - line.getY1());
 						double angle = Math.atan2(vec.getdY(), vec.getdX())
 								- Math.atan2(lc.joueur.getDirection().getdY(), lc.joueur.getDirection().getdX());
 						angle = 180 * angle / Math.PI;
 
-						g2dImpact.drawImage(img, null, w/2 - (int) (Math.tan(angle) * longueurligne) - img.getWidth() / 2, h / 2 - img.getHeight() / 2);
+						g2dImpact.drawImage(img, null,
+								w / 2 - (int) (Math.tan(angle) * longueurligne) - img.getWidth() / 2,
+								h / 2 - img.getHeight() / 2);
 
 					} else {
-						g2dImpact.drawImage(img, null, w / 2 - img.getWidth() / 2, h / 2 - img.getHeight()/2);
+						g2dImpact.drawImage(img, null, w / 2 - img.getWidth() / 2, h / 2 - img.getHeight() / 2);
 					}
 
 				}
@@ -257,28 +270,33 @@ public class VueCamera extends Renderer {
 			}
 		}
 	}
-		
-	public void drawImpacteEnnemi() {
-		
+
+	public void prepareImpacteEnnemi() {
+
 		if (lc.isFiring && !(lc.joueur.getArme() instanceof Chainsaw) && !lc.impactEnnemiLine.isEmpty()) {
 			Iterator<Line2D> iterator = lc.impactEnnemiLine.iterator();
-			while (iterator.hasNext()){
+			while (iterator.hasNext()) {
 				Line2D line = iterator.next();
 
-				double longueurligne = Math.sqrt(Math.pow((line.getX2() - line.getX1()), 2) + Math.pow(line.getY2() - line.getY1(), 2));
+				double longueurligne = Math
+						.sqrt(Math.pow((line.getX2() - line.getX1()), 2) + Math.pow(line.getY2() - line.getY1(), 2));
 
 				if (lc.joueur.getArme().computeDamage(longueurligne) > 0) {
-					BufferedImage img = scale(lc.joueur.getArme().getSpriteImpactMur(),scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
-					
+					BufferedImage img = scale(lc.joueur.getArme().getSpriteImpactMur(),
+							scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
+
 					if (lc.joueur.getArme() instanceof ShootGun) {
 						Vector2D vec = new Vector2D(line.getX2() - line.getX1(), line.getY2() - line.getY1());
-						double angle = Math.atan2(vec.getdY(), vec.getdX())- Math.atan2(lc.joueur.getDirection().getdY(), lc.joueur.getDirection().getdX());
+						double angle = Math.atan2(vec.getdY(), vec.getdX())
+								- Math.atan2(lc.joueur.getDirection().getdY(), lc.joueur.getDirection().getdX());
 						angle = 180 * angle / Math.PI;
 
-						g2dImpact.drawImage(img, null, w/2 - (int) (Math.tan(angle) * longueurligne) - img.getWidth() / 2, h / 2 - img.getHeight() / 2);
+						g2dImpact.drawImage(img, null,
+								w / 2 - (int) (Math.tan(angle) * longueurligne) - img.getWidth() / 2,
+								h / 2 - img.getHeight() / 2);
 
 					} else {
-						g2dImpact.drawImage(img, null, w / 2 - img.getWidth() / 2, h / 2 - img.getHeight()/2);
+						g2dImpact.drawImage(img, null, w / 2 - img.getWidth() / 2, h / 2 - img.getHeight() / 2);
 					}
 
 				}
@@ -286,20 +304,19 @@ public class VueCamera extends Renderer {
 			}
 		}
 	}
-	
 
 	private void prepareWeaponImg() {
-		
+
 		g2dWeapon.setBackground(TRANSPARENT);
 		g2dWeapon.clearRect(0, 0, w, h);
-				
+
 		if (lc.joueur.getArme() instanceof PrecisionRifle && JFrameClient.mouseRightPressed) {
 
-			Point2D center = new Point2D.Float(w/2, h/2);
+			Point2D center = new Point2D.Float(w / 2, h / 2);
 			float radius = w / 8;
 			float[] dist = { 0.0f, 0.9f, 1.0f };
 
-			Color[] colors = {TRANSPARENT, TRANSPARENT, Color.black };
+			Color[] colors = { TRANSPARENT, TRANSPARENT, Color.black };
 			RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
 
 			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
@@ -307,38 +324,39 @@ public class VueCamera extends Renderer {
 			g2dWeapon.fill(rectangle);
 
 			g2dWeapon.setColor(Color.black);
-			g2dWeapon.drawLine(w/2,0, w/2,h);
-			g2dWeapon.drawLine(0,h/2,w,h/2);
-			
+			g2dWeapon.drawLine(w / 2, 0, w / 2, h);
+			g2dWeapon.drawLine(0, h / 2, w, h / 2);
+
 		} else if (lc.joueur.getArme() != null) {
 			BufferedImage img = scale(lc.joueur.getArme().getSpriteHUD(), scaleWidth, scaleHeight);
-			g2dWeapon.drawImage(img, null, w/2-img.getWidth()/2,h-img.getHeight() );
-			
+			g2dWeapon.drawImage(img, null, w / 2 - img.getWidth() / 2, h - img.getHeight());
+
 		}
 
 	}
-	
+
 	private void prepareHUDImg() {
 		g2dHUD.setBackground(TRANSPARENT);
 		g2dHUD.clearRect(0, 0, w, h);
-		
+
 		g2dHUD.translate(w / 2, h / 2);
 		g2dHUD.drawImage(scale(MagasinImage.buffHud[0], scaleWidth, scaleHeight), null, -w / 2, h / 4);
 		g2dHUD.setColor(new Color(0, 97, 255));
 		g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
 		g2dHUD.drawString("" + lc.joueur.getArmure(), -w / 2 + w / 10, h / 4 + h / 9);
 		g2dHUD.setColor(Color.RED);
-		//g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
+		// g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (30 *
+		// scaleHeight)));
 		g2dHUD.drawString("" + lc.joueur.getVie(), -w / 2 + w / 10, h / 4 + h / 5 + h / 35);
 
 		String str = "";
 
 		if (lc.joueur.getArme() instanceof Axe) {
 			str = new String("0/0");
-		}else if (lc.joueur.getArme()!=null){
+		} else if (lc.joueur.getArme() != null) {
 			str = new String(lc.joueur.getArme().getAmmo() + "/" + lc.joueur.getArme().getMaxAmmo());
 		}
-	
+
 		g2dHUD.drawImage(scale(MagasinImage.buffHud[1], scaleWidth, scaleHeight), null, w / 4, h / 4);
 		g2dHUD.setColor(new Color(175, 175, 175));
 		g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (25 * scaleHeight)));
@@ -347,16 +365,14 @@ public class VueCamera extends Renderer {
 		g2dHUD.drawString(str, w / 4 + w / 6 - strLen, h / 4 + w / 10 + w / 50);
 
 		g2dHUD.translate(-w / 2, -h / 2);
-		
-	
-		
+
 	}
-	
+
 	private void prepareWallsImg() {
 		g2dMurs.setBackground(TRANSPARENT);
 		g2dMurs.clearRect(0, 0, w, h);
-		
-		for (int x = 0;x < w ; x++) {
+
+		for (int x = 0; x < w; x++) {
 			double cameraX = 2 * x / (double) w - 1;
 			double rayPosX = pos.getdX();
 			double rayPosY = pos.getdY();
@@ -435,8 +451,8 @@ public class VueCamera extends Renderer {
 				texX = texWidth - texX - 1;
 			if (side == 1 && rayDirY < 0)
 				texX = texWidth - texX - 1;
-			
-			int numeroTexture= lc.map.getTextureTab(mapX,mapY);
+
+			int numeroTexture = lc.map.getTextureTab(mapX, mapY);
 
 			for (int y = drawStart; y < drawEnd; y++) {
 				int d = y * 256 - h * 128 + lineHeight * 128;
@@ -491,8 +507,8 @@ public class VueCamera extends Renderer {
 				int floorTexX = (int) (currentFloorX * texWidth) % texWidth;
 				int floorTexY = (int) (currentFloorY * texHeight) % texHeight;
 
-				int floorTexture = lc.map.getTextureTab((int) currentFloorX,(int) currentFloorY);
-				
+				int floorTexture = lc.map.getTextureTab((int) currentFloorX, (int) currentFloorY);
+
 				Color c = new Color(MagasinImage.buffTextMur[floorTexture].getRGB(floorTexX, floorTexY));
 				c = c.darker();
 				buffImgMurs.setRGB(x, y, c.getRGB());
@@ -503,43 +519,43 @@ public class VueCamera extends Renderer {
 			}
 		}
 	}
-	
+
 	private void prepareThingsImg() {
 		// Ici ça permet de clear rapidement une bufferedImage
 		g2dThings.setBackground(TRANSPARENT);
-		g2dThings.clearRect(0, 0,w,h);
+		g2dThings.clearRect(0, 0, w, h);
 
 		Vector2D deltaPos;
 		// TODO : ajouter les objets aussi dans la liste de choses a afficher
 		for (JoueurOnline j : lc.joueurs.values()) {
-			
+
 			deltaPos = j.getPosition().sub(pos);
 
 			// On veut les trier dans l'ordre décroissant, on les ajoute donc
 			// dans un TreeMap selon
 			// leur distance à la caméra. On veut que les plus loin soit les
 			// derniers, d'où le -length()
-			
-			if(j.id != lc.joueur.id && deltaPos.length()>0.75 && !j.getMort())
+
+			if (j.id != lc.joueur.id && deltaPos.length() > 0.75 && !j.getMort())
 				chosesAAfficher.put(-deltaPos.length(), j);
 		}
 		// pareil avec les things
-		for(Thing o : lc.objets){
+		for (Thing o : lc.objets) {
 			deltaPos = o.getPosition().sub(pos);
-			if(o.exists())
+			if (o.exists())
 				chosesAAfficher.put(-deltaPos.length(), o);
 		}
-		
+
 		Set<Double> keys = chosesAAfficher.keySet();
 		Iterator<Double> i = keys.iterator();
 		Thing current;
-		
+
 		while (i.hasNext()) {
 			current = chosesAAfficher.get(i.next());
 
 			deltaPos = current.getPosition().sub(pos);
-		
-			double l = plane.getdX() * dir.getdY() -  dir.getdX() * plane.getdY();
+
+			double l = plane.getdX() * dir.getdY() - dir.getdX() * plane.getdY();
 			double[][] matrix = { { dir.getdY() / l, -dir.getdX() / l }, { -plane.getdY() / l, plane.getdX() / l } };
 			Vector2D projected = deltaPos.toutdansunpackageplyByMatrice(matrix);
 			double transformX = projected.getdX();
@@ -565,7 +581,7 @@ public class VueCamera extends Renderer {
 			int imageHeight = currentSprite.getHeight();
 
 			int spriteScreenX = (int) (w / 2 * (1 + transformX / transformY));
-			
+
 			int spriteHeight = Math.abs((int) (h / transformY));
 			int drawStartY = -spriteHeight / 2 + h / 2;
 			if (drawStartY < 0) {
@@ -585,7 +601,7 @@ public class VueCamera extends Renderer {
 			if (drawEndX >= w) {
 				drawEndX = w - 1;
 			}
-			
+
 			for (int j = drawStartX; j < drawEndX; j++) {
 				int texX = (256 * (j - (-spriteWidth / 2 + spriteScreenX)) * imageWidth / spriteWidth) / 256;
 				if (transformY > 0 && j > 0 && j < w && transformY < tabDistStripes[j]) {
@@ -610,17 +626,18 @@ public class VueCamera extends Renderer {
 			}
 		}
 		chosesAAfficher.clear();
-	
+
 	}
-	
+
 	public static BufferedImage scale(BufferedImage bi, double scaleWidth2, double scaleHeight2) {
 		int width = (int) (bi.getWidth() * scaleWidth2);
 		int height = (int) (bi.getHeight() * scaleHeight2);
 		BufferedImage biNew = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = biNew.createGraphics();
-		graphics.setRenderingHint(RenderingHints.KEY_RENDERING,RenderingHints.VALUE_RENDER_QUALITY);
-		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 		graphics.drawImage(bi, 0, 0, width, height, null);
 		graphics.dispose();
 		return biNew;

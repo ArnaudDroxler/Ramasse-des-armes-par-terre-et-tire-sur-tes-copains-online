@@ -29,7 +29,6 @@ import toutdansunpackage.messages.DamageMessage;
 import toutdansunpackage.messages.KillMessage;
 import toutdansunpackage.server.JoueurOnline;
 import toutdansunpackage.server.Partie;
-import toutdansunpackage.server.PcServer;
 
 public class LogiqueClient{
 
@@ -339,6 +338,22 @@ public class LogiqueClient{
 	public void sufferDamages(DamageMessage dm) {
 		joueur.perdVie(dm.getDamages());
 		System.out.println(joueur.pseudo + " perd " + dm.getDamages() + ", vie : " + joueur.getVie());
+		
+		Thread threadDegats = new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Thread.sleep(1000);
+					joueur.resetPrendDegats();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
+		threadDegats.start();
 	}
 	
 
