@@ -1,5 +1,7 @@
 package rattco.client;
 
+import java.awt.Dimension;
+import java.awt.Point;
 import java.io.IOException;
 
 import com.esotericsoftware.kryonet.Client;
@@ -25,8 +27,15 @@ public class PcClient {
 	private JFrameClient jfcCamera;
 	private VueCamera vueCamera;
 	private int id;
+	private boolean existe;
+	private Dimension dim;
+	private Point pt;
 
 	public PcClient(String ip, String pseudo, int customH) throws IOException {
+
+		existe = false;
+		dim = new Dimension();
+		pt = new Point();
 
 		client = new Client();
 		Registerer.registerFor(client);
@@ -55,7 +64,18 @@ public class PcClient {
 					// VueMap vueMap = new VueMap(lc);
 					vueCamera = new VueCamera(lc, customH);
 					// jfcMap = new JFrameClient(vueMap);
-					jfcCamera = new JFrameClient(vueCamera);
+					if (existe) {
+						// //SetRenderer ne marche pas!
+						// jfcCamera.setRenderer(vueCamera);
+						jfcCamera = new JFrameClient(vueCamera);
+						jfcCamera.setLocation(pt);
+						jfcCamera.setSize(dim);
+
+					} else {
+						jfcCamera = new JFrameClient(vueCamera);
+						existe = true;
+					}
+
 					// jfcMap.setLocation(0, 720);
 					// jfcMap.setSize(400, 280);
 
@@ -96,6 +116,8 @@ public class PcClient {
 				} else if (object instanceof String) {
 					System.out.println((String) object);
 				} else if (object instanceof FinPartieMessage) {
+					dim = jfcCamera.getSize();
+					pt = jfcCamera.getLocation();
 					jfcCamera.dispose();
 					ClientConnexionMessage ccm = new ClientConnexionMessage(pseudo);
 					client.sendTCP(ccm);
