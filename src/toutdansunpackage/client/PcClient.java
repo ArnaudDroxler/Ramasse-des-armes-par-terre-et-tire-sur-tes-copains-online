@@ -1,10 +1,6 @@
 package toutdansunpackage.client;
 
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.IOException;
-
-import javax.swing.JSlider;
 
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
@@ -22,9 +18,7 @@ import toutdansunpackage.tools.Registerer;
 
 public class PcClient {
 
-	private JFrameClient jfcMap;
 	private LogiqueClient lc;
-	private VueMap vueMap;
 	private final int networkDelay = 20;
 	private Client client;
 
@@ -54,10 +48,7 @@ public class PcClient {
 					lc = new LogiqueClient(acm.getMapPath(), acm.getPartie(), acm.getId(), moiMeme);
 //					VueMap vueMap = new VueMap(lc);
 					VueCamera vueCamera = new VueCamera(lc);
-//					jfcMap = new JFrameClient(vueMap);
-					JFrameClient jfcCamera = new JFrameClient(vueCamera);
-//					jfcMap.setLocation(0, 720);
-//					jfcMap.setSize(400, 280);
+					new JFrameClient(vueCamera);
 
 //					jfcMap.addWindowListener(new WindowAdapter() {
 //						@Override
@@ -73,7 +64,6 @@ public class PcClient {
 							PlayerUpdateMessage pum = new PlayerUpdateMessage();
 							while (true) {
 								pum.setJoueur(lc.joueur);
-								client.sendUDP(pum);
 								try {
 									Thread.sleep(networkDelay);
 								} catch (InterruptedException e) {
