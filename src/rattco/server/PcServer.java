@@ -25,12 +25,10 @@ public class PcServer {
 
 	private String mapName;
 	private int tempsPartie;
-	private int nombreJoueursMax;
 	private Partie partie;
 	private Server server;
 	private LogiqueServer ls;
 
-	private ArrayList<String> listeMap;
 	private String[] tabMap;
 	int cptMap;
 
@@ -43,12 +41,12 @@ public class PcServer {
 			// String mapPath = "sprite/map/maison";
 
 			mapName = args[0];
-			nombreJoueursMax = Integer.parseInt(args[1]);
+			Integer.parseInt(args[1]);
 			if (args[2] == null) {
 				// Si aucun temps entré, temps de 5mn par défaut
 				tempsPartie = 300000;
 			} else {
-				tempsPartie = Integer.parseInt(args[2]);
+				tempsPartie = Integer.parseInt(args[2])*60000;
 			}
 
 			tabMap = JFrameConfiguration.loadFoldersFromFolder("maps");
@@ -86,7 +84,7 @@ public class PcServer {
 							t2 = System.currentTimeMillis();
 							partie.setTempsSecondes((t2 - t1) / 1000);
 							try {
-								Thread.sleep(100);
+								Thread.sleep(1000);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}

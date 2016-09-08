@@ -515,7 +515,7 @@ public class VueCamera extends Renderer {
 					numeroTexture = 0;
 				BufferedImage img = MagasinImage.buffTextMur[numeroTexture];
 				// l'operateur ternaire c'est pour éviter les ArrayIndexOutOfBound
-				Color c = new Color(img.getRGB(texX, texY>0?texY:0));
+				Color c = new Color(img.getRGB(texX>0?texX:0, texY>0?texY:0));
 				if (side == 1)
 					c = c.darker();
 				buffImgMurs.setRGB(x, y, c.getRGB());
