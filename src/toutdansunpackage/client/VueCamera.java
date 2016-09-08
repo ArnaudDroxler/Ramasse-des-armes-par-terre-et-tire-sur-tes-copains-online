@@ -322,7 +322,7 @@ public class VueCamera extends Renderer {
 						.sqrt(Math.pow((line.getX2() - line.getX1()), 2) + Math.pow(line.getY2() - line.getY1(), 2));
 
 				if (lc.joueur.getArme().computeDamage(longueurligne) > 0) {
-					BufferedImage img = scale(lc.joueur.getArme().getSpriteImpactMur(),
+					BufferedImage img = scale(lc.joueur.getArme().getSpriteImpactEnnemi(),
 							scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
 
 					if (lc.joueur.getArme() instanceof ShootGun) {
