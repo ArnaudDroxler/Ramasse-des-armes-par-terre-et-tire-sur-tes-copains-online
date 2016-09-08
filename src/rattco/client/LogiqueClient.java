@@ -24,7 +24,7 @@ import rattco.tools.map.LvlMap;
 import rattco.tools.raycasting.Vector2D;
 import rattco.tools.raycasting.algoPiergiovanni;
 
-public class LogiqueClient{
+public class LogiqueClient {
 
 	protected static final long delay = 20;
 	protected static final long tempsRespawn = 5000;
@@ -37,7 +37,7 @@ public class LogiqueClient{
 	protected HashSet<Integer> touchesEnfoncees;
 	private PcClient pcClient;
 	protected boolean isFiring;
-	private static final double r=0.8;
+	private static final double r = 0.8;
 	protected ArrayList<Line2D> impactMurLine;
 	protected ArrayList<Line2D> impactEnnemiLine;
 	protected ArrayList<Line2D> fireLineList;
@@ -45,21 +45,22 @@ public class LogiqueClient{
 	public LogiqueClient(String nomMap, Partie partie, int playerId, PcClient pcClient) {
 		touchesEnfoncees = new HashSet<Integer>(6);
 		fin = false;
-//		map = ImageParser.getMap(nomMap);
+
+		// map = ImageParser.getMap(nomMap);
 		map = ImageParser.getMapFromFolder(nomMap);
 		objets = map.getListThing();
-		
-		this.pcClient=pcClient;
+
+		this.pcClient = pcClient;
 
 		joueurs = partie.getJoueurs();
 
 		joueur = joueurs.get(playerId);
 		joueur.setPosition(getPointRespawn());
-		//joueur.setPosition(map.getStartPosition());
-		
+		// joueur.setPosition(map.getStartPosition());
+
 		joueur.setArme(new Axe());
 		animer();
-		
+
 		fireLineList = new ArrayList<Line2D>(5);
 		impactEnnemiLine = new ArrayList<Line2D>(0);
 		impactMurLine = new ArrayList<Line2D>(0);
@@ -114,7 +115,6 @@ public class LogiqueClient{
 		}
 
 		collectItems();
-
 
 	}
 
@@ -173,13 +173,13 @@ public class LogiqueClient{
 						hide(thing);
 					}
 				} else {
-					if (thing instanceof Armure){
+					if (thing instanceof Armure) {
 						joueur.ajoutArmure(10);
 						hide(thing);
-					}else if (thing instanceof Medipack){
+					} else if (thing instanceof Medipack) {
 						joueur.ajoutVie(10);
 						hide(thing);
-					}else if(joueur.getArme()!= null && joueur.getArme().isAmmoPack(thing)){
+					} else if (joueur.getArme() != null && joueur.getArme().isAmmoPack(thing)) {
 						joueur.getArme().sumAmmo();
 						hide(thing);
 					}
@@ -194,11 +194,11 @@ public class LogiqueClient{
 		pcClient.sendPickUpMessage(objets.indexOf(thing));
 	}
 
-	// methode appelée par le serveur parce que qqn a ramassé qqch et il faut le cacher
+	// methode appelée par le serveur parce que qqn a ramassé qqch et il faut le
+	// cacher
 	public void hideThing(int indexOfThing) {
 		objets.get(indexOfThing).hideForAWhile();
 	}
-
 
 	public void updatePartie(Partie partie) {
 		joueurs = partie.getJoueurs();
@@ -230,32 +230,31 @@ public class LogiqueClient{
 	}
 
 	protected void fire() {
-		
+
 		fireLineList.clear();
 		impactEnnemiLine.clear();
 		impactMurLine.clear();
-		
+
 		// dépenser une munition
 		joueur.getArme().subAmmo(1);
-		
+
 		// lancer l'animation
 		joueur.getArme().setIsFiring(true);
 
 		// informer le serveur
 		pcClient.sendFireMessage(joueur.id);
-		
+
 		Vector2D pos = joueur.getPosition();
 		Vector2D dir = joueur.getDirection();
-		
+
 		Weapon arme = joueur.getArme();
-		
+
 		double d = algoPiergiovanni.algoRaycasting(pos, dir, map);
-		
+
 		double x1 = pos.getdX();
 		double y1 = pos.getdY();
 		double x2 = pos.getdX() + dir.getdX() * d;
 		double y2 = pos.getdY() + dir.getdY() * d;
-
 
 		if (arme instanceof ShootGun) {
 			Joueur perso = new Joueur(joueur.getPosition(), joueur.getDirection());
@@ -266,7 +265,7 @@ public class LogiqueClient{
 						y2 + perso.getDirection().getdY() * d));
 			}
 		} else {
-			fireLineList.add(new Line2D.Double(x1,y1,x2,y2));
+			fireLineList.add(new Line2D.Double(x1, y1, x2, y2));
 		}
 
 		JoueurOnline ennemiTouche = null;
@@ -276,26 +275,27 @@ public class LogiqueClient{
 			while (iterator.hasNext()) {
 				JoueurOnline ennemi = iterator.next();
 				if (ennemi.id != joueur.id) {
-					Rectangle2D rect = new Rectangle2D.Double(ennemi.getPosition().getdX() - r / 2,ennemi.getPosition().getdY() - r / 2, r, r);
+					Rectangle2D rect = new Rectangle2D.Double(ennemi.getPosition().getdX() - r / 2,
+							ennemi.getPosition().getdY() - r / 2, r, r);
 					if (line2d.intersects(rect)) {
 						line2d.setLine(x1, y1, ennemi.getPosition().getdX(), ennemi.getPosition().getdY());
 						ennemiTouche = ennemi;
 					}
 				}
-				
+
 			}
 			if (ennemiTouche != null) {
 				arme.setImpactEnnemi(true);
 				impactEnnemiLine.add(line2d);
 			} else {
-				
+
 				arme.setImpactMur(true);
 				impactMurLine.add(line2d);
 			}
 
 		}
 	}
-	
+
 	public void setAffichageScore(boolean b) {
 		// TODO Auto-generated method stub
 
@@ -314,23 +314,23 @@ public class LogiqueClient{
 	public void murderHappened(KillMessage km) {
 		JoueurOnline killer = joueurs.get(km.getKillerId());
 		JoueurOnline victim = joueurs.get(km.getVictimId());
-		
-		if(joueur.id == killer.id){
+
+		if (joueur.id == killer.id) {
 			System.out.println(joueur.pseudo + ", vous êtes un tueur");
 			joueur.setNbKill();
-		}else if(joueur.id == victim.id){
+		} else if (joueur.id == victim.id) {
 			System.out.println(joueur.pseudo + ", vous êtes une victime");
 			joueur.tuer();
 			respawn();
 		}
 		System.out.println(killer.pseudo + " a tué " + victim.pseudo);
-		
+
 	}
 
 	public void sufferDamages(DamageMessage dm) {
 		joueur.perdVie(dm.getDamages());
 		System.out.println(joueur.pseudo + " perd " + dm.getDamages() + ", vie : " + joueur.getVie());
-		
+
 		Thread threadDegats = new Thread(new Runnable() {
 
 			@Override
@@ -347,7 +347,6 @@ public class LogiqueClient{
 		});
 		threadDegats.start();
 	}
-	
 
 	private void respawn() {
 		joueur.setArme(null);

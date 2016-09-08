@@ -4,10 +4,10 @@ import java.util.HashMap;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
-
 import rattco.messages.AcceptClientMessage;
 import rattco.messages.ClientConnexionMessage;
 import rattco.messages.DamageMessage;
+import rattco.messages.FinPartieMessage;
 import rattco.messages.FireMessage;
 import rattco.messages.KillMessage;
 import rattco.messages.PickUpMessage;
@@ -40,7 +40,8 @@ public class Registerer {
 		kryo.register(KillMessage.class);
 		kryo.register(DamageMessage.class);
 		kryo.register(Partie.class);
-		
+		kryo.register(FinPartieMessage.class);
+
 		// Joueur
 		kryo.register(JoueurOnline.class);
 		kryo.register(Joueur.class);
@@ -50,7 +51,8 @@ public class Registerer {
 
 		kryo.register(HashMap.class);
 
-		// Armes (seulement parce que l'arme est un attribut de la classe Personnage)
+		// Armes (seulement parce que l'arme est un attribut de la classe
+		// Personnage)
 		kryo.register(Weapon.class);
 		kryo.register(HandGun.class);
 		kryo.register(AssaultRifle.class);
@@ -59,7 +61,7 @@ public class Registerer {
 		kryo.register(ShootGun.class);
 		kryo.register(SubmachineGun.class);
 		kryo.register(Axe.class);
-		
+
 	}
 
 }

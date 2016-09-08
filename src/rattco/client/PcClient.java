@@ -9,6 +9,7 @@ import com.esotericsoftware.kryonet.Listener;
 import rattco.messages.AcceptClientMessage;
 import rattco.messages.ClientConnexionMessage;
 import rattco.messages.DamageMessage;
+import rattco.messages.FinPartieMessage;
 import rattco.messages.FireMessage;
 import rattco.messages.KillMessage;
 import rattco.messages.PickUpMessage;
@@ -21,6 +22,9 @@ public class PcClient {
 	private LogiqueClient lc;
 	private final int networkDelay = 20;
 	private Client client;
+	private JFrameClient jfcCamera;
+	private VueCamera vueCamera;
+	private int id;
 
 	public PcClient(String ip, String pseudo) throws IOException {
 
@@ -28,7 +32,7 @@ public class PcClient {
 		Registerer.registerFor(client);
 
 		client.start();
-		
+
 		PcClient moiMeme = this;
 
 		// lance une IOException si ça se passe mal
@@ -38,24 +42,29 @@ public class PcClient {
 		client.sendTCP(ccm);
 
 		client.addListener(new Listener() {
-			
+
 			public void received(Connection connection, Object object) {
 
 				if (object instanceof AcceptClientMessage) {
 					AcceptClientMessage acm = (AcceptClientMessage) object;
 					System.out.println(acm.getMsg());
+					id = acm.getId();
 
 					lc = new LogiqueClient(acm.getMapPath(), acm.getPartie(), acm.getId(), moiMeme);
-//					VueMap vueMap = new VueMap(lc);
-					VueCamera vueCamera = new VueCamera(lc);
-					new JFrameClient(vueCamera);
 
-//					jfcMap.addWindowListener(new WindowAdapter() {
-//						@Override
-//						public void windowClosing(WindowEvent e) {
-//							client.close();
-//						}
-//					});
+					// VueMap vueMap = new VueMap(lc);
+					vueCamera = new VueCamera(lc);
+					// jfcMap = new JFrameClient(vueMap);
+					jfcCamera = new JFrameClient(vueCamera);
+					// jfcMap.setLocation(0, 720);
+					// jfcMap.setSize(400, 280);
+
+					// jfcMap.addWindowListener(new WindowAdapter() {
+					// @Override
+					// public void windowClosing(WindowEvent e) {
+					// client.close();
+					// }
+					// });
 
 					Thread t = new Thread(new Runnable() {
 
@@ -75,18 +84,21 @@ public class PcClient {
 					});
 					t.start();
 
-
 				} else if (object instanceof Partie) {
 					// jfc.debug(object.toString());
 					lc.updatePartie((Partie) object);
 				} else if (object instanceof PickUpMessage) {
-					lc.hideThing(((PickUpMessage)object).getIndexOfThing());
+					lc.hideThing(((PickUpMessage) object).getIndexOfThing());
 				} else if (object instanceof KillMessage) {
-					lc.murderHappened((KillMessage)object);
+					lc.murderHappened((KillMessage) object);
 				} else if (object instanceof DamageMessage) {
-					lc.sufferDamages((DamageMessage)object);
+					lc.sufferDamages((DamageMessage) object);
 				} else if (object instanceof String) {
-					System.out.println((String)object);
+					System.out.println((String) object);
+				} else if (object instanceof FinPartieMessage) {
+					jfcCamera.dispose();
+					ClientConnexionMessage ccm = new ClientConnexionMessage(pseudo);
+					client.sendTCP(ccm);
 				}
 			}
 		});
