@@ -55,7 +55,9 @@ public class LogiqueClient{
 	public LogiqueClient(String nomMap, Partie partie, int playerId, PcClient pcClient) {
 		touchesEnfoncees = new HashSet<Integer>(6);
 		fin = false;
-		map = ImageParser.getMap(nomMap);
+//		map = ImageParser.getMap(nomMap);
+		map = ImageParser.getMapFromFolder("maps/dust");
+//		map = ImageParser.getMapFromFolder(nomMap);
 		objets = map.getListThing();
 		
 		this.pcClient=pcClient;
@@ -126,6 +128,47 @@ public class LogiqueClient{
 
 	}
 
+	private void moveAlongWalls() {
+		double newx = joueur.getPosition().getdX();
+		double newy = joueur.getPosition().getdY();
+		double oldx = oldPosition.getdX();
+		double oldy = oldPosition.getdY();
+
+		int caseX = (int) oldx;
+		int caseY = (int) oldy;
+
+		if (oldx <= newx) {
+			if (oldy <= newy)
+				// bas droite
+				testAndMove(newx, newy, caseX + .99, caseY + .99);
+			else
+				// haut droite
+				testAndMove(newx, newy, caseX + .99, caseY + .01);
+		} else {
+			if (oldy <= newy)
+				// bas gauche
+				testAndMove(newx, newy, caseX + .01, caseY + .99);
+			else
+				// haut gauche
+				testAndMove(newx, newy, caseX + .01, caseY + .01);
+		}
+	}
+
+	private void testAndMove(double newx, double newy, double lockX, double lockY) {
+		// on essaye de glisser horizontalement
+		if (!map.inWall(newx, lockY)) {
+			// on déplace si on est pas dans un mur
+			joueur.setPosition(newx, lockY);
+		} else if (!map.inWall(lockX, newy)) {
+			// sinon, on essaye de glisser verticalement
+			joueur.setPosition(lockX, newy);
+		} else {
+			// on est dans un mur dans les deux cas
+			// on ne bouge plus, on se met dans le coin
+			joueur.setPosition(lockX, lockY);
+		}
+	}
+
 	private void collectItems() {
 		Thing thing;
 		for (int i = 0; i < objets.size(); i++) {
@@ -152,47 +195,6 @@ public class LogiqueClient{
 					}
 				}
 			}
-		}
-	}
-
-	private void moveAlongWalls() {
-		double newx = joueur.getPosition().getdX();
-		double newy = joueur.getPosition().getdY();
-		double oldx = oldPosition.getdX();
-		double oldy = oldPosition.getdY();
-
-		int caseX = (int) oldx;
-		int caseY = (int) oldy;
-
-		if (oldx <= newx) {
-			if (oldy <= newy)
-				// bas droite
-				testAndMove(newx, newy, caseX + .99, caseY + .99);
-			else
-				// haut droite
-				testAndMove(newx, newy, caseX + .99, caseY);
-		} else {
-			if (oldy <= newy)
-				// bas gauche
-				testAndMove(newx, newy, caseX, caseY + .99);
-			else
-				// haut gauche
-				testAndMove(newx, newy, caseX, caseY);
-		}
-	}
-
-	private void testAndMove(double newx, double newy, double lockX, double lockY) {
-		// on essaye de glisser horizontalement
-		if (!map.inWall(newx, lockY)) {
-			// on déplace si on est pas dans un mur
-			joueur.setPosition(newx, lockY);
-		} else if (!map.inWall(lockX, newy)) {
-			// sinon, on essaye de glisser verticalement
-			joueur.setPosition(lockX, newy);
-		} else {
-			// on est dans un mur dans les deux cas
-			// on ne bouge plus, on se met dans le coin
-			joueur.setPosition(lockX, lockY);
 		}
 	}
 

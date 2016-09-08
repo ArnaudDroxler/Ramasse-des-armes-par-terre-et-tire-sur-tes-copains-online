@@ -18,9 +18,23 @@ import toutdansunpackage.thing.weapon.HandGun;
 import toutdansunpackage.thing.weapon.PrecisionRifle;
 import toutdansunpackage.thing.weapon.ShootGun;
 import toutdansunpackage.thing.weapon.SubmachineGun;
+import toutdansunpackage.tools.ImageLoader;
+import toutdansunpackage.tools.MagasinImage;
 import toutdansunpackage.tools.raycasting.Vector2D;
 
 public class ImageParser {
+	
+	public static LvlMap getMapFromFolder(String folderName){
+		MagasinImage.buffFond = ImageLoader.loadBufferedImage(folderName + "/fond.png");
+		MagasinImage.buffTextMur = ImageLoader.loadImagesFromFolder(folderName + "/textures");
+		try {
+			return getMap(ImageIO.read(new File(folderName + "/map.png")),
+					ImageIO.read(new File(folderName + "/maptexture.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
 	public static LvlMap getMap(String mapName) {
 
