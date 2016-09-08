@@ -57,7 +57,7 @@ public class PcServer {
 				System.out.println("nombre de joueurs: " + nombreJoueursMax);
 				System.out.println("temps en millisecondes: " + tempsPartie);
 				
-				new JFramePartie(partie);
+				//new JFramePartie(partie);
 
 				Thread tpartie = new Thread(new Runnable() {
 

@@ -45,8 +45,7 @@ public class LogiqueClient{
 		touchesEnfoncees = new HashSet<Integer>(6);
 		fin = false;
 //		map = ImageParser.getMap(nomMap);
-		map = ImageParser.getMapFromFolder("maps/dust");
-//		map = ImageParser.getMapFromFolder(nomMap);
+		map = ImageParser.getMapFromFolder(nomMap);
 		objets = map.getListThing();
 		
 		this.pcClient=pcClient;
@@ -54,10 +53,10 @@ public class LogiqueClient{
 		joueurs = partie.getJoueurs();
 
 		joueur = joueurs.get(playerId);
-		//joueur.setPosition(getPointRespawn());
-		joueur.setPosition(map.getStartPosition());
+		joueur.setPosition(getPointRespawn());
+		//joueur.setPosition(map.getStartPosition());
 		
-		joueur.setArme(new Axe(joueur.getPosition()));
+		joueur.setArme(new Axe());
 		animer();
 		
 		fireLineList = new ArrayList<Line2D>(5);

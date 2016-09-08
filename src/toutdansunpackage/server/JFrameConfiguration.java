@@ -33,7 +33,7 @@ public class JFrameConfiguration extends JFrame {
 	|*							Constructeurs							*|
 	\*------------------------------------------------------------------*/
 
-	private static final String defaultMapName = "maps/dust";
+	private static final String defaultMapName = "maps/maison";
 
 	public JFrameConfiguration() {
 		fc.setDialogTitle("Choisissez une carte, cliquez sur \"Annuler\" pour charger la map par défaut");
