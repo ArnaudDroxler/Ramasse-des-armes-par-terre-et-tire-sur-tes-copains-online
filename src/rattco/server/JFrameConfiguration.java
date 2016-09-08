@@ -161,7 +161,7 @@ public class JFrameConfiguration extends JFrame {
 
 		int minutes = PREFERENCES.getInt("minutes", 5);
 		int secondes = PREFERENCES.getInt("secondes", 0);
-		int joueurs = PREFERENCES.getInt("nbJoueurs", 2);
+		int joueurs = PREFERENCES.getInt("nbJoueurs", 8);
 
 		panChoixTemps.setMinute(minutes);
 		panChoixTemps.setSeconde(secondes);

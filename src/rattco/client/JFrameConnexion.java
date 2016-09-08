@@ -115,7 +115,7 @@ public class JFrameConnexion extends JFrame {
 			// dispose(); // close the JFrame
 		} catch (IOException e) {
 			System.err.println("Serveur inaccessible");
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

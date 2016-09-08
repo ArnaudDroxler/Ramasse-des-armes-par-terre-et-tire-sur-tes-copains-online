@@ -40,7 +40,7 @@ public class Registerer {
 		kryo.register(KillMessage.class);
 		kryo.register(DamageMessage.class);
 		kryo.register(Partie.class);
-		kryo.register(FinPartieMessage.class);
+		kryo.register(FinPartieMessage.class);	
 
 		// Joueur
 		kryo.register(JoueurOnline.class);

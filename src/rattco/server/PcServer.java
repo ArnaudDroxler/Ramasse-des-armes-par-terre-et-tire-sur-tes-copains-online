@@ -1,10 +1,6 @@
 package rattco.server;
 
 import java.io.IOException;
-import java.net.Inet4Address;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -18,7 +14,6 @@ import rattco.messages.KillMessage;
 import rattco.messages.PickUpMessage;
 import rattco.messages.PlayerUpdateMessage;
 import rattco.thing.personnage.JoueurOnline;
-import rattco.tools.MagasinImage;
 import rattco.tools.Registerer;
 
 public class PcServer {
@@ -31,6 +26,7 @@ public class PcServer {
 
 	private String[] tabMap;
 	int cptMap;
+	private int nbJoeursMax;
 
 	public PcServer(String[] args) {
 		server = new Server();
@@ -41,12 +37,13 @@ public class PcServer {
 			// String mapPath = "sprite/map/maison";
 
 			mapName = args[0];
-			Integer.parseInt(args[1]);
+			nbJoeursMax = Integer.parseInt(args[1]);
+
 			if (args[2] == null) {
 				// Si aucun temps entré, temps de 5mn par défaut
 				tempsPartie = 300000;
 			} else {
-				tempsPartie = Integer.parseInt(args[2])*60000;
+				tempsPartie = Integer.parseInt(args[2]) * 60000;
 			}
 
 			tabMap = JFrameConfiguration.loadFoldersFromFolder("maps");
@@ -113,15 +110,19 @@ public class PcServer {
 			public void received(Connection connection, Object object) {
 				if (object instanceof ClientConnexionMessage) {
 					ClientConnexionMessage ccm = (ClientConnexionMessage) object;
-					connection.setName(ccm.getPseudo() + ":" + connection.getID());
-					System.out.println("nouveau joueur : " + ccm.getPseudo());
+					if (partie.getJoueurs().size() < nbJoeursMax) {
+						connection.setName(ccm.getPseudo() + ":" + connection.getID());
+						System.out.println("nouveau joueur : " + ccm.getPseudo());
 
-					JoueurOnline nouveaujoueur = new JoueurOnline(ccm.getPseudo(), connection.getID());
-					partie.addJoueur(connection.getID(), nouveaujoueur);
-
-					AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID(),
-							mapName);
-					connection.sendTCP(acm);
+						JoueurOnline nouveaujoueur = new JoueurOnline(ccm.getPseudo(), connection.getID());
+						
+						partie.addJoueur(connection.getID(), nouveaujoueur);
+						AcceptClientMessage acm = new AcceptClientMessage(ccm.getPseudo(), partie, connection.getID(),
+								mapName);
+						connection.sendTCP(acm);
+					}else{
+						connection.sendTCP("Serveur plein");
+					}
 				} else if (object instanceof PlayerUpdateMessage) {
 					PlayerUpdateMessage pum = (PlayerUpdateMessage) object;
 					partie.updateJoueur(connection.getID(), pum);

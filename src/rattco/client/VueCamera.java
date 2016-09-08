@@ -109,7 +109,6 @@ public class VueCamera extends Renderer {
 
 		h = customH;
 		w = customW;
-		System.out.println(h + "h : w" + w);
 
 		tabDistStripes = new double[w];
 		

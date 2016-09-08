@@ -26,7 +26,6 @@ public class PcClient {
 	private Client client;
 	private JFrameClient jfcCamera;
 	private VueCamera vueCamera;
-	private int id;
 	private boolean existe;
 	private Dimension dim;
 	private Point pt;
@@ -57,7 +56,7 @@ public class PcClient {
 				if (object instanceof AcceptClientMessage) {
 					AcceptClientMessage acm = (AcceptClientMessage) object;
 					System.out.println(acm.getMsg());
-					id = acm.getId();
+					acm.getId();
 
 					lc = new LogiqueClient(acm.getMapPath(), acm.getPartie(), acm.getId(), moiMeme);
 
@@ -104,8 +103,7 @@ public class PcClient {
 					});
 					t.start();
 
-				} else if (object instanceof Partie) {
-					// jfc.debug(object.toString());
+				}else if (object instanceof Partie) {
 					lc.updatePartie((Partie) object);
 				} else if (object instanceof PickUpMessage) {
 					lc.hideThing(((PickUpMessage) object).getIndexOfThing());
