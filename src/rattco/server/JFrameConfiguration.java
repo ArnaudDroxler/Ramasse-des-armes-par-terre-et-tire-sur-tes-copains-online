@@ -159,7 +159,7 @@ public class JFrameConfiguration extends JFrame {
 			setLocation(px, py);
 		}
 
-		int minutes = PREFERENCES.getInt("minutes", 0);
+		int minutes = PREFERENCES.getInt("minutes", 5);
 		int secondes = PREFERENCES.getInt("secondes", 0);
 		int joueurs = PREFERENCES.getInt("nbJoueurs", 2);
 

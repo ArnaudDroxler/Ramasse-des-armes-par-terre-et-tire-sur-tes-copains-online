@@ -43,7 +43,12 @@ public class PcServer {
 
 			mapName = args[0];
 			nombreJoueursMax = Integer.parseInt(args[1]);
-			tempsPartie = Integer.parseInt(args[2]);
+			if (args[2] == null) {
+				// Si aucun temps entré, temps de 5mn par défaut
+				tempsPartie = 300000;
+			} else {
+				tempsPartie = Integer.parseInt(args[2]);
+			}
 
 			tabMap = JFrameConfiguration.loadFoldersFromFolder("maps");
 
