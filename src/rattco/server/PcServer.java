@@ -48,7 +48,7 @@ public class PcServer {
 		nbJoueurs = 0;
 
 		if (args[2] == null) {
-			// Si aucun temps entré, temps de 5mn par défaut
+			// Si aucun temps entré, temps de 5 min par défaut
 			tempsPartieSecondes = 5 * 60;
 		} else {
 			tempsPartieSecondes = Integer.parseInt(args[2]);

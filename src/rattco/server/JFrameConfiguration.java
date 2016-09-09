@@ -26,22 +26,22 @@ import rattco.tools.SpringUtilities;
 public class JFrameConfiguration extends JFrame {
 
 	private static final long serialVersionUID = 2308761730886294316L;
-	/*------------------------------------------------------------------*\
-	|*							Constructeurs							*|
-	\*------------------------------------------------------------------*/
-
 	private static final String defaultMapName = "maps/maison";
+	private static final Preferences PREFERENCES = Preferences.userNodeForPackage(JFrameConfiguration.class);
+
+	private JSpinner spinNbJoueur;
+	private JPanelTemps panChoixTemps;
+	private JButton btnLancer;
+	private JButton btnAnnuler;
+	private String[] args;
+	private JComboBox<String> cbbMaps;
+
 
 	public JFrameConfiguration() {
-
 		geometry();
 		control();
 		appearance();
 	}
-
-	/*------------------------------------------------------------------*\
-	|*							Methodes Private						*|
-	\*------------------------------------------------------------------*/
 
 	/**
 	 * Instanciation et placement des composants swings
@@ -179,20 +179,4 @@ public class JFrameConfiguration extends JFrame {
 		});
 		return directories;
 	}
-
-	/*------------------------------------------------------------------*\
-	|*							Attributs Private						*|
-	\*------------------------------------------------------------------*/
-
-	// Tools
-
-	private JSpinner spinNbJoueur;
-	private JPanelTemps panChoixTemps;
-	private JButton btnLancer;
-	private JButton btnAnnuler;
-
-	private static final Preferences PREFERENCES = Preferences.userNodeForPackage(JFrameConfiguration.class);
-	private String[] args;
-
-	private JComboBox<String> cbbMaps;
 }

@@ -17,16 +17,24 @@ import javax.swing.SpringLayout;
 import rattco.tools.JPanelDecorator;
 import rattco.tools.SpringUtilities;
 
+/**
+ * Cette classe affiche une boite de dialogue pour le client
+ * qui permet de se connecter à un serveur en fournissant un 
+ * nom d'hôte et un pseudo.
+ * Le client peut aussi choisir la résolution du jeu en fournissant
+ * une hauteur en pixel, la largeur est calculée pour garantir un rapport
+ * 16/9 et ainsi éviter de déformer les objets
+ */
 public class JFrameConnexion extends JFrame {
 
-	/*------------------------------------------------------------------*\
-	|*							Constructeurs							*|
-	\*------------------------------------------------------------------*/
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7051290589750396629L;
+	private static final Preferences PREFERENCES = Preferences.userNodeForPackage(JFrameConnexion.class);
+
+	private JTextField tfIp;
+	private JTextField tfPseudo;
+	private JFormattedTextField tfReso;
+	private JButton btnConnexion;
+
 
 	public JFrameConnexion() {
 		geometry();
@@ -34,16 +42,18 @@ public class JFrameConnexion extends JFrame {
 		appearance();
 	}
 
-	/*------------------------------------------------------------------*\
-	|*							Methodes Private						*|
-	\*------------------------------------------------------------------*/
-
-	
+	/**
+	 * Construction des composants swing.
+	 * Pour la mise en page en formulaire, on utilise la classe
+	 * SpringUtilities proposées dans les exemples de java :
+	 * https://docs.oracle.com/javase/tutorial/uiswing/examples/layout/SpringGridProject/src/layout/SpringUtilities.java
+	 */
 	private void geometry() {
 		JPanel formPanel = new JPanel(new SpringLayout());
 
 		tfIp = new JTextField(12);
 		tfPseudo = new JTextField();
+		// Grâce au JFormattedTextField, ce champ ne pourra contenir que des entiers
 		tfReso = new JFormattedTextField(400);
 		btnConnexion = new JButton("Rejoindre");
 		
@@ -74,9 +84,15 @@ public class JFrameConnexion extends JFrame {
 		lblExplications.setPreferredSize(new Dimension(300, 90));
 		panel.add(lblExplications);
 
+		// Le décorateur rajoute simplement une bordure au panel
 		setContentPane(new JPanelDecorator(panel, 10));
 	}
 
+	/**
+	 * Ici on gère l'évènemnt clic sur le bouton Connexion
+	 * La méthode connect se fait dans un autre thread pour
+	 * éviter que l'affichage se fige au moment de la connexion
+	 */
 	private void control() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getRootPane().setDefaultButton(btnConnexion);
@@ -111,16 +127,24 @@ public class JFrameConnexion extends JFrame {
 		setVisible(true); // last!
 	}
 
+	/**
+	 * On instancie un nouveau PcClient qui va tenter de se connecter au serveur,
+	 * si ça échoue, PcClient va émettre une IOException, on affiche simplement un
+	 * message d'erreur dans la console
+	 */
 	protected void connect(){
 		try {
 			new PcClient(tfIp.getText(), tfPseudo.getText(), Integer.valueOf(tfReso.getText()));
 			// dispose(); // close the JFrame
 		} catch (IOException e) {
 			System.err.println("Serveur inaccessible");
-			//e.printStackTrace();
 		}
 	}
 
+	/**
+	 * Ces 2 méthodes nous permettent de garder les mêmes préférences
+	 * d'une éxécution du programme à l'autre
+	 */
 	private void savePreferences() {
 		PREFERENCES.putInt("px", (int) this.getLocation().getX());
 		PREFERENCES.putInt("py", (int) this.getLocation().getY());
@@ -149,19 +173,5 @@ public class JFrameConnexion extends JFrame {
 		tfReso.selectAll();
 
 	}
-
-	/*------------------------------------------------------------------*\
-	|*							Attributs Private						*|
-	\*------------------------------------------------------------------*/
-
-	// Tools
-
-	private JTextField tfIp;
-	private JTextField tfPseudo;
-	private JFormattedTextField tfReso;
-
-	private JButton btnConnexion;
-
-	private static final Preferences PREFERENCES = Preferences.userNodeForPackage(JFrameConnexion.class);
 
 }
