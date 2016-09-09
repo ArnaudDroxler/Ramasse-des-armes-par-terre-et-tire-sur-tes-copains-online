@@ -10,7 +10,6 @@ public class JoueurOnline extends Joueur implements Comparable<JoueurOnline> {
 
 	public String pseudo;
 	public int id;
-	
 	public JoueurOnline() {}
 
 
@@ -47,7 +46,9 @@ public class JoueurOnline extends Joueur implements Comparable<JoueurOnline> {
 		}
 	}
 
-
+	/**
+	 * Permet de trier les joueurs afin d'effectuer un classement
+	 */
 	@Override
 	public int compareTo(JoueurOnline o) {
 		if(nbKill==o.nbKill){

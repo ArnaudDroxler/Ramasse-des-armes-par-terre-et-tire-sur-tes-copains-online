@@ -13,14 +13,23 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
+/**
+ * Cette classe décrit la fenêtre qui contiendra l'objet vueCamera
+ * Elle gère les évènements clavier et souris
+ */
 public class JFrameClient extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8545021550002081154L;
 	private LogiqueClient lc;
 	private Renderer renderer;
+
+	/**
+	 * Le robot permet de replacer la souris au centre à chaque mouvement de souris
+	 */
+	private Robot robot;
+	private boolean robotActive;
+	public static boolean mouseRightPressed;
+	public static boolean mouseLeftPressed;
 
 	public JFrameClient(Renderer render) {
 		super();
@@ -33,11 +42,6 @@ public class JFrameClient extends JFrame {
 		lc = renderer.lc;
 		addListeners();
 	}
-
-	private Robot robot;
-	private boolean robotActive;
-	public static boolean mouseRightPressed;
-	public static boolean mouseLeftPressed;
 
 	public void setRenderer(Renderer render) {
 		remove(renderer);
@@ -53,7 +57,6 @@ public class JFrameClient extends JFrame {
 		try {
 			robot = new Robot();
 		} catch (AWTException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		robotActive = false;

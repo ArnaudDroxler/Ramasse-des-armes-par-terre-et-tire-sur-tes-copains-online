@@ -5,12 +5,15 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
-
+/**
+ * Classe outil qui permet de charger une BufferedImage à partir d'un nom de fichier
+ * ou alors de charger toutes les images contenues dans un dossier
+ *
+ */
 public class ImageLoader {
 
 	public static BufferedImage loadBufferedImage(String nameFile) {
 		BufferedImage img = null;
-
 		try {
 			img = ImageIO.read(new File(nameFile));
 		} catch (IOException e) {

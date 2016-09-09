@@ -12,6 +12,7 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -26,11 +27,15 @@ import rattco.thing.weapon.ShootGun;
 import rattco.tools.MagasinImage;
 import rattco.tools.raycasting.Vector2D;
 
+/**
+ * Cette classe est horrible. C'est ici que sont fait tous les rendus
+ * des murs, des things, du HUD, du fond, etc... Ces rendus sont fait sous forme
+ * de couches, chaque image est d'abord préparée, puis elles sont dessinées.
+ * Cela permettrait de mettre en concurrence la préparation des images, nous avons
+ * essayés mais ça posait d'autres problèmes
+ */
 public class VueCamera extends Renderer {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5940938109641662048L;
 	public static final String strMort = new String("Vous êtes mort!");
 	public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
@@ -61,10 +66,12 @@ public class VueCamera extends Renderer {
 		super(_logique);
 		customH=customHeight;
 		customW=customH*16/9;
-		// dla merde mais necessaire pour la fonction scale
+		// necessaire pour la fonction scale
 		scaleWidth = (double) customW / InitialcustomWidth;
 		scaleHeight = (double) customH / InitialcustomHeight;
 
+		// il ne faut commencer à dessiner seulement une fois la fenêtre et 
+		// toutes les BufferedImages créées
 		readyToDraw = false;
 
 		pos = lc.joueur.getPosition();
@@ -72,6 +79,11 @@ public class VueCamera extends Renderer {
 		setDirection(lc.joueur.getDirection());
 		chosesAAfficher = new TreeMap<Double, Thing>();
 
+		/**
+		 *  un heap qui permet de trier les joueurs avant de 
+		 *  les afficher dans le tableau des scores.
+		 *  Pour ça, JoueurOnline implémente l'interface Comparable
+		 */
 		joueursTries = new PriorityQueue<JoueurOnline>(8);
 
 		setBackground(Color.black);
@@ -86,6 +98,9 @@ public class VueCamera extends Renderer {
 		g2d = (Graphics2D) g;
 		if (readyToDraw) {
 			draw();
+		}else{
+			g2d.setColor(Color.white);
+			g2d.drawString("Chargement...", 0, 0);
 		}
 
 	}
@@ -138,7 +153,6 @@ public class VueCamera extends Renderer {
 		buffImgScores = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dScores = buffImgScores.createGraphics();
 		g2dScores.setFont(new Font("Helvetica", Font.BOLD, 20));
-		// g2dScores.setColor(new Color(1f, 0f, 0f, 1f));
 
 		buffImgDamage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
 		g2dDamage = buffImgDamage.createGraphics();
@@ -154,13 +168,14 @@ public class VueCamera extends Renderer {
 		setDirection(lc.joueur.getDirection());
 
 		g2d.translate(frameW / 2, frameH / 2);
+		// on zoom dans l'image si on vise dans la lunette du fusil de précision
 		if (JFrameClient.mouseRightPressed && lc.joueur.getArme() instanceof PrecisionRifle) {
 			g2d.scale(2, 2);
 		}
 		
-		//long t1 = System.currentTimeMillis();
-		
-//		prepareImgs();
+		/**
+		 * Préparation des images
+		 */
 		if(MagasinImage.buffFond!=null)
 			prepareFondImg();
 		prepareWallsImg();
@@ -174,9 +189,9 @@ public class VueCamera extends Renderer {
 		if(lc.touchesEnfoncees.contains(KeyEvent.VK_Q))
 			prepareScoresImg();
 
-		// System.out.println("temps de preparation : " +
-		// (System.currentTimeMillis()-t1));
-
+		/**
+		 * Dessin des images
+		 */
 		drawImage(buffImgFond);
 		drawImage(buffImgMurs);
 		drawImage(buffImgThings);
@@ -194,38 +209,24 @@ public class VueCamera extends Renderer {
 			drawImage(buffImgScores);
 
 	}
-	
-	private void prepareScoresImg() {
-		g2dScores.setBackground(TRANSPARENT);
-		g2dScores.clearRect(0, 0, w, h);
-		g2dScores.setColor(new Color(1f, 0f, 0f, 1f));
-		
-		int valTabX = w / 5;
-		int valTabY = h / 3;
-		int stringHei = (int) g2dScores.getFontMetrics().getStringBounds("Joueur", g2dScores).getHeight();
-		
-		g2dScores.drawString("Temps restant : "+ lc.tempsSecondes/60 + ":" + lc.tempsSecondes%60, valTabX, valTabY-2*stringHei);
-		g2dScores.drawString("Joueur", valTabX, valTabY);
-		g2dScores.drawString("Kill", 3 * valTabX, valTabY);
-		g2dScores.drawString("Death", 4 * valTabX, valTabY);
 
-		// Trier la liste de joueur en fonction du score
-		for (JoueurOnline j : lc.joueurs.values()) {
-			joueursTries.add(j);
-		}
-
-		// Pour chaque élément de la liste:
-		int i=0;
-		JoueurOnline j;
-		while(!joueursTries.isEmpty()) {
-			j=joueursTries.poll();
-			g2dScores.drawString(j.pseudo, valTabX, stringHei * (i + 1) + valTabY);
-			g2dScores.drawString(j.getNbKill()+"", 3 * valTabX, stringHei * (i + 1) + valTabY);
-			g2dScores.drawString(j.getNbDeath()+"", 4 * valTabX, stringHei * (i + 1) + valTabY);
-			i++;
-		}
+	private void drawImage(BufferedImage bi) {
+		g2d.drawImage(bi, -frameW / 2, -frameH / 2, frameW, frameH, null);
 	}
-
+	
+	/**
+	 * 
+	 * 
+	 * PREPARATION
+	 * 
+	 * 
+	 */
+	
+	/**
+	 * Prépare l'image de fond. Selon la direction du joueur,
+	 * l'image sera dessinée à partir d'un offsetX proportionnel à l'angle
+	 * du vecteur direction du joueur
+	 */
 	private void prepareFondImg() {
 		double theta = lc.joueur.getDirection().getTheta();
 		double xOffset = theta/(2*Math.PI);
@@ -238,188 +239,16 @@ public class VueCamera extends Renderer {
 		
 		g2dFond.drawImage(MagasinImage.buffFond, (int)-xImgOffset, 0, (int)scaledWidth, (int)scaledHeight, null);
 		
+		// on redessine une fois l'image si on en a fait tout le tour
 		if(xImgOffset+w>=scaledWidth)
 			g2dFond.drawImage(MagasinImage.buffFond, (int) (scaledWidth-xImgOffset), 0, (int)scaledWidth, (int)scaledHeight, null);
 	}
-
-
-	private void drawImage(BufferedImage bi) {
-		g2d.drawImage(bi, -frameW / 2, -frameH / 2, frameW, frameH, null);
-	}
-
-	private void prepareDeathScreenImg() {
-		Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
-
-		g2dDeathScreen.setColor(new Color(0f, 0f, 0f, .5f));
-		g2dDeathScreen.draw(rectangle);
-		g2dDeathScreen.fill(rectangle);
-
-		g2dDeathScreen.setColor(new Color(1f, 0f, 0f, 1f));
-		// Pour centrage:
-		int stringLen = (int) g2dDeathScreen.getFontMetrics().getStringBounds(strMort, g2dDeathScreen).getWidth();
-		g2dDeathScreen.drawString(strMort, w / 2 - stringLen / 2, h / 2);
-	}
-
-	private void prepareDamageScreenIMg() {
-		Point2D center = new Point2D.Float(w / 2, h / 2);
-		float radius = w / 2;
-		float[] dist = { 0.0f, 0.9f };
-
-		Color trans = new Color(1f, 1f, 1f, 0f);
-		Color rouge = new Color(1f, 0f, 0f, .5f);
-
-		Color[] colors = { trans, rouge };
-		RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
-
-		Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
-		g2dDamage.setPaint(gradient);
-		g2dDamage.fill(rectangle);
-
-	}
-
-	public void setPosition(Vector2D position) {
-		pos = position;
-	}
-
-	public void setDirection(Vector2D direction) {
-		dir = direction;
-		Vector2D vec = direction.rotate(Math.PI / 2.0);
-		plane.setdX(vec.getdX());
-		plane.setdY(vec.getdY());
-	}
-
-	public void prepareImpacteMur() {
-		g2dImpact.setBackground(TRANSPARENT);
-		g2dImpact.clearRect(0, 0, w, h);
-
-		if (lc.isFiring && !(lc.joueur.getArme() instanceof Chainsaw) && !lc.impactMurLine.isEmpty()) {
-			Iterator<Line2D> iterator = lc.impactMurLine.iterator();
-			while (iterator.hasNext()) {
-				Line2D line = iterator.next();
-
-				double longueurligne = Math
-						.sqrt(Math.pow((line.getX2() - line.getX1()), 2) + Math.pow(line.getY2() - line.getY1(), 2));
-
-				if (lc.joueur.getArme().computeDamage(longueurligne) > 0) {
-					BufferedImage img = scale(lc.joueur.getArme().getSpriteImpactMur(),
-							scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
-					if (lc.joueur.getArme() instanceof ShootGun) {
-						Vector2D vec = new Vector2D(line.getX2() - line.getX1(), line.getY2() - line.getY1());
-						double angle = Math.atan2(vec.getdY(), vec.getdX())
-								- Math.atan2(lc.joueur.getDirection().getdY(), lc.joueur.getDirection().getdX());
-						angle = 180 * angle / Math.PI;
-
-						g2dImpact.drawImage(img, null,
-								w / 2 - (int) (Math.tan(angle) * longueurligne) - img.getWidth() / 2,
-								h / 2 - img.getHeight() / 2);
-
-					} else {
-						g2dImpact.drawImage(img, null, w / 2 - img.getWidth() / 2, h / 2 - img.getHeight() / 2);
-					}
-
-				}
-
-			}
-		}
-	}
-
-	public void prepareImpacteEnnemi() {
-
-		if (lc.isFiring && !(lc.joueur.getArme() instanceof Chainsaw) && !lc.impactEnnemiLine.isEmpty()) {
-			Iterator<Line2D> iterator = lc.impactEnnemiLine.iterator();
-			while (iterator.hasNext()) {
-				Line2D line = iterator.next();
-
-				double longueurligne = Math
-						.sqrt(Math.pow((line.getX2() - line.getX1()), 2) + Math.pow(line.getY2() - line.getY1(), 2));
-
-				if (lc.joueur.getArme().computeDamage(longueurligne) > 0) {
-					BufferedImage img = scale(lc.joueur.getArme().getSpriteImpactEnnemi(),
-							scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
-
-					if (lc.joueur.getArme() instanceof ShootGun) {
-						Vector2D vec = new Vector2D(line.getX2() - line.getX1(), line.getY2() - line.getY1());
-						double angle = Math.atan2(vec.getdY(), vec.getdX())
-								- Math.atan2(lc.joueur.getDirection().getdY(), lc.joueur.getDirection().getdX());
-						angle = 180 * angle / Math.PI;
-
-						g2dImpact.drawImage(img, null,
-								w / 2 - (int) (Math.tan(angle) * longueurligne) - img.getWidth() / 2,
-								h / 2 - img.getHeight() / 2);
-
-					} else {
-						g2dImpact.drawImage(img, null, w / 2 - img.getWidth() / 2, h / 2 - img.getHeight() / 2);
-					}
-
-				}
-
-			}
-		}
-	}
-
-	private void prepareWeaponImg() {
-
-		g2dWeapon.setBackground(TRANSPARENT);
-		g2dWeapon.clearRect(0, 0, w, h);
-
-		if (lc.joueur.getArme() instanceof PrecisionRifle && JFrameClient.mouseRightPressed) {
-
-			Point2D center = new Point2D.Float(w / 2, h / 2);
-			float radius = w / 8;
-			float[] dist = { 0.0f, 0.9f, 1.0f };
-
-			Color[] colors = { TRANSPARENT, TRANSPARENT, Color.black };
-			RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
-
-			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
-			g2dWeapon.setPaint(gradient);
-			g2dWeapon.fill(rectangle);
-
-			g2dWeapon.setColor(Color.black);
-			g2dWeapon.drawLine(w / 2, 0, w / 2, h);
-			g2dWeapon.drawLine(0, h / 2, w, h / 2);
-
-		} else if (lc.joueur.getArme() != null) {
-			BufferedImage img = scale(lc.joueur.getArme().getSpriteHUD(), scaleWidth, scaleHeight);
-			g2dWeapon.drawImage(img, null, w / 2 - img.getWidth() / 2, h - img.getHeight());
-
-		}
-
-	}
-
-	private void prepareHUDImg() {
-		g2dHUD.setBackground(TRANSPARENT);
-		g2dHUD.clearRect(0, 0, w, h);
-
-		g2dHUD.translate(w / 2, h / 2);
-		g2dHUD.drawImage(scale(MagasinImage.buffHud[0], scaleWidth, scaleHeight), null, -w / 2, h / 4);
-		g2dHUD.setColor(new Color(0, 97, 255));
-		g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
-		g2dHUD.drawString("" + lc.joueur.getArmure(), -w / 2 + w / 10, h / 4 + h / 9);
-		g2dHUD.setColor(Color.RED);
-		// g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (30 *
-		// scaleHeight)));
-		g2dHUD.drawString("" + lc.joueur.getVie(), -w / 2 + w / 10, h / 4 + h / 5 + h / 35);
-
-		String str = "";
-
-		if (lc.joueur.getArme() instanceof Axe) {
-			str = new String("0/0");
-		} else if (lc.joueur.getArme() != null) {
-			str = new String(lc.joueur.getArme().getAmmo() + "/" + lc.joueur.getArme().getMaxAmmo());
-		}
-
-		g2dHUD.drawImage(scale(MagasinImage.buffHud[1], scaleWidth, scaleHeight), null, w / 4, h / 4);
-		g2dHUD.setColor(new Color(175, 175, 175));
-		g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (25 * scaleHeight)));
-		int strLen = (int) g2dHUD.getFontMetrics().getStringBounds(str, g2dHUD).getWidth();
-
-		g2dHUD.drawString(str, w / 4 + w / 6 - strLen, h / 4 + w / 10 + w / 50);
-
-		g2dHUD.translate(-w / 2, -h / 2);
-
-	}
-
+	
+	/**
+	 * Prépare l'image des murs grâce à la technique du ray-casting.
+	 * Cette méthode est pleine de tricks mathématiques incompréhensbles.
+	 * Elle est adaptée du tutoriel ray-casting : http://lodev.org/cgtutor/raycasting.html
+	 */
 	private void prepareWallsImg() {
 		g2dMurs.setBackground(TRANSPARENT);
 		g2dMurs.clearRect(0, 0, w, h);
@@ -576,7 +405,10 @@ public class VueCamera extends Renderer {
 			}
 		}
 	}
-
+	
+	/**
+	 * Prépare le dessin des Things, ici aussi, c'est adapté du tutoriel
+	 */
 	private void prepareThingsImg() {
 		// Ici ça permet de clear rapidement une bufferedImage
 		g2dThings.setBackground(TRANSPARENT);
@@ -690,6 +522,210 @@ public class VueCamera extends Renderer {
 
 	}
 
+	/**
+	 * Prépare le dessin du tableau des scores
+	 */
+	private void prepareScoresImg() {
+		g2dScores.setBackground(TRANSPARENT);
+		g2dScores.clearRect(0, 0, w, h);
+		g2dScores.setColor(new Color(1f, 0f, 0f, 1f));
+		
+		int valTabX = w / 5;
+		int valTabY = h / 3;
+		int stringHei = (int) g2dScores.getFontMetrics().getStringBounds("Joueur", g2dScores).getHeight();
+		
+		g2dScores.drawString("Temps restant : "+ lc.tempsSecondes/60 + ":" + lc.tempsSecondes%60, valTabX, valTabY-2*stringHei);
+		g2dScores.drawString("Joueur", valTabX, valTabY);
+		g2dScores.drawString("Kill", 3 * valTabX, valTabY);
+		g2dScores.drawString("Death", 4 * valTabX, valTabY);
+
+		// Trier la liste de joueur en fonction du score
+		for (JoueurOnline j : lc.joueurs.values()) {
+			joueursTries.add(j);
+		}
+
+		int i=0;
+		JoueurOnline j;
+		while(!joueursTries.isEmpty()) {
+			j=joueursTries.poll();
+			g2dScores.drawString(j.pseudo, valTabX, stringHei * (i + 1) + valTabY);
+			g2dScores.drawString(j.getNbKill()+"", 3 * valTabX, stringHei * (i + 1) + valTabY);
+			g2dScores.drawString(j.getNbDeath()+"", 4 * valTabX, stringHei * (i + 1) + valTabY);
+			i++;
+		}
+	}
+
+	/**
+	 * Prépare l'écran qui s'affiche lorsqu'on meurt
+	 */
+	private void prepareDeathScreenImg() {
+		Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
+
+		g2dDeathScreen.setColor(new Color(0f, 0f, 0f, .5f));
+		g2dDeathScreen.draw(rectangle);
+		g2dDeathScreen.fill(rectangle);
+
+		g2dDeathScreen.setColor(new Color(1f, 0f, 0f, 1f));
+		// Pour centrage:
+		int stringLen = (int) g2dDeathScreen.getFontMetrics().getStringBounds(strMort, g2dDeathScreen).getWidth();
+		g2dDeathScreen.drawString(strMort, w / 2 - stringLen / 2, h / 2);
+	}
+
+	/**
+	 * Prépare l'effet qui se superpose à l'image quand on prend des dégâts
+	 */
+	private void prepareDamageScreenIMg() {
+		Point2D center = new Point2D.Float(w / 2, h / 2);
+		float radius = w / 2;
+		float[] dist = { 0.0f, 0.9f };
+
+		Color trans = new Color(1f, 1f, 1f, 0f);
+		Color rouge = new Color(1f, 0f, 0f, .5f);
+
+		Color[] colors = { trans, rouge };
+		RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
+
+		Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
+		g2dDamage.setPaint(gradient);
+		g2dDamage.fill(rectangle);
+
+	}
+
+	public void prepareImpacteMur() {
+		g2dImpact.setBackground(TRANSPARENT);
+		g2dImpact.clearRect(0, 0, w, h);
+
+		prepareImpact(lc.impactMurLine, lc.joueur.getArme().getSpriteImpactMur());
+	}
+
+	public void prepareImpacteEnnemi() {		
+		prepareImpact(lc.impactEnnemiLines, lc.joueur.getArme().getSpriteImpactEnnemi());
+	}
+
+	/**
+	 * Prépare le dessin des impacts
+	 */	
+	private void prepareImpact(ArrayList<Line2D> impactLine, BufferedImage spriteImpact) {
+		if (lc.isFiring && !(lc.joueur.getArme() instanceof Chainsaw) && !impactLine.isEmpty()) {
+		Iterator<Line2D> iterator = impactLine.iterator();
+		while (iterator.hasNext()) {
+			Line2D line = iterator.next();
+			double longueurligne = line.getP1().distance(line.getP2());
+
+			if (lc.joueur.getArme().computeDamage(longueurligne) > 0) {
+				BufferedImage img = scale(spriteImpact,
+						scaleWidth / (longueurligne / 4), scaleHeight / (longueurligne / 4));
+
+				if (lc.joueur.getArme() instanceof ShootGun) {
+					Vector2D vec = new Vector2D(line.getX2() - line.getX1(), line.getY2() - line.getY1());
+					double angle = Math.atan2(vec.getdY(), vec.getdX())
+							- Math.atan2(lc.joueur.getDirection().getdY(), lc.joueur.getDirection().getdX());
+					angle = 180 * angle / Math.PI;
+
+					g2dImpact.drawImage(img, null,
+							w / 2 - (int) (Math.tan(angle) * longueurligne) - img.getWidth() / 2,
+							h / 2 - img.getHeight() / 2);
+
+				} else {
+					g2dImpact.drawImage(img, null, w / 2 - img.getWidth() / 2, h / 2 - img.getHeight() / 2);
+				}
+
+			}
+
+		}
+		}
+	}
+
+	/**
+	 * Prépare le dessin de l'arme
+	 */
+	private void prepareWeaponImg() {
+
+		g2dWeapon.setBackground(TRANSPARENT);
+		g2dWeapon.clearRect(0, 0, w, h);
+
+		if (lc.joueur.getArme() instanceof PrecisionRifle && JFrameClient.mouseRightPressed) {
+
+			Point2D center = new Point2D.Float(w / 2, h / 2);
+			float radius = w / 8;
+			float[] dist = { 0.0f, 0.9f, 1.0f };
+
+			Color[] colors = { TRANSPARENT, TRANSPARENT, Color.black };
+			RadialGradientPaint gradient = new RadialGradientPaint(center, radius, dist, colors);
+
+			Rectangle2D rectangle = new Rectangle2D.Double(0, 0, w, h);
+			g2dWeapon.setPaint(gradient);
+			g2dWeapon.fill(rectangle);
+
+			g2dWeapon.setColor(Color.black);
+			g2dWeapon.drawLine(w / 2, 0, w / 2, h);
+			g2dWeapon.drawLine(0, h / 2, w, h / 2);
+
+		} else if (lc.joueur.getArme() != null) {
+			BufferedImage img = scale(lc.joueur.getArme().getSpriteHUD(), scaleWidth, scaleHeight);
+			g2dWeapon.drawImage(img, null, w / 2 - img.getWidth() / 2, h - img.getHeight());
+
+		}
+
+	}
+
+	/**
+	 * Prépare le dessin du HUD
+	 */
+	private void prepareHUDImg() {
+		g2dHUD.setBackground(TRANSPARENT);
+		g2dHUD.clearRect(0, 0, w, h);
+
+		g2dHUD.translate(w / 2, h / 2);
+		g2dHUD.drawImage(scale(MagasinImage.buffHud[0], scaleWidth, scaleHeight), null, -w / 2, h / 4);
+		g2dHUD.setColor(new Color(0, 97, 255));
+		g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (30 * scaleHeight)));
+		g2dHUD.drawString("" + lc.joueur.getArmure(), -w / 2 + w / 10, h / 4 + h / 9);
+		g2dHUD.setColor(Color.RED);
+		// g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (30 *
+		// scaleHeight)));
+		g2dHUD.drawString("" + lc.joueur.getVie(), -w / 2 + w / 10, h / 4 + h / 5 + h / 35);
+
+		String str = "";
+
+		if (lc.joueur.getArme() instanceof Axe) {
+			str = new String("0/0");
+		} else if (lc.joueur.getArme() != null) {
+			str = new String(lc.joueur.getArme().getAmmo() + "/" + lc.joueur.getArme().getMaxAmmo());
+		}
+
+		g2dHUD.drawImage(scale(MagasinImage.buffHud[1], scaleWidth, scaleHeight), null, w / 4, h / 4);
+		g2dHUD.setColor(new Color(175, 175, 175));
+		g2dHUD.setFont(new Font("Arial", Font.PLAIN, (int) (25 * scaleHeight)));
+		int strLen = (int) g2dHUD.getFontMetrics().getStringBounds(str, g2dHUD).getWidth();
+
+		g2dHUD.drawString(str, w / 4 + w / 6 - strLen, h / 4 + w / 10 + w / 50);
+
+		g2dHUD.translate(-w / 2, -h / 2);
+
+	}
+
+
+	/**
+	 * Fonction utilitaire
+	 */
+	public void setPosition(Vector2D position) {
+		pos = position;
+	}
+
+	/**
+	 * Fonction utilitaire
+	 */
+	public void setDirection(Vector2D direction) {
+		dir = direction;
+		Vector2D vec = direction.rotate(Math.PI / 2.0);
+		plane.setdX(vec.getdX());
+		plane.setdY(vec.getdY());
+	}
+
+	/**
+	 * Fonction utilitaire
+	 */
 	public static BufferedImage scale(BufferedImage bi, double scaleWidth2, double scaleHeight2) {
 		int width = (int) (bi.getWidth() * scaleWidth2);
 		int height = (int) (bi.getHeight() * scaleHeight2);

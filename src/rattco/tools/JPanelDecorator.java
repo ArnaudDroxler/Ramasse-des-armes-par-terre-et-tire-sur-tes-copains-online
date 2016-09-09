@@ -7,6 +7,10 @@ import java.awt.Dimension;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+/**
+ * Decorator qui rajoute une marge à n'importe quel Composant swing
+ *
+ */
 public class JPanelDecorator extends JPanel
 	{
 

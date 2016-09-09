@@ -6,7 +6,6 @@ import rattco.tools.raycasting.Vector2D;
 public class ImageLvlMap extends LvlMap {
 
 	public ImageLvlMap(int i, int j){
-		
 		super(i,j);
 	}
 

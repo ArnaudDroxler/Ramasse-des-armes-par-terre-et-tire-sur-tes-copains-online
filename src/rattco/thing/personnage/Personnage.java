@@ -4,6 +4,10 @@ import rattco.thing.Thing;
 import rattco.thing.weapon.Weapon;
 import rattco.tools.raycasting.Vector2D;
 
+/**
+ * Cette classe était utile quand il y avait des Joueurs et des Ennemis,
+ * maintenant il n'y a plus que des Joueurs
+ */
 public abstract class Personnage extends Thing{
 
 	protected int vie;

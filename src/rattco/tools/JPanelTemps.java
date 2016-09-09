@@ -6,6 +6,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * Fourni un panel qui contient 2 sliders pour choisir le nombre de
+ * minutes et de secondes d'une partie
+ *
+ */
 public class JPanelTemps extends JPanel {
 
 	/*------------------------------------------------------------------*\

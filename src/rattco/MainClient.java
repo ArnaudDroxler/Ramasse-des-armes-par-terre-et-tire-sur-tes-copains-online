@@ -5,8 +5,11 @@ import rattco.client.JFrameConnexion;
 /**
  * 
  * @author Chaperon Vincent, Droxler Arnaud, Perez Joaquim
- * 
- * RATTCO
+ *  	   ___   ___  ______ ______ _____ ____ 
+ *  	  / _ \ / _ |/_  __//_  __// ___// __ \
+ *  	 / , _// __ | / /    / /  / /__ / /_/ /
+ *  	/_/|_|/_/ |_|/_/    /_/   \___/ \____/ 
+ *                                     
  * Ramasse des Armes par Terre et Tire sur tes Copains Online
  * Projet développé au sein de la HE-Arc Ingénierie en août et septembre 2016
  * Il sagit d'un jeu de tir à la première personne en ligne. La logique du jeu est en 

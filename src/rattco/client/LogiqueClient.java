@@ -24,6 +24,10 @@ import rattco.tools.map.LvlMap;
 import rattco.tools.raycasting.Vector2D;
 import rattco.tools.raycasting.algoPiergiovanni;
 
+/**
+ * C'est cette classe qui gère les déplacement et les actions du joueur
+ *
+ */
 public class LogiqueClient {
 
 	protected static final long delay = 20;
@@ -39,7 +43,7 @@ public class LogiqueClient {
 	protected boolean isFiring;
 	private static final double r = 0.8;
 	protected ArrayList<Line2D> impactMurLine;
-	protected ArrayList<Line2D> impactEnnemiLine;
+	protected ArrayList<Line2D> impactEnnemiLines;
 	protected ArrayList<Line2D> fireLineList;
 	protected int tempsSecondes;
 
@@ -47,7 +51,6 @@ public class LogiqueClient {
 		touchesEnfoncees = new HashSet<Integer>(6);
 		fin = false;
 
-		// map = ImageParser.getMap(nomMap);
 		map = ImageParser.getMapFromFolder(nomMap);
 		objets = map.getListThing();
 
@@ -57,13 +60,12 @@ public class LogiqueClient {
 
 		joueur = joueurs.get(playerId);
 		joueur.setPosition(getPointRespawn());
-		// joueur.setPosition(map.getStartPosition());
-
+		
 		joueur.setArme(new Axe());
 		animer();
 
 		fireLineList = new ArrayList<Line2D>(5);
-		impactEnnemiLine = new ArrayList<Line2D>(0);
+		impactEnnemiLines = new ArrayList<Line2D>(0);
 		impactMurLine = new ArrayList<Line2D>(0);
 	}
 
@@ -234,7 +236,7 @@ public class LogiqueClient {
 	protected void fire() {
 
 		fireLineList.clear();
-		impactEnnemiLine.clear();
+		impactEnnemiLines.clear();
 		impactMurLine.clear();
 
 		// dépenser une munition
@@ -288,7 +290,7 @@ public class LogiqueClient {
 			}
 			if (ennemiTouche != null) {
 				arme.setImpactEnnemi(true);
-				impactEnnemiLine.add(line2d);
+				impactEnnemiLines.add(line2d);
 			} else {
 
 				arme.setImpactMur(true);
@@ -336,7 +338,6 @@ public class LogiqueClient {
 					Thread.sleep(1000);
 					joueur.resetPrendDegats();
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 

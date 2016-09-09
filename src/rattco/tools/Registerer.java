@@ -2,6 +2,7 @@ package rattco.tools;
 
 import java.util.HashMap;
 
+
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
 import rattco.messages.AcceptClientMessage;
@@ -27,10 +28,20 @@ import rattco.thing.weapon.SubmachineGun;
 import rattco.thing.weapon.Weapon;
 import rattco.tools.raycasting.Vector2D;
 
+/**
+ * KryoNet simplifie la vie du développeur en s'occupant de la sérialisation,
+ * il faut cependant lui indiquer les classes qui devront être sérialisées pour
+ * qu'il puisse les préparer. la méthode registerFor doit être appelée par le
+ * serveur et par le client avant toute communication
+ * 
+ * Point important : Toutes ces classes doivent avoir un constructeur sans argument
+ *
+ */
 public class Registerer {
 
 	public static void registerFor(EndPoint endPoint) {
 		Kryo kryo = endPoint.getKryo();
+		
 		// Messages
 		kryo.register(ClientConnexionMessage.class);
 		kryo.register(PlayerUpdateMessage.class);
@@ -52,7 +63,7 @@ public class Registerer {
 		kryo.register(HashMap.class);
 
 		// Armes (seulement parce que l'arme est un attribut de la classe
-		// Personnage)
+		// Personnage) -> à améliorer
 		kryo.register(Weapon.class);
 		kryo.register(HandGun.class);
 		kryo.register(AssaultRifle.class);

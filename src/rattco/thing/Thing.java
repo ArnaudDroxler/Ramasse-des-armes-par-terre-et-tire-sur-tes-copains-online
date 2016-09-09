@@ -4,12 +4,19 @@ package rattco.thing;
 import java.awt.image.BufferedImage;
 import rattco.tools.raycasting.Vector2D;
 
+/**
+ * Classe créée par Maxime et Vincent au P2-Java
+ * Chaque objet du jeu est une Thing
+ *
+ */
 public abstract class Thing {
 
+	private static final float dAlpha=2;
+	private static final float v = 0.1f;
 	
-	/*------------------------------------------------------------------*\
-	|*							Constructeurs							*|
-	\*------------------------------------------------------------------*/
+	private Vector2D position;
+	private Vector2D direction;
+	private boolean exists;
 
 	public Thing(Vector2D pos, Vector2D dir) {
 		this(pos.getdX(), pos.getdY(), dir.getdX(), dir.getdY());
@@ -33,16 +40,10 @@ public abstract class Thing {
 		this(vector2d, new Vector2D(1, 0));
 	}
 
-	/*------------------------------------------------------------------*\
-	|*							Methodes Public							*|
-	\*------------------------------------------------------------------*/
-
 	/**
 	 * Vectoriellement : OA + (Dir * scale)
 	 */
 	public void forward() {
-		// 1 valeur placeholder, on devra trouver une vitesse à mettre ici.
-		// System.out.println(position + " " + v + " " +direction);
 		position = position.add(direction.scale(v));
 	}
 
@@ -57,9 +58,7 @@ public abstract class Thing {
 	 * Vectoriellement : OA + (dir*-90°)
 	 */
 	public void strafeRight() {
-		// Vecteur direction perpendiculaire
 		Vector2D perpendiculairDroit = direction.rotate(Math.PI / 2.0).scale(v);
-		// Encore une question de vitesse à revoir.
 		position = position.add(perpendiculairDroit);
 	}
 
@@ -72,7 +71,6 @@ public abstract class Thing {
 	}
 
 	public void rotateRight() {
-		// Valeur placeholder pour la vitesse de rotation
 		direction = direction.rotate(Math.toRadians(dAlpha));
 	}
 
@@ -83,10 +81,6 @@ public abstract class Thing {
 	public void rotate(double d) {
 		direction = direction.rotate(Math.toRadians(d / 4));
 	}
-
-	/*------------------------------*\
-	|*				Set				*|
-	\*------------------------------*/
 
 	public void setPosition(Vector2D pos) {
 		position = pos;
@@ -106,11 +100,6 @@ public abstract class Thing {
 		direction.setdY(dirY);
 	}
 
-
-	/*------------------------------*\
-	|*				Get				*|
-	\*------------------------------*/
-
 	public Vector2D getPosition() {
 		return position;
 	}
@@ -118,20 +107,6 @@ public abstract class Thing {
 	public Vector2D getDirection() {
 		return direction;
 	}
-
-	/*------------------------------------------------------------------*\
-	|*							Methodes Private						*|
-	\*------------------------------------------------------------------*/
-
-	/*------------------------------------------------------------------*\
-	|*							Attributs Private						*|
-	\*------------------------------------------------------------------*/
-
-	private Vector2D position;
-	private Vector2D direction;
-	private static final float dAlpha=2;
-	private static final float v = 0.1f;
-	private boolean exists;
 
 	public abstract BufferedImage getSprite();
 
@@ -155,7 +130,6 @@ public abstract class Thing {
 				try {
 					Thread.sleep(timeToHideThing);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				exists=true;

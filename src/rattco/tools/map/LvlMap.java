@@ -6,16 +6,16 @@ import java.util.ArrayList;
 import rattco.thing.Thing;
 import rattco.tools.raycasting.Vector2D;
 
+/**
+ * Décrit un objet Map, est héritée par ImageLvlMap, au début on pensais qu'il
+ * pourrait y avoir plusieurs types de map (comme XmlLvlMap) mais finalement y a que ImageLvlMap
+ */
 public abstract class LvlMap {
 
 	protected int width;
 	protected int height;
 	private BufferedImage mapBackground;
 	private ArrayList<Thing> listThing;
-	private Vector2D startPosition;
-	protected Vector2D startDirection;
-	private Vector2D goalPosition;
-	private Vector2D keyPosition;
 	private int[][] textureTab;
 
 	private ArrayList<Vector2D> listStartPosition;
@@ -54,26 +54,6 @@ public abstract class LvlMap {
 
 	public void setListThing(ArrayList<Thing> listThing) {
 		this.listThing = listThing;
-	}
-
-	public Vector2D getGoalPosition() {
-		return goalPosition;
-	}
-
-	public void setGoalPosition(Vector2D goalPosition) {
-		this.goalPosition = goalPosition;
-	}
-
-	public void setStartPosition(Vector2D startPosition) {
-		this.startPosition = startPosition;
-	}
-
-	public void setKeyPosition(Vector2D pos) {
-		this.keyPosition = pos;
-	}
-
-	public Vector2D getKeyPosition() {
-		return keyPosition;
 	}
 
 	public void setListStartPosition(ArrayList<Vector2D> listPos) {

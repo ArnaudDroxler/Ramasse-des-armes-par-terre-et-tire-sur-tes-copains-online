@@ -4,6 +4,10 @@ import rattco.tools.map.LvlMap;
 
 public class algoPiergiovanni {
 
+	/**
+	 * Retourne la distance d'un point pos avec un mur de la map dans la direction dir.
+	 * Code redondant avec la méthode dans vueCamera mais pas eu le temps de refactoriser ça
+	 */
 	public static double algoRaycasting(Vector2D pos, Vector2D dir, LvlMap map) {
 
 		double rayPosX = pos.getdX();

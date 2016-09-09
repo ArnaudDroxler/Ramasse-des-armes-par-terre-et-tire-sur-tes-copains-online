@@ -20,8 +20,17 @@ import rattco.tools.ImageLoader;
 import rattco.tools.MagasinImage;
 import rattco.tools.raycasting.Vector2D;
 
+/**
+ * Classe utilitaire qui permet notamment de transformer deux images png en un objet map
+ */
 public class ImageParser {
 
+	/**
+	 * A partir d'un nom de dossier, cette méthode charge un objet map, les textures
+	 * et optionnellement une image de fond.
+	 * Il faut que les fichiers aient les bons noms (fond.png...)
+	 * Les images dans le dossier textures doivent faire 256x256 pixels
+	 */
 	public static LvlMap getMapFromFolder(String folderName) {
 		MagasinImage.buffFond = ImageLoader.loadBufferedImage(folderName + "/fond.png");
 		try {
@@ -50,52 +59,53 @@ public class ImageParser {
 	}
 
 	public static LvlMap getMap(BufferedImage imgToParse, BufferedImage imgTextureToParse) {
-
+		
+		// crée une map de la même taille que l'image
 		ImageLvlMap map = new ImageLvlMap(imgToParse.getWidth(), imgToParse.getHeight());
 
+		// place les objets dans l'objet map 
 		parse(map, imgToParse);
-
+		
+		// défini les index des textures dans un tableau 2d
 		parseTexture(map, imgTextureToParse);
-
-		// map.setMapBackgroung(imgToParse);
 
 		map.setMapBackground(imgToParse);
 
 		return map;
 
 	}
-
+	
+	/**
+	 * Parseur de textures
+	 * Pour savoir quel texture afficher à quel endroit, la map a un tableau 2D de int
+	 * textureTab qui contient les index des images de textures chargées dans MagasinImage.buffTextMur
+	 * C'est la composante bleue de la map de texture qui définit l'index du tableau
+	 */
 	private static void parseTexture(ImageLvlMap map, BufferedImage imgTextureToParse) {
 		for (int y = 0; y < imgTextureToParse.getHeight(); y++) {
 			for (int x = 0; x < imgTextureToParse.getWidth(); x++) {
 				int rgb = imgTextureToParse.getRGB(x, y);
-				int blue = (rgb) & 0x000000FF;
-
-				// if (rgb == Color.BLACK.getRGB()) {
-				// map.getTextureTab()[x][y] = 0;
-				// }
-				// else if (rgb == Color.RED.getRGB()) {
-				// map.getTextureTab()[x][y] = 1;
-				// }
-				// else if (rgb == Color.GREEN.getRGB()) {
-				// map.getTextureTab()[x][y] = 2;
-				// }
-				// else if (rgb == Color.BLUE.getRGB()) {
-				// map.getTextureTab()[x][y] = 3;
-				// }
-
-				map.setTextureTab(x, y, blue);
-
+				
+				// Le ET logique permet d'obtenir la composante bleue à partir du int rgb
+				//...................aarrvvbb
+				int i = (rgb) & 0x000000FF;
+				
+				// normalement, i devrait être un chiffre entre 0 et le nb d'images qu'il
+				// y a dans le dossier textures de la map
+				map.setTextureTab(x, y, i);
 			}
-
 		}
 
 	}
 
+	/**
+	 * Parseur de map
+	 * cette fonction place les objets dans la map à partir de la couleur
+	 * des pixels dans l'image imgToParse.
+	 * Pour les murs, c'est la méthode inWall() de imageLvlMap qui va 
+	 * retourner true si le pixel correspondant à la position donnée est noir
+	 */
 	private static void parse(ImageLvlMap map, BufferedImage imgToParse) {
-		// itérer sur chaque pixel de l'image et ajouter à map startPos,
-		// goalPos, listThing
-		// remplacer par un pixel blanc à chaque fois qu'on rencontre qqch
 
 		for (int y = 0; y < imgToParse.getHeight(); y++) {
 			for (int x = 0; x < imgToParse.getWidth(); x++) {
@@ -145,8 +155,6 @@ public class ImageParser {
 			}
 
 		}
-
-		// écrire les murs dans la matriceMap ?
 
 	}
 
