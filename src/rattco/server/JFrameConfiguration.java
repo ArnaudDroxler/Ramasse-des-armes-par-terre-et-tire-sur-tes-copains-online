@@ -19,11 +19,12 @@ import rattco.tools.JPanelDecorator;
 import rattco.tools.JPanelTemps;
 import rattco.tools.SpringUtilities;
 
+/**
+ *  Cette classe sert à créer un objet PcServer selon les informations
+ *  entrées par l'utilisateur.
+ */
 public class JFrameConfiguration extends JFrame {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2308761730886294316L;
 	/*------------------------------------------------------------------*\
 	|*							Constructeurs							*|
@@ -42,6 +43,9 @@ public class JFrameConfiguration extends JFrame {
 	|*							Methodes Private						*|
 	\*------------------------------------------------------------------*/
 
+	/**
+	 * Instanciation et placement des composants swings
+	 */
 	private void geometry() {
 		JPanel formPanel = new JPanel(new SpringLayout());
 
@@ -92,6 +96,9 @@ public class JFrameConfiguration extends JFrame {
 		args = new String[3];
 	}
 
+	/**
+	 * Description des actions à effectuer au clic sur l'un des boutons
+	 */
 	private void control() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		getRootPane().setDefaultButton(btnLancer);
@@ -156,6 +163,12 @@ public class JFrameConfiguration extends JFrame {
 
 	}
 
+	/**
+	 * retourne un tableau contenant les noms des dossiers contenu dans le dossier
+	 * donné en paramètre.
+	 * Cela permet de remplir la liste des maps en fonctions des maps présente dans
+	 * le dossier maps à la racine du dossier du jar
+	 */
 	public static String[] loadFoldersFromFolder(String folderName) {
 		File file = new File(folderName);
 		String[] directories = file.list(new FilenameFilter() {
