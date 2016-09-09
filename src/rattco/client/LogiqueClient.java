@@ -48,27 +48,39 @@ public class LogiqueClient {
 	protected int tempsSecondes;
 
 	public LogiqueClient(String nomMap, Partie partie, int playerId, PcClient pcClient) {
+		/**
+		 * On utilise un Set pour contenir les codes des touches enfoncées,
+		 * cela simplifie la gestion du clavier car l'évènement mousePressed
+		 * est appelé à répétition lorsqu'une touche est maintenue enfoncée
+		 */
 		touchesEnfoncees = new HashSet<Integer>(6);
 		fin = false;
 
 		map = ImageParser.getMapFromFolder(nomMap);
 		objets = map.getListThing();
-
+		
 		this.pcClient = pcClient;
 
+		// Le HashMap des joueurs fourni par le serveur
 		joueurs = partie.getJoueurs();
-
+		// on récupère le joueur du client
 		joueur = joueurs.get(playerId);
+		// le joueur est placé au point de respawn le plus loin des autres joueurs
 		joueur.setPosition(getPointRespawn());
 		
 		joueur.setArme(new Axe());
 		animer();
 
+		// pour le dessin des impacts (solution non optimale)
 		fireLineList = new ArrayList<Line2D>(5);
 		impactEnnemiLines = new ArrayList<Line2D>(0);
 		impactMurLine = new ArrayList<Line2D>(0);
 	}
 
+	/**
+	 * Toutes les delay ms, on met à jour la position du joueur si une touche
+	 * est enfoncée
+	 */
 	private void animer() {
 		Thread thread = new Thread(new Runnable() {
 
@@ -105,7 +117,10 @@ public class LogiqueClient {
 			joueur.strafeRight();
 		}
 
-		// collisison avec les murs
+		/**
+		 * Collision avec les murs, cet algorithme est détaillé dans le rapport
+		 * du projet P2-Java de printemps
+		 */
 		if (map.inWall(joueur.getPosition())) {
 			moveAlongWalls();
 		}

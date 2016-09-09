@@ -80,8 +80,13 @@ public class JFrameConnexion extends JFrame {
 		JPanel panel = new JPanel();
 		panel.add(formPanel);
 		panel.add(btnConnexion);
-		JLabel lblExplications = new JLabel("<html><h3>Contrôles</h3>W,A,S,D pour se déplacer<br>E pour ramasser une arme<br>Q pour afficher le tableau des scores");
-		lblExplications.setPreferredSize(new Dimension(300, 90));
+		JLabel lblExplications = new JLabel(""
+				+ "<html><h3>Contrôles :</h3>"
+				+ "W,A,S,D pour se déplacer<br>"
+				+ "E pour ramasser une arme<br>"
+				+ "Q pour afficher le tableau des scores<br>"
+				+ "ESC pour libérer la souris");
+		lblExplications.setPreferredSize(new Dimension(300, 100));
 		panel.add(lblExplications);
 
 		// Le décorateur rajoute simplement une bordure au panel
@@ -118,7 +123,7 @@ public class JFrameConnexion extends JFrame {
 	}
 
 	private void appearance() {
-		setSize(350, 270);
+		setSize(350, 280);
 		setResizable(false);
 		setTitle("Connexion");
 		tfIp.selectAll();

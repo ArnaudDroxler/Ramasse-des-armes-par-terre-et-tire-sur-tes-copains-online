@@ -3,6 +3,10 @@ package rattco.client;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * Il n'y a plus qu'une seule classe qui hérite de Renderer,
+ * c'est la vueCamera, avant y avait une autre méthode de rendu
+ */
 public abstract class Renderer extends JPanel {
 
 	private static final long serialVersionUID = 3838853989214554795L;
